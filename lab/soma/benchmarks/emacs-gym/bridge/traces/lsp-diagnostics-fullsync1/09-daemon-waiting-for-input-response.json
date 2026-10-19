@@ -1,0 +1,442 @@
+{
+  "as_expected": true,
+  "await_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-prompt-1",
+      "timeout_seconds": 0.0
+    },
+    "request_id": "daemon-prompt-await-1"
+  },
+  "await_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-prompt-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt": "confirm daemon prompt",
+          "request_id": "daemon-prompt-1",
+          "state": "waiting_for_input",
+          "value_prefix": "confirmed:"
+        },
+        "state": "waiting_for_input",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input"
+        ]
+      },
+      "name": "prompt request enters waiting_for_input",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt": "confirm daemon prompt",
+          "request_id": "daemon-prompt-1",
+          "state": "waiting_for_input",
+          "value_prefix": "confirmed:"
+        },
+        "state": "waiting_for_input",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input"
+        ]
+      },
+      "name": "prompt request records waiting sequence",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt": "confirm daemon prompt",
+          "request_id": "daemon-prompt-1",
+          "state": "waiting_for_input",
+          "value_prefix": "confirmed:"
+        },
+        "state": "waiting_for_input",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input"
+        ]
+      },
+      "name": "status observes waiting_for_input",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt": "confirm daemon prompt",
+          "request_id": "daemon-prompt-1",
+          "state": "waiting_for_input",
+          "value_prefix": "confirmed:"
+        },
+        "state": "waiting_for_input",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input"
+        ]
+      },
+      "name": "status preserves prompt text",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.respond",
+        "request_id": "daemon-prompt-respond-1",
+        "result": {
+          "operation": "request.respond",
+          "state": "succeeded",
+          "target_status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.prompt_echo",
+            "request_id": "daemon-prompt-1",
+            "result": {
+              "operation": "bridge.prompt_echo",
+              "prompt_response": "yes",
+              "responded_by": "daemon-prompt-respond-1",
+              "state": "succeeded",
+              "value": "confirmed:yes"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "waiting_for_input",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "respond request succeeds",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      },
+      "name": "response updates original request",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      },
+      "name": "responded original request is terminal succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      },
+      "name": "responded result includes supplied response",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      },
+      "name": "responded result preserves value",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      },
+      "name": "await sees original prompt request succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      },
+      "name": "awaited prompt status is original request",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-waiting-for-input-response",
+  "policy_passed_grader": true,
+  "request": {
+    "operation": "bridge.prompt_echo",
+    "params": {
+      "prompt": "confirm daemon prompt",
+      "value_prefix": "confirmed:"
+    },
+    "request_id": "daemon-prompt-1"
+  },
+  "respond_request": {
+    "operation": "request.respond",
+    "params": {
+      "request_id": "daemon-prompt-1",
+      "response": "yes"
+    },
+    "request_id": "daemon-prompt-respond-1"
+  },
+  "respond_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.respond",
+    "request_id": "daemon-prompt-respond-1",
+    "result": {
+      "operation": "request.respond",
+      "state": "succeeded",
+      "target_status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt_response": "yes",
+          "responded_by": "daemon-prompt-respond-1",
+          "state": "succeeded",
+          "value": "confirmed:yes"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "bridge.prompt_echo",
+    "request_id": "daemon-prompt-1",
+    "result": {
+      "operation": "bridge.prompt_echo",
+      "prompt": "confirm daemon prompt",
+      "request_id": "daemon-prompt-1",
+      "state": "waiting_for_input",
+      "value_prefix": "confirmed:"
+    },
+    "state": "waiting_for_input",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "waiting_for_input"
+    ]
+  },
+  "status_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-prompt-1"
+    },
+    "request_id": "daemon-prompt-status-1"
+  },
+  "status_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-prompt-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.prompt_echo",
+        "request_id": "daemon-prompt-1",
+        "result": {
+          "operation": "bridge.prompt_echo",
+          "prompt": "confirm daemon prompt",
+          "request_id": "daemon-prompt-1",
+          "state": "waiting_for_input",
+          "value_prefix": "confirmed:"
+        },
+        "state": "waiting_for_input",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "waiting_for_input"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "title": "A daemon request enters waiting_for_input and completes after an explicit external response"
+}

@@ -1,0 +1,73 @@
+{
+  "id": "magit-wrapper-this-command",
+  "title": "Magit post-stage hook and bridge wrapper command identity",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "`magit-run-post-stage-hook' uses command identity, so a direct function call inside a wrapper can have correct Git effects but different Magit semantics.",
+  "hypothesis": "Calling `magit-run-post-stage-hook' while `this-command' is a bridge wrapper should not run `magit-post-stage-hook`; setting `this-command' to a recognized staging command should run it.",
+  "sources": [
+    {
+      "name": "magit-stage dispatch",
+      "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-apply.el",
+      "lines": "282-306",
+      "note": ""
+    },
+    {
+      "name": "magit-stage-1 side effects",
+      "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-apply.el",
+      "lines": "340-345",
+      "note": ""
+    },
+    {
+      "name": "magit-run-post-stage-hook",
+      "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-apply.el",
+      "lines": "400-408",
+      "note": ""
+    },
+    {
+      "name": "magit post-refresh hook includes post-stage runner",
+      "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-mode.el",
+      "lines": "94-115",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Magit loaded from the installed Straight build; no Git repository is mutated.",
+  "predicted_behavior": "Hook execution depends on `this-command', independent of whether lower-level Git state was already changed.",
+  "observed_behavior": "post-stage-hook-runs=(\"magit-stage\")",
+  "independent_checks": [
+    {
+      "name": "wrapper command did not trigger post-stage hook",
+      "passed": true,
+      "detail": "(\"magit-stage\")"
+    },
+    {
+      "name": "recognized staging command triggered hook",
+      "passed": true,
+      "detail": "(\"magit-stage\")"
+    }
+  ],
+  "counterexample": "A wrapper command that calls Magit lower-level functions can pass an index checker while skipping package hooks.",
+  "derived_gym_requirement": "Faithful Magit actions must either enter through a recognized command path or explicitly model and test the command identity consequences."
+}

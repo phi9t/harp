@@ -1,0 +1,115 @@
+{
+  "id": "stale-mark-revalidated-after-external-replace",
+  "title": "Correct policy revalidates Dired marks after an external same-path replacement",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": "soma-dired-stale-mark-correct-wf8wWt",
+    "directory": "/project/tmp/soma-dired-stale-mark-correct-wf8wWt",
+    "target": "/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt",
+    "marked_before_external_change": [
+      "target-a.txt"
+    ],
+    "marked_after_revalidate": [
+      "target-a.txt"
+    ],
+    "marked_after_policy": null,
+    "pre_change_signature": {
+      "exists": true,
+      "path": "/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt",
+      "truename": "/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt",
+      "size": 9,
+      "mode": "-rw-r--r--",
+      "inode": 82,
+      "device": 240,
+      "mtime": "(27323 14651 137885 276000)",
+      "ctime": "(27323 14651 137885 276000)",
+      "sha256": "9e97cf96eca9ddee22e1c9590003f2224f2e4560c330f482388aff156e009265"
+    },
+    "post_revalidate_signature": {
+      "exists": true,
+      "path": "/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt",
+      "truename": "/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt",
+      "size": 21,
+      "mode": "-rw-r--r--",
+      "inode": 92,
+      "device": 240,
+      "mtime": "(27323 14651 140885 276000)",
+      "ctime": "(27323 14651 140885 276000)",
+      "sha256": "bbdce5027a28977df39a0cec028807579877987a0ecdb5b73640922b71e37313"
+    }
+  },
+  "name": "stale-mark-revalidated-after-external-replace",
+  "checks": [
+    {
+      "name": "action revalidated Dired buffer before destructive operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"dired-revert-and-revalidate\") (\"marked_before_external_change\" \"target-a.txt\") (\"marked_after_revalidate\" \"target-a.txt\") (\"marked_after_policy\") (\"pre_change_signature\" (\"exists\" . t) (\"path\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"truename\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"size\" . 9) (\"mode\" . \"-rw-r--r--\") (\"inode\" . 82) (\"device\" . 240) (\"mtime\" . \"(27323 14651 137885 276000)\") (\"ctime\" . \"(27323 14651 137885 276000)\") (\"sha256\" . \"9e97cf96eca9ddee22e1c9590003f2224f2e4560c330f482388aff156e009265\")) (\"post_revalidate_signature\" (\"exists\" . t) (\"path\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"truename\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"size\" . 21) (\"mode\" . \"-rw-r--r--\") (\"inode\" . 92) (\"device\" . 240) (\"mtime\" . \"(27323 14651 140885 276000)\") (\"ctime\" . \"(27323 14651 140885 276000)\") (\"sha256\" . \"bbdce5027a28977df39a0cec028807579877987a0ecdb5b73640922b71e37313\")) (\"signature_mismatch\" . t) (\"destructive_operation_aborted\" . t) (\"stale_detected\" . t))"
+    },
+    {
+      "name": "action detected same-path replacement by file signature",
+      "passed": true,
+      "detail": "((\"operation\" . \"dired-revert-and-revalidate\") (\"marked_before_external_change\" \"target-a.txt\") (\"marked_after_revalidate\" \"target-a.txt\") (\"marked_after_policy\") (\"pre_change_signature\" (\"exists\" . t) (\"path\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"truename\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"size\" . 9) (\"mode\" . \"-rw-r--r--\") (\"inode\" . 82) (\"device\" . 240) (\"mtime\" . \"(27323 14651 137885 276000)\") (\"ctime\" . \"(27323 14651 137885 276000)\") (\"sha256\" . \"9e97cf96eca9ddee22e1c9590003f2224f2e4560c330f482388aff156e009265\")) (\"post_revalidate_signature\" (\"exists\" . t) (\"path\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"truename\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"size\" . 21) (\"mode\" . \"-rw-r--r--\") (\"inode\" . 92) (\"device\" . 240) (\"mtime\" . \"(27323 14651 140885 276000)\") (\"ctime\" . \"(27323 14651 140885 276000)\") (\"sha256\" . \"bbdce5027a28977df39a0cec028807579877987a0ecdb5b73640922b71e37313\")) (\"signature_mismatch\" . t) (\"destructive_operation_aborted\" . t) (\"stale_detected\" . t))"
+    },
+    {
+      "name": "action did not trust stale visible Dired mark",
+      "passed": true,
+      "detail": "marked-after-policy=nil action=((\"operation\" . \"dired-revert-and-revalidate\") (\"marked_before_external_change\" \"target-a.txt\") (\"marked_after_revalidate\" \"target-a.txt\") (\"marked_after_policy\") (\"pre_change_signature\" (\"exists\" . t) (\"path\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"truename\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"size\" . 9) (\"mode\" . \"-rw-r--r--\") (\"inode\" . 82) (\"device\" . 240) (\"mtime\" . \"(27323 14651 137885 276000)\") (\"ctime\" . \"(27323 14651 137885 276000)\") (\"sha256\" . \"9e97cf96eca9ddee22e1c9590003f2224f2e4560c330f482388aff156e009265\")) (\"post_revalidate_signature\" (\"exists\" . t) (\"path\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"truename\" . \"/project/tmp/soma-dired-stale-mark-correct-wf8wWt/target-a.txt\") (\"size\" . 21) (\"mode\" . \"-rw-r--r--\") (\"inode\" . 92) (\"device\" . 240) (\"mtime\" . \"(27323 14651 140885 276000)\") (\"ctime\" . \"(27323 14651 140885 276000)\") (\"sha256\" . \"bbdce5027a28977df39a0cec028807579877987a0ecdb5b73640922b71e37313\")) (\"signature_mismatch\" . t) (\"destructive_operation_aborted\" . t) (\"stale_detected\" . t))"
+    },
+    {
+      "name": "external replacement file was preserved",
+      "passed": true,
+      "detail": "exists=t contents=\"external-replacement\n\""
+    },
+    {
+      "name": "unrelated file was preserved",
+      "passed": true,
+      "detail": "keep=t contents=\"keep\n\""
+    },
+    {
+      "name": "same-path entry stayed visible while stale mark was cleared",
+      "passed": true,
+      "detail": "visible=t marked-after-revalidate=(\"target-a.txt\") marked-after-policy=nil"
+    }
+  ],
+  "marked_after_refresh": null,
+  "marked_after_policy": null,
+  "files": [
+    {
+      "name": "keep.txt",
+      "exists": true,
+      "contents": "keep\n"
+    },
+    {
+      "name": "target-a.txt",
+      "exists": true,
+      "contents": "external-replacement\n"
+    },
+    {
+      "name": "target-b.txt",
+      "exists": true,
+      "contents": "target-b\n"
+    },
+    {
+      "name": "flagged-decoy.txt",
+      "exists": true,
+      "contents": "flagged-decoy\n"
+    },
+    {
+      "name": "source.txt",
+      "exists": true,
+      "contents": "source\n"
+    },
+    {
+      "name": "renamed.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "collision.txt",
+      "exists": true,
+      "contents": "collision-original\n"
+    }
+  ]
+}

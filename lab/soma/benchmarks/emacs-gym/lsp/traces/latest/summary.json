@@ -1,0 +1,85 @@
+{
+  "benchmark": "lsp-source",
+  "generated_at": "2026-09-28T07:49:39Z",
+  "run_id": "20260928T074919Z-3693804",
+  "total_scenarios": 6,
+  "scenarios_as_expected": 6,
+  "insula_checks": [
+    {
+      "name": "SOMA_INSULA_ACTIVE is set",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "name": "selected rootfs mode is active",
+      "passed": true,
+      "detail": "env=selected-container-rootfs plan=selected-container-rootfs-insula"
+    },
+    {
+      "name": "plan benchmark matches LSP",
+      "passed": true,
+      "detail": "lsp-source"
+    },
+    {
+      "name": "dependency closure is rootfs-owned",
+      "passed": true,
+      "detail": "rootfs_owned"
+    },
+    {
+      "name": "glibc owner is container image rootfs",
+      "passed": true,
+      "detail": "container-image-rootfs"
+    },
+    {
+      "name": "emacs executable resolves from rootfs",
+      "passed": true,
+      "detail": "/opt/soma/emacs/bin/emacs"
+    }
+  ],
+  "insula_checks_passed": true,
+  "fixture_origin": "generated-inside-bwrap-private-project-runtime",
+  "records": [
+    {
+      "id": "correct-python-lsp-source",
+      "name": "correct-python-lsp-source",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true
+    },
+    {
+      "id": "correct-cpp-lsp-source",
+      "name": "correct-cpp-lsp-source",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true
+    },
+    {
+      "id": "correct-rust-lsp-source",
+      "name": "correct-rust-lsp-source",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true
+    },
+    {
+      "id": "bad-direct-text-edit-as-refactor",
+      "name": "bad-direct-text-edit-as-refactor",
+      "expected_policy_pass": false,
+      "policy_passed_grader": false,
+      "as_expected": true
+    },
+    {
+      "id": "stale-document-version-rejected",
+      "name": "stale-document-version-rejected",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true
+    },
+    {
+      "id": "stale-workspace-root-rejected",
+      "name": "stale-workspace-root-rejected",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true
+    }
+  ]
+}

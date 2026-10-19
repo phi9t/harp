@@ -1,0 +1,356 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": "operation_failed",
+        "operation": "command.dispatch",
+        "request_id": "daemon-command-1",
+        "result": {
+          "command": "keyboard-quit",
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-bridge-daemon-target>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is allowlisted",
+              "passed": false
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-bridge-daemon-target\" actual=\"soma-bridge-daemon-target\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=\"soma-bridge-daemon-target\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=6",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=1",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            }
+          ],
+          "route": "precondition-check",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "command dispatch is rejected",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": "operation_failed",
+        "operation": "command.dispatch",
+        "request_id": "daemon-command-1",
+        "result": {
+          "command": "keyboard-quit",
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-bridge-daemon-target>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is allowlisted",
+              "passed": false
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-bridge-daemon-target\" actual=\"soma-bridge-daemon-target\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=\"soma-bridge-daemon-target\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=6",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=1",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            }
+          ],
+          "route": "precondition-check",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "command rejection reports operation failure",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": "operation_failed",
+        "operation": "command.dispatch",
+        "request_id": "daemon-command-1",
+        "result": {
+          "command": "keyboard-quit",
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-bridge-daemon-target>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is allowlisted",
+              "passed": false
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-bridge-daemon-target\" actual=\"soma-bridge-daemon-target\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=\"soma-bridge-daemon-target\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=6",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=1",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            }
+          ],
+          "route": "precondition-check",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "command precondition rejected allowlist",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": "operation_failed",
+        "operation": "command.dispatch",
+        "request_id": "daemon-command-1",
+        "result": {
+          "command": "keyboard-quit",
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-bridge-daemon-target>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is allowlisted",
+              "passed": false
+            },
+            {
+              "detail": "keyboard-quit",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-bridge-daemon-target\" actual=\"soma-bridge-daemon-target\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=\"soma-bridge-daemon-target\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=6",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=1",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            }
+          ],
+          "route": "precondition-check",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "non-allowlisted command was interactive",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-command-dispatch-rejected",
+  "policy_passed_grader": true,
+  "request": {
+    "operation": "command.dispatch",
+    "params": {
+      "buffer_name": "soma-bridge-daemon-target",
+      "command": "keyboard-quit",
+      "preconditions": {
+        "buffer_name": "soma-bridge-daemon-target"
+      }
+    },
+    "request_id": "daemon-command-1"
+  },
+  "response": {
+    "error": false,
+    "error_code": "operation_failed",
+    "operation": "command.dispatch",
+    "request_id": "daemon-command-1",
+    "result": {
+      "command": "keyboard-quit",
+      "operation": "command.dispatch",
+      "precondition_checks": [
+        {
+          "detail": "#<buffer soma-bridge-daemon-target>",
+          "name": "target buffer is live",
+          "passed": true
+        },
+        {
+          "detail": "keyboard-quit",
+          "name": "command is allowlisted",
+          "passed": false
+        },
+        {
+          "detail": "keyboard-quit",
+          "name": "command is interactive",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"soma-bridge-daemon-target\" actual=\"soma-bridge-daemon-target\"",
+          "name": "buffer identity matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=nil actual=\"soma-bridge-daemon-target\"",
+          "name": "selected window displays target buffer",
+          "passed": true
+        },
+        {
+          "detail": "expected=nil actual=6",
+          "name": "character revision matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=nil actual=1",
+          "name": "point matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=nil actual=:json-false",
+          "name": "minibuffer state matches precondition",
+          "passed": true
+        }
+      ],
+      "route": "precondition-check",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ]
+    },
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ]
+  },
+  "title": "The live daemon transport rejects command.dispatch for a non-allowlisted command"
+}

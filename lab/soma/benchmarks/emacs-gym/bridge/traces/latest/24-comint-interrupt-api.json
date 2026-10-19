@@ -1,0 +1,1982 @@
+{
+  "id": "comint-interrupt-api",
+  "title": "Stable terminal-v0 Comint API interrupts the intended subprocess and reconciles side effects",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "initial_request": {
+    "request_id": "comint-interrupt-api-observe-1",
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+    }
+  },
+  "initial_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-interrupt-api-observe-1",
+    "operation": "comint.observe",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "comint.observe",
+      "state": "succeeded",
+      "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+      "major_mode": "comint-mode",
+      "buffer_file_name": false,
+      "chars_tick": 3,
+      "modified": true,
+      "default_directory": "/workspace/soma/",
+      "point": 3,
+      "process_present": true,
+      "process_live": true,
+      "process_name": "soma-bridge-comint-interrupt-api",
+      "process_status": "run",
+      "process_id": 43,
+      "process_exe": "/usr/bin/dash",
+      "process_rootfs_owned": true,
+      "process_mark": 3,
+      "point_after_process_mark": true,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_end": 1,
+      "last_input_text": "",
+      "current_input_text": "",
+      "buffer_tail": "$ ",
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+      "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+      "minibuffer_active": false
+    },
+    "evidence": {
+      "process_identity": {
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true
+      },
+      "input_boundary": {
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": ""
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "comint_state": {
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_mark": 3,
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "submit_request": {
+    "request_id": "comint-interrupt-api-submit-1",
+    "operation": "comint.submit_input",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+      "input": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }",
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "submit_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-interrupt-api-submit-1",
+    "operation": "comint.submit_input",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "comint.submit_input",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "route": "comint-send-input",
+      "dispatch": "call-interactively",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 3,
+            "actual": 3
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 30,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 200,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 200,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "submitted_bytes": 196,
+      "comint_input_markers": {
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200
+      },
+      "used_raw_process_write": false,
+      "process_output": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 3,
+            "actual": 3
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 30,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 200,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 200,
+          "point_after_process_mark": true,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200,
+          "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        }
+      },
+      "submitted_bytes": 196,
+      "comint_input_markers": {
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200
+      },
+      "process_output": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n"
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 30,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 200,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 200,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {
+      "process_input": {
+        "route": "comint-send-input",
+        "submitted_bytes": 196,
+        "comint_input_markers": {
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200
+        },
+        "used_raw_process_write": false
+      }
+    },
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "await_request": {
+    "request_id": "comint-interrupt-api-await-start-1",
+    "operation": "comint.await_output",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+      "needle": "SOMA_BRIDGE_COMINT_INTERRUPT_START",
+      "timeout_seconds": 2.0,
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 30,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 200,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 200,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "await_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-interrupt-api-await-start-1",
+    "operation": "comint.await_output",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "comint.await_output",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "route": "process-output-await",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint output boundary is valid for the current input",
+          "passed": true,
+          "detail": {
+            "expected_process_mark": 200,
+            "actual_process_mark": 200,
+            "last_input_end": 200
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 30,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 200,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 200,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "matched": true,
+      "needle": "SOMA_BRIDGE_COMINT_INTERRUPT_START",
+      "matched_output": "SOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+      "partial_output": "SOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+      "timeout_seconds": 2.0,
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint output boundary is valid for the current input",
+          "passed": true,
+          "detail": {
+            "expected_process_mark": 200,
+            "actual_process_mark": 200,
+            "last_input_end": 200
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 30,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 200,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 200,
+          "point_after_process_mark": true,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200,
+          "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 40,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 235,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 235,
+          "point_after_process_mark": true,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200,
+          "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        }
+      },
+      "matched_output": "SOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+      "partial_output": "SOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+      "matched": true,
+      "needle": "SOMA_BRIDGE_COMINT_INTERRUPT_START",
+      "timeout_seconds": 2.0,
+      "timeout": {
+        "seconds": 2.0
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 30,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 200,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 200,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "stale_interrupt_request": {
+    "request_id": "comint-interrupt-api-stale-1",
+    "operation": "comint.interrupt",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "stale_interrupt_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-interrupt-api-stale-1",
+    "operation": "comint.interrupt",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "comint.interrupt",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "failed"
+      ],
+      "route": "precondition-check",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": false,
+          "detail": {
+            "expected": 3,
+            "actual": 235
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "interrupt_command": "comint-interrupt-subjob",
+      "interrupt_dispatched": false,
+      "used_raw_process_write": false,
+      "bridge_used_raw_process_control": false,
+      "error": "Comint interrupt preconditions failed"
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": false,
+          "detail": {
+            "expected": 3,
+            "actual": 235
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 40,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 235,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 235,
+          "point_after_process_mark": true,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200,
+          "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 40,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 235,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 235,
+          "point_after_process_mark": true,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200,
+          "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        }
+      },
+      "interrupt_command": "comint-interrupt-subjob",
+      "process_identity": {
+        "process_id": false,
+        "status_before": false,
+        "status_after": false
+      },
+      "process_survival": {
+        "process_live_after": false
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {
+      "process_interrupt": {
+        "command": "comint-interrupt-subjob",
+        "dispatched": false,
+        "used_raw_process_write": false,
+        "bridge_used_raw_process_control": false
+      }
+    },
+    "diagnostics": [
+      {
+        "code": "conflict",
+        "message": "Comint interrupt preconditions failed"
+      }
+    ],
+    "continuation": null,
+    "error_code": "conflict",
+    "error": "Comint interrupt preconditions failed"
+  },
+  "fresh_interrupt_request": {
+    "request_id": "comint-interrupt-api-fresh-1",
+    "operation": "comint.interrupt",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "fresh_interrupt_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-interrupt-api-fresh-1",
+    "operation": "comint.interrupt",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "comint.interrupt",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "route": "comint-interrupt-subjob",
+      "dispatch": "call-interactively",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 235,
+            "actual": 235
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 43,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 237,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 237,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 235,
+        "last_input_end": 235,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "interrupt_command": "comint-interrupt-subjob",
+      "interrupt_dispatched": true,
+      "process_id": 43,
+      "process_status_before": "run",
+      "process_status_after": "run",
+      "process_live_after": true,
+      "side_effect_reconciliation": "external_verifier_required",
+      "used_raw_process_write": false,
+      "bridge_used_raw_process_control": false,
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 43,
+            "actual": 43
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/usr/bin/dash",
+            "actual": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": true,
+          "detail": {
+            "expected": true,
+            "actual": true,
+            "process_exe": "/usr/bin/dash"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 235,
+            "actual": 235
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 40,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 235,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 235,
+          "point_after_process_mark": true,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_end": 200,
+          "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 43,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 237,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 237,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 235,
+          "last_input_end": 235,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        }
+      },
+      "interrupt_command": "comint-interrupt-subjob",
+      "side_effect_reconciliation": "external_verifier_required",
+      "process_identity": {
+        "process_id": 43,
+        "status_before": "run",
+        "status_after": "run"
+      },
+      "process_survival": {
+        "process_live_after": true
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 40,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 235,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 235,
+        "point_after_process_mark": true,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_end": 200,
+        "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 43,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 237,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-interrupt-api",
+        "process_status": "run",
+        "process_id": 43,
+        "process_exe": "/usr/bin/dash",
+        "process_rootfs_owned": true,
+        "process_mark": 237,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 235,
+        "last_input_end": 235,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {
+      "process_interrupt": {
+        "command": "comint-interrupt-subjob",
+        "dispatched": true,
+        "used_raw_process_write": false,
+        "bridge_used_raw_process_control": false
+      }
+    },
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "final_observe": {
+    "operation": "comint.observe",
+    "state": "succeeded",
+    "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+    "major_mode": "comint-mode",
+    "buffer_file_name": false,
+    "chars_tick": 45,
+    "modified": true,
+    "default_directory": "/workspace/soma/",
+    "point": 240,
+    "process_present": true,
+    "process_live": true,
+    "process_name": "soma-bridge-comint-interrupt-api",
+    "process_status": "run",
+    "process_id": 43,
+    "process_exe": "/usr/bin/dash",
+    "process_rootfs_owned": true,
+    "process_mark": 240,
+    "point_after_process_mark": true,
+    "last_input_markers_live": false,
+    "last_input_start": 235,
+    "last_input_end": 235,
+    "last_input_text": "",
+    "current_input_text": "",
+    "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \n$ ",
+    "run_id": "20261001T062920Z-2817516",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+    "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+    "minibuffer_active": false
+  },
+  "counter": "/project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt",
+  "counter_lines": null,
+  "checks": [
+    {
+      "name": "comint.interrupt is a stable enabled terminal operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"comint.interrupt\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"profile\" . \"terminal-v0\") (\"maturity\" . \"stable\") (\"owner\" . \"comint\") (\"side_effect_class\" . \"external_process_control\") (\"observation_class\" . \"active-diagnostic\") (\"implemented\" . t) (\"enabled\" . t) (\"route\" . \"comint-interrupt-subjob\") (\"required_params\" \"buffer_name\") (\"required_preconditions\" \"buffer_name\" \"process_id\" \"process_exe\" \"process_rootfs_owned\" \"process_mark\") (\"possible_states\" \"succeeded\" \"failed\" \"outcome_unknown\") (\"evidence\" \"interrupt_command\" \"process_identity\" \"process_survival\" \"side_effect_reconciliation\") (\"request_contract\" (\"envelope\" . \"soma-emacs-agent-v0.request\") (\"required_fields\" \"request_id\" \"operation\") (\"optional_fields\" \"api_version\" \"capability\" \"params\" \"preconditions\" \"timeout_ms\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"capability\" . \"external_process_control\") (\"params_mode\" . \"typed-object\") (\"required_params\" \"buffer_name\") (\"preconditions_mode\" . \"typed-object\")) (\"precondition_contract\" (\"mode\" . \"typed-object\") (\"top_level_field\" . \"preconditions\") (\"params_field\" . \"params.preconditions\") (\"required_fields\" \"buffer_name\" \"process_id\" \"process_exe\" \"process_rootfs_owned\" \"process_mark\") (\"conflict_error_code\" . \"conflict\")) (\"result_contract\" (\"envelope\" . \"soma-emacs-agent-v0.result\") (\"required_fields\" \"api_version\" \"request_id\" \"operation\" \"state\" \"state_sequence\" \"result\" \"evidence\" \"observations\" \"effects\" \"diagnostics\" \"continuation\") (\"states\" \"succeeded\" \"failed\" \"outcome_unknown\") (\"terminal_states\" \"succeeded\" \"failed\" \"outcome_unknown\") (\"evidence_channels\" \"interrupt_command\" \"process_identity\" \"process_survival\" \"side_effect_reconciliation\")) (\"description\" . \"Interrupt the intended Comint subprocess and reconcile outcome.\"))"
+    },
+    {
+      "name": "interrupt fixture targets a live Comint process",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"comint-interrupt-api-observe-1\") (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 3) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 3) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 3) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 1) (\"last_input_end\" . 1) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"evidence\" (\"process_identity\" (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t)) (\"input_boundary\" (\"process_mark\" . 3) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 1) (\"last_input_end\" . 1) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\")) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"comint_state\" (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 3) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 3) (\"process_mark\" . 3) (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ \") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "interrupt fixture command was submitted through Comint",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"comint-interrupt-api-submit-1\") (\"operation\" . \"comint.submit_input\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"comint.submit_input\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"route\" . \"comint-send-input\") (\"dispatch\" . \"call-interactively\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 3) (\"actual\" . 3))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 3) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 3) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 3) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 1) (\"last_input_end\" . 1) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 30) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 200) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 200) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"submitted_bytes\" . 196) (\"comint_input_markers\" (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200)) (\"used_raw_process_write\" . :json-false) (\"process_output\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"error\" . :json-false)) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 3) (\"actual\" . 3))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before_after_observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 3) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 3) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 3) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 1) (\"last_input_end\" . 1) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 30) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 200) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 200) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"submitted_bytes\" . 196) (\"comint_input_markers\" (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200)) (\"process_output\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\")) (\"observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 3) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 3) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 3) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 1) (\"last_input_end\" . 1) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 30) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 200) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 200) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"effects\" (\"process_input\" (\"route\" . \"comint-send-input\") (\"submitted_bytes\" . 196) (\"comint_input_markers\" (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200)) (\"used_raw_process_write\" . :json-false))) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "interrupt fixture reached the delayed command before interrupt",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"comint-interrupt-api-await-start-1\") (\"operation\" . \"comint.await_output\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"comint.await_output\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"route\" . \"process-output-await\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint output boundary is valid for the current input\") (\"passed\" . t) (\"detail\" (\"expected_process_mark\" . 200) (\"actual_process_mark\" . 200) (\"last_input_end\" . 200)))) (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 30) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 200) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 200) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"matched\" . t) (\"needle\" . \"SOMA_BRIDGE_COMINT_INTERRUPT_START\") (\"matched_output\" . \"SOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"partial_output\" . \"SOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"timeout_seconds\" . 2.0) (\"error\" . :json-false)) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint output boundary is valid for the current input\") (\"passed\" . t) (\"detail\" (\"expected_process_mark\" . 200) (\"actual_process_mark\" . 200) (\"last_input_end\" . 200)))) (\"before_after_observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 30) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 200) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 200) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"matched_output\" . \"SOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"partial_output\" . \"SOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"matched\" . t) (\"needle\" . \"SOMA_BRIDGE_COMINT_INTERRUPT_START\") (\"timeout_seconds\" . 2.0) (\"timeout\" (\"seconds\" . 2.0))) (\"observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 30) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 200) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 200) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "stale process-mark interrupt is rejected before side effects",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"comint-interrupt-api-stale-1\") (\"operation\" . \"comint.interrupt\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"result\" (\"operation\" . \"comint.interrupt\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"route\" . \"precondition-check\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . :json-false) (\"detail\" (\"expected\" . 3) (\"actual\" . 235))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"interrupt_command\" . \"comint-interrupt-subjob\") (\"interrupt_dispatched\" . :json-false) (\"used_raw_process_write\" . :json-false) (\"bridge_used_raw_process_control\" . :json-false) (\"error\" . \"Comint interrupt preconditions failed\")) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . :json-false) (\"detail\" (\"expected\" . 3) (\"actual\" . 235))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before_after_observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"interrupt_command\" . \"comint-interrupt-subjob\") (\"process_identity\" (\"process_id\" . :json-false) (\"status_before\" . :json-false) (\"status_after\" . :json-false)) (\"process_survival\" (\"process_live_after\" . :json-false))) (\"observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"effects\" (\"process_interrupt\" (\"command\" . \"comint-interrupt-subjob\") (\"dispatched\" . :json-false) (\"used_raw_process_write\" . :json-false) (\"bridge_used_raw_process_control\" . :json-false))) (\"diagnostics\" . [((\"code\" . \"conflict\") (\"message\" . \"Comint interrupt preconditions failed\"))]) (\"continuation\") (\"error_code\" . \"conflict\") (\"error\" . \"Comint interrupt preconditions failed\"))"
+    },
+    {
+      "name": "fresh interrupt request succeeds through the v0 envelope",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"comint-interrupt-api-fresh-1\") (\"operation\" . \"comint.interrupt\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"comint.interrupt\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"route\" . \"comint-interrupt-subjob\") (\"dispatch\" . \"call-interactively\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 235) (\"actual\" . 235))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 43) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 237) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 237) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 235) (\"last_input_end\" . 235) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"interrupt_command\" . \"comint-interrupt-subjob\") (\"interrupt_dispatched\" . t) (\"process_id\" . 43) (\"process_status_before\" . \"run\") (\"process_status_after\" . \"run\") (\"process_live_after\" . t) (\"side_effect_reconciliation\" . \"external_verifier_required\") (\"used_raw_process_write\" . :json-false) (\"bridge_used_raw_process_control\" . :json-false) (\"error\" . :json-false)) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 235) (\"actual\" . 235))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before_after_observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 43) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 237) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 237) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 235) (\"last_input_end\" . 235) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"interrupt_command\" . \"comint-interrupt-subjob\") (\"side_effect_reconciliation\" . \"external_verifier_required\") (\"process_identity\" (\"process_id\" . 43) (\"status_before\" . \"run\") (\"status_after\" . \"run\")) (\"process_survival\" (\"process_live_after\" . t))) (\"observations\" (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 43) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 237) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 237) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 235) (\"last_input_end\" . 235) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false))) (\"effects\" (\"process_interrupt\" (\"command\" . \"comint-interrupt-subjob\") (\"dispatched\" . t) (\"used_raw_process_write\" . :json-false) (\"bridge_used_raw_process_control\" . :json-false))) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "interrupt result uses comint-interrupt-subjob and records before/after state",
+      "passed": true,
+      "detail": "((\"operation\" . \"comint.interrupt\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"route\" . \"comint-interrupt-subjob\") (\"dispatch\" . \"call-interactively\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\")) ((\"name\" . \"buffer mode derives from comint-mode\") (\"passed\" . t) (\"detail\" . \"comint-mode\")) ((\"name\" . \"Comint process is live\") (\"passed\" . t) (\"detail\" . run)) ((\"name\" . \"Comint process identity matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 43) (\"actual\" . 43))) ((\"name\" . \"Comint process executable matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"/usr/bin/dash\") (\"actual\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process executable is rootfs-owned\") (\"passed\" . t) (\"detail\" (\"expected\" . t) (\"actual\" . t) (\"process_exe\" . \"/usr/bin/dash\"))) ((\"name\" . \"Comint process mark matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . 235) (\"actual\" . 235))) ((\"name\" . \"current input text matches precondition\") (\"passed\" . t) (\"detail\" (\"expected\" . \"\") (\"actual\" . \"\")))) (\"before\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 40) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 235) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 235) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . t) (\"last_input_start\" . 3) (\"last_input_end\" . 200) (\"last_input_text\" . \"printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\n\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"comint.observe\") (\"state\" . \"succeeded\") (\"buffer_name\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"major_mode\" . \"comint-mode\") (\"buffer_file_name\" . :json-false) (\"chars_tick\" . 43) (\"modified\" . t) (\"default_directory\" . \"/workspace/soma/\") (\"point\" . 237) (\"process_present\" . t) (\"process_live\" . t) (\"process_name\" . \"soma-bridge-comint-interrupt-api\") (\"process_status\" . \"run\") (\"process_id\" . 43) (\"process_exe\" . \"/usr/bin/dash\") (\"process_rootfs_owned\" . t) (\"process_mark\" . 237) (\"point_after_process_mark\" . t) (\"last_input_markers_live\" . :json-false) (\"last_input_start\" . 235) (\"last_input_end\" . 235) (\"last_input_text\" . \"\") (\"current_input_text\" . \"\") (\"buffer_tail\" . \"$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\\\n'; sleep 5 && { printf 'finished\\\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"selected_window_buffer\" . \" *soma-bridge-soma-bridge-comint-interrupt-api*\") (\"minibuffer_active\" . :json-false)) (\"interrupt_command\" . \"comint-interrupt-subjob\") (\"interrupt_dispatched\" . t) (\"process_id\" . 43) (\"process_status_before\" . \"run\") (\"process_status_after\" . \"run\") (\"process_live_after\" . t) (\"side_effect_reconciliation\" . \"external_verifier_required\") (\"used_raw_process_write\" . :json-false) (\"bridge_used_raw_process_control\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "comint.interrupt publishes typed terminal evidence and effects",
+      "passed": true,
+      "detail": {
+        "evidence": {
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-interrupt-api*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-interrupt-api*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 43,
+                "actual": 43
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/usr/bin/dash",
+                "actual": "/usr/bin/dash"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": true,
+              "detail": {
+                "expected": true,
+                "actual": true,
+                "process_exe": "/usr/bin/dash"
+              }
+            },
+            {
+              "name": "Comint process mark matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 235,
+                "actual": 235
+              }
+            },
+            {
+              "name": "current input text matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "",
+                "actual": ""
+              }
+            }
+          ],
+          "before_after_observations": {
+            "before": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 40,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 235,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-interrupt-api",
+              "process_status": "run",
+              "process_id": 43,
+              "process_exe": "/usr/bin/dash",
+              "process_rootfs_owned": true,
+              "process_mark": 235,
+              "point_after_process_mark": true,
+              "last_input_markers_live": true,
+              "last_input_start": 3,
+              "last_input_end": 200,
+              "last_input_text": "printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\n",
+              "current_input_text": "",
+              "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+              "minibuffer_active": false
+            },
+            "after": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 43,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 237,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-interrupt-api",
+              "process_status": "run",
+              "process_id": 43,
+              "process_exe": "/usr/bin/dash",
+              "process_rootfs_owned": true,
+              "process_mark": 237,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 235,
+              "last_input_end": 235,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+              "minibuffer_active": false
+            }
+          },
+          "interrupt_command": "comint-interrupt-subjob",
+          "side_effect_reconciliation": "external_verifier_required",
+          "process_identity": {
+            "process_id": 43,
+            "status_before": "run",
+            "status_after": "run"
+          },
+          "process_survival": {
+            "process_live_after": true
+          }
+        },
+        "effects": {
+          "process_interrupt": {
+            "command": "comint-interrupt-subjob",
+            "dispatched": true,
+            "used_raw_process_write": false,
+            "bridge_used_raw_process_control": false
+          }
+        }
+      }
+    },
+    {
+      "name": "interrupted Comint shell process survives",
+      "passed": true,
+      "detail": {
+        "initial": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        },
+        "final": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 45,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 240,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-interrupt-api",
+          "process_status": "run",
+          "process_id": 43,
+          "process_exe": "/usr/bin/dash",
+          "process_rootfs_owned": true,
+          "process_mark": 240,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 235,
+          "last_input_end": 235,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \n$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-interrupt-api*",
+          "minibuffer_active": false
+        }
+      }
+    },
+    {
+      "name": "interrupt command did not reach completion marker",
+      "passed": true,
+      "detail": "$ printf 'SOMA_BRIDGE_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-bridge-comint-interrupt-api-AUN6XL/counter.txt; printf 'SOMA_BRIDGE_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_BRIDGE_COMINT_INTERRUPT_START\n  \n$ "
+    },
+    {
+      "name": "interrupt side effect did not occur",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

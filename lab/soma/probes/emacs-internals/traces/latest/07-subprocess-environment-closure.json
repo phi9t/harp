@@ -1,0 +1,71 @@
+{
+  "id": "subprocess-environment-closure",
+  "title": "Subprocess environment closure",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Emacs subprocesses must inherit the same controlled environment contract as the Emacs process.",
+  "hypothesis": "A shell subprocess should see the Insula allowlist variables, private directories, and no host package-manager leakage such as conda, mamba, `PYTHONPATH', or ambient `LD_LIBRARY_PATH'.",
+  "sources": [
+    {
+      "name": "environment clear and setenv",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "102-119",
+      "note": ""
+    },
+    {
+      "name": "Comint subprocess contract",
+      "path": "docs/internals-atlas/package-contracts/comint.md",
+      "lines": "18-27",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One `env' subprocess launched from Emacs.",
+  "predicted_behavior": "The subprocess environment should stay within the declared allowlist for the current development Insula.",
+  "observed_behavior": "status=0 env_names=(\"CARGO_HOME\" \"HOME\" \"LANG\" \"LC_ALL\" \"PATH\" \"PWD\" \"RUSTUP_HOME\" \"SHELL\" \"SHLVL\" \"SOMA_INSULA_ACTIVE\" \"SOMA_INSULA_MODE\" \"SOMA_INSULA_PLAN\" \"SOMA_INSULA_RUN_ID\" \"TMPDIR\" \"XDG_CACHE_HOME\" \"XDG_CONFIG_HOME\" \"XDG_DATA_HOME\" \"XDG_RUNTIME_DIR\" \"_\") unexpected=nil forbidden=nil",
+  "independent_checks": [
+    {
+      "name": "env subprocess ran",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "subprocess environment is allowlisted",
+      "passed": true,
+      "detail": "nil"
+    },
+    {
+      "name": "subprocess has no host package-manager leakage",
+      "passed": true,
+      "detail": "nil"
+    },
+    {
+      "name": "subprocess sees the same Insula run id",
+      "passed": true,
+      "detail": "20260930T040324Z-4018462"
+    }
+  ],
+  "counterexample": "A clean Emacs process can still launch subprocesses with leaked host variables if the process environment is mutated later.",
+  "derived_gym_requirement": "Every benchmark subprocess, including LSP servers, Jupyter kernels, Comint shells, and checkers, must prove environment closure before task output is trusted."
+}

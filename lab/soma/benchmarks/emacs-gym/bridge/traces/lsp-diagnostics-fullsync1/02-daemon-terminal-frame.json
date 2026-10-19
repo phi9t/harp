@@ -1,0 +1,319 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_frames",
+        "request_id": "daemon-terminal-frames-1",
+        "result": {
+          "client_frame_count": 1,
+          "daemonp": true,
+          "emacs_pid": 4,
+          "frame_count": 2,
+          "frames": [
+            {
+              "client_frame": true,
+              "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+              "graphic": false,
+              "height": 23,
+              "index": 1,
+              "name": "F2",
+              "selected": true,
+              "selected_window_buffer": "*scratch*",
+              "selected_window_live": true,
+              "terminal_live": true,
+              "terminal_name": "/dev/pts/0",
+              "visible": "t",
+              "width": 80
+            },
+            {
+              "client_frame": false,
+              "client_repr": false,
+              "graphic": false,
+              "height": 24,
+              "index": 2,
+              "name": "F1",
+              "selected": false,
+              "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+              "selected_window_live": true,
+              "terminal_live": true,
+              "terminal_name": "initial_terminal",
+              "visible": "t",
+              "width": 80
+            }
+          ],
+          "graphic_frame_count": 0,
+          "operation": "emacs.observe_frames",
+          "server_name": "soma-gym-bridge-daemon",
+          "state": "succeeded",
+          "terminal_frame_count": 2
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "frame observation request succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "client_frame_count": 1,
+        "daemonp": true,
+        "emacs_pid": 4,
+        "frame_count": 2,
+        "frames": [
+          {
+            "client_frame": true,
+            "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+            "graphic": false,
+            "height": 23,
+            "index": 1,
+            "name": "F2",
+            "selected": true,
+            "selected_window_buffer": "*scratch*",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "/dev/pts/0",
+            "visible": "t",
+            "width": 80
+          },
+          {
+            "client_frame": false,
+            "client_repr": false,
+            "graphic": false,
+            "height": 24,
+            "index": 2,
+            "name": "F1",
+            "selected": false,
+            "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "initial_terminal",
+            "visible": "t",
+            "width": 80
+          }
+        ],
+        "graphic_frame_count": 0,
+        "operation": "emacs.observe_frames",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "terminal_frame_count": 2
+      },
+      "name": "frame observation ran in daemon",
+      "passed": true
+    },
+    {
+      "detail": {
+        "client_frame_count": 1,
+        "daemonp": true,
+        "emacs_pid": 4,
+        "frame_count": 2,
+        "frames": [
+          {
+            "client_frame": true,
+            "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+            "graphic": false,
+            "height": 23,
+            "index": 1,
+            "name": "F2",
+            "selected": true,
+            "selected_window_buffer": "*scratch*",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "/dev/pts/0",
+            "visible": "t",
+            "width": 80
+          },
+          {
+            "client_frame": false,
+            "client_repr": false,
+            "graphic": false,
+            "height": 24,
+            "index": 2,
+            "name": "F1",
+            "selected": false,
+            "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "initial_terminal",
+            "visible": "t",
+            "width": 80
+          }
+        ],
+        "graphic_frame_count": 0,
+        "operation": "emacs.observe_frames",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "terminal_frame_count": 2
+      },
+      "name": "frame observation server name matches daemon",
+      "passed": true
+    },
+    {
+      "detail": {
+        "frames": 4,
+        "ready": 4
+      },
+      "name": "frame observation pid matches daemon bootstrap",
+      "passed": true
+    },
+    {
+      "detail": "/opt/soma/emacs/bin/emacsclient",
+      "name": "emacsclient path is rootfs-owned in plan",
+      "passed": true
+    },
+    {
+      "detail": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fff2707b000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f4739ed7000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f473a0fc000)"
+        ],
+        "path": "/opt/soma/emacs/bin/emacsclient",
+        "realpath": "/opt/soma/emacs/bin/emacsclient",
+        "sha256": "dbce94539b0ee6db6cb50078162896ea35ab8ef80e2c7d5c02dbf58f16aa315a",
+        "version": "emacsclient 30.2"
+      },
+      "name": "tool inventory includes rootfs emacsclient",
+      "passed": true
+    },
+    {
+      "detail": {
+        "baseline": 1,
+        "observed": 2
+      },
+      "name": "terminal frame count increased after emacsclient --tty",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "*scratch*",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "name": "at least one live nongraphic terminal frame exists",
+      "passed": true
+    },
+    {
+      "detail": 1,
+      "name": "at least one frame is owned by an emacsclient",
+      "passed": true
+    },
+    {
+      "detail": "soma-gym-bridge-terminal",
+      "name": "tmux session name was recorded",
+      "passed": true
+    },
+    {
+      "detail": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/terminal-frame-pane.txt",
+      "name": "terminal pane capture is non-empty",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-terminal-frame",
+  "policy_passed_grader": true,
+  "request": {
+    "operation": "emacs.observe_frames",
+    "params": {},
+    "request_id": "daemon-terminal-frames-1"
+  },
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_frames",
+    "request_id": "daemon-terminal-frames-1",
+    "result": {
+      "client_frame_count": 1,
+      "daemonp": true,
+      "emacs_pid": 4,
+      "frame_count": 2,
+      "frames": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "*scratch*",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "graphic_frame_count": 0,
+      "operation": "emacs.observe_frames",
+      "server_name": "soma-gym-bridge-daemon",
+      "state": "succeeded",
+      "terminal_frame_count": 2
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "terminal": {
+    "pane_capture": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/terminal-frame-pane.txt",
+    "pane_capture_sample": "File Edit Options Buffers Tools Lisp-Interaction Help\n;; This buffer is for text that is not saved, and for Lisp evaluation.\n;; To create a file, visit it with \u2018C-x C-f\u2019 and enter text in its buffer.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n-UUU:@---  F2  *scratch*      All   L4     (Lisp Interaction ElDoc) ------------\nWhen done with this frame, type C-x 5 0\n",
+    "terminal_frame_baseline": 1,
+    "tmux_session": "soma-gym-bridge-terminal",
+    "tmux_socket": "/project/run/soma-gym-bridge-terminal-tmux.sock"
+  },
+  "title": "A rootfs-owned emacsclient --tty creates a terminal frame attached to the live daemon"
+}

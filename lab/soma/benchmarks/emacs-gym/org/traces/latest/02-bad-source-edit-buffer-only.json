@@ -1,0 +1,40 @@
+{
+  "id": "bad-source-edit-buffer-only",
+  "title": "Incorrect policy edits only the source-edit buffer",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "parent_buffer": "notebook.org",
+    "edit_buffer": "*Org Src notebook.org[ emacs-lisp ]*",
+    "same_buffer": false,
+    "run_id": "20260928T081926Z-423986",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/org/traces/latest/insula-plan.json"
+  },
+  "name": "bad-source-edit-buffer-only",
+  "checks": [
+    {
+      "name": "action used org-edit-src-exit",
+      "passed": false,
+      "detail": "((\"operation\" . \"edit-source-buffer-only\") (\"source_edit_buffer_was_separate\" . t) (\"parent_buffer\" . \"notebook.org\") (\"edit_buffer\" . \"*Org Src notebook.org[ emacs-lisp ]*\"))"
+    },
+    {
+      "name": "source edit buffer is separate",
+      "passed": true,
+      "detail": "((\"operation\" . \"edit-source-buffer-only\") (\"source_edit_buffer_was_separate\" . t) (\"parent_buffer\" . \"notebook.org\") (\"edit_buffer\" . \"*Org Src notebook.org[ emacs-lisp ]*\"))"
+    },
+    {
+      "name": "parent unchanged before source-edit exit",
+      "passed": true,
+      "detail": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n"
+    },
+    {
+      "name": "parent updated after source-edit exit",
+      "passed": false,
+      "detail": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n"
+    }
+  ],
+  "parent_text_before": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n",
+  "parent_text_after_edit": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n",
+  "parent_text_after_final": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n"
+}

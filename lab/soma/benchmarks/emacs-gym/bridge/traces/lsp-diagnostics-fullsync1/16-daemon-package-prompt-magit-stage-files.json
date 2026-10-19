@@ -1,0 +1,2530 @@
+{
+  "as_expected": true,
+  "await_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-package-prompt-magit-stage-files-1",
+      "timeout_seconds": 10.0
+    },
+    "request_id": "daemon-package-prompt-magit-await-1"
+  },
+  "await_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-package-prompt-magit-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "command.dispatch",
+        "request_id": "daemon-package-prompt-magit-stage-files-1",
+        "result": {
+          "after": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 544,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 68,
+            "point_max": 607,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 258,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 234,
+            "point_max": 587,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "command": "magit-stage-files",
+          "error": false,
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is allowlisted",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=258 actual=258",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=234 actual=234",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "read-only state matches precondition",
+              "passed": true
+            }
+          ],
+          "route": "command-execute",
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ],
+          "this_command": "magit-stage-files"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "checks": [
+    {
+      "detail": {
+        "hook_log": "/project/tmp/soma-daemon-magit-6u0Ggn/soma-daemon-magit-hooks.log",
+        "observation": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 234,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "preconditions": {
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "mark_active": false,
+          "minibuffer_active": false,
+          "narrowed": false,
+          "point": 234,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "repo": "/project/tmp/soma-daemon-magit-6u0Ggn",
+        "status_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "target_file": "target.txt",
+        "target_section": {
+          "content": 169,
+          "end": 301,
+          "start": 138,
+          "target_point": 234,
+          "text_excerpt": "@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n",
+          "type": "hunk",
+          "value": "(nil (2 7) (2 7))"
+        }
+      },
+      "name": "package prompt Magit fixture is present",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-g"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "package prompt terminal switch cancel succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-x",
+          "b"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "package prompt terminal switch prefix succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "magit: soma-daemon-magit-6u0Ggn"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "package prompt terminal switch buffer text sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "Enter"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "package prompt terminal switch enter succeeded",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "name": "client terminal frame displays package prompt Magit buffer",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-package-prompt-magit-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 463,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "package prompt Magit observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.goto_char",
+        "request_id": "daemon-package-prompt-magit-goto-1",
+        "result": {
+          "after": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 258,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 234,
+            "point_max": 587,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 258,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 463,
+            "point_max": 587,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "error": false,
+          "operation": "emacs.goto_char",
+          "point": 234,
+          "precondition_checks": [
+            {
+              "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "text owner matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "visited file matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=258 actual=258",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=463 actual=463",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "selected window matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "modified state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "read-only state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "selected=\"magit: soma-daemon-magit-6u0Ggn\" target=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "point=234",
+              "name": "target point is valid",
+              "passed": true
+            }
+          ],
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "checked package prompt point navigation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-package-prompt-magit-ready-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 234,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "ready package prompt observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "observed": 234,
+        "target_section": {
+          "content": 169,
+          "end": 301,
+          "start": 138,
+          "target_point": 234,
+          "text_excerpt": "@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n",
+          "type": "hunk",
+          "value": "(nil (2 7) (2 7))"
+        }
+      },
+      "name": "ready package prompt point remains inside target hunk",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "command.dispatch",
+        "request_id": "daemon-package-prompt-magit-stage-files-1",
+        "result": {
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 258,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 234,
+            "point_max": 587,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "command": "magit-stage-files",
+          "minibuffer_active": false,
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is allowlisted",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=258 actual=258",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=234 actual=234",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "read-only state matches precondition",
+              "passed": true
+            }
+          ],
+          "queue": "run-at-time",
+          "queue_delay_seconds": 0.01,
+          "route": "queued-command-execute",
+          "state": "running",
+          "this_command": "magit-stage-files"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "package prompt command accepted as running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "command.dispatch",
+        "request_id": "daemon-package-prompt-magit-stage-files-1",
+        "result": {
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 258,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 234,
+            "point_max": 587,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "command": "magit-stage-files",
+          "minibuffer_active": false,
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is allowlisted",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=258 actual=258",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=234 actual=234",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "read-only state matches precondition",
+              "passed": true
+            }
+          ],
+          "queue": "run-at-time",
+          "queue_delay_seconds": 0.01,
+          "route": "queued-command-execute",
+          "state": "running",
+          "this_command": "magit-stage-files"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "package prompt command uses queued command route",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_interaction",
+        "request_id": "daemon-package-prompt-magit-interaction-1",
+        "result": {
+          "daemonp": true,
+          "emacs_pid": 4,
+          "last_command": "magit-stage-files",
+          "minibuffer_active": true,
+          "minibuffer_buffer": " *Minibuf-1*",
+          "minibuffer_contents": "",
+          "minibuffer_prompt": "Stage file,s: ",
+          "operation": "emacs.observe_interaction",
+          "recursive_edit_depth": 1,
+          "selected_window_buffer": " *Minibuf-1*",
+          "server_name": "soma-gym-bridge-daemon",
+          "state": "succeeded",
+          "this_command": "nil",
+          "transient_active": false,
+          "transient_active_arguments": [],
+          "transient_buffer": false,
+          "transient_current_command": false,
+          "transient_map_active": false,
+          "transient_map_installed": false,
+          "transient_prefix_command": false,
+          "transient_suffixes": [],
+          "transient_window_buffer": false,
+          "transient_window_live": false
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "package prompt interaction observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "daemonp": true,
+        "emacs_pid": 4,
+        "last_command": "magit-stage-files",
+        "minibuffer_active": true,
+        "minibuffer_buffer": " *Minibuf-1*",
+        "minibuffer_contents": "",
+        "minibuffer_prompt": "Stage file,s: ",
+        "operation": "emacs.observe_interaction",
+        "recursive_edit_depth": 1,
+        "selected_window_buffer": " *Minibuf-1*",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "this_command": "nil",
+        "transient_active": false,
+        "transient_active_arguments": [],
+        "transient_buffer": false,
+        "transient_current_command": false,
+        "transient_map_active": false,
+        "transient_map_installed": false,
+        "transient_prefix_command": false,
+        "transient_suffixes": [],
+        "transient_window_buffer": false,
+        "transient_window_live": false
+      },
+      "name": "package prompt minibuffer is active",
+      "passed": true
+    },
+    {
+      "detail": {
+        "daemonp": true,
+        "emacs_pid": 4,
+        "last_command": "magit-stage-files",
+        "minibuffer_active": true,
+        "minibuffer_buffer": " *Minibuf-1*",
+        "minibuffer_contents": "",
+        "minibuffer_prompt": "Stage file,s: ",
+        "operation": "emacs.observe_interaction",
+        "recursive_edit_depth": 1,
+        "selected_window_buffer": " *Minibuf-1*",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "this_command": "nil",
+        "transient_active": false,
+        "transient_active_arguments": [],
+        "transient_buffer": false,
+        "transient_current_command": false,
+        "transient_map_active": false,
+        "transient_map_installed": false,
+        "transient_prefix_command": false,
+        "transient_suffixes": [],
+        "transient_window_buffer": false,
+        "transient_window_live": false
+      },
+      "name": "package prompt is Magit stage files",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.status",
+        "request_id": "daemon-package-prompt-magit-status-1",
+        "result": {
+          "operation": "request.status",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "command.dispatch",
+            "request_id": "daemon-package-prompt-magit-stage-files-1",
+            "result": {
+              "before": {
+                "buffer_file_name": false,
+                "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+                "chars_tick": 258,
+                "major_mode": "magit-status-mode",
+                "mark_active": false,
+                "minibuffer_active": false,
+                "modified": false,
+                "narrowed": false,
+                "operation": "emacs.observe_buffer",
+                "point": 234,
+                "point_max": 587,
+                "point_min": 1,
+                "read_only": true,
+                "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+                "state": "succeeded",
+                "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+              },
+              "command": "magit-stage-files",
+              "minibuffer_active": false,
+              "operation": "command.dispatch",
+              "precondition_checks": [
+                {
+                  "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+                  "name": "target buffer is live",
+                  "passed": true
+                },
+                {
+                  "detail": "magit-stage-files",
+                  "name": "command is allowlisted",
+                  "passed": true
+                },
+                {
+                  "detail": "magit-stage-files",
+                  "name": "command is interactive",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+                  "name": "buffer identity matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+                  "name": "selected window displays target buffer",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=258 actual=258",
+                  "name": "character revision matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=234 actual=234",
+                  "name": "point matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=:json-false actual=:json-false",
+                  "name": "minibuffer state matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=:json-false actual=:json-false",
+                  "name": "region active state matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=:json-false actual=:json-false",
+                  "name": "narrowing state matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=t actual=t",
+                  "name": "read-only state matches precondition",
+                  "passed": true
+                }
+              ],
+              "queue": "run-at-time",
+              "queue_delay_seconds": 0.01,
+              "route": "queued-command-execute",
+              "state": "running",
+              "this_command": "magit-stage-files"
+            },
+            "state": "running",
+            "state_sequence": [
+              "accepted",
+              "running"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "package prompt queued status is observable",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "capture-pane",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "-p"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "File Edit Options Buffers Tools Minibuf Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-aO3Umd   12%   L27    (Magit) ----------\nHead:     master initial\n\nUnstaged changes (2)\nmodified   debug.txt\u2026\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n-UUU:@%%-  F2  magit: soma-daemon-magit-6u0Ggn   Top   L14    (Magit) ----------\nStage file,s:\n"
+      },
+      "name": "terminal pane shows package prompt",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "target.txt"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "package prompt input was sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "Enter"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "package prompt submit succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.await",
+        "request_id": "daemon-package-prompt-magit-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "command.dispatch",
+            "request_id": "daemon-package-prompt-magit-stage-files-1",
+            "result": {
+              "after": {
+                "buffer_file_name": false,
+                "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+                "chars_tick": 544,
+                "major_mode": "magit-status-mode",
+                "mark_active": false,
+                "minibuffer_active": false,
+                "modified": false,
+                "narrowed": false,
+                "operation": "emacs.observe_buffer",
+                "point": 68,
+                "point_max": 607,
+                "point_min": 1,
+                "read_only": true,
+                "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+                "state": "succeeded",
+                "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+              },
+              "before": {
+                "buffer_file_name": false,
+                "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+                "chars_tick": 258,
+                "major_mode": "magit-status-mode",
+                "mark_active": false,
+                "minibuffer_active": false,
+                "modified": false,
+                "narrowed": false,
+                "operation": "emacs.observe_buffer",
+                "point": 234,
+                "point_max": 587,
+                "point_min": 1,
+                "read_only": true,
+                "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+                "state": "succeeded",
+                "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+              },
+              "command": "magit-stage-files",
+              "error": false,
+              "operation": "command.dispatch",
+              "precondition_checks": [
+                {
+                  "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+                  "name": "target buffer is live",
+                  "passed": true
+                },
+                {
+                  "detail": "magit-stage-files",
+                  "name": "command is allowlisted",
+                  "passed": true
+                },
+                {
+                  "detail": "magit-stage-files",
+                  "name": "command is interactive",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+                  "name": "buffer identity matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+                  "name": "selected window displays target buffer",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=258 actual=258",
+                  "name": "character revision matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=234 actual=234",
+                  "name": "point matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=:json-false actual=:json-false",
+                  "name": "minibuffer state matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=:json-false actual=:json-false",
+                  "name": "region active state matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=:json-false actual=:json-false",
+                  "name": "narrowing state matches precondition",
+                  "passed": true
+                },
+                {
+                  "detail": "expected=t actual=t",
+                  "name": "read-only state matches precondition",
+                  "passed": true
+                }
+              ],
+              "route": "command-execute",
+              "state": "succeeded",
+              "state_sequence": [
+                "accepted",
+                "running",
+                "succeeded"
+              ],
+              "this_command": "magit-stage-files"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "package prompt await reaches success",
+      "passed": true
+    },
+    {
+      "detail": {
+        "after": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 544,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 68,
+          "point_max": 607,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "before": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 234,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "command": "magit-stage-files",
+        "error": false,
+        "operation": "command.dispatch",
+        "precondition_checks": [
+          {
+            "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+            "name": "target buffer is live",
+            "passed": true
+          },
+          {
+            "detail": "magit-stage-files",
+            "name": "command is allowlisted",
+            "passed": true
+          },
+          {
+            "detail": "magit-stage-files",
+            "name": "command is interactive",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "buffer identity matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "selected window displays target buffer",
+            "passed": true
+          },
+          {
+            "detail": "expected=258 actual=258",
+            "name": "character revision matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=234 actual=234",
+            "name": "point matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "minibuffer state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "region active state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "narrowing state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=t actual=t",
+            "name": "read-only state matches precondition",
+            "passed": true
+          }
+        ],
+        "route": "command-execute",
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ],
+        "this_command": "magit-stage-files"
+      },
+      "name": "package prompt ran through command-execute",
+      "passed": true
+    },
+    {
+      "detail": {
+        "after": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 544,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 68,
+          "point_max": 607,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "before": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 234,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "command": "magit-stage-files",
+        "error": false,
+        "operation": "command.dispatch",
+        "precondition_checks": [
+          {
+            "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+            "name": "target buffer is live",
+            "passed": true
+          },
+          {
+            "detail": "magit-stage-files",
+            "name": "command is allowlisted",
+            "passed": true
+          },
+          {
+            "detail": "magit-stage-files",
+            "name": "command is interactive",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "buffer identity matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "selected window displays target buffer",
+            "passed": true
+          },
+          {
+            "detail": "expected=258 actual=258",
+            "name": "character revision matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=234 actual=234",
+            "name": "point matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "minibuffer state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "region active state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "narrowing state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=t actual=t",
+            "name": "read-only state matches precondition",
+            "passed": true
+          }
+        ],
+        "route": "command-execute",
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ],
+        "this_command": "magit-stage-files"
+      },
+      "name": "package prompt command identity is preserved",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+          "name": "target buffer is live",
+          "passed": true
+        },
+        {
+          "detail": "magit-stage-files",
+          "name": "command is allowlisted",
+          "passed": true
+        },
+        {
+          "detail": "magit-stage-files",
+          "name": "command is interactive",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+          "name": "buffer identity matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+          "name": "selected window displays target buffer",
+          "passed": true
+        },
+        {
+          "detail": "expected=258 actual=258",
+          "name": "character revision matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=234 actual=234",
+          "name": "point matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "minibuffer state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "region active state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "narrowing state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=t actual=t",
+          "name": "read-only state matches precondition",
+          "passed": true
+        }
+      ],
+      "name": "package prompt preconditions passed",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_interaction",
+        "request_id": "daemon-package-prompt-magit-final-interaction-1",
+        "result": {
+          "daemonp": true,
+          "emacs_pid": 4,
+          "last_command": "switch-to-buffer",
+          "minibuffer_active": false,
+          "minibuffer_buffer": false,
+          "minibuffer_contents": false,
+          "minibuffer_prompt": false,
+          "operation": "emacs.observe_interaction",
+          "recursive_edit_depth": 0,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "server_name": "soma-gym-bridge-daemon",
+          "state": "succeeded",
+          "this_command": "nil",
+          "transient_active": false,
+          "transient_active_arguments": [],
+          "transient_buffer": false,
+          "transient_current_command": false,
+          "transient_map_active": false,
+          "transient_map_installed": false,
+          "transient_prefix_command": false,
+          "transient_suffixes": [],
+          "transient_window_buffer": false,
+          "transient_window_live": false
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "package prompt minibuffer clears after submit",
+      "passed": true
+    },
+    {
+      "detail": {
+        "cached_names": [
+          "staged.txt",
+          "target.txt"
+        ],
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "hook_log": "refresh:magit: soma-daemon-magit-Ov0oag\nrefresh:magit: soma-daemon-magit-6u0Ggn\npost-stage:magit-stage-files\n",
+        "staged_index": "staged-expected\n",
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "unstaged_names": [
+          "debug.txt"
+        ]
+      },
+      "name": "package prompt cached names are exact",
+      "passed": true
+    },
+    {
+      "detail": {
+        "cached_names": [
+          "staged.txt",
+          "target.txt"
+        ],
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "hook_log": "refresh:magit: soma-daemon-magit-Ov0oag\nrefresh:magit: soma-daemon-magit-6u0Ggn\npost-stage:magit-stage-files\n",
+        "staged_index": "staged-expected\n",
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "unstaged_names": [
+          "debug.txt"
+        ]
+      },
+      "name": "package prompt unstaged names preserve unrelated file work",
+      "passed": true
+    },
+    {
+      "detail": {
+        "index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n"
+      },
+      "name": "package prompt stages target file scope",
+      "passed": true
+    },
+    {
+      "detail": {
+        "index": "debug-base\n",
+        "worktree": "debug-base\ndebug-worktree-only\n"
+      },
+      "name": "package prompt debug change remains unstaged",
+      "passed": true
+    },
+    {
+      "detail": "staged-expected\n",
+      "name": "package prompt unrelated staged file is preserved",
+      "passed": true
+    },
+    {
+      "detail": "refresh:magit: soma-daemon-magit-Ov0oag\nrefresh:magit: soma-daemon-magit-6u0Ggn\npost-stage:magit-stage-files\n",
+      "name": "package prompt post-stage hook observed command identity",
+      "passed": true
+    },
+    {
+      "detail": "refresh:magit: soma-daemon-magit-Ov0oag\nrefresh:magit: soma-daemon-magit-6u0Ggn\npost-stage:magit-stage-files\n",
+      "name": "package prompt Magit refresh hook ran",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "final_interaction_request": {
+    "operation": "emacs.observe_interaction",
+    "params": {},
+    "request_id": "daemon-package-prompt-magit-final-interaction-1"
+  },
+  "final_interaction_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_interaction",
+    "request_id": "daemon-package-prompt-magit-final-interaction-1",
+    "result": {
+      "daemonp": true,
+      "emacs_pid": 4,
+      "last_command": "switch-to-buffer",
+      "minibuffer_active": false,
+      "minibuffer_buffer": false,
+      "minibuffer_contents": false,
+      "minibuffer_prompt": false,
+      "operation": "emacs.observe_interaction",
+      "recursive_edit_depth": 0,
+      "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+      "server_name": "soma-gym-bridge-daemon",
+      "state": "succeeded",
+      "this_command": "nil",
+      "transient_active": false,
+      "transient_active_arguments": [],
+      "transient_buffer": false,
+      "transient_current_command": false,
+      "transient_map_active": false,
+      "transient_map_installed": false,
+      "transient_prefix_command": false,
+      "transient_suffixes": [],
+      "transient_window_buffer": false,
+      "transient_window_live": false
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "final_repo_state": {
+    "cached_names": [
+      "staged.txt",
+      "target.txt"
+    ],
+    "debug_index": "debug-base\n",
+    "debug_worktree": "debug-base\ndebug-worktree-only\n",
+    "hook_log": "refresh:magit: soma-daemon-magit-Ov0oag\nrefresh:magit: soma-daemon-magit-6u0Ggn\npost-stage:magit-stage-files\n",
+    "staged_index": "staged-expected\n",
+    "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "unstaged_names": [
+      "debug.txt"
+    ]
+  },
+  "final_status": {
+    "error": false,
+    "error_code": false,
+    "operation": "command.dispatch",
+    "request_id": "daemon-package-prompt-magit-stage-files-1",
+    "result": {
+      "after": {
+        "buffer_file_name": false,
+        "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+        "chars_tick": 544,
+        "major_mode": "magit-status-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": false,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 68,
+        "point_max": 607,
+        "point_min": 1,
+        "read_only": true,
+        "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "state": "succeeded",
+        "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+      },
+      "before": {
+        "buffer_file_name": false,
+        "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+        "chars_tick": 258,
+        "major_mode": "magit-status-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": false,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 234,
+        "point_max": 587,
+        "point_min": 1,
+        "read_only": true,
+        "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "state": "succeeded",
+        "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+      },
+      "command": "magit-stage-files",
+      "error": false,
+      "operation": "command.dispatch",
+      "precondition_checks": [
+        {
+          "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+          "name": "target buffer is live",
+          "passed": true
+        },
+        {
+          "detail": "magit-stage-files",
+          "name": "command is allowlisted",
+          "passed": true
+        },
+        {
+          "detail": "magit-stage-files",
+          "name": "command is interactive",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+          "name": "buffer identity matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+          "name": "selected window displays target buffer",
+          "passed": true
+        },
+        {
+          "detail": "expected=258 actual=258",
+          "name": "character revision matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=234 actual=234",
+          "name": "point matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "minibuffer state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "region active state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "narrowing state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=t actual=t",
+          "name": "read-only state matches precondition",
+          "passed": true
+        }
+      ],
+      "route": "command-execute",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "this_command": "magit-stage-files"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "fixture": {
+    "hook_log": "/project/tmp/soma-daemon-magit-6u0Ggn/soma-daemon-magit-hooks.log",
+    "observation": {
+      "buffer_file_name": false,
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+      "chars_tick": 258,
+      "major_mode": "magit-status-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": false,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 234,
+      "point_max": 587,
+      "point_min": 1,
+      "read_only": true,
+      "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+      "state": "succeeded",
+      "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+    },
+    "preconditions": {
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+      "chars_tick": 258,
+      "mark_active": false,
+      "minibuffer_active": false,
+      "narrowed": false,
+      "point": 234,
+      "read_only": true,
+      "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn"
+    },
+    "repo": "/project/tmp/soma-daemon-magit-6u0Ggn",
+    "status_buffer": "magit: soma-daemon-magit-6u0Ggn",
+    "target_file": "target.txt",
+    "target_section": {
+      "content": 169,
+      "end": 301,
+      "start": 138,
+      "target_point": 234,
+      "text_excerpt": "@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n",
+      "type": "hunk",
+      "value": "(nil (2 7) (2 7))"
+    }
+  },
+  "id": "daemon-package-prompt-magit-stage-files",
+  "initial_repo_state": {
+    "cached_names": [
+      "staged.txt"
+    ],
+    "debug_index": "debug-base\n",
+    "debug_worktree": "debug-base\ndebug-worktree-only\n",
+    "hook_log": "refresh:magit: soma-daemon-magit-Ov0oag\n",
+    "staged_index": "staged-expected\n",
+    "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "unstaged_names": [
+      "debug.txt",
+      "target.txt"
+    ]
+  },
+  "interaction_attempts": [
+    {
+      "attempt": 1,
+      "minibuffer_active": true,
+      "minibuffer_contents": "",
+      "minibuffer_prompt": "Stage file,s: ",
+      "response_state": "succeeded",
+      "selected_window_buffer": " *Minibuf-1*",
+      "transient_active": false
+    }
+  ],
+  "interaction_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_interaction",
+    "request_id": "daemon-package-prompt-magit-interaction-1",
+    "result": {
+      "daemonp": true,
+      "emacs_pid": 4,
+      "last_command": "magit-stage-files",
+      "minibuffer_active": true,
+      "minibuffer_buffer": " *Minibuf-1*",
+      "minibuffer_contents": "",
+      "minibuffer_prompt": "Stage file,s: ",
+      "operation": "emacs.observe_interaction",
+      "recursive_edit_depth": 1,
+      "selected_window_buffer": " *Minibuf-1*",
+      "server_name": "soma-gym-bridge-daemon",
+      "state": "succeeded",
+      "this_command": "nil",
+      "transient_active": false,
+      "transient_active_arguments": [],
+      "transient_buffer": false,
+      "transient_current_command": false,
+      "transient_map_active": false,
+      "transient_map_installed": false,
+      "transient_prefix_command": false,
+      "transient_suffixes": [],
+      "transient_window_buffer": false,
+      "transient_window_live": false
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "observe_request": {
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn"
+    },
+    "request_id": "daemon-package-prompt-magit-observe-1"
+  },
+  "observe_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_buffer",
+    "request_id": "daemon-package-prompt-magit-observe-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+      "chars_tick": 258,
+      "major_mode": "magit-status-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": false,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 463,
+      "point_max": 587,
+      "point_min": 1,
+      "read_only": true,
+      "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+      "state": "succeeded",
+      "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "point_adjustment": {
+    "request": {
+      "operation": "emacs.goto_char",
+      "params": {
+        "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+        "point": 234,
+        "preconditions": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 463,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        }
+      },
+      "request_id": "daemon-package-prompt-magit-goto-1"
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.goto_char",
+      "request_id": "daemon-package-prompt-magit-goto-1",
+      "result": {
+        "after": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 234,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "before": {
+          "buffer_file_name": false,
+          "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+          "chars_tick": 258,
+          "major_mode": "magit-status-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 463,
+          "point_max": 587,
+          "point_min": 1,
+          "read_only": true,
+          "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+          "state": "succeeded",
+          "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+        },
+        "error": false,
+        "operation": "emacs.goto_char",
+        "point": 234,
+        "precondition_checks": [
+          {
+            "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+            "name": "target buffer is live",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "buffer identity matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "text owner matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "visited file matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=258 actual=258",
+            "name": "character revision matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=463 actual=463",
+            "name": "point matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "selected window matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "modified state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=t actual=t",
+            "name": "read-only state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "minibuffer state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "region active state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "narrowing state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "selected=\"magit: soma-daemon-magit-6u0Ggn\" target=\"magit: soma-daemon-magit-6u0Ggn\"",
+            "name": "selected window displays target buffer",
+            "passed": true
+          },
+          {
+            "detail": "point=234",
+            "name": "target point is valid",
+            "passed": true
+          }
+        ],
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "target_point": 234,
+    "target_section": {
+      "content": 169,
+      "end": 301,
+      "start": 138,
+      "target_point": 234,
+      "text_excerpt": "@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n",
+      "type": "hunk",
+      "value": "(nil (2 7) (2 7))"
+    }
+  },
+  "policy_passed_grader": true,
+  "ready_observe_request": {
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn"
+    },
+    "request_id": "daemon-package-prompt-magit-ready-observe-1"
+  },
+  "ready_observe_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_buffer",
+    "request_id": "daemon-package-prompt-magit-ready-observe-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+      "chars_tick": 258,
+      "major_mode": "magit-status-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": false,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 234,
+      "point_max": 587,
+      "point_min": 1,
+      "read_only": true,
+      "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+      "state": "succeeded",
+      "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "request": {
+    "operation": "command.dispatch",
+    "params": {
+      "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+      "command": "magit-stage-files",
+      "preconditions": {
+        "buffer_file_name": false,
+        "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+        "chars_tick": 258,
+        "major_mode": "magit-status-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": false,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 234,
+        "point_max": 587,
+        "point_min": 1,
+        "read_only": true,
+        "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "state": "succeeded",
+        "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+      }
+    },
+    "request_id": "daemon-package-prompt-magit-stage-files-1"
+  },
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "command.dispatch",
+    "request_id": "daemon-package-prompt-magit-stage-files-1",
+    "result": {
+      "before": {
+        "buffer_file_name": false,
+        "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+        "chars_tick": 258,
+        "major_mode": "magit-status-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": false,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 234,
+        "point_max": 587,
+        "point_min": 1,
+        "read_only": true,
+        "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "state": "succeeded",
+        "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+      },
+      "command": "magit-stage-files",
+      "minibuffer_active": false,
+      "operation": "command.dispatch",
+      "precondition_checks": [
+        {
+          "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+          "name": "target buffer is live",
+          "passed": true
+        },
+        {
+          "detail": "magit-stage-files",
+          "name": "command is allowlisted",
+          "passed": true
+        },
+        {
+          "detail": "magit-stage-files",
+          "name": "command is interactive",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+          "name": "buffer identity matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+          "name": "selected window displays target buffer",
+          "passed": true
+        },
+        {
+          "detail": "expected=258 actual=258",
+          "name": "character revision matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=234 actual=234",
+          "name": "point matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "minibuffer state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "region active state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "narrowing state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=t actual=t",
+          "name": "read-only state matches precondition",
+          "passed": true
+        }
+      ],
+      "queue": "run-at-time",
+      "queue_delay_seconds": 0.01,
+      "route": "queued-command-execute",
+      "state": "running",
+      "this_command": "magit-stage-files"
+    },
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ]
+  },
+  "status_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-package-prompt-magit-stage-files-1"
+    },
+    "request_id": "daemon-package-prompt-magit-status-1"
+  },
+  "status_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-package-prompt-magit-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "command.dispatch",
+        "request_id": "daemon-package-prompt-magit-stage-files-1",
+        "result": {
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "magit: soma-daemon-magit-6u0Ggn",
+            "chars_tick": 258,
+            "major_mode": "magit-status-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 234,
+            "point_max": 587,
+            "point_min": 1,
+            "read_only": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "state": "succeeded",
+            "text_owner_name": "magit: soma-daemon-magit-6u0Ggn"
+          },
+          "command": "magit-stage-files",
+          "minibuffer_active": false,
+          "operation": "command.dispatch",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer magit: soma-daemon-magit-6u0Ggn>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is allowlisted",
+              "passed": true
+            },
+            {
+              "detail": "magit-stage-files",
+              "name": "command is interactive",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"magit: soma-daemon-magit-6u0Ggn\" actual=\"magit: soma-daemon-magit-6u0Ggn\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "expected=258 actual=258",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=234 actual=234",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "read-only state matches precondition",
+              "passed": true
+            }
+          ],
+          "queue": "run-at-time",
+          "queue_delay_seconds": 0.01,
+          "route": "queued-command-execute",
+          "state": "running",
+          "this_command": "magit-stage-files"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "terminal_before_input": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "capture-pane",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "-p"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "File Edit Options Buffers Tools Minibuf Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-aO3Umd   12%   L27    (Magit) ----------\nHead:     master initial\n\nUnstaged changes (2)\nmodified   debug.txt\u2026\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n-UUU:@%%-  F2  magit: soma-daemon-magit-6u0Ggn   Top   L14    (Magit) ----------\nStage file,s:\n"
+  },
+  "terminal_input": "target.txt",
+  "terminal_input_keys": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-l",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "target.txt"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_submit": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "Enter"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_switch": {
+    "buffer_keys": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-l",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "magit: soma-daemon-magit-6u0Ggn"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-g"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel_attempts": [
+      {
+        "attempt": 1,
+        "cancel": {
+          "argv": [
+            "tmux",
+            "-S",
+            "/project/run/soma-gym-bridge-terminal-tmux.sock",
+            "send-keys",
+            "-t",
+            "soma-gym-bridge-terminal:0.0",
+            "C-g"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        "minibuffer_active": false,
+        "response_state": "succeeded",
+        "selected_window_buffer": "magit-diff: soma-daemon-magit-aO3Umd",
+        "transient_active": false,
+        "transient_map_installed": false
+      }
+    ],
+    "cancel_interaction_response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_interaction",
+      "request_id": "daemon-package-prompt-magit-cancel-interaction-1",
+      "result": {
+        "daemonp": true,
+        "emacs_pid": 4,
+        "last_command": "keyboard-quit",
+        "minibuffer_active": false,
+        "minibuffer_buffer": false,
+        "minibuffer_contents": false,
+        "minibuffer_prompt": false,
+        "operation": "emacs.observe_interaction",
+        "recursive_edit_depth": 0,
+        "selected_window_buffer": "magit-diff: soma-daemon-magit-aO3Umd",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "this_command": "nil",
+        "transient_active": false,
+        "transient_active_arguments": [],
+        "transient_buffer": false,
+        "transient_current_command": false,
+        "transient_map_active": false,
+        "transient_map_installed": false,
+        "transient_prefix_command": false,
+        "transient_suffixes": [],
+        "transient_window_buffer": false,
+        "transient_window_live": false
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "enter": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "Enter"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "minibuffer_attempts": [
+      {
+        "attempt": 1,
+        "minibuffer_active": true,
+        "minibuffer_prompt": "Switch to buffer (default magit: soma-daemon-magit-BqUXlH): ",
+        "response_state": "succeeded",
+        "selected_window_buffer": " *Minibuf-1*"
+      }
+    ],
+    "observation_attempts": [
+      {
+        "attempt": 1,
+        "client_terminal_buffers": [
+          "magit: soma-daemon-magit-6u0Ggn"
+        ],
+        "response_state": "succeeded"
+      }
+    ],
+    "prefix": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-x",
+        "b"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_frames",
+      "request_id": "daemon-package-prompt-magit-frame-1",
+      "result": {
+        "client_frame_count": 1,
+        "daemonp": true,
+        "emacs_pid": 4,
+        "frame_count": 2,
+        "frames": [
+          {
+            "client_frame": true,
+            "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+            "graphic": false,
+            "height": 23,
+            "index": 1,
+            "name": "F2",
+            "selected": true,
+            "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "/dev/pts/0",
+            "visible": "t",
+            "width": 80
+          },
+          {
+            "client_frame": false,
+            "client_repr": false,
+            "graphic": false,
+            "height": 24,
+            "index": 2,
+            "name": "F1",
+            "selected": false,
+            "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "initial_terminal",
+            "visible": "t",
+            "width": 80
+          }
+        ],
+        "graphic_frame_count": 0,
+        "operation": "emacs.observe_frames",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "terminal_frame_count": 2
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "tmux_target": "soma-gym-bridge-terminal:0.0"
+  },
+  "title": "A queued daemon Magit command opens a package minibuffer prompt and stages the selected file from tmux input"
+}

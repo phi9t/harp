@@ -1,0 +1,340 @@
+{
+  "id": "checked-edit-save",
+  "title": "A checked buffer edit mutates only the expected range and save writes the visited file",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "file": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+  "edit_request": {
+    "request_id": "edit-1",
+    "operation": "buffer.replace_range",
+    "params": {
+      "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+      "start": 7,
+      "end": 11,
+      "text": "gamma",
+      "preconditions": {
+        "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "chars_tick": 5,
+        "expected_text": "beta"
+      }
+    }
+  },
+  "edit_response": {
+    "request_id": "edit-1",
+    "operation": "buffer.replace_range",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "buffer.replace_range",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "start": 7,
+      "end": 11,
+      "replacement_chars": 5,
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-checked-edit-save-Q0FRoI.txt>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-checked-edit-save-Q0FRoI.txt\" actual=\"soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-checked-edit-save-Q0FRoI.txt\" actual=\"soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\" actual=\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=5 actual=5"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=1"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "target range is valid",
+          "passed": true,
+          "detail": "range=7..11 point-min=1 point-max=12"
+        },
+        {
+          "name": "target range text matches precondition",
+          "passed": true,
+          "detail": "expected=\"beta\" actual=\"beta\""
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "major_mode": "text-mode",
+        "chars_tick": 5,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 12,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "major_mode": "text-mode",
+        "chars_tick": 11,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 13,
+        "point": 12,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "error_code": false,
+    "error": false
+  },
+  "save_request": {
+    "request_id": "save-1",
+    "operation": "buffer.save",
+    "params": {
+      "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+      "preconditions": {
+        "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "chars_tick": 11
+      }
+    }
+  },
+  "save_response": {
+    "request_id": "save-1",
+    "operation": "buffer.save",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "buffer.save",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-checked-edit-save-Q0FRoI.txt>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-checked-edit-save-Q0FRoI.txt\" actual=\"soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\" actual=\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=11 actual=11"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=12"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"soma-bridge-checked-edit-save-Q0FRoI.txt\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=t"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "major_mode": "text-mode",
+        "chars_tick": 11,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 13,
+        "point": 12,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "major_mode": "text-mode",
+        "chars_tick": 11,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 13,
+        "point": 12,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "error_code": false,
+    "error": false
+  },
+  "before": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "major_mode": "text-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 12,
+    "point": 1,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "minibuffer_active": false
+  },
+  "after": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "text_owner_name": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "buffer_file_name": "/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "major_mode": "text-mode",
+    "chars_tick": 11,
+    "modified": false,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 13,
+    "point": 12,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-checked-edit-save-Q0FRoI.txt",
+    "minibuffer_active": false
+  },
+  "buffer_text": "alpha\ngamma\n",
+  "file_text": "alpha\ngamma\n",
+  "checks": [
+    {
+      "name": "checked edit request succeeded",
+      "passed": true,
+      "detail": "((\"request_id\" . \"edit-1\") (\"operation\" . \"buffer.replace_range\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"buffer.replace_range\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"start\" . 7) (\"end\" . 11) (\"replacement_chars\" . 5) (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-checked-edit-save-Q0FRoI.txt>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=1\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"target range is valid\") (\"passed\" . t) (\"detail\" . \"range=7..11 point-min=1 point-max=12\")) ((\"name\" . \"target range text matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"beta\\\" actual=\\\"beta\\\"\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"text_owner_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"major_mode\" . \"text-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 12) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"text_owner_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"major_mode\" . \"text-mode\") (\"chars_tick\" . 11) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 13) (\"point\" . 12) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "checked edit changed the requested range",
+      "passed": true,
+      "detail": "alpha\ngamma\n"
+    },
+    {
+      "name": "checked edit advanced character revision",
+      "passed": true,
+      "detail": "before=5 after=11"
+    },
+    {
+      "name": "save request succeeded",
+      "passed": true,
+      "detail": "((\"request_id\" . \"save-1\") (\"operation\" . \"buffer.save\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"buffer.save\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-checked-edit-save-Q0FRoI.txt>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=11 actual=11\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=12\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=t\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"text_owner_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"major_mode\" . \"text-mode\") (\"chars_tick\" . 11) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 13) (\"point\" . 12) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"text_owner_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"major_mode\" . \"text-mode\") (\"chars_tick\" . 11) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 13) (\"point\" . 12) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "save wrote the intended file",
+      "passed": true,
+      "detail": "alpha\ngamma\n"
+    },
+    {
+      "name": "save cleared modified state",
+      "passed": true,
+      "detail": "((\"operation\" . \"buffer.save\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-checked-edit-save-Q0FRoI.txt>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\\\" actual=\\\"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=11 actual=11\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=12\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-checked-edit-save-Q0FRoI.txt\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=t\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"text_owner_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"major_mode\" . \"text-mode\") (\"chars_tick\" . 11) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 13) (\"point\" . 12) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"text_owner_name\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"major_mode\" . \"text-mode\") (\"chars_tick\" . 11) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 13) (\"point\" . 12) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-checked-edit-save-Q0FRoI.txt\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    }
+  ]
+}

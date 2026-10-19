@@ -1,0 +1,77 @@
+{
+  "id": "capf-exit-function-acceptance",
+  "title": "Completion-at-point exit function acceptance",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "CAPF metadata can include a provider-owned `:exit-function'; faithful acceptance must run that function, not merely produce the same buffer text.",
+  "hypothesis": "Accepting a sole candidate through `completion-at-point' should insert the candidate and call `:exit-function' with the accepted string and status, while a raw text replacement can produce identical text without that side effect.",
+  "sources": [
+    {
+      "name": "completion-extra-properties",
+      "path": "minibuffer.el.gz",
+      "lines": "2451-2498",
+      "note": ""
+    },
+    {
+      "name": "completion-at-point",
+      "path": "minibuffer.el.gz",
+      "lines": "2986-3003",
+      "note": ""
+    },
+    {
+      "name": "completion-preview-insert",
+      "path": "completion-preview.el.gz",
+      "lines": "482-491",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Two temporary buffers starting with `fo': one uses a synthetic CAPF for `foobar', the other deletes and inserts the same final text directly.",
+  "predicted_behavior": "The CAPF path and raw insertion path converge on the same text, but only the CAPF path records the provider exit event.",
+  "observed_behavior": "capf-return=t capf-text=\"foobar\" capf-events=((\"foobar\" finished)) raw-text=\"foobar\" raw-events=nil",
+  "independent_checks": [
+    {
+      "name": "CAPF acceptance produced the expected text",
+      "passed": true,
+      "detail": "foobar"
+    },
+    {
+      "name": "CAPF acceptance ran provider exit function",
+      "passed": true,
+      "detail": "((\"foobar\" finished))"
+    },
+    {
+      "name": "raw replacement produced the same final text",
+      "passed": true,
+      "detail": "raw=\"foobar\" capf=\"foobar\""
+    },
+    {
+      "name": "raw replacement skipped provider exit function",
+      "passed": true,
+      "detail": "nil"
+    }
+  ],
+  "counterexample": "A ghost-text or model-completion accept path can appear text-correct while skipping provider side effects such as imports, snippets, caches, or backend state transitions.",
+  "derived_gym_requirement": "Completion acceptance evidence must record whether a provider exit function existed, whether it ran, which candidate/status it saw, and whether the edit path was CAPF, preview, or a separate model overlay."
+}

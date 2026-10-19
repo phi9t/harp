@@ -1,0 +1,1414 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "buffer_name": "*soma-daemon-comint-interrupt*",
+        "command": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }",
+        "command_log": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/commands.log",
+        "counter": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter",
+        "done_needle": "SOMA_DAEMON_COMINT_INTERRUPT_DONE",
+        "observation": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+          "state": "succeeded"
+        },
+        "pid": 324,
+        "process_name": "soma-daemon-comint-interrupt",
+        "start_needle": "SOMA_DAEMON_COMINT_INTERRUPT_START",
+        "tmp": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe"
+      },
+      "name": "Comint interrupt fixture is present",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "name": "Comint interrupt terminal switch succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "comint.observe",
+        "request_id": "daemon-comint-interrupt-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "initial interrupt Comint observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-interrupt*",
+        "buffer_tail": "$ ",
+        "chars_tick": 3,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+        "last_input_end": 1,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_text": "",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+        "point": 3,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 324,
+        "process_live": true,
+        "process_mark": 3,
+        "process_name": "soma-daemon-comint-interrupt",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040533Z-3771476",
+        "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+        "state": "succeeded"
+      },
+      "name": "initial interrupt Comint process is live",
+      "passed": true
+    },
+    {
+      "detail": "/usr/bin/dash",
+      "name": "initial interrupt Comint process executable is rootfs-owned",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.goto_char",
+        "request_id": "daemon-comint-interrupt-goto-1",
+        "result": {
+          "after": {
+            "buffer_file_name": false,
+            "buffer_name": "*soma-daemon-comint-interrupt*",
+            "chars_tick": 3,
+            "major_mode": "comint-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": true,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 3,
+            "point_max": 3,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+            "state": "succeeded",
+            "text_owner_name": "*soma-daemon-comint-interrupt*"
+          },
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "*soma-daemon-comint-interrupt*",
+            "chars_tick": 3,
+            "major_mode": "comint-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": true,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 3,
+            "point_max": 3,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+            "state": "succeeded",
+            "text_owner_name": "*soma-daemon-comint-interrupt*"
+          },
+          "error": false,
+          "operation": "emacs.goto_char",
+          "point": 3,
+          "precondition_checks": [
+            {
+              "detail": "#<buffer *soma-daemon-comint-interrupt*>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"*soma-daemon-comint-interrupt*\" actual=\"*soma-daemon-comint-interrupt*\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=\"*soma-daemon-comint-interrupt*\"",
+              "name": "text owner matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "visited file matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=3 actual=3",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=3 actual=3",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"*soma-daemon-comint-interrupt*\" actual=\"*soma-daemon-comint-interrupt*\"",
+              "name": "selected window matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "modified state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=:json-false",
+              "name": "read-only state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "selected=\"*soma-daemon-comint-interrupt*\" target=\"*soma-daemon-comint-interrupt*\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "point=3",
+              "name": "target point is valid",
+              "passed": true
+            }
+          ],
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "checked interrupt Comint point navigation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "comint.observe",
+        "request_id": "daemon-comint-interrupt-ready-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "ready interrupt Comint observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-interrupt*",
+        "buffer_tail": "$ ",
+        "chars_tick": 3,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+        "last_input_end": 1,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_text": "",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+        "point": 3,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 324,
+        "process_live": true,
+        "process_mark": 3,
+        "process_name": "soma-daemon-comint-interrupt",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040533Z-3771476",
+        "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+        "state": "succeeded"
+      },
+      "name": "ready interrupt Comint point is at or after process mark",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "interrupt Comint terminal input was sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "Enter"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "interrupt Comint terminal Enter succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "attempts": [
+          {
+            "attempt": 1,
+            "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n",
+            "counter_lines": [],
+            "last_input_markers_live": true,
+            "last_input_text": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\n",
+            "process_id": 324,
+            "process_live": true,
+            "response_state": "succeeded"
+          }
+        ],
+        "counter_lines": [],
+        "response": {
+          "error": false,
+          "error_code": false,
+          "operation": "comint.observe",
+          "request_id": "daemon-comint-interrupt-partial-1",
+          "result": {
+            "buffer_file_name": false,
+            "buffer_name": "*soma-daemon-comint-interrupt*",
+            "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n",
+            "chars_tick": 231,
+            "current_input_text": "",
+            "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+            "last_input_end": 192,
+            "last_input_markers_live": true,
+            "last_input_start": 3,
+            "last_input_text": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\n",
+            "major_mode": "comint-mode",
+            "minibuffer_active": false,
+            "modified": true,
+            "operation": "comint.observe",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+            "point": 227,
+            "point_after_process_mark": true,
+            "process_exe": "/usr/bin/dash",
+            "process_id": 324,
+            "process_live": true,
+            "process_mark": 227,
+            "process_name": "soma-daemon-comint-interrupt",
+            "process_present": true,
+            "process_status": "run",
+            "run_id": "20260929T040533Z-3771476",
+            "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+            "state": "succeeded"
+          },
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        },
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n",
+          "chars_tick": 231,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 192,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_text": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\n",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 227,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 227,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        }
+      },
+      "name": "partial interrupt output was observed",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-c",
+          "C-c"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "terminal interrupt key sequence was sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "comint.observe",
+        "request_id": "daemon-comint-interrupt-final-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$ ",
+          "chars_tick": 244,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 227,
+          "last_input_markers_live": false,
+          "last_input_start": 227,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 239,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 239,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final interrupt Comint observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "final": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$ ",
+          "chars_tick": 244,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 227,
+          "last_input_markers_live": false,
+          "last_input_start": 227,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 239,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 239,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        },
+        "initial": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        }
+      },
+      "name": "interrupt Comint process identity is stable",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-interrupt*",
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$ ",
+        "chars_tick": 244,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+        "last_input_end": 227,
+        "last_input_markers_live": false,
+        "last_input_start": 227,
+        "last_input_text": "",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+        "point": 239,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 324,
+        "process_live": true,
+        "process_mark": 239,
+        "process_name": "soma-daemon-comint-interrupt",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040533Z-3771476",
+        "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+        "state": "succeeded"
+      },
+      "name": "interrupt Comint shell process survived",
+      "passed": true
+    },
+    {
+      "detail": "/usr/bin/dash",
+      "name": "final interrupt Comint process executable is rootfs-owned",
+      "passed": true
+    },
+    {
+      "detail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$ ",
+      "name": "interrupt command did not reach completion marker",
+      "passed": true
+    },
+    {
+      "detail": [],
+      "name": "interrupt side effect did not occur",
+      "passed": true
+    },
+    {
+      "detail": "post-command:comint-send-input\npost-command:comint-interrupt-subjob\n",
+      "name": "Comint post-command hook saw comint-send-input",
+      "passed": true
+    },
+    {
+      "detail": "post-command:comint-send-input\npost-command:comint-interrupt-subjob\n",
+      "name": "Comint post-command hook saw comint-interrupt-subjob",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "capture-pane",
+          "-S",
+          "-200",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "-p"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "File Edit Options Buffers Tools Complete In/Out Signals Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-anpaVb   12%   L27    (Magit) ----------\nn' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DA\\\nEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$\n-UUU:@**-  F2  *soma-daemon-comint-interrupt*   Bot   L4     (Comint:run) ------\nSOMA_DAEMON_JUPYTER_STATE:/project/run/soma-jupyter-state-7l0ZRx.json\n\n\n\n-UUU:@%*-  F2  *jupyter-output*   All   L2     (Special) -----------------------\n\n"
+      },
+      "name": "terminal pane shows interrupt partial output",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "capture-pane",
+          "-S",
+          "-200",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "-p"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "File Edit Options Buffers Tools Complete In/Out Signals Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-anpaVb   12%   L27    (Magit) ----------\nn' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DA\\\nEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$\n-UUU:@**-  F2  *soma-daemon-comint-interrupt*   Bot   L4     (Comint:run) ------\nSOMA_DAEMON_JUPYTER_STATE:/project/run/soma-jupyter-state-7l0ZRx.json\n\n\n\n-UUU:@%*-  F2  *jupyter-output*   All   L2     (Special) -----------------------\n\n"
+      },
+      "name": "terminal pane omits interrupt completion marker",
+      "passed": true
+    }
+  ],
+  "command_log": "post-command:comint-send-input\npost-command:comint-interrupt-subjob\n",
+  "expected_policy_pass": true,
+  "final_request": {
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": "*soma-daemon-comint-interrupt*"
+    },
+    "request_id": "daemon-comint-interrupt-final-1"
+  },
+  "final_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "comint.observe",
+    "request_id": "daemon-comint-interrupt-final-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-interrupt*",
+      "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$ ",
+      "chars_tick": 244,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+      "last_input_end": 227,
+      "last_input_markers_live": false,
+      "last_input_start": 227,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+      "point": 239,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 324,
+      "process_live": true,
+      "process_mark": 239,
+      "process_name": "soma-daemon-comint-interrupt",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040533Z-3771476",
+      "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+      "state": "succeeded"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "fixture": {
+    "buffer_name": "*soma-daemon-comint-interrupt*",
+    "command": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }",
+    "command_log": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/commands.log",
+    "counter": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter",
+    "done_needle": "SOMA_DAEMON_COMINT_INTERRUPT_DONE",
+    "observation": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-interrupt*",
+      "buffer_tail": "$ ",
+      "chars_tick": 3,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+      "last_input_end": 1,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+      "point": 3,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 324,
+      "process_live": true,
+      "process_mark": 3,
+      "process_name": "soma-daemon-comint-interrupt",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040533Z-3771476",
+      "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+      "state": "succeeded"
+    },
+    "pid": 324,
+    "process_name": "soma-daemon-comint-interrupt",
+    "start_needle": "SOMA_DAEMON_COMINT_INTERRUPT_START",
+    "tmp": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe"
+  },
+  "id": "daemon-comint-terminal-interrupt-reconcile",
+  "initial_request": {
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": "*soma-daemon-comint-interrupt*"
+    },
+    "request_id": "daemon-comint-interrupt-observe-1"
+  },
+  "initial_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "comint.observe",
+    "request_id": "daemon-comint-interrupt-observe-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-interrupt*",
+      "buffer_tail": "$ ",
+      "chars_tick": 3,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+      "last_input_end": 1,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+      "point": 3,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 324,
+      "process_live": true,
+      "process_mark": 3,
+      "process_name": "soma-daemon-comint-interrupt",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040533Z-3771476",
+      "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+      "state": "succeeded"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "partial_wait": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n",
+        "counter_lines": [],
+        "last_input_markers_live": true,
+        "last_input_text": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "process_id": 324,
+        "process_live": true,
+        "response_state": "succeeded"
+      }
+    ],
+    "counter_lines": [],
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "comint.observe",
+      "request_id": "daemon-comint-interrupt-partial-1",
+      "result": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-interrupt*",
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n",
+        "chars_tick": 231,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+        "last_input_end": 192,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_text": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\n",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+        "point": 227,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 324,
+        "process_live": true,
+        "process_mark": 227,
+        "process_name": "soma-daemon-comint-interrupt",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040533Z-3771476",
+        "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+        "state": "succeeded"
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-interrupt*",
+      "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n",
+      "chars_tick": 231,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+      "last_input_end": 192,
+      "last_input_markers_live": true,
+      "last_input_start": 3,
+      "last_input_text": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }\n",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+      "point": 227,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 324,
+      "process_live": true,
+      "process_mark": 227,
+      "process_name": "soma-daemon-comint-interrupt",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040533Z-3771476",
+      "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+      "state": "succeeded"
+    }
+  },
+  "point_adjustment": {
+    "process_mark": 3,
+    "request": {
+      "operation": "emacs.goto_char",
+      "params": {
+        "buffer_name": "*soma-daemon-comint-interrupt*",
+        "point": 3,
+        "preconditions": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 324,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint-interrupt",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040533Z-3771476",
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded"
+        }
+      },
+      "request_id": "daemon-comint-interrupt-goto-1"
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.goto_char",
+      "request_id": "daemon-comint-interrupt-goto-1",
+      "result": {
+        "after": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "chars_tick": 3,
+          "major_mode": "comint-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 3,
+          "point_max": 3,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded",
+          "text_owner_name": "*soma-daemon-comint-interrupt*"
+        },
+        "before": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-interrupt*",
+          "chars_tick": 3,
+          "major_mode": "comint-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 3,
+          "point_max": 3,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+          "state": "succeeded",
+          "text_owner_name": "*soma-daemon-comint-interrupt*"
+        },
+        "error": false,
+        "operation": "emacs.goto_char",
+        "point": 3,
+        "precondition_checks": [
+          {
+            "detail": "#<buffer *soma-daemon-comint-interrupt*>",
+            "name": "target buffer is live",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"*soma-daemon-comint-interrupt*\" actual=\"*soma-daemon-comint-interrupt*\"",
+            "name": "buffer identity matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=nil actual=\"*soma-daemon-comint-interrupt*\"",
+            "name": "text owner matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "visited file matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=3 actual=3",
+            "name": "character revision matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=3 actual=3",
+            "name": "point matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"*soma-daemon-comint-interrupt*\" actual=\"*soma-daemon-comint-interrupt*\"",
+            "name": "selected window matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=t actual=t",
+            "name": "modified state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=nil actual=:json-false",
+            "name": "read-only state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "minibuffer state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "selected=\"*soma-daemon-comint-interrupt*\" target=\"*soma-daemon-comint-interrupt*\"",
+            "name": "selected window displays target buffer",
+            "passed": true
+          },
+          {
+            "detail": "point=3",
+            "name": "target point is valid",
+            "passed": true
+          }
+        ],
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    }
+  },
+  "policy_passed_grader": true,
+  "ready_request": {
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": "*soma-daemon-comint-interrupt*"
+    },
+    "request_id": "daemon-comint-interrupt-ready-1"
+  },
+  "ready_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "comint.observe",
+    "request_id": "daemon-comint-interrupt-ready-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-interrupt*",
+      "buffer_tail": "$ ",
+      "chars_tick": 3,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-interrupt-qjOwCe/",
+      "last_input_end": 1,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+      "point": 3,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 324,
+      "process_live": true,
+      "process_mark": 3,
+      "process_name": "soma-daemon-comint-interrupt",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040533Z-3771476",
+      "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+      "state": "succeeded"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "terminal_after_interrupt": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "capture-pane",
+      "-S",
+      "-200",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "-p"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "File Edit Options Buffers Tools Complete In/Out Signals Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-anpaVb   12%   L27    (Magit) ----------\nn' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DA\\\nEMON_COMINT_INTERRUPT_DONE\\n'; }\nSOMA_DAEMON_COMINT_INTERRUPT_START\n  C-c C-c\n$\n-UUU:@**-  F2  *soma-daemon-comint-interrupt*   Bot   L4     (Comint:run) ------\nSOMA_DAEMON_JUPYTER_STATE:/project/run/soma-jupyter-state-7l0ZRx.json\n\n\n\n-UUU:@%*-  F2  *jupyter-output*   All   L2     (Special) -----------------------\n\n"
+  },
+  "terminal_input": "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }",
+  "terminal_input_keys": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-l",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "printf 'SOMA_DAEMON_COMINT_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-daemon-comint-interrupt-qjOwCe/counter; printf 'SOMA_DAEMON_COMINT_INTERRUPT_DONE\\n'; }"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_interrupt_keys": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "C-c",
+      "C-c"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_submit": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "Enter"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_switch": {
+    "buffer_keys": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-l",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "*soma-daemon-comint-interrupt*"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-g"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel_attempts": [
+      {
+        "attempt": 1,
+        "cancel": {
+          "argv": [
+            "tmux",
+            "-S",
+            "/project/run/soma-gym-bridge-terminal-tmux.sock",
+            "send-keys",
+            "-t",
+            "soma-gym-bridge-terminal:0.0",
+            "C-g"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        "minibuffer_active": false,
+        "response_state": "succeeded",
+        "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+        "transient_active": false,
+        "transient_map_installed": false
+      }
+    ],
+    "cancel_interaction_response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_interaction",
+      "request_id": "daemon-comint-interrupt-cancel-interaction-1",
+      "result": {
+        "daemonp": true,
+        "emacs_pid": 4,
+        "last_command": "keyboard-quit",
+        "minibuffer_active": false,
+        "minibuffer_buffer": false,
+        "minibuffer_contents": false,
+        "minibuffer_prompt": false,
+        "operation": "emacs.observe_interaction",
+        "recursive_edit_depth": 0,
+        "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "this_command": "nil",
+        "transient_active": false,
+        "transient_active_arguments": [],
+        "transient_buffer": false,
+        "transient_current_command": false,
+        "transient_map_active": false,
+        "transient_map_installed": false,
+        "transient_prefix_command": false,
+        "transient_suffixes": [],
+        "transient_window_buffer": false,
+        "transient_window_live": false
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "enter": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "Enter"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "minibuffer_attempts": [
+      {
+        "attempt": 1,
+        "minibuffer_active": true,
+        "minibuffer_prompt": "Switch to buffer (default soma-daemon-jupyter-async-package.py): ",
+        "response_state": "succeeded",
+        "selected_window_buffer": " *Minibuf-1*"
+      }
+    ],
+    "observation_attempts": [
+      {
+        "attempt": 1,
+        "client_terminal_buffers": [
+          "*soma-daemon-comint-interrupt*"
+        ],
+        "response_state": "succeeded"
+      }
+    ],
+    "prefix": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-x",
+        "b"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_frames",
+      "request_id": "daemon-comint-interrupt-frame-1",
+      "result": {
+        "client_frame_count": 1,
+        "daemonp": true,
+        "emacs_pid": 4,
+        "frame_count": 2,
+        "frames": [
+          {
+            "client_frame": true,
+            "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+            "graphic": false,
+            "height": 23,
+            "index": 1,
+            "name": "F2",
+            "selected": true,
+            "selected_window_buffer": "*soma-daemon-comint-interrupt*",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "/dev/pts/0",
+            "visible": "t",
+            "width": 80
+          },
+          {
+            "client_frame": false,
+            "client_repr": false,
+            "graphic": false,
+            "height": 24,
+            "index": 2,
+            "name": "F1",
+            "selected": false,
+            "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "initial_terminal",
+            "visible": "t",
+            "width": 80
+          }
+        ],
+        "graphic_frame_count": 0,
+        "operation": "emacs.observe_frames",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "terminal_frame_count": 2
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "tmux_target": "soma-gym-bridge-terminal:0.0"
+  },
+  "title": "A live daemon terminal frame interrupts a partial Comint command and reconciles process state without the side effect"
+}

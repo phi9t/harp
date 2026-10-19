@@ -1,0 +1,792 @@
+{
+  "id": "checked-apply-patch",
+  "title": "A buffer.apply_patch request applies multiple exact hunks and rejects stale context",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "apply-patch-1",
+    "operation": "buffer.apply_patch",
+    "capability": "reversible_editor_edit",
+    "preconditions": {
+      "buffer_name": "soma-bridge-apply-patch",
+      "text_owner_name": "soma-bridge-apply-patch",
+      "buffer_file_name": false,
+      "chars_tick": 7,
+      "expected_text": null,
+      "point": 1,
+      "selected_window_buffer": "soma-bridge-apply-patch",
+      "modified": false,
+      "read_only": false,
+      "minibuffer_active": false,
+      "mark_active": false,
+      "narrowed": false
+    },
+    "params": {
+      "buffer_name": "soma-bridge-apply-patch",
+      "patch": {
+        "format": "soma-context-patch-v0",
+        "hunks": [
+          {
+            "old_text": "  return 1;\n",
+            "new_text": "  return 10;\n"
+          },
+          {
+            "old_text": "fn beta() {\n",
+            "new_text": "fn beta_renamed() {\n"
+          }
+        ]
+      }
+    }
+  },
+  "response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "apply-patch-1",
+    "operation": "buffer.apply_patch",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "buffer.apply_patch",
+      "route": "checked-buffer-patch",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-apply-patch>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch\" actual=\"soma-bridge-apply-patch\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch\" actual=\"soma-bridge-apply-patch\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=7 actual=7"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch\" actual=\"soma-bridge-apply-patch\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "patch contains a bounded non-empty hunk list",
+          "passed": true,
+          "detail": "hunk_count=2"
+        },
+        {
+          "name": "patch format is soma-context-patch-v0",
+          "passed": true,
+          "detail": "\"soma-context-patch-v0\""
+        },
+        {
+          "name": "patch is a typed object",
+          "passed": true,
+          "detail": "((\"format\" . \"soma-context-patch-v0\") (\"hunks\" ((\"old_text\" . \"  return 1;\n\") (\"new_text\" . \"  return 10;\n\")) ((\"old_text\" . \"fn beta() {\n\") (\"new_text\" . \"fn beta_renamed() {\n\"))))"
+        },
+        {
+          "name": "patch hunk 0 has old_text and new_text strings",
+          "passed": true,
+          "detail": "old_type=string new_type=string"
+        },
+        {
+          "name": "patch hunk 0 old_text occurs exactly once",
+          "passed": true,
+          "detail": "matches=1"
+        },
+        {
+          "name": "patch hunk 1 has old_text and new_text strings",
+          "passed": true,
+          "detail": "old_type=string new_type=string"
+        },
+        {
+          "name": "patch hunk 1 old_text occurs exactly once",
+          "passed": true,
+          "detail": "matches=1"
+        },
+        {
+          "name": "patch hunk ranges do not overlap",
+          "passed": true,
+          "detail": "((14 . 26) (29 . 41))"
+        }
+      ],
+      "precondition_checks_passed": true,
+      "conflict_preview": [
+        {
+          "index": 0,
+          "old_sha256": "15886c00d7ac028d77b0aad1ccfa2fce8d0efc418c720e4299a02c89968daf89",
+          "new_sha256": "806201fcec7b8edde50c4f219ef5ff0c71fa9ef6e9cfddadbdf2281a7e9a82cf",
+          "match_count": 1,
+          "start": 14,
+          "end": 26
+        },
+        {
+          "index": 1,
+          "old_sha256": "596883c327de8f43aa4d86fb59c21cde767e112cf05b18145585aafc238db151",
+          "new_sha256": "6d0b7b6f5ede32ef6e703938d4133f19ecce467bffb750576a2d2b1359cad49c",
+          "match_count": 1,
+          "start": 29,
+          "end": 41
+        }
+      ],
+      "changed_ranges": [
+        {
+          "index": 0,
+          "start": 14,
+          "old_end": 26,
+          "new_end": 27
+        },
+        {
+          "index": 1,
+          "start": 29,
+          "old_end": 41,
+          "new_end": 49
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-apply-patch",
+        "text_owner_name": "soma-bridge-apply-patch",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 55,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-apply-patch",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-apply-patch",
+        "text_owner_name": "soma-bridge-apply-patch",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 24,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 64,
+        "point": 27,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-apply-patch",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-apply-patch>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch\" actual=\"soma-bridge-apply-patch\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch\" actual=\"soma-bridge-apply-patch\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=7 actual=7"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch\" actual=\"soma-bridge-apply-patch\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "patch contains a bounded non-empty hunk list",
+          "passed": true,
+          "detail": "hunk_count=2"
+        },
+        {
+          "name": "patch format is soma-context-patch-v0",
+          "passed": true,
+          "detail": "\"soma-context-patch-v0\""
+        },
+        {
+          "name": "patch is a typed object",
+          "passed": true,
+          "detail": "((\"format\" . \"soma-context-patch-v0\") (\"hunks\" ((\"old_text\" . \"  return 1;\n\") (\"new_text\" . \"  return 10;\n\")) ((\"old_text\" . \"fn beta() {\n\") (\"new_text\" . \"fn beta_renamed() {\n\"))))"
+        },
+        {
+          "name": "patch hunk 0 has old_text and new_text strings",
+          "passed": true,
+          "detail": "old_type=string new_type=string"
+        },
+        {
+          "name": "patch hunk 0 old_text occurs exactly once",
+          "passed": true,
+          "detail": "matches=1"
+        },
+        {
+          "name": "patch hunk 1 has old_text and new_text strings",
+          "passed": true,
+          "detail": "old_type=string new_type=string"
+        },
+        {
+          "name": "patch hunk 1 old_text occurs exactly once",
+          "passed": true,
+          "detail": "matches=1"
+        },
+        {
+          "name": "patch hunk ranges do not overlap",
+          "passed": true,
+          "detail": "((14 . 26) (29 . 41))"
+        }
+      ],
+      "conflict_preview": [
+        {
+          "index": 0,
+          "old_sha256": "15886c00d7ac028d77b0aad1ccfa2fce8d0efc418c720e4299a02c89968daf89",
+          "new_sha256": "806201fcec7b8edde50c4f219ef5ff0c71fa9ef6e9cfddadbdf2281a7e9a82cf",
+          "match_count": 1,
+          "start": 14,
+          "end": 26
+        },
+        {
+          "index": 1,
+          "old_sha256": "596883c327de8f43aa4d86fb59c21cde767e112cf05b18145585aafc238db151",
+          "new_sha256": "6d0b7b6f5ede32ef6e703938d4133f19ecce467bffb750576a2d2b1359cad49c",
+          "match_count": 1,
+          "start": 29,
+          "end": 41
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "emacs.observe_buffer",
+          "state": "succeeded",
+          "buffer_name": "soma-bridge-apply-patch",
+          "text_owner_name": "soma-bridge-apply-patch",
+          "buffer_file_name": false,
+          "major_mode": "fundamental-mode",
+          "chars_tick": 7,
+          "modified": false,
+          "read_only": false,
+          "point_min": 1,
+          "point_max": 55,
+          "point": 1,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "soma-bridge-apply-patch",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "emacs.observe_buffer",
+          "state": "succeeded",
+          "buffer_name": "soma-bridge-apply-patch",
+          "text_owner_name": "soma-bridge-apply-patch",
+          "buffer_file_name": false,
+          "major_mode": "fundamental-mode",
+          "chars_tick": 24,
+          "modified": true,
+          "read_only": false,
+          "point_min": 1,
+          "point_max": 64,
+          "point": 27,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "soma-bridge-apply-patch",
+          "minibuffer_active": false
+        }
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-apply-patch",
+        "text_owner_name": "soma-bridge-apply-patch",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 55,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-apply-patch",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-apply-patch",
+        "text_owner_name": "soma-bridge-apply-patch",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 24,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 64,
+        "point": 27,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-apply-patch",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {
+      "changed_ranges": [
+        {
+          "index": 0,
+          "start": 14,
+          "old_end": 26,
+          "new_end": 27
+        },
+        {
+          "index": 1,
+          "start": 29,
+          "old_end": 41,
+          "new_end": 49
+        }
+      ]
+    },
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "before": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-apply-patch",
+    "text_owner_name": "soma-bridge-apply-patch",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 7,
+    "modified": false,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 55,
+    "point": 1,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-apply-patch",
+    "minibuffer_active": false
+  },
+  "after": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-apply-patch",
+    "text_owner_name": "soma-bridge-apply-patch",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 24,
+    "modified": true,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 64,
+    "point": 27,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-apply-patch",
+    "minibuffer_active": false
+  },
+  "buffer_text": "fn alpha() {\n  return 10;\n}\n\nfn beta_renamed() {\n  return 2;\n}\n",
+  "stale_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "apply-patch-stale-1",
+    "operation": "buffer.apply_patch",
+    "capability": "reversible_editor_edit",
+    "preconditions": {
+      "buffer_name": "soma-bridge-apply-patch-stale",
+      "text_owner_name": "soma-bridge-apply-patch-stale",
+      "buffer_file_name": false,
+      "chars_tick": 6,
+      "expected_text": null,
+      "point": 1,
+      "selected_window_buffer": "soma-bridge-apply-patch-stale",
+      "modified": false,
+      "read_only": false,
+      "minibuffer_active": false,
+      "mark_active": false,
+      "narrowed": false
+    },
+    "params": {
+      "buffer_name": "soma-bridge-apply-patch-stale",
+      "patch": {
+        "format": "soma-context-patch-v0",
+        "hunks": [
+          {
+            "old_text": "beta\n",
+            "new_text": "BETA\n"
+          }
+        ]
+      }
+    }
+  },
+  "stale_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "apply-patch-stale-1",
+    "operation": "buffer.apply_patch",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "buffer.apply_patch",
+      "route": "checked-buffer-patch",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-apply-patch-stale>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch-stale\" actual=\"soma-bridge-apply-patch-stale\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch-stale\" actual=\"soma-bridge-apply-patch-stale\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": false,
+          "detail": "expected=6 actual=9"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": false,
+          "detail": "expected=1 actual=7"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch-stale\" actual=\"soma-bridge-apply-patch-stale\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": false,
+          "detail": "expected=:json-false actual=t"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "patch contains a bounded non-empty hunk list",
+          "passed": true,
+          "detail": "hunk_count=1"
+        },
+        {
+          "name": "patch format is soma-context-patch-v0",
+          "passed": true,
+          "detail": "\"soma-context-patch-v0\""
+        },
+        {
+          "name": "patch is a typed object",
+          "passed": true,
+          "detail": "((\"format\" . \"soma-context-patch-v0\") (\"hunks\" ((\"old_text\" . \"beta\n\") (\"new_text\" . \"BETA\n\"))))"
+        },
+        {
+          "name": "patch hunk 0 has old_text and new_text strings",
+          "passed": true,
+          "detail": "old_type=string new_type=string"
+        },
+        {
+          "name": "patch hunk 0 old_text occurs exactly once",
+          "passed": true,
+          "detail": "matches=1"
+        },
+        {
+          "name": "patch hunk ranges do not overlap",
+          "passed": true,
+          "detail": "((13 . 18))"
+        }
+      ],
+      "precondition_checks_passed": false,
+      "conflict_preview": [
+        {
+          "index": 0,
+          "old_sha256": "f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad",
+          "new_sha256": "a0d89cbe67e84a23d7de399463e2e9a6fb702a6c8acaab0dcdf36b32c2656d82",
+          "match_count": 1,
+          "start": 13,
+          "end": 18
+        }
+      ],
+      "changed_ranges": null,
+      "error": "buffer patch precondition failed"
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-apply-patch-stale>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch-stale\" actual=\"soma-bridge-apply-patch-stale\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch-stale\" actual=\"soma-bridge-apply-patch-stale\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": false,
+          "detail": "expected=6 actual=9"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": false,
+          "detail": "expected=1 actual=7"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-apply-patch-stale\" actual=\"soma-bridge-apply-patch-stale\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": false,
+          "detail": "expected=:json-false actual=t"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "patch contains a bounded non-empty hunk list",
+          "passed": true,
+          "detail": "hunk_count=1"
+        },
+        {
+          "name": "patch format is soma-context-patch-v0",
+          "passed": true,
+          "detail": "\"soma-context-patch-v0\""
+        },
+        {
+          "name": "patch is a typed object",
+          "passed": true,
+          "detail": "((\"format\" . \"soma-context-patch-v0\") (\"hunks\" ((\"old_text\" . \"beta\n\") (\"new_text\" . \"BETA\n\"))))"
+        },
+        {
+          "name": "patch hunk 0 has old_text and new_text strings",
+          "passed": true,
+          "detail": "old_type=string new_type=string"
+        },
+        {
+          "name": "patch hunk 0 old_text occurs exactly once",
+          "passed": true,
+          "detail": "matches=1"
+        },
+        {
+          "name": "patch hunk ranges do not overlap",
+          "passed": true,
+          "detail": "((13 . 18))"
+        }
+      ],
+      "conflict_preview": [
+        {
+          "index": 0,
+          "old_sha256": "f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad",
+          "new_sha256": "a0d89cbe67e84a23d7de399463e2e9a6fb702a6c8acaab0dcdf36b32c2656d82",
+          "match_count": 1,
+          "start": 13,
+          "end": 18
+        }
+      ]
+    },
+    "observations": {},
+    "effects": {
+      "changed_ranges": null
+    },
+    "diagnostics": [
+      {
+        "code": "conflict",
+        "message": "buffer patch precondition failed"
+      }
+    ],
+    "continuation": null,
+    "error_code": "conflict",
+    "error": "buffer patch precondition failed"
+  },
+  "stale_buffer_text": "human\nalpha\nbeta\ngamma\n",
+  "checks": [
+    {
+      "name": "buffer.apply_patch is a stable enabled coding operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"buffer.apply_patch\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"profile\" . \"coding-v0\") (\"maturity\" . \"stable\") (\"owner\" . \"core-emacs-buffer\") (\"side_effect_class\" . \"reversible_editor_edit\") (\"observation_class\" . \"active-diagnostic\") (\"implemented\" . t) (\"enabled\" . t) (\"route\" . \"checked-buffer-patch\") (\"required_params\" \"buffer_name\" \"patch\") (\"required_preconditions\" \"buffer_name\" \"text_owner_name\" \"buffer_file_name\" \"chars_tick\" \"point\" \"selected_window_buffer\" \"modified\" \"read_only\" \"minibuffer_active\") (\"possible_states\" \"succeeded\" \"failed\") (\"evidence\" \"precondition_checks\" \"conflict_preview\" \"before_after_observations\" \"changed_ranges\") (\"request_contract\" (\"envelope\" . \"soma-emacs-agent-v0.request\") (\"required_fields\" \"request_id\" \"operation\") (\"optional_fields\" \"api_version\" \"capability\" \"params\" \"preconditions\" \"timeout_ms\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"capability\" . \"reversible_editor_edit\") (\"params_mode\" . \"typed-object\") (\"required_params\" \"buffer_name\" \"patch\") (\"preconditions_mode\" . \"typed-object\")) (\"precondition_contract\" (\"mode\" . \"typed-object\") (\"top_level_field\" . \"preconditions\") (\"params_field\" . \"params.preconditions\") (\"required_fields\" \"buffer_name\" \"text_owner_name\" \"buffer_file_name\" \"chars_tick\" \"point\" \"selected_window_buffer\" \"modified\" \"read_only\" \"minibuffer_active\") (\"conflict_error_code\" . \"conflict\")) (\"result_contract\" (\"envelope\" . \"soma-emacs-agent-v0.result\") (\"required_fields\" \"api_version\" \"request_id\" \"operation\" \"state\" \"state_sequence\" \"result\" \"evidence\" \"observations\" \"effects\" \"diagnostics\" \"continuation\") (\"states\" \"succeeded\" \"failed\") (\"terminal_states\" \"succeeded\" \"failed\" \"outcome_unknown\") (\"evidence_channels\" \"precondition_checks\" \"conflict_preview\" \"before_after_observations\" \"changed_ranges\")) (\"description\" . \"Apply a one-buffer patch after explicit conflict preview.\"))"
+    },
+    {
+      "name": "buffer.apply_patch applies multiple checked hunks",
+      "passed": true,
+      "detail": "((\"operation\" . \"buffer.apply_patch\") (\"route\" . \"checked-buffer-patch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-apply-patch>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"patch contains a bounded non-empty hunk list\") (\"passed\" . t) (\"detail\" . \"hunk_count=2\")) ((\"name\" . \"patch format is soma-context-patch-v0\") (\"passed\" . t) (\"detail\" . \"\\\"soma-context-patch-v0\\\"\")) ((\"name\" . \"patch is a typed object\") (\"passed\" . t) (\"detail\" . \"((\\\"format\\\" . \\\"soma-context-patch-v0\\\") (\\\"hunks\\\" ((\\\"old_text\\\" . \\\"  return 1;\n\\\") (\\\"new_text\\\" . \\\"  return 10;\n\\\")) ((\\\"old_text\\\" . \\\"fn beta() {\n\\\") (\\\"new_text\\\" . \\\"fn beta_renamed() {\n\\\"))))\")) ((\"name\" . \"patch hunk 0 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 0 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk 1 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 1 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk ranges do not overlap\") (\"passed\" . t) (\"detail\" . \"((14 . 26) (29 . 41))\"))) (\"precondition_checks_passed\" . t) (\"conflict_preview\" ((\"index\" . 0) (\"old_sha256\" . \"15886c00d7ac028d77b0aad1ccfa2fce8d0efc418c720e4299a02c89968daf89\") (\"new_sha256\" . \"806201fcec7b8edde50c4f219ef5ff0c71fa9ef6e9cfddadbdf2281a7e9a82cf\") (\"match_count\" . 1) (\"start\" . 14) (\"end\" . 26)) ((\"index\" . 1) (\"old_sha256\" . \"596883c327de8f43aa4d86fb59c21cde767e112cf05b18145585aafc238db151\") (\"new_sha256\" . \"6d0b7b6f5ede32ef6e703938d4133f19ecce467bffb750576a2d2b1359cad49c\") (\"match_count\" . 1) (\"start\" . 29) (\"end\" . 41))) (\"changed_ranges\" ((\"index\" . 0) (\"start\" . 14) (\"old_end\" . 26) (\"new_end\" . 27)) ((\"index\" . 1) (\"start\" . 29) (\"old_end\" . 41) (\"new_end\" . 49))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 55) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 24) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 64) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    },
+    {
+      "name": "buffer.apply_patch advances buffer revision once it mutates text",
+      "passed": true,
+      "detail": "before=7 after=24"
+    },
+    {
+      "name": "buffer.apply_patch publishes typed evidence observations and effects",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"apply-patch-1\") (\"operation\" . \"buffer.apply_patch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"buffer.apply_patch\") (\"route\" . \"checked-buffer-patch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-apply-patch>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"patch contains a bounded non-empty hunk list\") (\"passed\" . t) (\"detail\" . \"hunk_count=2\")) ((\"name\" . \"patch format is soma-context-patch-v0\") (\"passed\" . t) (\"detail\" . \"\\\"soma-context-patch-v0\\\"\")) ((\"name\" . \"patch is a typed object\") (\"passed\" . t) (\"detail\" . \"((\\\"format\\\" . \\\"soma-context-patch-v0\\\") (\\\"hunks\\\" ((\\\"old_text\\\" . \\\"  return 1;\n\\\") (\\\"new_text\\\" . \\\"  return 10;\n\\\")) ((\\\"old_text\\\" . \\\"fn beta() {\n\\\") (\\\"new_text\\\" . \\\"fn beta_renamed() {\n\\\"))))\")) ((\"name\" . \"patch hunk 0 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 0 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk 1 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 1 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk ranges do not overlap\") (\"passed\" . t) (\"detail\" . \"((14 . 26) (29 . 41))\"))) (\"precondition_checks_passed\" . t) (\"conflict_preview\" ((\"index\" . 0) (\"old_sha256\" . \"15886c00d7ac028d77b0aad1ccfa2fce8d0efc418c720e4299a02c89968daf89\") (\"new_sha256\" . \"806201fcec7b8edde50c4f219ef5ff0c71fa9ef6e9cfddadbdf2281a7e9a82cf\") (\"match_count\" . 1) (\"start\" . 14) (\"end\" . 26)) ((\"index\" . 1) (\"old_sha256\" . \"596883c327de8f43aa4d86fb59c21cde767e112cf05b18145585aafc238db151\") (\"new_sha256\" . \"6d0b7b6f5ede32ef6e703938d4133f19ecce467bffb750576a2d2b1359cad49c\") (\"match_count\" . 1) (\"start\" . 29) (\"end\" . 41))) (\"changed_ranges\" ((\"index\" . 0) (\"start\" . 14) (\"old_end\" . 26) (\"new_end\" . 27)) ((\"index\" . 1) (\"start\" . 29) (\"old_end\" . 41) (\"new_end\" . 49))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 55) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 24) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 64) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-apply-patch>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch\\\" actual=\\\"soma-bridge-apply-patch\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"patch contains a bounded non-empty hunk list\") (\"passed\" . t) (\"detail\" . \"hunk_count=2\")) ((\"name\" . \"patch format is soma-context-patch-v0\") (\"passed\" . t) (\"detail\" . \"\\\"soma-context-patch-v0\\\"\")) ((\"name\" . \"patch is a typed object\") (\"passed\" . t) (\"detail\" . \"((\\\"format\\\" . \\\"soma-context-patch-v0\\\") (\\\"hunks\\\" ((\\\"old_text\\\" . \\\"  return 1;\n\\\") (\\\"new_text\\\" . \\\"  return 10;\n\\\")) ((\\\"old_text\\\" . \\\"fn beta() {\n\\\") (\\\"new_text\\\" . \\\"fn beta_renamed() {\n\\\"))))\")) ((\"name\" . \"patch hunk 0 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 0 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk 1 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 1 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk ranges do not overlap\") (\"passed\" . t) (\"detail\" . \"((14 . 26) (29 . 41))\"))) (\"conflict_preview\" ((\"index\" . 0) (\"old_sha256\" . \"15886c00d7ac028d77b0aad1ccfa2fce8d0efc418c720e4299a02c89968daf89\") (\"new_sha256\" . \"806201fcec7b8edde50c4f219ef5ff0c71fa9ef6e9cfddadbdf2281a7e9a82cf\") (\"match_count\" . 1) (\"start\" . 14) (\"end\" . 26)) ((\"index\" . 1) (\"old_sha256\" . \"596883c327de8f43aa4d86fb59c21cde767e112cf05b18145585aafc238db151\") (\"new_sha256\" . \"6d0b7b6f5ede32ef6e703938d4133f19ecce467bffb750576a2d2b1359cad49c\") (\"match_count\" . 1) (\"start\" . 29) (\"end\" . 41))) (\"before_after_observations\" (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 55) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 24) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 64) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)))) (\"observations\" (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 55) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-apply-patch\") (\"text_owner_name\" . \"soma-bridge-apply-patch\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 24) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 64) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-apply-patch\") (\"minibuffer_active\" . :json-false))) (\"effects\" (\"changed_ranges\" ((\"index\" . 0) (\"start\" . 14) (\"old_end\" . 26) (\"new_end\" . 27)) ((\"index\" . 1) (\"start\" . 29) (\"old_end\" . 41) (\"new_end\" . 49)))) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "buffer.apply_patch rejects stale buffer state before mutation",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"apply-patch-stale-1\") (\"operation\" . \"buffer.apply_patch\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"buffer.apply_patch\") (\"route\" . \"checked-buffer-patch\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-apply-patch-stale>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch-stale\\\" actual=\\\"soma-bridge-apply-patch-stale\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch-stale\\\" actual=\\\"soma-bridge-apply-patch-stale\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=6 actual=9\")) ((\"name\" . \"point matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=1 actual=7\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch-stale\\\" actual=\\\"soma-bridge-apply-patch-stale\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=:json-false actual=t\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"patch contains a bounded non-empty hunk list\") (\"passed\" . t) (\"detail\" . \"hunk_count=1\")) ((\"name\" . \"patch format is soma-context-patch-v0\") (\"passed\" . t) (\"detail\" . \"\\\"soma-context-patch-v0\\\"\")) ((\"name\" . \"patch is a typed object\") (\"passed\" . t) (\"detail\" . \"((\\\"format\\\" . \\\"soma-context-patch-v0\\\") (\\\"hunks\\\" ((\\\"old_text\\\" . \\\"beta\n\\\") (\\\"new_text\\\" . \\\"BETA\n\\\"))))\")) ((\"name\" . \"patch hunk 0 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 0 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk ranges do not overlap\") (\"passed\" . t) (\"detail\" . \"((13 . 18))\"))) (\"precondition_checks_passed\" . :json-false) (\"conflict_preview\" ((\"index\" . 0) (\"old_sha256\" . \"f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad\") (\"new_sha256\" . \"a0d89cbe67e84a23d7de399463e2e9a6fb702a6c8acaab0dcdf36b32c2656d82\") (\"match_count\" . 1) (\"start\" . 13) (\"end\" . 18))) (\"changed_ranges\") (\"error\" . \"buffer patch precondition failed\")) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-apply-patch-stale>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch-stale\\\" actual=\\\"soma-bridge-apply-patch-stale\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch-stale\\\" actual=\\\"soma-bridge-apply-patch-stale\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=6 actual=9\")) ((\"name\" . \"point matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=1 actual=7\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-apply-patch-stale\\\" actual=\\\"soma-bridge-apply-patch-stale\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=:json-false actual=t\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"patch contains a bounded non-empty hunk list\") (\"passed\" . t) (\"detail\" . \"hunk_count=1\")) ((\"name\" . \"patch format is soma-context-patch-v0\") (\"passed\" . t) (\"detail\" . \"\\\"soma-context-patch-v0\\\"\")) ((\"name\" . \"patch is a typed object\") (\"passed\" . t) (\"detail\" . \"((\\\"format\\\" . \\\"soma-context-patch-v0\\\") (\\\"hunks\\\" ((\\\"old_text\\\" . \\\"beta\n\\\") (\\\"new_text\\\" . \\\"BETA\n\\\"))))\")) ((\"name\" . \"patch hunk 0 has old_text and new_text strings\") (\"passed\" . t) (\"detail\" . \"old_type=string new_type=string\")) ((\"name\" . \"patch hunk 0 old_text occurs exactly once\") (\"passed\" . t) (\"detail\" . \"matches=1\")) ((\"name\" . \"patch hunk ranges do not overlap\") (\"passed\" . t) (\"detail\" . \"((13 . 18))\"))) (\"conflict_preview\" ((\"index\" . 0) (\"old_sha256\" . \"f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad\") (\"new_sha256\" . \"a0d89cbe67e84a23d7de399463e2e9a6fb702a6c8acaab0dcdf36b32c2656d82\") (\"match_count\" . 1) (\"start\" . 13) (\"end\" . 18)))) (\"observations\" . #s(hash-table test equal)) (\"effects\" (\"changed_ranges\")) (\"diagnostics\" . [((\"code\" . \"conflict\") (\"message\" . \"buffer patch precondition failed\"))]) (\"continuation\") (\"error_code\" . \"conflict\") (\"error\" . \"buffer patch precondition failed\"))"
+    }
+  ]
+}

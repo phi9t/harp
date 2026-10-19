@@ -1,0 +1,217 @@
+{
+  "id": "bad-unstaged-list-stage",
+  "title": "Incorrect policy selects the unstaged list and stages too much",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "repo": "/project/tmp/soma-magit-list-stage-bad-BybcWi",
+    "buffer": "magit: soma-magit-list-stage-bad-BybcWi",
+    "selected_section": {
+      "type": "unstaged",
+      "value": "nil",
+      "start": 27,
+      "content": 48,
+      "end": 464,
+      "parent_types": [
+        "unstaged",
+        "status"
+      ],
+      "text_excerpt": "Unstaged changes (2)\nmodified   debug.txt\n@@ -1 +1,2 @@\n debug-base\n+debug-worktree-only\nmodified   target.txt\n@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n@@ -22,7 +22,7 @@ target-21-base\n target-22-base\n target-23-base\n target-24-base\n-target-25-base\n+target-25-other\n target-26-b"
+    },
+    "diff_type": "unstaged",
+    "diff_scope": "list"
+  },
+  "action": {
+    "operation": "magit-stage",
+    "route": "checked-bridge-command-dispatch",
+    "bridge": {
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "command": "magit-stage",
+      "route": "command-execute",
+      "this_command": "magit-stage",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer magit: soma-magit-list-stage-bad-BybcWi>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "magit-stage"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "magit-stage"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"magit: soma-magit-list-stage-bad-BybcWi\" actual=\"magit: soma-magit-list-stage-bad-BybcWi\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"magit: soma-magit-list-stage-bad-BybcWi\" actual=\"magit: soma-magit-list-stage-bad-BybcWi\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=221 actual=221"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=27 actual=27"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "magit: soma-magit-list-stage-bad-BybcWi",
+        "text_owner_name": "magit: soma-magit-list-stage-bad-BybcWi",
+        "buffer_file_name": false,
+        "major_mode": "magit-status-mode",
+        "chars_tick": 221,
+        "modified": false,
+        "read_only": true,
+        "point_min": 1,
+        "point_max": 587,
+        "point": 27,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "magit: soma-magit-list-stage-bad-BybcWi",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "magit: soma-magit-list-stage-bad-BybcWi",
+        "text_owner_name": "magit: soma-magit-list-stage-bad-BybcWi",
+        "buffer_file_name": false,
+        "major_mode": "magit-status-mode",
+        "chars_tick": 445,
+        "modified": false,
+        "read_only": true,
+        "point_min": 1,
+        "point_max": 565,
+        "point": 27,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "magit: soma-magit-list-stage-bad-BybcWi",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "selection": "unstaged list"
+  },
+  "name": "bad-unstaged-list-stage",
+  "checks": [
+    {
+      "name": "git executable resolves inside rootfs",
+      "passed": true,
+      "detail": "/usr/bin/git"
+    },
+    {
+      "name": "Magit loads from rootfs-owned Doom mount",
+      "passed": true,
+      "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+    },
+    {
+      "name": "action used expected Magit operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-list-stage-bad-BybcWi>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\" actual=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\" actual=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=27 actual=27\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"read_only\" . t) (\"point_min\" . 1) (\"point_max\" . 587) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 445) (\"modified\" . :json-false) (\"read_only\" . t) (\"point_min\" . 1) (\"point_max\" . 565) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged list\"))"
+    },
+    {
+      "name": "checked bridge command dispatch succeeded",
+      "passed": true,
+      "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-list-stage-bad-BybcWi>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\" actual=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\" actual=\\\"magit: soma-magit-list-stage-bad-BybcWi\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=27 actual=27\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"read_only\" . t) (\"point_min\" . 1) (\"point_max\" . 587) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 445) (\"modified\" . :json-false) (\"read_only\" . t) (\"point_min\" . 1) (\"point_max\" . 565) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-BybcWi\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    },
+    {
+      "name": "command route preserved Magit command identity",
+      "passed": true,
+      "detail": "(\"magit-stage\")"
+    },
+    {
+      "name": "Magit refresh ran after staging",
+      "passed": true,
+      "detail": "(\"magit: soma-magit-list-stage-bad-BybcWi\")"
+    },
+    {
+      "name": "target selected change is staged",
+      "passed": true,
+      "detail": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n"
+    },
+    {
+      "name": "target unrelated hunk remains unstaged",
+      "passed": false,
+      "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" worktree=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\""
+    },
+    {
+      "name": "debug worktree change remains unstaged",
+      "passed": false,
+      "detail": "index=\"debug-base\ndebug-worktree-only\n\" worktree=\"debug-base\ndebug-worktree-only\n\""
+    },
+    {
+      "name": "unrelated staged file is preserved",
+      "passed": true,
+      "detail": "staged-expected\n"
+    },
+    {
+      "name": "cached names are exact",
+      "passed": false,
+      "detail": "(\"debug.txt\" \"staged.txt\" \"target.txt\")"
+    },
+    {
+      "name": "unstaged names preserve unrelated work",
+      "passed": false,
+      "detail": "nil"
+    }
+  ],
+  "repo_state": {
+    "cached_names": [
+      "debug.txt",
+      "staged.txt",
+      "target.txt"
+    ],
+    "unstaged_names": null,
+    "status_porcelain": [
+      "M  debug.txt",
+      "M  staged.txt",
+      "M  target.txt"
+    ],
+    "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "debug_index": "debug-base\ndebug-worktree-only\n",
+    "debug_worktree": "debug-base\ndebug-worktree-only\n",
+    "staged_index": "staged-expected\n",
+    "staged_worktree": "staged-expected\n",
+    "alpha_index": "alpha-base\n",
+    "beta_index": "beta-base\n",
+    "gamma_index": "gamma-base\n"
+  },
+  "post_stage_hook_runs": [
+    "magit-stage"
+  ],
+  "refresh_buffer_hook_runs": [
+    "magit: soma-magit-list-stage-bad-BybcWi"
+  ]
+}

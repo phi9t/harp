@@ -1,0 +1,106 @@
+{
+  "id": "buffer-read-purity",
+  "title": "A buffer.read request returns text without moving point, mark, revision, or selected window state",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "read-1",
+    "operation": "buffer.read",
+    "params": {
+      "buffer_name": "soma-bridge-read-target",
+      "start": 1,
+      "end": 7
+    }
+  },
+  "response": {
+    "request_id": "read-1",
+    "operation": "buffer.read",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "buffer.read",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-read-target",
+      "text_owner_name": "soma-bridge-read-target",
+      "start": 1,
+      "end": 7,
+      "text": "alpha\n",
+      "chars_tick": 5
+    },
+    "error_code": false,
+    "error": false
+  },
+  "before": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-read-target",
+    "text_owner_name": "soma-bridge-read-target",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 12,
+    "point": 3,
+    "mark_active": true,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-read-left",
+    "minibuffer_active": false
+  },
+  "after": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-read-target",
+    "text_owner_name": "soma-bridge-read-target",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 12,
+    "point": 3,
+    "mark_active": true,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-read-left",
+    "minibuffer_active": false
+  },
+  "checks": [
+    {
+      "name": "buffer read request succeeded",
+      "passed": true,
+      "detail": "((\"request_id\" . \"read-1\") (\"operation\" . \"buffer.read\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"buffer.read\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-read-target\") (\"text_owner_name\" . \"soma-bridge-read-target\") (\"start\" . 1) (\"end\" . 7) (\"text\" . \"alpha\n\") (\"chars_tick\" . 5)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "buffer read returns exact half-open range",
+      "passed": true,
+      "detail": "((\"operation\" . \"buffer.read\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-read-target\") (\"text_owner_name\" . \"soma-bridge-read-target\") (\"start\" . 1) (\"end\" . 7) (\"text\" . \"alpha\n\") (\"chars_tick\" . 5))"
+    },
+    {
+      "name": "read preserves point",
+      "passed": true,
+      "detail": "before=3 after=3"
+    },
+    {
+      "name": "read preserves mark-active",
+      "passed": true,
+      "detail": "before=t after=t"
+    },
+    {
+      "name": "read preserves chars tick",
+      "passed": true,
+      "detail": "before=5 after=5"
+    },
+    {
+      "name": "read preserves selected window buffer",
+      "passed": true,
+      "detail": "before=\"soma-bridge-read-left\" after=\"soma-bridge-read-left\""
+    }
+  ]
+}

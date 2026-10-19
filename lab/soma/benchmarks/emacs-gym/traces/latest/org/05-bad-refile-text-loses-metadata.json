@@ -1,0 +1,40 @@
+{
+  "id": "bad-refile-text-loses-metadata",
+  "title": "Incorrect policy moves only visible text and drops Org metadata",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": "tasks.org",
+    "target": "Archive"
+  },
+  "name": "bad-refile-text-loses-metadata",
+  "checks": [
+    {
+      "name": "action used org-refile move",
+      "passed": false,
+      "detail": "((\"operation\" . \"manual-text-move\") (\"target\" . \"Archive\"))"
+    },
+    {
+      "name": "source subtree removed from Inbox",
+      "passed": true,
+      "detail": "* Inbox\n"
+    },
+    {
+      "name": "subtree inserted under Archive",
+      "passed": true,
+      "detail": "* Archive\n** Existing\nold\n** TODO Train model\nBody\n"
+    },
+    {
+      "name": "ID and custom property preserved exactly once",
+      "passed": false,
+      "detail": "id-count=0 custom-count=0"
+    },
+    {
+      "name": "child subtree preserved",
+      "passed": false,
+      "detail": "* Archive\n** Existing\nold\n** TODO Train model\nBody\n"
+    }
+  ],
+  "final_text": "* Inbox\n* Archive\n** Existing\nold\n** TODO Train model\nBody\n"
+}

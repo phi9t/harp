@@ -1,0 +1,35 @@
+{
+  "id": "correct-babel-result-parent",
+  "title": "Correct policy executes a Babel block and grades the parent Org buffer",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": "run.org",
+    "default_directory": "/project/tmp/soma-org-babel-correct-LepBWj/"
+  },
+  "name": "correct-babel-result-parent",
+  "checks": [
+    {
+      "name": "action used org-babel-execute-src-block",
+      "passed": true,
+      "detail": "((\"operation\" . \"org-babel-execute-src-block\") (\"language\" . \"emacs-lisp\"))"
+    },
+    {
+      "name": "results inserted in parent Org buffer",
+      "passed": true,
+      "detail": "* Run\n#+begin_src emacs-lisp :results output replace\n(princ (format \"SOMA_ORG_RUN=%s\\nSOMA_ORG_DIR=%s\\n\" (getenv \"SOMA_INSULA_RUN_ID\") default-directory))\n#+end_src\n\n#+RESULTS:\n: SOMA_ORG_RUN=20260928T081926Z-423986\n: SOMA_ORG_DIR=/project/tmp/soma-org-babel-correct-LepBWj/\n"
+    },
+    {
+      "name": "run id reached Babel execution",
+      "passed": true,
+      "detail": "* Run\n#+begin_src emacs-lisp :results output replace\n(princ (format \"SOMA_ORG_RUN=%s\\nSOMA_ORG_DIR=%s\\n\" (getenv \"SOMA_INSULA_RUN_ID\") default-directory))\n#+end_src\n\n#+RESULTS:\n: SOMA_ORG_RUN=20260928T081926Z-423986\n: SOMA_ORG_DIR=/project/tmp/soma-org-babel-correct-LepBWj/\n"
+    },
+    {
+      "name": "default-directory came from source file directory",
+      "passed": true,
+      "detail": "* Run\n#+begin_src emacs-lisp :results output replace\n(princ (format \"SOMA_ORG_RUN=%s\\nSOMA_ORG_DIR=%s\\n\" (getenv \"SOMA_INSULA_RUN_ID\") default-directory))\n#+end_src\n\n#+RESULTS:\n: SOMA_ORG_RUN=20260928T081926Z-423986\n: SOMA_ORG_DIR=/project/tmp/soma-org-babel-correct-LepBWj/\n"
+    }
+  ],
+  "final_text": "* Run\n#+begin_src emacs-lisp :results output replace\n(princ (format \"SOMA_ORG_RUN=%s\\nSOMA_ORG_DIR=%s\\n\" (getenv \"SOMA_INSULA_RUN_ID\") default-directory))\n#+end_src\n\n#+RESULTS:\n: SOMA_ORG_RUN=20260928T081926Z-423986\n: SOMA_ORG_DIR=/project/tmp/soma-org-babel-correct-LepBWj/\n"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Waystone HDFS Rootfs Artifacts"
+  short_description: "Persist Soma rootfs artifacts through Waystone HDFS"
+  default_prompt: "Use $waystone-hdfs-rootfs-artifacts to verify or run the Soma rootfs artifact HDFS round trip."

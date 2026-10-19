@@ -1,0 +1,73 @@
+{
+  "id": "direct-call-rejected",
+  "title": "Model-facing requests cannot invoke unchecked direct-call operations",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "direct-1",
+    "operation": "direct-call",
+    "params": {
+      "requested_operation": "magit-stage-1"
+    }
+  },
+  "response": {
+    "request_id": "direct-1",
+    "operation": "direct-call",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "direct-call",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "requested_operation": "magit-stage-1",
+      "reason": "model-facing transport does not expose unchecked direct calls"
+    },
+    "error_code": "unauthorized_operation",
+    "error": "model-facing transport does not expose unchecked direct calls"
+  },
+  "status": {
+    "request_id": "direct-1",
+    "operation": "direct-call",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "direct-call",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "requested_operation": "magit-stage-1",
+      "reason": "model-facing transport does not expose unchecked direct calls"
+    },
+    "error_code": "unauthorized_operation",
+    "error": "model-facing transport does not expose unchecked direct calls"
+  },
+  "checks": [
+    {
+      "name": "direct operation is rejected",
+      "passed": true,
+      "detail": "((\"request_id\" . \"direct-1\") (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\")) (\"error_code\" . \"unauthorized_operation\") (\"error\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    },
+    {
+      "name": "direct-call rejection is stored",
+      "passed": true,
+      "detail": "((\"request_id\" . \"direct-1\") (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\")) (\"error_code\" . \"unauthorized_operation\") (\"error\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    },
+    {
+      "name": "direct-call result reports checked rejection",
+      "passed": true,
+      "detail": "((\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    }
+  ]
+}

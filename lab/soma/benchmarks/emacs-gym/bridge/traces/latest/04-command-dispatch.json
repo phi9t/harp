@@ -1,0 +1,562 @@
+{
+  "id": "command-dispatch",
+  "title": "Request envelope executes an allowlisted interactive command through checked command dispatch",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "command-1",
+    "operation": "command.dispatch",
+    "params": {
+      "buffer_name": "soma-bridge-command",
+      "command": "soma-bridge-bench-append-token",
+      "preconditions": {
+        "buffer_name": "soma-bridge-command",
+        "selected_window_buffer": "soma-bridge-command",
+        "chars_tick": 4,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "read_only": false,
+        "minibuffer_active": false
+      }
+    }
+  },
+  "response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "command-1",
+    "operation": "command.dispatch",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "command": "soma-bridge-bench-append-token",
+      "route": "command-execute",
+      "this_command": "soma-bridge-bench-append-token",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-command>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=4 actual=4"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 6,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 7,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 11,
+        "point": 11,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-command>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=4 actual=4"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "emacs.observe_buffer",
+          "state": "succeeded",
+          "buffer_name": "soma-bridge-command",
+          "text_owner_name": "soma-bridge-command",
+          "buffer_file_name": false,
+          "major_mode": "fundamental-mode",
+          "chars_tick": 4,
+          "modified": false,
+          "read_only": false,
+          "point_min": 1,
+          "point_max": 6,
+          "point": 1,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "soma-bridge-command",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "emacs.observe_buffer",
+          "state": "succeeded",
+          "buffer_name": "soma-bridge-command",
+          "text_owner_name": "soma-bridge-command",
+          "buffer_file_name": false,
+          "major_mode": "fundamental-mode",
+          "chars_tick": 7,
+          "modified": true,
+          "read_only": false,
+          "point_min": 1,
+          "point_max": 11,
+          "point": 11,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "soma-bridge-command",
+          "minibuffer_active": false
+        }
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 6,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 7,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 11,
+        "point": 11,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "status": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "command-1",
+    "operation": "command.dispatch",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "command": "soma-bridge-bench-append-token",
+      "route": "command-execute",
+      "this_command": "soma-bridge-bench-append-token",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-command>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=4 actual=4"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 6,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 7,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 11,
+        "point": 11,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-command>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-command\" actual=\"soma-bridge-command\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=4 actual=4"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "emacs.observe_buffer",
+          "state": "succeeded",
+          "buffer_name": "soma-bridge-command",
+          "text_owner_name": "soma-bridge-command",
+          "buffer_file_name": false,
+          "major_mode": "fundamental-mode",
+          "chars_tick": 4,
+          "modified": false,
+          "read_only": false,
+          "point_min": 1,
+          "point_max": 6,
+          "point": 1,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "soma-bridge-command",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "emacs.observe_buffer",
+          "state": "succeeded",
+          "buffer_name": "soma-bridge-command",
+          "text_owner_name": "soma-bridge-command",
+          "buffer_file_name": false,
+          "major_mode": "fundamental-mode",
+          "chars_tick": 7,
+          "modified": true,
+          "read_only": false,
+          "point_min": 1,
+          "point_max": 11,
+          "point": 11,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "soma-bridge-command",
+          "minibuffer_active": false
+        }
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 6,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-command",
+        "text_owner_name": "soma-bridge-command",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 7,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 11,
+        "point": 11,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-command",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "buffer_text": "alpha done",
+  "checks": [
+    {
+      "name": "command request succeeded",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"command-1\") (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"soma-bridge-bench-append-token\") (\"route\" . \"command-execute\") (\"this_command\" . \"soma-bridge-bench-append-token\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-command>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=4 actual=4\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-command>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=4 actual=4\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before_after_observations\" (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)))) (\"observations\" (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "command dispatch used checked bridge route",
+      "passed": true,
+      "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"soma-bridge-bench-append-token\") (\"route\" . \"command-execute\") (\"this_command\" . \"soma-bridge-bench-append-token\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-command>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=4 actual=4\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    },
+    {
+      "name": "command mutation happened in target buffer",
+      "passed": true,
+      "detail": "alpha done"
+    },
+    {
+      "name": "status records completed command request",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"command-1\") (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"soma-bridge-bench-append-token\") (\"route\" . \"command-execute\") (\"this_command\" . \"soma-bridge-bench-append-token\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-command>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=4 actual=4\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-command>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-command\\\" actual=\\\"soma-bridge-command\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=4 actual=4\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before_after_observations\" (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)))) (\"observations\" (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 6) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-command\") (\"text_owner_name\" . \"soma-bridge-command\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 7) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 11) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-command\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "delay_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "timeout later ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "timeout target request is accepted as running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "target request did not reach terminal state before timeout",
+        "error_code": "timeout",
+        "operation": "request.await",
+        "request_id": "daemon-timeout-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "outcome_unknown",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-timeout-async-1",
+            "result": {
+              "delay_seconds": 0.7,
+              "operation": "bridge.defer_echo",
+              "state": "running",
+              "value": "timeout later ok"
+            },
+            "state": "running",
+            "state_sequence": [
+              "accepted",
+              "running"
+            ]
+          },
+          "timeout_seconds": 0.05
+        },
+        "state": "outcome_unknown",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "outcome_unknown"
+        ]
+      },
+      "name": "short await reports outcome_unknown",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "target request did not reach terminal state before timeout",
+        "error_code": "timeout",
+        "operation": "request.await",
+        "request_id": "daemon-timeout-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "outcome_unknown",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-timeout-async-1",
+            "result": {
+              "delay_seconds": 0.7,
+              "operation": "bridge.defer_echo",
+              "state": "running",
+              "value": "timeout later ok"
+            },
+            "state": "running",
+            "state_sequence": [
+              "accepted",
+              "running"
+            ]
+          },
+          "timeout_seconds": 0.05
+        },
+        "state": "outcome_unknown",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "outcome_unknown"
+        ]
+      },
+      "name": "timeout response uses timeout error code",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "delay_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "timeout later ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "timeout result references original request",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "delay_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "timeout later ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "timeout result leaves original request non-terminal",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.await",
+        "request_id": "daemon-timeout-reconcile-1",
+        "result": {
+          "operation": "request.await",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-timeout-async-1",
+            "result": {
+              "completed_after_seconds": 0.7,
+              "operation": "bridge.defer_echo",
+              "state": "succeeded",
+              "value": "timeout later ok"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "reconcile await succeeds later",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "completed_after_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "timeout later ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "reconciled status is original request",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "completed_after_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "timeout later ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "reconciled original request is terminal succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "completed_after_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "timeout later ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "reconciled result preserves original value",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-await-timeout-outcome-unknown",
+  "policy_passed_grader": true,
+  "reconcile_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-timeout-async-1",
+      "timeout_seconds": 2.0
+    },
+    "request_id": "daemon-timeout-reconcile-1"
+  },
+  "reconcile_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-timeout-reconcile-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "completed_after_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "timeout later ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "request": {
+    "operation": "bridge.defer_echo",
+    "params": {
+      "delay_seconds": 0.7,
+      "value": "timeout later ok"
+    },
+    "request_id": "daemon-timeout-async-1"
+  },
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "bridge.defer_echo",
+    "request_id": "daemon-timeout-async-1",
+    "result": {
+      "delay_seconds": 0.7,
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "timeout later ok"
+    },
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ]
+  },
+  "timeout_await_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-timeout-async-1",
+      "timeout_seconds": 0.05
+    },
+    "request_id": "daemon-timeout-await-1"
+  },
+  "timeout_await_response": {
+    "error": "target request did not reach terminal state before timeout",
+    "error_code": "timeout",
+    "operation": "request.await",
+    "request_id": "daemon-timeout-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "outcome_unknown",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-timeout-async-1",
+        "result": {
+          "delay_seconds": 0.7,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "timeout later ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "timeout_seconds": 0.05
+    },
+    "state": "outcome_unknown",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "outcome_unknown"
+    ]
+  },
+  "title": "request.await reports outcome_unknown on timeout, then reconciles the original request without resubmission"
+}

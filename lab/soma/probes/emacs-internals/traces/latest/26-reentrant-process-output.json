@@ -1,0 +1,61 @@
+{
+  "id": "reentrant-process-output",
+  "title": "Reentrant process output while instrumentation is active",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Process filters can run during waits initiated from Lisp; instrumentation must tolerate callbacks during an action.",
+  "hypothesis": "A filter that calls `accept-process-output' while the process continues producing output can observe nested or at least interleaved output processing before the outer action returns.",
+  "sources": [
+    {
+      "name": "Comint process mark source",
+      "path": "comint.el.gz",
+      "lines": "467, 889, 998",
+      "note": ""
+    },
+    {
+      "name": "process wait primitive",
+      "path": "Emacs primitive introspection",
+      "lines": "accept-process-output",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One shell process that emits two lines with a short delay and one filter that waits inside the first callback.",
+  "predicted_behavior": "The trace records process output arriving while the filter/action is active; recursive depth may be runtime-dependent.",
+  "observed_behavior": "max-depth=2 events=(\"depth=1 text=\\\"first\\\"\" \"depth=2 text=\\\"second\\\"\")",
+  "independent_checks": [
+    {
+      "name": "process output captured",
+      "passed": true,
+      "detail": "(\"depth=2 text=\\\"second\\\"\")"
+    },
+    {
+      "name": "action observed output before final completion",
+      "passed": true,
+      "detail": "(\"depth=2 text=\\\"second\\\"\")"
+    }
+  ],
+  "counterexample": "Assuming no asynchronous callbacks occur until an operation returns hides race points.",
+  "derived_gym_requirement": "Actions that wait for external output must repeat relevant consistency checks after waits and represent outcome_unknown where completion cannot be proven."
+}

@@ -1,0 +1,67 @@
+{
+  "id": "collision-rejected-no-overwrite",
+  "title": "Correct policy refuses a Dired rename collision without overwrite",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": "soma-dired-collision-correct-qNV4Jz",
+    "directory": "/project/tmp/soma-dired-collision-correct-qNV4Jz"
+  },
+  "name": "collision-rejected-no-overwrite",
+  "checks": [
+    {
+      "name": "collision did not overwrite target",
+      "passed": true,
+      "detail": "collision-original\n"
+    },
+    {
+      "name": "source remains after collision",
+      "passed": true,
+      "detail": "source=t contents=\"source\n\""
+    },
+    {
+      "name": "action reported collision",
+      "passed": true,
+      "detail": "outcome=\"collision\" action=((\"operation\" . \"dired-rename-file\") (\"ok_if_already_exists\" . :json-false) (\"target\" . \"collision.txt\"))"
+    }
+  ],
+  "outcome": "collision",
+  "files": [
+    {
+      "name": "keep.txt",
+      "exists": true,
+      "contents": "keep\n"
+    },
+    {
+      "name": "target-a.txt",
+      "exists": true,
+      "contents": "target-a\n"
+    },
+    {
+      "name": "target-b.txt",
+      "exists": true,
+      "contents": "target-b\n"
+    },
+    {
+      "name": "flagged-decoy.txt",
+      "exists": true,
+      "contents": "flagged-decoy\n"
+    },
+    {
+      "name": "source.txt",
+      "exists": true,
+      "contents": "source\n"
+    },
+    {
+      "name": "renamed.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "collision.txt",
+      "exists": true,
+      "contents": "collision-original\n"
+    }
+  ]
+}

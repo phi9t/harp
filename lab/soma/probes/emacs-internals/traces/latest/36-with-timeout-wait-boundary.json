@@ -1,0 +1,55 @@
+{
+  "id": "with-timeout-wait-boundary",
+  "title": "with-timeout only fires at wait points",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "`with-timeout' checks its deadline when Emacs waits for external events; CPU-bound Lisp that does not wait can run past the deadline.",
+  "hypothesis": "A body that calls `sleep-for' should return the timeout form, while a short busy loop should run past the deadline and return normally.",
+  "sources": [
+    {
+      "name": "with-timeout",
+      "path": "emacs-lisp/timer.el.gz",
+      "lines": "478-484",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Two short timed forms: one waiting with `sleep-for', one CPU-bound loop guarded by an outer wall-clock limit.",
+  "predicted_behavior": "Timeout behavior differs at wait points versus CPU-bound work.",
+  "observed_behavior": "wait-result=timed-out busy-result=finished busy-elapsed=0.0803",
+  "independent_checks": [
+    {
+      "name": "waiting form timed out",
+      "passed": true,
+      "detail": "timed-out"
+    },
+    {
+      "name": "busy loop ran past timeout and returned normally",
+      "passed": true,
+      "detail": "result=finished elapsed=0.0803"
+    }
+  ],
+  "counterexample": "In-Emacs timeouts cannot be the only watchdog for model actions or package code that can loop without waiting.",
+  "derived_gym_requirement": "The gym supervisor needs an out-of-process watchdog, and operation results must distinguish failed, canceled, and outcome_unknown."
+}

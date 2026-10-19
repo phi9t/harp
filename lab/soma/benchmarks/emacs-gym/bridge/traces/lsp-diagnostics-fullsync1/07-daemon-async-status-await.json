@@ -1,0 +1,346 @@
+{
+  "as_expected": true,
+  "await_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-async-1",
+      "timeout_seconds": 2.0
+    },
+    "request_id": "daemon-await-1"
+  },
+  "await_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "daemon async ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "delay_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "daemon async ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "async request is accepted as running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "delay_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "daemon async ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "async request records accepted running sequence",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "delay_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "daemon async ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "status observes in-flight request",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.await",
+        "request_id": "daemon-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-async-1",
+            "result": {
+              "completed_after_seconds": 0.5,
+              "operation": "bridge.defer_echo",
+              "state": "succeeded",
+              "value": "daemon async ok"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "await request succeeds",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "daemon async ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "awaited status is original request",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "daemon async ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "awaited status is terminal succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "daemon async ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "awaited result preserves echoed value",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "daemon async ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final status remains terminal succeeded",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "final_status_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-async-1"
+    },
+    "request_id": "daemon-async-final-status-1"
+  },
+  "final_status_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-async-final-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "daemon async ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "id": "daemon-async-status-await",
+  "policy_passed_grader": true,
+  "request": {
+    "operation": "bridge.defer_echo",
+    "params": {
+      "delay_seconds": 0.5,
+      "value": "daemon async ok"
+    },
+    "request_id": "daemon-async-1"
+  },
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "bridge.defer_echo",
+    "request_id": "daemon-async-1",
+    "result": {
+      "delay_seconds": 0.5,
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "daemon async ok"
+    },
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ]
+  },
+  "running_status_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-async-1"
+    },
+    "request_id": "daemon-async-status-1"
+  },
+  "running_status_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-async-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-async-1",
+        "result": {
+          "delay_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "daemon async ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "title": "The live daemon transport exposes an in-flight request, then awaits its terminal status without resubmission"
+}

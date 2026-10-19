@@ -1,0 +1,1388 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "buffer_name": "*soma-daemon-comint-live*",
+        "command": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'",
+        "command_log": "/project/tmp/soma-daemon-comint-vxmvdk/commands.log",
+        "counter": "/project/tmp/soma-daemon-comint-vxmvdk/counter",
+        "expected_label": "live",
+        "observation": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "state": "succeeded"
+        },
+        "pid": 329,
+        "process_name": "soma-daemon-comint",
+        "tmp": "/project/tmp/soma-daemon-comint-vxmvdk"
+      },
+      "name": "Comint fixture is present",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-g"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "Comint terminal switch cancel succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-x",
+          "b"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "Comint terminal switch prefix succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "*soma-daemon-comint-live*"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "Comint terminal switch buffer text sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "Enter"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "Comint terminal switch enter succeeded",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "name": "client terminal frame displays Comint buffer",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "comint.observe",
+        "request_id": "daemon-comint-terminal-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "initial Comint observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-live*",
+        "buffer_tail": "$ ",
+        "chars_tick": 3,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+        "last_input_end": 1,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_text": "",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+        "point": 3,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 329,
+        "process_live": true,
+        "process_mark": 3,
+        "process_name": "soma-daemon-comint",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040414Z-3718539",
+        "selected_window_buffer": "*soma-daemon-comint-live*",
+        "state": "succeeded"
+      },
+      "name": "initial Comint process is live",
+      "passed": true
+    },
+    {
+      "detail": "/usr/bin/dash",
+      "name": "initial Comint process executable is rootfs-owned",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-live*",
+        "buffer_tail": "$ ",
+        "chars_tick": 3,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+        "last_input_end": 1,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_text": "",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+        "point": 3,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 329,
+        "process_live": true,
+        "process_mark": 3,
+        "process_name": "soma-daemon-comint",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040414Z-3718539",
+        "selected_window_buffer": "*soma-daemon-comint-live*",
+        "state": "succeeded"
+      },
+      "name": "initial Comint selected window is target buffer",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.goto_char",
+        "request_id": "daemon-comint-terminal-goto-1",
+        "result": {
+          "after": {
+            "buffer_file_name": false,
+            "buffer_name": "*soma-daemon-comint-live*",
+            "chars_tick": 3,
+            "major_mode": "comint-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": true,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 3,
+            "point_max": 3,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "*soma-daemon-comint-live*",
+            "state": "succeeded",
+            "text_owner_name": "*soma-daemon-comint-live*"
+          },
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "*soma-daemon-comint-live*",
+            "chars_tick": 3,
+            "major_mode": "comint-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": true,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 3,
+            "point_max": 3,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "*soma-daemon-comint-live*",
+            "state": "succeeded",
+            "text_owner_name": "*soma-daemon-comint-live*"
+          },
+          "error": false,
+          "operation": "emacs.goto_char",
+          "point": 3,
+          "precondition_checks": [
+            {
+              "detail": "#<buffer *soma-daemon-comint-live*>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"*soma-daemon-comint-live*\" actual=\"*soma-daemon-comint-live*\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=\"*soma-daemon-comint-live*\"",
+              "name": "text owner matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "visited file matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=3 actual=3",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=3 actual=3",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"*soma-daemon-comint-live*\" actual=\"*soma-daemon-comint-live*\"",
+              "name": "selected window matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "modified state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=nil actual=:json-false",
+              "name": "read-only state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "selected=\"*soma-daemon-comint-live*\" target=\"*soma-daemon-comint-live*\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "point=3",
+              "name": "target point is valid",
+              "passed": true
+            }
+          ],
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "checked Comint point navigation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "comint.observe",
+        "request_id": "daemon-comint-terminal-ready-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "ready Comint observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-live*",
+        "buffer_tail": "$ ",
+        "chars_tick": 3,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+        "last_input_end": 1,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_text": "",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+        "point": 3,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 329,
+        "process_live": true,
+        "process_mark": 3,
+        "process_name": "soma-daemon-comint",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040414Z-3718539",
+        "selected_window_buffer": "*soma-daemon-comint-live*",
+        "state": "succeeded"
+      },
+      "name": "ready Comint point is at or after process mark",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "Comint terminal input was sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "Enter"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "Comint terminal Enter succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "comint.observe",
+        "request_id": "daemon-comint-terminal-wait-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+          "chars_tick": 293,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 256,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 426,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 426,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final Comint observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "final": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+          "chars_tick": 293,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 256,
+          "last_input_markers_live": true,
+          "last_input_start": 3,
+          "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 426,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 426,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded"
+        },
+        "initial": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded"
+        }
+      },
+      "name": "Comint process identity is stable",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-live*",
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+        "chars_tick": 293,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+        "last_input_end": 256,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+        "point": 426,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 329,
+        "process_live": true,
+        "process_mark": 426,
+        "process_name": "soma-daemon-comint",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040414Z-3718539",
+        "selected_window_buffer": "*soma-daemon-comint-live*",
+        "state": "succeeded"
+      },
+      "name": "final Comint process remains live",
+      "passed": true
+    },
+    {
+      "detail": "/usr/bin/dash",
+      "name": "final Comint process executable is rootfs-owned",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-live*",
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+        "chars_tick": 293,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+        "last_input_end": 256,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+        "point": 426,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 329,
+        "process_live": true,
+        "process_mark": 426,
+        "process_name": "soma-daemon-comint",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040414Z-3718539",
+        "selected_window_buffer": "*soma-daemon-comint-live*",
+        "state": "succeeded"
+      },
+      "name": "Comint last-input markers updated",
+      "passed": true
+    },
+    {
+      "detail": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+      "name": "Comint last-input text includes submitted command",
+      "passed": true
+    },
+    {
+      "detail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+      "name": "Comint output contains submitted label",
+      "passed": true
+    },
+    {
+      "detail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+      "name": "Comint subprocess received run id",
+      "passed": true
+    },
+    {
+      "detail": [
+        "live"
+      ],
+      "name": "Comint side effect occurred exactly once",
+      "passed": true
+    },
+    {
+      "detail": "post-command:comint-send-input\n",
+      "name": "Comint post-command hook saw comint-send-input",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "capture-pane",
+          "-S",
+          "-200",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "-p"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "File Edit Options Buffers Tools Complete In/Out Signals Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-aO3Umd   12%   L27    (Magit) ----------\n$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n'\\\n \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'li\\\nve\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_CO\\\nMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$\n\n-UUU:@**-  F2  *soma-daemon-comint-live*   All   L6     (Comint:run) -----------\n\n"
+      },
+      "name": "terminal pane shows Comint result",
+      "passed": true
+    }
+  ],
+  "command_log": "post-command:comint-send-input\n",
+  "expected_policy_pass": true,
+  "fixture": {
+    "buffer_name": "*soma-daemon-comint-live*",
+    "command": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'",
+    "command_log": "/project/tmp/soma-daemon-comint-vxmvdk/commands.log",
+    "counter": "/project/tmp/soma-daemon-comint-vxmvdk/counter",
+    "expected_label": "live",
+    "observation": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-live*",
+      "buffer_tail": "$ ",
+      "chars_tick": 3,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+      "last_input_end": 1,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+      "point": 3,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 329,
+      "process_live": true,
+      "process_mark": 3,
+      "process_name": "soma-daemon-comint",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040414Z-3718539",
+      "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+      "state": "succeeded"
+    },
+    "pid": 329,
+    "process_name": "soma-daemon-comint",
+    "tmp": "/project/tmp/soma-daemon-comint-vxmvdk"
+  },
+  "id": "daemon-comint-terminal-send-input",
+  "initial_request": {
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": "*soma-daemon-comint-live*"
+    },
+    "request_id": "daemon-comint-terminal-observe-1"
+  },
+  "initial_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "comint.observe",
+    "request_id": "daemon-comint-terminal-observe-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-live*",
+      "buffer_tail": "$ ",
+      "chars_tick": 3,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+      "last_input_end": 1,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+      "point": 3,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 329,
+      "process_live": true,
+      "process_mark": 3,
+      "process_name": "soma-daemon-comint",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040414Z-3718539",
+      "selected_window_buffer": "*soma-daemon-comint-live*",
+      "state": "succeeded"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "point_adjustment": {
+    "process_mark": 3,
+    "request": {
+      "operation": "emacs.goto_char",
+      "params": {
+        "buffer_name": "*soma-daemon-comint-live*",
+        "point": 3,
+        "preconditions": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "buffer_tail": "$ ",
+          "chars_tick": 3,
+          "current_input_text": "",
+          "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+          "last_input_end": 1,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_text": "",
+          "major_mode": "comint-mode",
+          "minibuffer_active": false,
+          "modified": true,
+          "operation": "comint.observe",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+          "point": 3,
+          "point_after_process_mark": true,
+          "process_exe": "/usr/bin/dash",
+          "process_id": 329,
+          "process_live": true,
+          "process_mark": 3,
+          "process_name": "soma-daemon-comint",
+          "process_present": true,
+          "process_status": "run",
+          "run_id": "20260929T040414Z-3718539",
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded"
+        }
+      },
+      "request_id": "daemon-comint-terminal-goto-1"
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.goto_char",
+      "request_id": "daemon-comint-terminal-goto-1",
+      "result": {
+        "after": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "chars_tick": 3,
+          "major_mode": "comint-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 3,
+          "point_max": 3,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded",
+          "text_owner_name": "*soma-daemon-comint-live*"
+        },
+        "before": {
+          "buffer_file_name": false,
+          "buffer_name": "*soma-daemon-comint-live*",
+          "chars_tick": 3,
+          "major_mode": "comint-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 3,
+          "point_max": 3,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*soma-daemon-comint-live*",
+          "state": "succeeded",
+          "text_owner_name": "*soma-daemon-comint-live*"
+        },
+        "error": false,
+        "operation": "emacs.goto_char",
+        "point": 3,
+        "precondition_checks": [
+          {
+            "detail": "#<buffer *soma-daemon-comint-live*>",
+            "name": "target buffer is live",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"*soma-daemon-comint-live*\" actual=\"*soma-daemon-comint-live*\"",
+            "name": "buffer identity matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=nil actual=\"*soma-daemon-comint-live*\"",
+            "name": "text owner matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "visited file matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=3 actual=3",
+            "name": "character revision matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=3 actual=3",
+            "name": "point matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=\"*soma-daemon-comint-live*\" actual=\"*soma-daemon-comint-live*\"",
+            "name": "selected window matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=t actual=t",
+            "name": "modified state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=nil actual=:json-false",
+            "name": "read-only state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "expected=:json-false actual=:json-false",
+            "name": "minibuffer state matches precondition",
+            "passed": true
+          },
+          {
+            "detail": "selected=\"*soma-daemon-comint-live*\" target=\"*soma-daemon-comint-live*\"",
+            "name": "selected window displays target buffer",
+            "passed": true
+          },
+          {
+            "detail": "point=3",
+            "name": "target point is valid",
+            "passed": true
+          }
+        ],
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    }
+  },
+  "policy_passed_grader": true,
+  "ready_request": {
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": "*soma-daemon-comint-live*"
+    },
+    "request_id": "daemon-comint-terminal-ready-1"
+  },
+  "ready_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "comint.observe",
+    "request_id": "daemon-comint-terminal-ready-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-live*",
+      "buffer_tail": "$ ",
+      "chars_tick": 3,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+      "last_input_end": 1,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_text": "",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+      "point": 3,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 329,
+      "process_live": true,
+      "process_mark": 3,
+      "process_name": "soma-daemon-comint",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040414Z-3718539",
+      "selected_window_buffer": "*soma-daemon-comint-live*",
+      "state": "succeeded"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "terminal_after_input": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "capture-pane",
+      "-S",
+      "-200",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "-p"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "File Edit Options Buffers Tools Complete In/Out Signals Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-aO3Umd   12%   L27    (Magit) ----------\n$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n'\\\n \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'li\\\nve\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_CO\\\nMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$\n\n-UUU:@**-  F2  *soma-daemon-comint-live*   All   L6     (Comint:run) -----------\n\n"
+  },
+  "terminal_before_input": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "capture-pane",
+      "-S",
+      "-200",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "-p"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "File Edit Options Buffers Tools Complete In/Out Signals Help\nmodified   target.txt\u2026\n\nStaged changes (1)\nmodified   staged.txt\u2026\n\nRecent commits\u2026\n\n\n\n\n-UUU:@%%-  F2  magit: soma-daemon-magit-aO3Umd   12%   L27    (Magit) ----------\n$\n\n\n\n\n\n\n\n\n\n-UUU:@**-  F2  *soma-daemon-comint-live*   All   L1     (Comint:run) -----------\n\n"
+  },
+  "terminal_input": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'",
+  "terminal_input_keys": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-l",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_submit": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "Enter"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_switch": {
+    "buffer_keys": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-l",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "*soma-daemon-comint-live*"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-g"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel_attempts": [
+      {
+        "attempt": 1,
+        "cancel": {
+          "argv": [
+            "tmux",
+            "-S",
+            "/project/run/soma-gym-bridge-terminal-tmux.sock",
+            "send-keys",
+            "-t",
+            "soma-gym-bridge-terminal:0.0",
+            "C-g"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        "minibuffer_active": false,
+        "response_state": "succeeded",
+        "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "transient_active": false,
+        "transient_map_installed": false
+      }
+    ],
+    "cancel_interaction_response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_interaction",
+      "request_id": "daemon-comint-terminal-cancel-interaction-1",
+      "result": {
+        "daemonp": true,
+        "emacs_pid": 4,
+        "last_command": "keyboard-quit",
+        "minibuffer_active": false,
+        "minibuffer_buffer": false,
+        "minibuffer_contents": false,
+        "minibuffer_prompt": false,
+        "operation": "emacs.observe_interaction",
+        "recursive_edit_depth": 0,
+        "selected_window_buffer": "magit: soma-daemon-magit-6u0Ggn",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "this_command": "nil",
+        "transient_active": false,
+        "transient_active_arguments": [],
+        "transient_buffer": false,
+        "transient_current_command": false,
+        "transient_map_active": false,
+        "transient_map_installed": false,
+        "transient_prefix_command": false,
+        "transient_suffixes": [],
+        "transient_window_buffer": false,
+        "transient_window_live": false
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "enter": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "Enter"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "minibuffer_attempts": [
+      {
+        "attempt": 1,
+        "minibuffer_active": true,
+        "minibuffer_prompt": "Switch to buffer (default magit-diff: soma-daemon-magit-aO3Umd): ",
+        "response_state": "succeeded",
+        "selected_window_buffer": " *Minibuf-1*"
+      }
+    ],
+    "observation_attempts": [
+      {
+        "attempt": 1,
+        "client_terminal_buffers": [
+          "*soma-daemon-comint-live*"
+        ],
+        "response_state": "succeeded"
+      }
+    ],
+    "prefix": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-x",
+        "b"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_frames",
+      "request_id": "daemon-comint-terminal-frame-1",
+      "result": {
+        "client_frame_count": 1,
+        "daemonp": true,
+        "emacs_pid": 4,
+        "frame_count": 2,
+        "frames": [
+          {
+            "client_frame": true,
+            "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+            "graphic": false,
+            "height": 23,
+            "index": 1,
+            "name": "F2",
+            "selected": true,
+            "selected_window_buffer": "*soma-daemon-comint-live*",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "/dev/pts/0",
+            "visible": "t",
+            "width": 80
+          },
+          {
+            "client_frame": false,
+            "client_repr": false,
+            "graphic": false,
+            "height": 24,
+            "index": 2,
+            "name": "F1",
+            "selected": false,
+            "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "initial_terminal",
+            "visible": "t",
+            "width": 80
+          }
+        ],
+        "graphic_frame_count": 0,
+        "operation": "emacs.observe_frames",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "terminal_frame_count": 2
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "tmux_target": "soma-gym-bridge-terminal:0.0"
+  },
+  "title": "A live daemon terminal frame submits input through Comint to a rootfs-owned subprocess exactly once",
+  "wait": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+        "counter_lines": [
+          "live"
+        ],
+        "last_input_markers_live": true,
+        "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+        "process_id": 329,
+        "process_live": true,
+        "response_state": "succeeded"
+      }
+    ],
+    "counter_lines": [
+      "live"
+    ],
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "comint.observe",
+      "request_id": "daemon-comint-terminal-wait-1",
+      "result": {
+        "buffer_file_name": false,
+        "buffer_name": "*soma-daemon-comint-live*",
+        "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+        "chars_tick": 293,
+        "current_input_text": "",
+        "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+        "last_input_end": 256,
+        "last_input_markers_live": true,
+        "last_input_start": 3,
+        "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+        "major_mode": "comint-mode",
+        "minibuffer_active": false,
+        "modified": true,
+        "operation": "comint.observe",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+        "point": 426,
+        "point_after_process_mark": true,
+        "process_exe": "/usr/bin/dash",
+        "process_id": 329,
+        "process_live": true,
+        "process_mark": 426,
+        "process_name": "soma-daemon-comint",
+        "process_present": true,
+        "process_status": "run",
+        "run_id": "20260929T040414Z-3718539",
+        "selected_window_buffer": "*soma-daemon-comint-live*",
+        "state": "succeeded"
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "*soma-daemon-comint-live*",
+      "buffer_tail": "$ printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\nSOMA_DAEMON_COMINT_SENT:live\nSOMA_DAEMON_COMINT_RUN:20260929T040414Z-3718539\nSOMA_DAEMON_COMINT_CWD:/project/tmp/soma-daemon-comint-vxmvdk\nSOMA_DAEMON_COMINT_DONE:live\n$ ",
+      "chars_tick": 293,
+      "current_input_text": "",
+      "default_directory": "/project/tmp/soma-daemon-comint-vxmvdk/",
+      "last_input_end": 256,
+      "last_input_markers_live": true,
+      "last_input_start": 3,
+      "last_input_text": "printf 'SOMA_DAEMON_COMINT_SENT:live\\n'; printf 'SOMA_DAEMON_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_DAEMON_COMINT_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-daemon-comint-vxmvdk/counter; printf 'SOMA_DAEMON_COMINT_DONE:live\\n'\n",
+      "major_mode": "comint-mode",
+      "minibuffer_active": false,
+      "modified": true,
+      "operation": "comint.observe",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/insula-plan.json",
+      "point": 426,
+      "point_after_process_mark": true,
+      "process_exe": "/usr/bin/dash",
+      "process_id": 329,
+      "process_live": true,
+      "process_mark": 426,
+      "process_name": "soma-daemon-comint",
+      "process_present": true,
+      "process_status": "run",
+      "run_id": "20260929T040414Z-3718539",
+      "selected_window_buffer": "*soma-daemon-comint-live*",
+      "state": "succeeded"
+    }
+  }
+}

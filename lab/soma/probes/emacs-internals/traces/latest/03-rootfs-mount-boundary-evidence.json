@@ -1,0 +1,71 @@
+{
+  "id": "rootfs-mount-boundary-evidence",
+  "title": "Rootfs mount boundary evidence",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Mount evidence must distinguish writable task/harness state, read-only configured inputs, and broad development host binds.",
+  "hypothesis": "The current development Insula should expose a writable trace directory and private HOME while truthfully declaring host-system binds rather than rootfs-owned closure.",
+  "sources": [
+    {
+      "name": "bwrap mount vector",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "64-100",
+      "note": ""
+    },
+    {
+      "name": "plan visible mount classes",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "56-66",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The current mount plan and several runtime-visible paths.",
+  "predicted_behavior": "Development evidence should show writable Soma trace output, readable Doom inputs, private writable HOME, and broad host `/usr' visibility classified as non-production.",
+  "observed_behavior": "repo=\"/workspace/soma\" doom_core=\"/project/home/.emacs.d\" doom_user=\"/project/home/.doom.d\" ownership=\"soma-selected-container-rootfs\" usr-bin-env=t temp=\"/workspace/soma/probes/emacs-internals/traces/latest/mount-boundary-Ch7zUH\"",
+  "independent_checks": [
+    {
+      "name": "trace output directory is writable",
+      "passed": true,
+      "detail": "/workspace/soma/probes/emacs-internals/traces/latest/mount-boundary-Ch7zUH"
+    },
+    {
+      "name": "private HOME is writable",
+      "passed": true,
+      "detail": "/project/home"
+    },
+    {
+      "name": "Doom inputs are readable",
+      "passed": true,
+      "detail": "core=\"/project/home/.emacs.d\" user=\"/project/home/.doom.d\""
+    },
+    {
+      "name": "development host bind is explicitly classified",
+      "passed": true,
+      "detail": "ownership=\"soma-selected-container-rootfs\" rootfs=\"/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34\""
+    }
+  ],
+  "counterexample": "A plan that simply says `rootfs=/` can be mistaken for a sealed dependency closure if mount classes are not inspected.",
+  "derived_gym_requirement": "Production plans must record normalized mounts or a mount digest and fail if undeclared host roots provide tools or libraries."
+}

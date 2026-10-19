@@ -1,0 +1,2512 @@
+{
+  "id": "comint-process-ownership-rejected",
+  "title": "Stable terminal-v0 Comint operations reject live processes outside the selected rootfs",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "host_sh_path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+  "initial_request": {
+    "request_id": "comint-host-owner-observe-1",
+    "operation": "comint.observe",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*"
+    }
+  },
+  "initial_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-host-owner-observe-1",
+    "operation": "comint.observe",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "comint.observe",
+      "state": "succeeded",
+      "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+      "major_mode": "comint-mode",
+      "buffer_file_name": false,
+      "chars_tick": 3,
+      "modified": true,
+      "default_directory": "/workspace/soma/",
+      "point": 3,
+      "process_present": true,
+      "process_live": true,
+      "process_name": "soma-bridge-comint-host-owner",
+      "process_status": "run",
+      "process_id": 42,
+      "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+      "process_rootfs_owned": false,
+      "process_mark": 3,
+      "point_after_process_mark": true,
+      "last_input_markers_live": false,
+      "last_input_start": 1,
+      "last_input_end": 1,
+      "last_input_text": "",
+      "current_input_text": "",
+      "buffer_tail": "$ ",
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+      "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+      "minibuffer_active": false
+    },
+    "evidence": {
+      "process_identity": {
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false
+      },
+      "input_boundary": {
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": ""
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "comint_state": {
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_mark": 3,
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "submit_request": {
+    "request_id": "comint-host-owner-submit-1",
+    "operation": "comint.submit_input",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+      "input": "printf 'SOMA_BRIDGE_COMINT_SENT:host-comint\\n'; printf 'SOMA_BRIDGE_COMINT_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'host-comint\\n' >> /project/tmp/soma-bridge-comint-host-owner-1tFmuD/counter.txt; printf 'SOMA_BRIDGE_COMINT_DONE:host-comint\\n'",
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "submit_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-host-owner-submit-1",
+    "operation": "comint.submit_input",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "comint.submit_input",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "failed"
+      ],
+      "route": "precondition-check",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 42,
+            "actual": 42
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": false,
+          "detail": {
+            "expected": false,
+            "actual": false,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 3,
+            "actual": 3
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "submitted_bytes": 0,
+      "used_raw_process_write": false,
+      "error": "Comint submit preconditions failed"
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 42,
+            "actual": 42
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": false,
+          "detail": {
+            "expected": false,
+            "actual": false,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 3,
+            "actual": 3
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        }
+      },
+      "submitted_bytes": 0
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {
+      "process_input": {
+        "route": "precondition-check",
+        "submitted_bytes": 0,
+        "comint_input_markers": false,
+        "used_raw_process_write": false
+      }
+    },
+    "diagnostics": [
+      {
+        "code": "conflict",
+        "message": "Comint submit preconditions failed"
+      }
+    ],
+    "continuation": null,
+    "error_code": "conflict",
+    "error": "Comint submit preconditions failed"
+  },
+  "await_request": {
+    "request_id": "comint-host-owner-await-1",
+    "operation": "comint.await_output",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+      "needle": "SOMA_BRIDGE_COMINT_DONE:host-comint",
+      "timeout_seconds": 0.2,
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "await_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-host-owner-await-1",
+    "operation": "comint.await_output",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "comint.await_output",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "failed"
+      ],
+      "route": "precondition-check",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 42,
+            "actual": 42
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": false,
+          "detail": {
+            "expected": false,
+            "actual": false,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint output boundary is valid for the current input",
+          "passed": true,
+          "detail": {
+            "expected_process_mark": 3,
+            "actual_process_mark": 3,
+            "last_input_end": 1
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "matched": false,
+      "matched_output": false,
+      "partial_output": false,
+      "timeout_seconds": 0.2,
+      "error": "Comint await preconditions failed"
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 42,
+            "actual": 42
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": false,
+          "detail": {
+            "expected": false,
+            "actual": false,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint output boundary is valid for the current input",
+          "passed": true,
+          "detail": {
+            "expected_process_mark": 3,
+            "actual_process_mark": 3,
+            "last_input_end": 1
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        }
+      },
+      "matched_output": false,
+      "partial_output": false,
+      "matched": false,
+      "timeout_seconds": 0.2,
+      "timeout": {
+        "seconds": 0.2
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "conflict",
+        "message": "Comint await preconditions failed"
+      }
+    ],
+    "continuation": null,
+    "error_code": "conflict",
+    "error": "Comint await preconditions failed"
+  },
+  "interrupt_request": {
+    "request_id": "comint-host-owner-interrupt-1",
+    "operation": "comint.interrupt",
+    "params": {
+      "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+      "preconditions": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    }
+  },
+  "interrupt_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "comint-host-owner-interrupt-1",
+    "operation": "comint.interrupt",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "comint.interrupt",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "failed"
+      ],
+      "route": "precondition-check",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 42,
+            "actual": 42
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": false,
+          "detail": {
+            "expected": false,
+            "actual": false,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 3,
+            "actual": 3
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "interrupt_command": "comint-interrupt-subjob",
+      "interrupt_dispatched": false,
+      "used_raw_process_write": false,
+      "bridge_used_raw_process_control": false,
+      "error": "Comint interrupt preconditions failed"
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+        },
+        {
+          "name": "buffer mode derives from comint-mode",
+          "passed": true,
+          "detail": "comint-mode"
+        },
+        {
+          "name": "Comint process is live",
+          "passed": true,
+          "detail": "run"
+        },
+        {
+          "name": "Comint process identity matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 42,
+            "actual": 42
+          }
+        },
+        {
+          "name": "Comint process executable matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process executable is rootfs-owned",
+          "passed": false,
+          "detail": {
+            "expected": false,
+            "actual": false,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+          }
+        },
+        {
+          "name": "Comint process mark matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": 3,
+            "actual": 3
+          }
+        },
+        {
+          "name": "current input text matches precondition",
+          "passed": true,
+          "detail": {
+            "expected": "",
+            "actual": ""
+          }
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        },
+        "after": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        }
+      },
+      "interrupt_command": "comint-interrupt-subjob",
+      "process_identity": {
+        "process_id": false,
+        "status_before": false,
+        "status_after": false
+      },
+      "process_survival": {
+        "process_live_after": false
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {
+      "process_interrupt": {
+        "command": "comint-interrupt-subjob",
+        "dispatched": false,
+        "used_raw_process_write": false,
+        "bridge_used_raw_process_control": false
+      }
+    },
+    "diagnostics": [
+      {
+        "code": "conflict",
+        "message": "Comint interrupt preconditions failed"
+      }
+    ],
+    "continuation": null,
+    "error_code": "conflict",
+    "error": "Comint interrupt preconditions failed"
+  },
+  "final_observe": {
+    "operation": "comint.observe",
+    "state": "succeeded",
+    "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+    "major_mode": "comint-mode",
+    "buffer_file_name": false,
+    "chars_tick": 3,
+    "modified": true,
+    "default_directory": "/workspace/soma/",
+    "point": 3,
+    "process_present": true,
+    "process_live": true,
+    "process_name": "soma-bridge-comint-host-owner",
+    "process_status": "run",
+    "process_id": 42,
+    "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+    "process_rootfs_owned": false,
+    "process_mark": 3,
+    "point_after_process_mark": true,
+    "last_input_markers_live": false,
+    "last_input_start": 1,
+    "last_input_end": 1,
+    "last_input_text": "",
+    "current_input_text": "",
+    "buffer_tail": "$ ",
+    "run_id": "20261001T062920Z-2817516",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+    "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+    "minibuffer_active": false
+  },
+  "counter_lines": null,
+  "checks": [
+    {
+      "name": "host-shadow Comint fixture starts a live process",
+      "passed": true,
+      "detail": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "comint-host-owner-observe-1",
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ],
+        "result": {
+          "operation": "comint.observe",
+          "state": "succeeded",
+          "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "major_mode": "comint-mode",
+          "buffer_file_name": false,
+          "chars_tick": 3,
+          "modified": true,
+          "default_directory": "/workspace/soma/",
+          "point": 3,
+          "process_present": true,
+          "process_live": true,
+          "process_name": "soma-bridge-comint-host-owner",
+          "process_status": "run",
+          "process_id": 42,
+          "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+          "process_rootfs_owned": false,
+          "process_mark": 3,
+          "point_after_process_mark": true,
+          "last_input_markers_live": false,
+          "last_input_start": 1,
+          "last_input_end": 1,
+          "last_input_text": "",
+          "current_input_text": "",
+          "buffer_tail": "$ ",
+          "run_id": "20261001T062920Z-2817516",
+          "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+          "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+          "minibuffer_active": false
+        },
+        "evidence": {
+          "process_identity": {
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false
+          },
+          "input_boundary": {
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": ""
+          },
+          "rootfs_runtime": {
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+          }
+        },
+        "observations": {
+          "comint_state": {
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_mark": 3,
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          }
+        },
+        "effects": {},
+        "diagnostics": [],
+        "continuation": null,
+        "error_code": false,
+        "error": false
+      }
+    },
+    {
+      "name": "host-shadow Comint executable is outside selected rootfs",
+      "passed": true,
+      "detail": {
+        "operation": "comint.observe",
+        "state": "succeeded",
+        "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "major_mode": "comint-mode",
+        "buffer_file_name": false,
+        "chars_tick": 3,
+        "modified": true,
+        "default_directory": "/workspace/soma/",
+        "point": 3,
+        "process_present": true,
+        "process_live": true,
+        "process_name": "soma-bridge-comint-host-owner",
+        "process_status": "run",
+        "process_id": 42,
+        "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+        "process_rootfs_owned": false,
+        "process_mark": 3,
+        "point_after_process_mark": true,
+        "last_input_markers_live": false,
+        "last_input_start": 1,
+        "last_input_end": 1,
+        "last_input_text": "",
+        "current_input_text": "",
+        "buffer_tail": "$ ",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+        "minibuffer_active": false
+      }
+    },
+    {
+      "name": "comint.submit_input rejects non-rootfs-owned process before input",
+      "passed": true,
+      "detail": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "comint-host-owner-submit-1",
+        "operation": "comint.submit_input",
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ],
+        "result": {
+          "operation": "comint.submit_input",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "failed"
+          ],
+          "route": "precondition-check",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 42,
+                "actual": 42
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+                "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": false,
+              "detail": {
+                "expected": false,
+                "actual": false,
+                "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process mark matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 3,
+                "actual": 3
+              }
+            },
+            {
+              "name": "current input text matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "",
+                "actual": ""
+              }
+            }
+          ],
+          "before": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "submitted_bytes": 0,
+          "used_raw_process_write": false,
+          "error": "Comint submit preconditions failed"
+        },
+        "evidence": {
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 42,
+                "actual": 42
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+                "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": false,
+              "detail": {
+                "expected": false,
+                "actual": false,
+                "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process mark matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 3,
+                "actual": 3
+              }
+            },
+            {
+              "name": "current input text matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "",
+                "actual": ""
+              }
+            }
+          ],
+          "before_after_observations": {
+            "before": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 3,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 3,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-host-owner",
+              "process_status": "run",
+              "process_id": 42,
+              "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+              "process_rootfs_owned": false,
+              "process_mark": 3,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 1,
+              "last_input_end": 1,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "minibuffer_active": false
+            },
+            "after": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 3,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 3,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-host-owner",
+              "process_status": "run",
+              "process_id": 42,
+              "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+              "process_rootfs_owned": false,
+              "process_mark": 3,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 1,
+              "last_input_end": 1,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "minibuffer_active": false
+            }
+          },
+          "submitted_bytes": 0
+        },
+        "observations": {
+          "before": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          }
+        },
+        "effects": {
+          "process_input": {
+            "route": "precondition-check",
+            "submitted_bytes": 0,
+            "comint_input_markers": false,
+            "used_raw_process_write": false
+          }
+        },
+        "diagnostics": [
+          {
+            "code": "conflict",
+            "message": "Comint submit preconditions failed"
+          }
+        ],
+        "continuation": null,
+        "error_code": "conflict",
+        "error": "Comint submit preconditions failed"
+      }
+    },
+    {
+      "name": "comint.await_output rejects non-rootfs-owned process before waiting",
+      "passed": true,
+      "detail": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "comint-host-owner-await-1",
+        "operation": "comint.await_output",
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ],
+        "result": {
+          "operation": "comint.await_output",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "failed"
+          ],
+          "route": "precondition-check",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 42,
+                "actual": 42
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+                "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": false,
+              "detail": {
+                "expected": false,
+                "actual": false,
+                "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint output boundary is valid for the current input",
+              "passed": true,
+              "detail": {
+                "expected_process_mark": 3,
+                "actual_process_mark": 3,
+                "last_input_end": 1
+              }
+            }
+          ],
+          "before": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "matched": false,
+          "matched_output": false,
+          "partial_output": false,
+          "timeout_seconds": 0.2,
+          "error": "Comint await preconditions failed"
+        },
+        "evidence": {
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 42,
+                "actual": 42
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+                "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": false,
+              "detail": {
+                "expected": false,
+                "actual": false,
+                "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint output boundary is valid for the current input",
+              "passed": true,
+              "detail": {
+                "expected_process_mark": 3,
+                "actual_process_mark": 3,
+                "last_input_end": 1
+              }
+            }
+          ],
+          "before_after_observations": {
+            "before": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 3,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 3,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-host-owner",
+              "process_status": "run",
+              "process_id": 42,
+              "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+              "process_rootfs_owned": false,
+              "process_mark": 3,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 1,
+              "last_input_end": 1,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "minibuffer_active": false
+            },
+            "after": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 3,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 3,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-host-owner",
+              "process_status": "run",
+              "process_id": 42,
+              "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+              "process_rootfs_owned": false,
+              "process_mark": 3,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 1,
+              "last_input_end": 1,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "minibuffer_active": false
+            }
+          },
+          "matched_output": false,
+          "partial_output": false,
+          "matched": false,
+          "timeout_seconds": 0.2,
+          "timeout": {
+            "seconds": 0.2
+          }
+        },
+        "observations": {
+          "before": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          }
+        },
+        "effects": {},
+        "diagnostics": [
+          {
+            "code": "conflict",
+            "message": "Comint await preconditions failed"
+          }
+        ],
+        "continuation": null,
+        "error_code": "conflict",
+        "error": "Comint await preconditions failed"
+      }
+    },
+    {
+      "name": "comint.interrupt rejects non-rootfs-owned process before control",
+      "passed": true,
+      "detail": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "comint-host-owner-interrupt-1",
+        "operation": "comint.interrupt",
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ],
+        "result": {
+          "operation": "comint.interrupt",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "failed"
+          ],
+          "route": "precondition-check",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 42,
+                "actual": 42
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+                "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": false,
+              "detail": {
+                "expected": false,
+                "actual": false,
+                "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process mark matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 3,
+                "actual": 3
+              }
+            },
+            {
+              "name": "current input text matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "",
+                "actual": ""
+              }
+            }
+          ],
+          "before": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "interrupt_command": "comint-interrupt-subjob",
+          "interrupt_dispatched": false,
+          "used_raw_process_write": false,
+          "bridge_used_raw_process_control": false,
+          "error": "Comint interrupt preconditions failed"
+        },
+        "evidence": {
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer  *soma-bridge-soma-bridge-comint-host-owner*>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": " *soma-bridge-soma-bridge-comint-host-owner*"
+            },
+            {
+              "name": "buffer mode derives from comint-mode",
+              "passed": true,
+              "detail": "comint-mode"
+            },
+            {
+              "name": "Comint process is live",
+              "passed": true,
+              "detail": "run"
+            },
+            {
+              "name": "Comint process identity matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 42,
+                "actual": 42
+              }
+            },
+            {
+              "name": "Comint process executable matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+                "actual": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process executable is rootfs-owned",
+              "passed": false,
+              "detail": {
+                "expected": false,
+                "actual": false,
+                "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh"
+              }
+            },
+            {
+              "name": "Comint process mark matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": 3,
+                "actual": 3
+              }
+            },
+            {
+              "name": "current input text matches precondition",
+              "passed": true,
+              "detail": {
+                "expected": "",
+                "actual": ""
+              }
+            }
+          ],
+          "before_after_observations": {
+            "before": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 3,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 3,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-host-owner",
+              "process_status": "run",
+              "process_id": 42,
+              "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+              "process_rootfs_owned": false,
+              "process_mark": 3,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 1,
+              "last_input_end": 1,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "minibuffer_active": false
+            },
+            "after": {
+              "operation": "comint.observe",
+              "state": "succeeded",
+              "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "major_mode": "comint-mode",
+              "buffer_file_name": false,
+              "chars_tick": 3,
+              "modified": true,
+              "default_directory": "/workspace/soma/",
+              "point": 3,
+              "process_present": true,
+              "process_live": true,
+              "process_name": "soma-bridge-comint-host-owner",
+              "process_status": "run",
+              "process_id": 42,
+              "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+              "process_rootfs_owned": false,
+              "process_mark": 3,
+              "point_after_process_mark": true,
+              "last_input_markers_live": false,
+              "last_input_start": 1,
+              "last_input_end": 1,
+              "last_input_text": "",
+              "current_input_text": "",
+              "buffer_tail": "$ ",
+              "run_id": "20261001T062920Z-2817516",
+              "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+              "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+              "minibuffer_active": false
+            }
+          },
+          "interrupt_command": "comint-interrupt-subjob",
+          "process_identity": {
+            "process_id": false,
+            "status_before": false,
+            "status_after": false
+          },
+          "process_survival": {
+            "process_live_after": false
+          }
+        },
+        "observations": {
+          "before": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "comint.observe",
+            "state": "succeeded",
+            "buffer_name": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "major_mode": "comint-mode",
+            "buffer_file_name": false,
+            "chars_tick": 3,
+            "modified": true,
+            "default_directory": "/workspace/soma/",
+            "point": 3,
+            "process_present": true,
+            "process_live": true,
+            "process_name": "soma-bridge-comint-host-owner",
+            "process_status": "run",
+            "process_id": 42,
+            "process_exe": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-comint-qgFcQF/sh",
+            "process_rootfs_owned": false,
+            "process_mark": 3,
+            "point_after_process_mark": true,
+            "last_input_markers_live": false,
+            "last_input_start": 1,
+            "last_input_end": 1,
+            "last_input_text": "",
+            "current_input_text": "",
+            "buffer_tail": "$ ",
+            "run_id": "20261001T062920Z-2817516",
+            "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+            "selected_window_buffer": " *soma-bridge-soma-bridge-comint-host-owner*",
+            "minibuffer_active": false
+          }
+        },
+        "effects": {
+          "process_interrupt": {
+            "command": "comint-interrupt-subjob",
+            "dispatched": false,
+            "used_raw_process_write": false,
+            "bridge_used_raw_process_control": false
+          }
+        },
+        "diagnostics": [
+          {
+            "code": "conflict",
+            "message": "Comint interrupt preconditions failed"
+          }
+        ],
+        "continuation": null,
+        "error_code": "conflict",
+        "error": "Comint interrupt preconditions failed"
+      }
+    },
+    {
+      "name": "host-shadow Comint rejection produces no submitted side effect",
+      "passed": true,
+      "detail": {
+        "counter_lines": null,
+        "tail": "$ "
+      }
+    }
+  ]
+}

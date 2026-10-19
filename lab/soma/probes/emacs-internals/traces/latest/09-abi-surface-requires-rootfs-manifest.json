@@ -1,0 +1,76 @@
+{
+  "id": "abi-surface-requires-rootfs-manifest",
+  "title": "ABI surface requires a rootfs manifest",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "ABI guarantees come from a selected rootfs manifest and accounted shared-library closure, not from successfully starting Emacs once.",
+  "hypothesis": "The current development Insula may inventory the Emacs dynamic-library surface, but it should not claim an ABI guarantee without a rootfs manifest.",
+  "sources": [
+    {
+      "name": "Emacs identity fields",
+      "path": "probes/emacs-internals/elisp/run-probes.el",
+      "lines": "24-42",
+      "note": ""
+    },
+    {
+      "name": "Soma development Insula ABI field",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "37-66",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The running Emacs binary plus the emitted Insula plan.",
+  "predicted_behavior": "Development mode reports `abi_guarantee=none'; production mode must report a selected rootfs or ABI manifest.",
+  "observed_behavior": "emacs=\"/opt/soma/emacs/bin/emacs-30.2\" ldd-lines=32 abi_guarantee=\"container-rootfs-abi-manifest\" manifest=\"/etc/soma-insula-rootfs-contract.json\" glibc-owner=\"container-image-rootfs\" nix-refs=nil",
+  "independent_checks": [
+    {
+      "name": "Emacs executable path exists",
+      "passed": true,
+      "detail": "/opt/soma/emacs/bin/emacs-30.2"
+    },
+    {
+      "name": "ABI inventory captured or manifest supplied",
+      "passed": true,
+      "detail": "\tlinux-vdso.so.1 (0x00007fffc07a7000)\n\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f4a76e56000)\n\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f4a76e4e000)\n\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f4a76c6c000)\n\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f4a76c38000)\n\tlibselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f4a76c0b000)\n\tlibgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f4a76a0e000)\n\tlibm.so.6 ="
+    },
+    {
+      "name": "ABI guarantee requires production manifest",
+      "passed": true,
+      "detail": "prod=t abi=\"container-rootfs-abi-manifest\" manifest=\"/etc/soma-insula-rootfs-contract.json\""
+    },
+    {
+      "name": "production glibc comes from container rootfs",
+      "passed": true,
+      "detail": "prod=t glibc-owner=\"container-image-rootfs\""
+    },
+    {
+      "name": "production ABI surface has no Nix paths",
+      "passed": true,
+      "detail": "prod=t nix-allowed=:json-false ldd=\"\tlinux-vdso.so.1 (0x00007fffc07a7000)\n\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f4a76e56000)\n\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f4a76e4e000)\n\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f4a76c6c000)\n\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f4a76c38000)\n\tlibselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f4a76c0b000)\n\tlibgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f4a76a0e000)\n\tlibm.so.6 =\""
+    }
+  ],
+  "counterexample": "Recording only `emacs-version' misses glibc, libstdc++, libgccjit, tree-sitter, module, and dynamic-loader compatibility.",
+  "derived_gym_requirement": "The Soma Insula contract must make ABI-relevant library/toolchain identity part of rootfs materialization and benchmark evidence."
+}

@@ -1,0 +1,240 @@
+{
+  "id": "duplicate-request",
+  "title": "A duplicate request id is rejected without replacing the stored request",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-bridge-duplicate"
+    }
+  },
+  "first_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-duplicate",
+      "text_owner_name": "soma-bridge-duplicate",
+      "buffer_file_name": false,
+      "major_mode": "fundamental-mode",
+      "chars_tick": 4,
+      "modified": false,
+      "read_only": false,
+      "point_min": 1,
+      "point_max": 7,
+      "point": 1,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "soma-bridge-duplicate",
+      "minibuffer_active": false
+    },
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": "soma-bridge-duplicate",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "selected_window_buffer": "soma-bridge-duplicate",
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": "soma-bridge-duplicate",
+        "text_owner_name": "soma-bridge-duplicate",
+        "buffer_file_name": false,
+        "same_buffer": true
+      },
+      "point_region_narrowing": {
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": "soma-bridge-duplicate",
+        "text_owner_name": "soma-bridge-duplicate",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-duplicate",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "second_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": false,
+        "buffer_file_name": false,
+        "major_mode": false,
+        "selected_window_buffer": false,
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": false,
+        "text_owner_name": false,
+        "buffer_file_name": false,
+        "same_buffer": false
+      },
+      "point_region_narrowing": {
+        "point_min": false,
+        "point_max": false,
+        "point": false,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": false,
+        "text_owner_name": false,
+        "buffer_file_name": false,
+        "major_mode": false,
+        "chars_tick": false,
+        "modified": false,
+        "read_only": false,
+        "point_min": false,
+        "point_max": false,
+        "point": false,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": false,
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "duplicate_request_id",
+        "message": "request_id has already been submitted"
+      }
+    ],
+    "continuation": null,
+    "error_code": "duplicate_request_id",
+    "error": "request_id has already been submitted"
+  },
+  "status": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-duplicate",
+      "text_owner_name": "soma-bridge-duplicate",
+      "buffer_file_name": false,
+      "major_mode": "fundamental-mode",
+      "chars_tick": 4,
+      "modified": false,
+      "read_only": false,
+      "point_min": 1,
+      "point_max": 7,
+      "point": 1,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "soma-bridge-duplicate",
+      "minibuffer_active": false
+    },
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": "soma-bridge-duplicate",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "selected_window_buffer": "soma-bridge-duplicate",
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": "soma-bridge-duplicate",
+        "text_owner_name": "soma-bridge-duplicate",
+        "buffer_file_name": false,
+        "same_buffer": true
+      },
+      "point_region_narrowing": {
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": "soma-bridge-duplicate",
+        "text_owner_name": "soma-bridge-duplicate",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-duplicate",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "checks": [
+    {
+      "name": "first request succeeds",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"duplicate-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false)) (\"evidence\" (\"buffer_identity\" (\"buffer_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false)) (\"text_owner\" (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"same_buffer\" . t)) (\"point_region_narrowing\" (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false))) (\"observations\" (\"buffer_state\" (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "duplicate request id is rejected",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"duplicate-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" (\"buffer_identity\" (\"buffer_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"major_mode\" . :json-false) (\"selected_window_buffer\" . :json-false) (\"minibuffer_active\" . :json-false)) (\"text_owner\" (\"buffer_name\" . :json-false) (\"text_owner_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"same_buffer\" . :json-false)) (\"point_region_narrowing\" (\"point_min\" . :json-false) (\"point_max\" . :json-false) (\"point\" . :json-false) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false))) (\"observations\" (\"buffer_state\" (\"buffer_name\" . :json-false) (\"text_owner_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"major_mode\" . :json-false) (\"chars_tick\" . :json-false) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . :json-false) (\"point_max\" . :json-false) (\"point\" . :json-false) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . :json-false) (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"duplicate_request_id\") (\"message\" . \"request_id has already been submitted\"))]) (\"continuation\") (\"error_code\" . \"duplicate_request_id\") (\"error\" . \"request_id has already been submitted\"))"
+    },
+    {
+      "name": "duplicate does not overwrite stored request",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"duplicate-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false)) (\"evidence\" (\"buffer_identity\" (\"buffer_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false)) (\"text_owner\" (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"same_buffer\" . t)) (\"point_region_narrowing\" (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false))) (\"observations\" (\"buffer_state\" (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    }
+  ]
+}

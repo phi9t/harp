@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import json
+import pathlib
+import sys
+import tempfile
+import textwrap
+import unittest
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
+
+from scripts.insula import rootfs_artifact_storage
+
+
+class RootfsArtifactStorageTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.base = pathlib.Path(self.tmp.name)
+        self.repo = self.base / "repo"
+        self.store = self.repo / ".scratch" / "emacs-gym" / "insula" / "rootfs-store"
+        self.store_id = "soma-emacs-teststore"
+        self.rootfs = self.store / "content" / self.store_id
+        (self.rootfs / "etc").mkdir(parents=True)
+        contract = {
+            "base_image": "example/image@sha256:base",
+            "image_id": "sha256:image",
+            "image_tag": "soma-emacs-rootfs:test",
+            "rootfs_recipe_sha256": "recipe-sha",
+            "rootfs_tree_manifest": {
+                "tree_hash_sha256": "tree-sha",
+                "manifest_sha256": "manifest-sha",
+                "entry_count": 3,
+            },
+        }
+        (self.rootfs / "etc" / "soma-insula-rootfs-contract.json").write_text(
+            json.dumps(contract) + "\n",
+            encoding="utf-8",
+        )
+        self.store.mkdir(parents=True, exist_ok=True)
+        (self.store / "selected.json").write_text(
+            json.dumps({"store_id": self.store_id}) + "\n",
+            encoding="utf-8",
+        )
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def test_storage_target_defaults_to_waystone_owned_tos_descriptor(self) -> None:
+        target = rootfs_artifact_storage.build_storage_target(repo_root=self.repo)
+
+        descriptor = rootfs_artifact_storage.storage_descriptor(target)
+
+        self.assertEqual(descriptor["owner"], "waystone")
+        self.assertFalse(descriptor["credentials_included"])
+        self.assertEqual(descriptor["tos"]["site"], "example-region")
+        self.assertEqual(descriptor["tos"]["bucket_name"], "example-artifacts")
+        self.assertEqual(descriptor["tos"]["profile_hint"], "soma-insula-artifacts")
+        self.assertEqual(
+            descriptor["tos"]["archive_object_key"],
+            f"soma/insula-rootfs/{self.store_id}.tar.zst",
+        )
+        self.assertNotIn("bytedcli", json.dumps(descriptor).lower())
+        self.assertNotIn("secret", json.dumps(descriptor).lower())
+
+    def test_plan_is_a_non_effectful_waystone_upload_request(self) -> None:
+        target = rootfs_artifact_storage.build_storage_target(repo_root=self.repo)
+
+        plan = rootfs_artifact_storage.plan(target, repo_root=self.repo, operation="upload")
+
+        self.assertEqual(plan["kind"], "soma_insula_waystone_storage_request")
+        self.assertEqual(plan["operation"], "upload")
+        self.assertEqual(plan["effectful_storage_owner"], "waystone")
+        self.assertFalse(plan["traffic_policy"]["soma_performs_storage_transport"])
+        self.assertTrue(plan["traffic_policy"]["waystone_handles_tos_or_hdfs_traffic"])
+        self.assertEqual(plan["store_id"], self.store_id)
+        self.assertIn(self.store_id, plan["local_artifacts"]["archive"])
+
+    def test_download_request_records_restore_validation_command(self) -> None:
+        target = rootfs_artifact_storage.build_storage_target(repo_root=self.repo)
+
+        request = rootfs_artifact_storage.plan(target, repo_root=self.repo, operation="download")
+
+        validation = request["restore_validation"]
+        self.assertTrue(validation["required_after_restore"])
+        self.assertEqual(
+            validation["command"],
+            [
+                "scripts/insula/validate-emacs-rootfs-contract.py",
+                f".scratch/emacs-gym/insula/rootfs-store/content/{self.store_id}",
+                "--verify-rootfs-tree",
+            ],
+        )
+        self.assertIn("selected.json", validation["selection_rule"])
+
+    def test_artifact_manifest_is_storage_generic_and_hashes_local_archive(self) -> None:
+        target = rootfs_artifact_storage.build_storage_target(repo_root=self.repo)
+        archive = self.base / "rootfs.tar.zst"
+        archive.write_bytes(b"rootfs archive")
+
+        manifest = rootfs_artifact_storage.artifact_manifest(
+            target,
+            repo_root=self.repo,
+            archive_path=archive,
+        )
+
+        self.assertEqual(manifest["kind"], "soma_insula_rootfs_artifact_manifest")
+        self.assertEqual(manifest["storage"]["owner"], "waystone")
+        self.assertEqual(manifest["archive"]["size_bytes"], len(b"rootfs archive"))
+        self.assertEqual(
+            manifest["archive"]["sha256"],
+            "4061460c3c2bc48e5902591e6b148be81503a57e064d48c9458753148679c60e",
+        )
+        self.assertEqual(manifest["rootfs_tree_manifest"]["tree_hash_sha256"], "tree-sha")
+
+    def test_write_request_omits_credentials_and_effectful_commands(self) -> None:
+        target = rootfs_artifact_storage.build_storage_target(repo_root=self.repo)
+        paths = rootfs_artifact_storage.artifact_paths(self.repo, self.store_id)
+
+        rootfs_artifact_storage.write_waystone_storage_request(
+            target,
+            repo_root=self.repo,
+            request_path=paths.request_path,
+            operation="upload",
+            archive_path=paths.archive_path,
+            manifest_path=paths.manifest_path,
+        )
+
+        text = paths.request_path.read_text(encoding="utf-8")
+        request = json.loads(text)
+        self.assertEqual(request["storage"]["owner"], "waystone")
+        self.assertNotIn("ACCESS_KEY", text)
+        self.assertNotIn("SECRET", text)
+        self.assertNotIn("upload-object", text)
+        self.assertNotIn("download-object", text)
+
+    def test_hdfs_introspection_reports_waystone_remote_status(self) -> None:
+        waystone = self._fake_waystone(
+            """
+            case "$1" in
+              doctor)
+                printf '{"schema_version":1,"checks":{"native_library":{"ok":true}}}\\n'
+                exit 0
+                ;;
+              storage-prefix)
+                printf '{"schema_version":1,"path":"hdfs://root/%s"}\\n' "$3"
+                exit 0
+                ;;
+              ls)
+                printf 'Found 3 items in %s\\n' "$2"
+                exit 0
+                ;;
+            esac
+            exit 2
+            """
+        )
+
+        report = rootfs_artifact_storage.hdfs_introspection(
+            repo_root=self.repo,
+            waystone_repo=waystone,
+            check_remote=True,
+            expect_remote=True,
+            write_ticket=True,
+        )
+
+        self.assertTrue(report["ok"])
+        self.assertEqual(report["waystone"]["doctor"]["returncode"], 0)
+        self.assertEqual(
+            report["remote"]["path"],
+            f"hdfs://root/soma/insula-rootfs/{self.store_id}",
+        )
+        self.assertEqual(report["remote"]["ls"]["returncode"], 0)
+        self.assertIsNone(report["ticket"])
+
+    def test_hdfs_introspection_writes_waystone_ticket_on_failure(self) -> None:
+        waystone = self._fake_waystone(
+            """
+            case "$1" in
+              doctor)
+                printf '{"schema_version":1,"checks":{"native_library":{"ok":true}}}\\n'
+                exit 0
+                ;;
+              storage-prefix)
+                printf '{"schema_version":1,"path":"hdfs://root/%s"}\\n' "$3"
+                exit 0
+                ;;
+              ls)
+                printf 'remote missing\\n' >&2
+                exit 7
+                ;;
+            esac
+            exit 2
+            """
+        )
+
+        report = rootfs_artifact_storage.hdfs_introspection(
+            repo_root=self.repo,
+            waystone_repo=waystone,
+            check_remote=True,
+            expect_remote=True,
+            write_ticket=True,
+        )
+
+        self.assertFalse(report["ok"])
+        ticket = pathlib.Path(report["ticket"]["path"])
+        self.assertTrue(ticket.is_file())
+        self.assertEqual(ticket.parent, waystone / ".scratch" / "soma-hdfs-artifact-tickets")
+        ticket_text = ticket.read_text(encoding="utf-8")
+        self.assertIn("Waystone HDFS artifact introspection failure", ticket_text)
+        self.assertIn(self.store_id, ticket_text)
+        self.assertIn("waystone ls", ticket_text)
+        self.assertIn("remote missing", ticket_text)
+
+    def test_hdfs_introspection_does_not_create_missing_waystone_repo_for_ticket(self) -> None:
+        missing_waystone = self.base / "missing-waystone"
+
+        report = rootfs_artifact_storage.hdfs_introspection(
+            repo_root=self.repo,
+            waystone_repo=missing_waystone,
+            check_remote=True,
+            expect_remote=True,
+            write_ticket=True,
+        )
+
+        self.assertFalse(report["ok"])
+        self.assertFalse(missing_waystone.exists())
+        self.assertEqual(report["ticket"]["path"], None)
+        self.assertIn("does not exist", report["ticket"]["error"])
+
+    def test_command_timeout_output_is_json_serializable_text(self) -> None:
+        script = self.base / "slow-command"
+        script.write_text(
+            textwrap.dedent(
+                """\
+                #!/usr/bin/env bash
+                printf 'started stdout\\n'
+                printf 'started stderr\\n' >&2
+                sleep 2
+                """
+            ),
+            encoding="utf-8",
+        )
+        script.chmod(0o755)
+
+        result = rootfs_artifact_storage.command_result(
+            [script],
+            cwd=self.base,
+            timeout_secs=1,
+        )
+
+        self.assertTrue(result["timed_out"])
+        self.assertIsInstance(result["stdout"], str)
+        self.assertIsInstance(result["stderr"], str)
+        json.dumps(result)
+
+    def _fake_waystone(self, body: str) -> pathlib.Path:
+        waystone = self.base / "waystone"
+        scripts = waystone / "scripts"
+        scripts.mkdir(parents=True)
+        script = scripts / "waystone"
+        script.write_text(
+            "#!/usr/bin/env bash\nset -euo pipefail\n" + textwrap.dedent(body).lstrip(),
+            encoding="utf-8",
+        )
+        script.chmod(0o755)
+        return waystone
+
+
+if __name__ == "__main__":
+    unittest.main()

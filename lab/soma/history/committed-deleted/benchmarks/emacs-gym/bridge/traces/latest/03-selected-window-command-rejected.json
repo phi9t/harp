@@ -1,0 +1,127 @@
+{
+  "id": "selected-window-command-rejected",
+  "title": "A command.dispatch request is rejected when the selected window no longer displays the target buffer",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "selected-window-command-1",
+    "operation": "command.dispatch",
+    "params": {
+      "buffer_name": "soma-bridge-selected-window-target",
+      "command": "soma-bridge-bench-append-token",
+      "preconditions": {
+        "buffer_name": "soma-bridge-selected-window-target",
+        "selected_window_buffer": "soma-bridge-selected-window-target",
+        "chars_tick": 4,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "read_only": false,
+        "minibuffer_active": false
+      }
+    }
+  },
+  "response": {
+    "request_id": "selected-window-command-1",
+    "operation": "command.dispatch",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "command.dispatch",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "command": "soma-bridge-bench-append-token",
+      "route": "precondition-check",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-selected-window-target>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "soma-bridge-bench-append-token"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-selected-window-target\" actual=\"soma-bridge-selected-window-target\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": false,
+          "detail": "expected=\"soma-bridge-selected-window-target\" actual=\"soma-bridge-selected-window-other\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=4 actual=4"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=1 actual=1"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ]
+    },
+    "error_code": "operation_failed",
+    "error": false
+  },
+  "target_text": "alpha",
+  "checks": [
+    {
+      "name": "selected window drift is rejected",
+      "passed": true,
+      "detail": "((\"request_id\" . \"selected-window-command-1\") (\"operation\" . \"command.dispatch\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"result\" (\"operation\" . \"command.dispatch\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"command\" . \"soma-bridge-bench-append-token\") (\"route\" . \"precondition-check\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-selected-window-target>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"soma-bridge-bench-append-token\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-selected-window-target\\\" actual=\\\"soma-bridge-selected-window-target\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . :json-false) (\"detail\" . \"expected=\\\"soma-bridge-selected-window-target\\\" actual=\\\"soma-bridge-selected-window-other\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=4 actual=4\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")))) (\"error_code\" . \"operation_failed\") (\"error\" . :json-false))"
+    },
+    {
+      "name": "selected-window precondition is the rejecting check",
+      "passed": true,
+      "detail": "((\"name\" . \"selected window displays target buffer\") (\"passed\" . :json-false) (\"detail\" . \"expected=\\\"soma-bridge-selected-window-target\\\" actual=\\\"soma-bridge-selected-window-other\\\"\"))"
+    },
+    {
+      "name": "command did not mutate target buffer after selected-window drift",
+      "passed": true,
+      "detail": "alpha"
+    },
+    {
+      "name": "selected window now shows the other buffer",
+      "passed": true,
+      "detail": "soma-bridge-selected-window-other"
+    }
+  ]
+}

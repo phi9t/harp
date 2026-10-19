@@ -1,0 +1,118 @@
+{
+  "id": "bad-wrapper-command-context",
+  "title": "Incorrect policy stages the right file through a bridge wrapper",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "repo": "/project/tmp/soma-magit-wrapper-context-bad-LRTcBs",
+    "intended_selection": "target.txt file section",
+    "visible_state": {
+      "cached_names": [
+        "staged.txt"
+      ],
+      "unstaged_names": [
+        "debug.txt",
+        "target.txt"
+      ],
+      "status_porcelain": [
+        " M target.txt",
+        "M  staged.txt",
+        "M debug.txt"
+      ],
+      "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+      "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+      "debug_index": "debug-base\n",
+      "debug_worktree": "debug-base\ndebug-worktree-only\n",
+      "staged_index": "staged-expected\n",
+      "staged_worktree": "staged-expected\n",
+      "alpha_index": "alpha-base\n",
+      "beta_index": "beta-base\n",
+      "gamma_index": "gamma-base\n"
+    }
+  },
+  "action": {
+    "operation": "magit-stage-1",
+    "route": "bridge-wrapper-direct-call",
+    "bridge": {
+      "operation": "direct-call",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "requested_operation": "magit-stage-1",
+      "reason": "direct lower-level Magit mutation bypasses checked command dispatch"
+    },
+    "selection": "target.txt",
+    "wrapper_this_command": "soma-bridge-stage"
+  },
+  "name": "bad-wrapper-command-context",
+  "checks": [
+    {
+      "name": "git executable resolves inside rootfs",
+      "passed": true,
+      "detail": "/usr/bin/git"
+    },
+    {
+      "name": "Magit loads from rootfs-owned Doom mount",
+      "passed": true,
+      "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+    },
+    {
+      "name": "action used expected Magit operation",
+      "passed": false,
+      "detail": "((\"operation\" . \"magit-stage-1\") (\"route\" . \"bridge-wrapper-direct-call\") (\"bridge\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"direct lower-level Magit mutation bypasses checked command dispatch\")) (\"selection\" . \"target.txt\") (\"wrapper_this_command\" . \"soma-bridge-stage\"))"
+    },
+    {
+      "name": "checked bridge command dispatch succeeded",
+      "passed": false,
+      "detail": "((\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"direct lower-level Magit mutation bypasses checked command dispatch\"))"
+    },
+    {
+      "name": "command route preserved Magit command identity",
+      "passed": false,
+      "detail": "nil"
+    },
+    {
+      "name": "Magit refresh ran after staging",
+      "passed": false,
+      "detail": "nil"
+    },
+    {
+      "name": "filesystem effect matches requested file staging",
+      "passed": true,
+      "detail": "cached=(\"staged.txt\" \"target.txt\") unstaged=(\"debug.txt\")"
+    },
+    {
+      "name": "unrelated staged file is preserved",
+      "passed": true,
+      "detail": "staged-expected\n"
+    }
+  ],
+  "repo_state": {
+    "cached_names": [
+      "staged.txt",
+      "target.txt"
+    ],
+    "unstaged_names": [
+      "debug.txt"
+    ],
+    "status_porcelain": [
+      "M  staged.txt",
+      "M  target.txt",
+      "M debug.txt"
+    ],
+    "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "debug_index": "debug-base\n",
+    "debug_worktree": "debug-base\ndebug-worktree-only\n",
+    "staged_index": "staged-expected\n",
+    "staged_worktree": "staged-expected\n",
+    "alpha_index": "alpha-base\n",
+    "beta_index": "beta-base\n",
+    "gamma_index": "gamma-base\n"
+  },
+  "post_stage_hook_runs": null,
+  "refresh_buffer_hook_runs": null
+}

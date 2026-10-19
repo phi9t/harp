@@ -1,0 +1,64 @@
+{
+  "id": "bad-wrong-buffer",
+  "title": "Incorrect policy submits to a similarly named process buffer",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-target*",
+    "process": "target",
+    "pid": 6,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260928T074814Z-3665582",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/comint/traces/latest/insula-plan.json"
+  },
+  "name": "bad-wrong-buffer",
+  "checks": [
+    {
+      "name": "action used comint-send-input",
+      "passed": true,
+      "detail": "((\"operation\" . \"comint-send-input\") (\"buffer\" . \" *soma-bench-target-decoy*\") (\"intended_buffer\" . \" *soma-bench-target*\"))"
+    },
+    {
+      "name": "comint input markers were updated",
+      "passed": false,
+      "detail": "start=#<marker at 1 in  *soma-bench-target*> end=#<marker at 1 in  *soma-bench-target*>"
+    },
+    {
+      "name": "output came from intended buffer",
+      "passed": false,
+      "detail": "intended=\"$ \" unintended=\"printf 'SOMA_BENCH_SENT:live\\\\n'; printf 'SOMA_BENCH_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_BENCH_CWD:%s\\\\n' \\\"$PWD\\\"; printf 'live\\\\n' >> /project/tmp/soma-comint-bench-YmuOkW/counter; printf 'SOMA_BENCH_DONE:live\\\\n'\n$ SOMA_BENCH_SENT:live\nSOMA_BENCH_RUN:20260928T074814Z-3665582\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:live\n$ \""
+    },
+    {
+      "name": "submitted expected live input",
+      "passed": false,
+      "detail": "$ "
+    },
+    {
+      "name": "run id reached subprocess",
+      "passed": false,
+      "detail": "$ "
+    },
+    {
+      "name": "side effect occurred exactly once",
+      "passed": true,
+      "detail": "counter-lines=1"
+    },
+    {
+      "name": "side effect label matches intended input",
+      "passed": true,
+      "detail": "counter-lines=(\"live\")"
+    },
+    {
+      "name": "process executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/dash"
+    }
+  ],
+  "output": "$ ",
+  "counter_lines": 1
+}

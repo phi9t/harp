@@ -1,0 +1,76 @@
+{
+  "id": "comint-long-lived-shell-cwd-tool-drift",
+  "title": "Comint long-lived shell cwd and tool drift",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Comint owns a live process buffer whose cwd, input boundary, and environment can drift across submitted commands.",
+  "hypothesis": "A persistent shell launched through Comint should retain cwd changes, preserve the Insula run id, and resolve tools through the selected rootfs after state changes.",
+  "sources": [
+    {
+      "name": "Comint contract",
+      "path": "docs/internals-atlas/package-contracts/comint.md",
+      "lines": "18-33",
+      "note": ""
+    },
+    {
+      "name": "Comint input boundary probe",
+      "path": "probes/emacs-internals/elisp/run-probes.el",
+      "lines": "comint-process-mark-input-boundary",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One long-lived `/bin/sh' Comint process, a submitted command that changes cwd, and tool/Python identity probes after the change.",
+  "predicted_behavior": "Production mode should show a live shell process, cwd persistence into `/project/tmp', stable run id, and rootfs-owned tool resolution.",
+  "observed_behavior": "prod=t pid=760 proc-exe=\"/usr/bin/dash\" output=\"printf 'SOMA_BEFORE:%s\\\\n' \\\"$PWD\\\"; cd \\\"$TMPDIR\\\"; printf 'SOMA_AFTER:%s\\\\n' \\\"$PWD\\\"; printf 'SOMA_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_PY:%s\\\\n' \\\"$(command -v python3 || true)\\\"; python3 -c 'import json, os, sys; print(\\\"SOMA_PY_JSON:\\\" + json.dumps({\\\"executable\\\": sys.executable, \\\"cwd\\\": os.getcwd(), \\\"run_id\\\": os.environ.get(\\\"SOMA_INSULA_RUN_ID\\\", \\\"\\\")}, sort_keys=True))'; printf 'SOMA_DONE\\\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\\\"cwd\\\": \\\"/project/tmp\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\nSOMA_DONE\n$ \"",
+  "independent_checks": [
+    {
+      "name": "Comint shell process was live and identifiable",
+      "passed": true,
+      "detail": "pid=760 proc-exe=\"/usr/bin/dash\""
+    },
+    {
+      "name": "Comint shell retained cwd change",
+      "passed": true,
+      "detail": "printf 'SOMA_BEFORE:%s\\n' \"$PWD\"; cd \"$TMPDIR\"; printf 'SOMA_AFTER:%s\\n' \"$PWD\"; printf 'SOMA_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_PY:%s\\n' \"$(command -v python3 || true)\"; python3 -c 'import json, os, sys; print(\"SOMA_PY_JSON:\" + json.dumps({\"executable\": sys.executable, \"cwd\": os.getcwd(), \"run_id\": os.environ.get(\"SOMA_INSULA_RUN_ID\", \"\")}, sort_keys=True))'; printf 'SOMA_DONE\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\"cwd\": \"/project/tmp\", \"executable\": \"/usr/bin/python3\", \"run_id\": \"20260930T040324Z-4018462\"}\nSOMA_DONE\n$ "
+    },
+    {
+      "name": "Insula run id persisted in long-lived shell",
+      "passed": true,
+      "detail": "run-id=\"20260930T040324Z-4018462\" output=\"printf 'SOMA_BEFORE:%s\\\\n' \\\"$PWD\\\"; cd \\\"$TMPDIR\\\"; printf 'SOMA_AFTER:%s\\\\n' \\\"$PWD\\\"; printf 'SOMA_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_PY:%s\\\\n' \\\"$(command -v python3 || true)\\\"; python3 -c 'import json, os, sys; print(\\\"SOMA_PY_JSON:\\\" + json.dumps({\\\"executable\\\": sys.executable, \\\"cwd\\\": os.getcwd(), \\\"run_id\\\": os.environ.get(\\\"SOMA_INSULA_RUN_ID\\\", \\\"\\\")}, sort_keys=True))'; printf 'SOMA_DONE\\\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\\\"cwd\\\": \\\"/project/tmp\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\nSOMA_DONE\n$ \""
+    },
+    {
+      "name": "production long-lived shell resolves rootfs Python",
+      "passed": true,
+      "detail": "printf 'SOMA_BEFORE:%s\\n' \"$PWD\"; cd \"$TMPDIR\"; printf 'SOMA_AFTER:%s\\n' \"$PWD\"; printf 'SOMA_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_PY:%s\\n' \"$(command -v python3 || true)\"; python3 -c 'import json, os, sys; print(\"SOMA_PY_JSON:\" + json.dumps({\"executable\": sys.executable, \"cwd\": os.getcwd(), \"run_id\": os.environ.get(\"SOMA_INSULA_RUN_ID\", \"\")}, sort_keys=True))'; printf 'SOMA_DONE\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\"cwd\": \"/project/tmp\", \"executable\": \"/usr/bin/python3\", \"run_id\": \"20260930T040324Z-4018462\"}\nSOMA_DONE\n$ "
+    },
+    {
+      "name": "production shell executable path is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/dash"
+    }
+  ],
+  "counterexample": "A one-shot subprocess check can miss cwd drift, stale process identity, user input below the process mark, or PATH mutation across later sends.",
+  "derived_gym_requirement": "Comint actions must record process pid/executable, process mark, cwd, live input, tool resolution, and environment after every wait or submitted command."
+}

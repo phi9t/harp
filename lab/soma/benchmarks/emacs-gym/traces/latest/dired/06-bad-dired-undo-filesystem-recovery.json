@@ -1,0 +1,62 @@
+{
+  "id": "bad-dired-undo-filesystem-recovery",
+  "title": "Incorrect policy treats Dired undo as filesystem recovery",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": "soma-dired-undo-bad-GOr1t2",
+    "directory": "/project/tmp/soma-dired-undo-bad-GOr1t2",
+    "undo_result": "error:(user-error \"No further undo information\")"
+  },
+  "name": "bad-dired-undo-filesystem-recovery",
+  "checks": [
+    {
+      "name": "action treated Dired undo as filesystem recovery",
+      "passed": false,
+      "detail": "((\"operation\" . \"dired-undo\") (\"recovery_target\" . \"filesystem\"))"
+    },
+    {
+      "name": "deleted file was restored",
+      "passed": false,
+      "detail": "undo-result=\"error:(user-error \\\"No further undo information\\\")\" exists=nil"
+    }
+  ],
+  "files": [
+    {
+      "name": "keep.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "target-a.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "target-b.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "flagged-decoy.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "source.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "renamed.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "collision.txt",
+      "exists": false,
+      "contents": ""
+    }
+  ]
+}

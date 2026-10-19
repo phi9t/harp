@@ -1,0 +1,71 @@
+{
+  "id": "jupyter-kernelspec-rootfs-contract",
+  "title": "Jupyter kernelspec rootfs contract",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Jupyter identity starts before execution: kernelspec argv and resource paths decide which interpreter/kernel will actually start.",
+  "hypothesis": "`jupyter_client.kernelspec.KernelSpecManager' should expose at least one Python kernelspec in production, and its absolute argv/resource paths should resolve inside the selected rootfs rather than through host state.",
+  "sources": [
+    {
+      "name": "TorchTitan Jupyter rootfs lifecycle",
+      "path": "/private-source/home/operator/workspace/torchtitan/experiments/jupyter_rootfs/run_common.sh",
+      "lines": "5-47",
+      "note": ""
+    },
+    {
+      "name": "Jupyter package contract",
+      "path": "docs/internals-atlas/package-contracts/jupyter.md",
+      "lines": "27-38, 64-74",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The rootfs-owned Python `jupyter_client' kernelspec manager.",
+  "predicted_behavior": "Production mode should contain a usable Python kernelspec whose argv points at the rootfs Python interpreter or a resolvable rootfs-owned command.",
+  "observed_behavior": "prod=t python=\"/usr/bin/python3\" jupyter=\"/usr/bin/jupyter\" status=0 python-specs=(((\"name\" . \"python3\") (\"resource_dir\" . \"/usr/share/jupyter/kernels/python3\") (\"argv\" \"/usr/bin/python3\" \"-Xfrozen_modules=off\" \"-m\" \"ipykernel_launcher\" \"-f\" \"{connection_file}\"))) selected-launcher=\"/usr/bin/python3\" launcher-path=\"/usr/bin/python3\" bad-paths=nil",
+  "independent_checks": [
+    {
+      "name": "kernelspec manager ran in production",
+      "passed": true,
+      "detail": "python=\"/usr/bin/python3\" jupyter=\"/usr/bin/jupyter\" status=0 output=\"{\\\"jupyter\\\": \\\"/usr/bin/jupyter\\\", \\\"kernelspecs\\\": {\\\"python3\\\": {\\\"resource_dir\\\": \\\"/usr/share/jupyter/kernels/python3\\\", \\\"spec\\\": {\\\"argv\\\": [\\\"/usr/bin/python3\\\", \\\"-Xfrozen_modules=off\\\", \\\"-m\\\", \\\"ipykernel_launcher\\\", \\\"-f\\\", \\\"{connection_file}\\\"], \\\"display_name\\\": \\\"Python 3 (ipykernel)\\\", \\\"language\\\": \\\"python\\\"}}}}\n\nProcess soma-probe-process finished\n\""
+    },
+    {
+      "name": "production Python kernelspec exists",
+      "passed": true,
+      "detail": "(((\"name\" . \"python3\") (\"resource_dir\" . \"/usr/share/jupyter/kernels/python3\") (\"argv\" \"/usr/bin/python3\" \"-Xfrozen_modules=off\" \"-m\" \"ipykernel_launcher\" \"-f\" \"{connection_file}\")))"
+    },
+    {
+      "name": "production kernelspec launcher is rootfs-owned",
+      "passed": true,
+      "detail": "launcher=\"/usr/bin/python3\" launcher-path=\"/usr/bin/python3\""
+    },
+    {
+      "name": "kernelspec paths have no forbidden host prefixes",
+      "passed": true,
+      "detail": "nil"
+    }
+  ],
+  "counterexample": "A notebook can print the expected result while attached to a host kernelspec with a different Python, package set, CUDA stack, or filesystem view.",
+  "derived_gym_requirement": "Jupyter benchmarks must grade kernelspec identity before kernel execution and reject host-resolved kernel launchers."
+}

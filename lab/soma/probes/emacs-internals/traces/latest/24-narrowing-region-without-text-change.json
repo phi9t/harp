@@ -1,0 +1,66 @@
+{
+  "id": "narrowing-region-without-text-change",
+  "title": "Narrowing or region changes without character changes",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Character modification ticks do not cover interaction state such as narrowing, point, mark, and active region.",
+  "hypothesis": "Changing narrowing and the active region should leave `buffer-chars-modified-tick' unchanged.",
+  "sources": [
+    {
+      "name": "buffer revision runtime",
+      "path": "Emacs primitive introspection",
+      "lines": "buffer-chars-modified-tick",
+      "note": ""
+    },
+    {
+      "name": "narrowing runtime",
+      "path": "Emacs primitive introspection",
+      "lines": "narrow-to-region, widen",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary buffer with stable text.",
+  "predicted_behavior": "Character tick remains stable while visible accessible range and region state change.",
+  "observed_behavior": "tick=5->5 range=1-15->5-9 region-active=t",
+  "independent_checks": [
+    {
+      "name": "character tick unchanged",
+      "passed": true,
+      "detail": "5 -> 5"
+    },
+    {
+      "name": "accessible range changed",
+      "passed": true,
+      "detail": "1-15 -> 5-9"
+    },
+    {
+      "name": "region active changed interaction state",
+      "passed": true,
+      "detail": "mark=8 point=5"
+    }
+  ],
+  "counterexample": "A stale-edit guard using only character ticks misses interaction state changes.",
+  "derived_gym_requirement": "Every action needs operation-specific preconditions beyond a universal character revision guard."
+}

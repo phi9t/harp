@@ -1,0 +1,1856 @@
+{
+  "generated_at": "2026-09-28T07:47:58Z",
+  "benchmark": "magit-selective-staging",
+  "total_scenarios": 7,
+  "scenarios_as_expected": 7,
+  "insula_checks_passed": true,
+  "insula_checks": [
+    {
+      "name": "SOMA_INSULA_ACTIVE is set",
+      "passed": true,
+      "detail": "1"
+    },
+    {
+      "name": "runtime mode is selected rootfs",
+      "passed": true,
+      "detail": "env=\"selected-container-rootfs\" plan=\"selected-container-rootfs-insula\""
+    },
+    {
+      "name": "benchmark plan is for Magit",
+      "passed": true,
+      "detail": "magit-selective-staging"
+    },
+    {
+      "name": "dependency closure is rootfs-owned",
+      "passed": true,
+      "detail": "rootfs_owned"
+    },
+    {
+      "name": "glibc owner is container-image-rootfs",
+      "passed": true,
+      "detail": "container-image-rootfs"
+    },
+    {
+      "name": "cwd is rootfs repo mount",
+      "passed": true,
+      "detail": "/workspace/soma/"
+    }
+  ],
+  "plan": {
+    "abi_base": "container-image-rootfs",
+    "abi_guarantee": "container-rootfs-abi-manifest",
+    "abi_manifest": "/etc/soma-insula-rootfs-contract.json",
+    "allowed_host_projections": [
+      "Linux kernel",
+      "host bwrap executable",
+      "Soma checkout mounted at /workspace/soma",
+      "run/output backing directories"
+    ],
+    "base_image": "ghcr.io/pytorch/pytorch:2.13.0-cuda13.2-cudnn9-runtime@sha256:7492928e093d67276716440161f694a0e4ea27796d599d64b23cb76cdd665e71",
+    "benchmark": "magit-selective-staging",
+    "bwrap": "/usr/bin/bwrap",
+    "dependency_closure": "rootfs_owned",
+    "doom_commit": "8b475fcb2574286d7f4413c22cc7902d80d21ced",
+    "doom_core_readonly": "/project/home/.emacs.d",
+    "doom_core_rootfs_path": "/opt/soma/doom-home/.emacs.d",
+    "doom_user_readonly": "/project/home/.doom.d",
+    "doom_user_rootfs_path": "/opt/soma/doom-home/.doom.d",
+    "emacs": "/opt/soma/emacs/bin/emacs",
+    "emacs_configure_flags": "--prefix=/opt/soma/emacs --with-native-compilation --with-tree-sitter --with-sqlite3 --without-x --without-sound --without-dbus --without-gconf --without-gsettings --without-toolkit-scroll-bars --without-xwidgets --without-mailutils",
+    "emacs_executable_hash": "824c1318464a98778d9f1677508e05af3dc5e94c34c63653145e079e5d26f6c2",
+    "emacs_patch_set": null,
+    "emacs_patch_variant": "stock",
+    "emacs_source_revision": "b3f36f18a6dd2715713370166257de2fae01f9d38cfe878ced9b1e6ded5befd9",
+    "emacs_source_url": "https://ftp.gnu.org/gnu/emacs/emacs-30.2.tar.xz",
+    "environment": "clearenv plus explicit allowlist",
+    "forbidden_abi_prefixes": [
+      "/nix",
+      "/data02/home"
+    ],
+    "glibc_owner": "container-image-rootfs",
+    "image_id": "sha256:5358df1ebdabbd0f28a380d47bd126b59cd47e17f896711acfd3b8dac709e002",
+    "image_tag": "soma-emacs-rootfs:f70dc131cbbd523a",
+    "mode": "selected-container-rootfs-insula",
+    "network": "disabled",
+    "network_authorization": "disabled",
+    "network_note": "Network policy is task-selectable. Hermeticity means rootfs-owned tools/packages/deps plus ABI accounting, not mandatory network disablement for every phase.",
+    "network_task_id": "magit-selective-staging",
+    "nix_allowed": false,
+    "output_dir": "/workspace/soma/benchmarks/emacs-gym/magit/traces/latest",
+    "private_home": "/project/home",
+    "private_run": "/project/run",
+    "private_tmp": "/project/tmp",
+    "production_required_tools": [
+      "emacs",
+      "emacsclient",
+      "python3",
+      "jupyter",
+      "pylsp",
+      "pyright",
+      "pyright-langserver",
+      "clangd",
+      "rust-analyzer",
+      "clang",
+      "gcc",
+      "g++",
+      "rustc",
+      "cargo",
+      "git",
+      "tmux",
+      "sh",
+      "bash"
+    ],
+    "repo_bind": "/workspace/soma",
+    "repo_bind_host_path": "/private-source/home/operator/workspace/soma",
+    "rootfs": "/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-f70dc131cbbd523a-5358df1ebdabbd0f28a380d47bd126b59cd47e17f896711acfd3",
+    "rootfs_contract": "/etc/soma-insula-rootfs-contract.json",
+    "rootfs_contract_host_path": "/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-f70dc131cbbd523a-5358df1ebdabbd0f28a380d47bd126b59cd47e17f896711acfd3/etc/soma-insula-rootfs-contract.json",
+    "rootfs_ownership": "soma-selected-container-rootfs",
+    "rootfs_recipe_sha256": "f70dc131cbbd523a0644d77c23ca0b706484f0c3db3022a5d2780cc7af23f9fb",
+    "rootfs_sandbox_mount": "/",
+    "run_id": "20260928T074757Z-3663306",
+    "tool_inventory": {
+      "bash": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffeb9570000)",
+          "\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f9375ae1000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f93758cf000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f9375c89000)"
+        ],
+        "path": "/usr/bin/bash",
+        "realpath": "/usr/bin/bash",
+        "sha256": "bc5945feb8bd26203ebfafea5ce1878bb2e32cb8fb50ab7ae395cfb1e1aaaef1",
+        "version": "GNU bash, version 5.2.21(1)-release (x86_64-pc-linux-gnu)"
+      },
+      "cargo": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffd759ae000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007ff137e2e000)",
+          "\tlibrt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x00007ff137e29000)",
+          "\tlibpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007ff137e24000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007ff137d3b000)",
+          "\tlibdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007ff137d36000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007ff137b22000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007ff139005000)"
+        ],
+        "path": "/opt/soma/cargo/bin/cargo",
+        "realpath": "/opt/soma/cargo/bin/rustup",
+        "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71",
+        "version": "cargo 1.81.0 (2dbb1af80 2024-08-20)"
+      },
+      "clang": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffd18d4b000)",
+          "\tlibclang-cpp.so.18.1 => /usr/lib/llvm-18/bin/../lib/libclang-cpp.so.18.1 (0x00007fea1b61a000)",
+          "\tlibLLVM.so.18.1 => /usr/lib/llvm-18/bin/../lib/libLLVM.so.18.1 (0x00007fea1400f000)",
+          "\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fea13d8b000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fea13b79000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fea13a90000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007fea1f41b000)",
+          "\tlibffi.so.8 => /lib/x86_64-linux-gnu/libffi.so.8 (0x00007fea13a82000)",
+          "\tlibedit.so.2 => /lib/x86_64-linux-gnu/libedit.so.2 (0x00007fea13a48000)",
+          "\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007fea13a2c000)",
+          "\tlibzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x00007fea13972000)",
+          "\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007fea1393e000)",
+          "\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007fea1375c000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fea1372c000)",
+          "\tlibbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x00007fea13716000)",
+          "\tlibicuuc.so.74 => /lib/x86_64-linux-gnu/libicuuc.so.74 (0x00007fea13509000)",
+          "\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fea134d7000)",
+          "\tlibmd.so.0 => /lib/x86_64-linux-gnu/libmd.so.0 (0x00007fea134c8000)",
+          "\tlibicudata.so.74 => /lib/x86_64-linux-gnu/libicudata.so.74 (0x00007fea11766000)"
+        ],
+        "path": "/usr/bin/clang",
+        "realpath": "/usr/lib/llvm-18/bin/clang",
+        "sha256": "8ef402d453d1ba4902e4ee0f0f847f6cfa01400c95aa43c24e97818b9c0e3f45",
+        "version": "Ubuntu clang version 18.1.3 (1ubuntu1)"
+      },
+      "clangd": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffcc94f4000)",
+          "\tlibclang-cpp.so.18.1 => /usr/lib/llvm-18/bin/../lib/libclang-cpp.so.18.1 (0x00007fb0a7353000)",
+          "\tlibprotobuf.so.32 => /lib/x86_64-linux-gnu/libprotobuf.so.32 (0x00007fb0a7061000)",
+          "\tlibgpr.so.29 => /lib/x86_64-linux-gnu/libgpr.so.29 (0x00007fb0a7051000)",
+          "\tlibgrpc++.so.1.51 => /lib/x86_64-linux-gnu/libgrpc++.so.1.51 (0x00007fb0a6f97000)",
+          "\tlibabsl_synchronization.so.20220623 => /lib/x86_64-linux-gnu/libabsl_synchronization.so.20220623 (0x00007fb0a6f86000)",
+          "\tlibLLVM.so.18.1 => /usr/lib/llvm-18/bin/../lib/libLLVM.so.18.1 (0x00007fb09f979000)",
+          "\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007fb09f6fb000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fb09f612000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb09f400000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007fb0ac971000)",
+          "\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007fb09f3e4000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fb09f3b6000)",
+          "\tlibabsl_status.so.20220623 => /lib/x86_64-linux-gnu/libabsl_status.so.20220623 (0x00007fb09f3a9000)",
+          "\tlibabsl_time.so.20220623 => /lib/x86_64-linux-gnu/libabsl_time.so.20220623 (0x00007fb09f397000)",
+          "\tlibabsl_str_format_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_str_format_internal.so.20220623 (0x00007fb09f37d000)",
+          "\tlibabsl_strings.so.20220623 => /lib/x86_64-linux-gnu/libabsl_strings.so.20220623 (0x00007fb09f35e000)",
+          "\tlibabsl_throw_delegate.so.20220623 => /lib/x86_64-linux-gnu/libabsl_throw_delegate.so.20220623 (0x00007fb09f357000)",
+          "\tlibabsl_spinlock_wait.so.20220623 => /lib/x86_64-linux-gnu/libabsl_spinlock_wait.so.20220623 (0x00007fb09f350000)",
+          "\tlibabsl_raw_logging_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_raw_logging_internal.so.20220623 (0x00007fb09f34b000)",
+          "\tlibgrpc.so.29 => /lib/x86_64-linux-gnu/libgrpc.so.29 (0x00007fb09edd9000)",
+          "\tlibupb.so.29 => /lib/x86_64-linux-gnu/libupb.so.29 (0x00007fb09edac000)",
+          "\tlibabsl_raw_hash_set.so.20220623 => /lib/x86_64-linux-gnu/libabsl_raw_hash_set.so.20220623 (0x00007fb09eda7000)",
+          "\tlibabsl_hash.so.20220623 => /lib/x86_64-linux-gnu/libabsl_hash.so.20220623 (0x00007fb09eda0000)",
+          "\tlibabsl_statusor.so.20220623 => /lib/x86_64-linux-gnu/libabsl_statusor.so.20220623 (0x00007fb09ed9a000)",
+          "\tlibabsl_graphcycles_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_graphcycles_internal.so.20220623 (0x00007fb09ed92000)",
+          "\tlibabsl_stacktrace.so.20220623 => /lib/x86_64-linux-gnu/libabsl_stacktrace.so.20220623 (0x00007fb09ed8d000)",
+          "\tlibabsl_symbolize.so.20220623 => /lib/x86_64-linux-gnu/libabsl_symbolize.so.20220623 (0x00007fb09ed85000)",
+          "\tlibabsl_malloc_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_malloc_internal.so.20220623 (0x00007fb09ed7d000)",
+          "\tlibabsl_base.so.20220623 => /lib/x86_64-linux-gnu/libabsl_base.so.20220623 (0x00007fb09ed77000)",
+          "\tlibffi.so.8 => /lib/x86_64-linux-gnu/libffi.so.8 (0x00007fb09ed6b000)",
+          "\tlibedit.so.2 => /lib/x86_64-linux-gnu/libedit.so.2 (0x00007fb09ed31000)",
+          "\tlibzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x00007fb09ec77000)",
+          "\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007fb09ec41000)",
+          "\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007fb09ea5f000)",
+          "\tlibabsl_cord.so.20220623 => /lib/x86_64-linux-gnu/libabsl_cord.so.20220623 (0x00007fb09ea46000)",
+          "\tlibabsl_strerror.so.20220623 => /lib/x86_64-linux-gnu/libabsl_strerror.so.20220623 (0x00007fb09ea41000)",
+          "\tlibabsl_cordz_info.so.20220623 => /lib/x86_64-linux-gnu/libabsl_cordz_info.so.20220623 (0x00007fb09ea39000)",
+          "\tlibabsl_time_zone.so.20220623 => /lib/x86_64-linux-gnu/libabsl_time_zone.so.20220623 (0x00007fb09ea1d000)",
+          "\tlibabsl_int128.so.20220623 => /lib/x86_64-linux-gnu/libabsl_int128.so.20220623 (0x00007fb09ea16000)",
+          "\tlibabsl_strings_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_strings_internal.so.20220623 (0x00007fb09ea10000)",
+          "\tlibcares.so.2 => /lib/x86_64-linux-gnu/libcares.so.2 (0x00007fb09e9e8000)",
+          "\tlibssl.so.3 => /lib/x86_64-linux-gnu/libssl.so.3 (0x00007fb09e93e000)",
+          "\tlibcrypto.so.3 => /lib/x86_64-linux-gnu/libcrypto.so.3 (0x00007fb09e428000)",
+          "\tlibaddress_sorting.so.29 => /lib/x86_64-linux-gnu/libaddress_sorting.so.29 (0x00007fb09e423000)",
+          "\tlibre2.so.10 => /lib/x86_64-linux-gnu/libre2.so.10 (0x00007fb09e3c1000)",
+          "\tlibabsl_bad_variant_access.so.20220623 => /lib/x86_64-linux-gnu/libabsl_bad_variant_access.so.20220623 (0x00007fb09e3bc000)",
+          "\tlibabsl_random_internal_pool_urbg.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_pool_urbg.so.20220623 (0x00007fb09e3b6000)",
+          "\tlibabsl_random_internal_randen.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_randen.so.20220623 (0x00007fb09e3af000)",
+          "\tlibabsl_random_internal_randen_hwaes_impl.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_randen_hwaes_impl.so.20220623 (0x00007fb09e3aa000)",
+          "\tlibabsl_random_internal_randen_slow.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_randen_slow.so.20220623 (0x00007fb09e3a4000)",
+          "\tlibabsl_bad_optional_access.so.20220623 => /lib/x86_64-linux-gnu/libabsl_bad_optional_access.so.20220623 (0x00007fb09e39f000)",
+          "\tlibabsl_city.so.20220623 => /lib/x86_64-linux-gnu/libabsl_city.so.20220623 (0x00007fb09e39a000)",
+          "\tlibabsl_low_level_hash.so.20220623 => /lib/x86_64-linux-gnu/libabsl_low_level_hash.so.20220623 (0x00007fb09e393000)",
+          "\tlibabsl_debugging_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_debugging_internal.so.20220623 (0x00007fb09e38c000)",
+          "\tlibabsl_demangle_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_demangle_internal.so.20220623 (0x00007fb09e382000)",
+          "\tlibbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x00007fb09e36c000)",
+          "\tlibicuuc.so.74 => /lib/x86_64-linux-gnu/libicuuc.so.74 (0x00007fb09e15f000)",
+          "\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007fb09e12b000)",
+          "\tlibabsl_cord_internal.so.20220623 => /lib/x86_64-linux-gnu/libabsl_cord_internal.so.20220623 (0x00007fb09e10f000)",
+          "\tlibabsl_cordz_functions.so.20220623 => /lib/x86_64-linux-gnu/libabsl_cordz_functions.so.20220623 (0x00007fb09e10a000)",
+          "\tlibabsl_cordz_handle.so.20220623 => /lib/x86_64-linux-gnu/libabsl_cordz_handle.so.20220623 (0x00007fb09e104000)",
+          "\tlibabsl_random_internal_seed_material.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_seed_material.so.20220623 (0x00007fb09e0fd000)",
+          "\tlibabsl_random_seed_gen_exception.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_seed_gen_exception.so.20220623 (0x00007fb09e0f8000)",
+          "\tlibabsl_random_internal_randen_hwaes.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_randen_hwaes.so.20220623 (0x00007fb09e0f3000)",
+          "\tlibabsl_random_internal_platform.so.20220623 => /lib/x86_64-linux-gnu/libabsl_random_internal_platform.so.20220623 (0x00007fb09e0ed000)",
+          "\tlibmd.so.0 => /lib/x86_64-linux-gnu/libmd.so.0 (0x00007fb09e0de000)",
+          "\tlibicudata.so.74 => /lib/x86_64-linux-gnu/libicudata.so.74 (0x00007fb09c37e000)",
+          "\tlibabsl_exponential_biased.so.20220623 => /lib/x86_64-linux-gnu/libabsl_exponential_biased.so.20220623 (0x00007fb09c377000)"
+        ],
+        "path": "/usr/bin/clangd",
+        "realpath": "/usr/lib/llvm-18/bin/clangd",
+        "sha256": "553224114539729bc00ed96ac6c16df6015c40265658610624da74da930f3894",
+        "version": "Ubuntu clangd version 18.1.3 (1ubuntu1)"
+      },
+      "emacs": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fffe64ae000)",
+          "\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f39f552d000)",
+          "\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f39f5525000)",
+          "\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f39f5343000)",
+          "\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f39f530f000)",
+          "\tlibselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f39f52e2000)",
+          "\tlibgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f39f50e5000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f39f4ffc000)",
+          "\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007f39f4fe0000)",
+          "\tlibgmp.so.10 => /lib/x86_64-linux-gnu/libgmp.so.10 (0x00007f39f4f5c000)",
+          "\tlibgccjit.so.0 => /lib/x86_64-linux-gnu/libgccjit.so.0 (0x00007f39f2873000)",
+          "\tlibtree-sitter.so.0 => /lib/x86_64-linux-gnu/libtree-sitter.so.0 (0x00007f39f2846000)",
+          "\tlibsqlite3.so.0 => /lib/x86_64-linux-gnu/libsqlite3.so.0 (0x00007f39f26dc000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f39f24ca000)",
+          "\tlibicuuc.so.74 => /lib/x86_64-linux-gnu/libicuuc.so.74 (0x00007f39f22bd000)",
+          "\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007f39f228b000)",
+          "\tlibpcre2-8.so.0 => /lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f39f21f1000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f39f5dff000)",
+          "\tlibp11-kit.so.0 => /lib/x86_64-linux-gnu/libp11-kit.so.0 (0x00007f39f204b000)",
+          "\tlibidn2.so.0 => /lib/x86_64-linux-gnu/libidn2.so.0 (0x00007f39f2029000)",
+          "\tlibunistring.so.5 => /lib/x86_64-linux-gnu/libunistring.so.5 (0x00007f39f1e7c000)",
+          "\tlibtasn1.so.6 => /lib/x86_64-linux-gnu/libtasn1.so.6 (0x00007f39f1e66000)",
+          "\tlibnettle.so.8 => /lib/x86_64-linux-gnu/libnettle.so.8 (0x00007f39f1e11000)",
+          "\tlibhogweed.so.6 => /lib/x86_64-linux-gnu/libhogweed.so.6 (0x00007f39f1dc9000)",
+          "\tlibisl.so.23 => /lib/x86_64-linux-gnu/libisl.so.23 (0x00007f39f1bff000)",
+          "\tlibmpc.so.3 => /lib/x86_64-linux-gnu/libmpc.so.3 (0x00007f39f1bdd000)",
+          "\tlibmpfr.so.6 => /lib/x86_64-linux-gnu/libmpfr.so.6 (0x00007f39f1b23000)",
+          "\tlibzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x00007f39f1a69000)",
+          "\tlibicudata.so.74 => /lib/x86_64-linux-gnu/libicudata.so.74 (0x00007f39efd09000)",
+          "\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f39efa89000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f39efa5b000)",
+          "\tlibffi.so.8 => /lib/x86_64-linux-gnu/libffi.so.8 (0x00007f39efa4f000)"
+        ],
+        "path": "/opt/soma/emacs/bin/emacs",
+        "realpath": "/opt/soma/emacs/bin/emacs-30.2",
+        "sha256": "824c1318464a98778d9f1677508e05af3dc5e94c34c63653145e079e5d26f6c2",
+        "version": "30.2"
+      },
+      "emacsclient": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fff087f9000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f41f5090000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f41f52b5000)"
+        ],
+        "path": "/opt/soma/emacs/bin/emacsclient",
+        "realpath": "/opt/soma/emacs/bin/emacsclient",
+        "sha256": "dbce94539b0ee6db6cb50078162896ea35ab8ef80e2c7d5c02dbf58f16aa315a",
+        "version": "emacsclient 30.2"
+      },
+      "fd": {
+        "dynamic_loader": "",
+        "elf": false,
+        "executable": false,
+        "ldd": null,
+        "path": "",
+        "realpath": "",
+        "sha256": "",
+        "version": ""
+      },
+      "g++": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffff2fa1000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fcefcee5000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007fcefd0ff000)"
+        ],
+        "path": "/usr/bin/g++",
+        "realpath": "/usr/bin/x86_64-linux-gnu-g++-13",
+        "sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+        "version": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      },
+      "gcc": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fff9e37a000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f4ab8137000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f4ab8351000)"
+        ],
+        "path": "/usr/bin/gcc",
+        "realpath": "/usr/bin/x86_64-linux-gnu-gcc-13",
+        "sha256": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+        "version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      },
+      "git": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fffa7373000)",
+          "\tlibpcre2-8.so.0 => /lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f09a2fbc000)",
+          "\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007f09a2fa0000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f09a2d8e000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f09a3465000)"
+        ],
+        "path": "/usr/bin/git",
+        "realpath": "/usr/bin/git",
+        "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668",
+        "version": "git version 2.43.0"
+      },
+      "jq": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fff8731e000)",
+          "\tlibjq.so.1 => /lib/x86_64-linux-gnu/libjq.so.1 (0x00007f036a3d5000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f036a1c3000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f036a0da000)",
+          "\tlibonig.so.5 => /lib/x86_64-linux-gnu/libonig.so.5 (0x00007f036a043000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f036a437000)"
+        ],
+        "path": "/usr/bin/jq",
+        "realpath": "/usr/bin/jq",
+        "sha256": "59cfd58d7e470b103aede0e7589cfea929e45ee27f5471f08aa9676ac7bfc566",
+        "version": "jq-1.7"
+      },
+      "jupyter": {
+        "dynamic_loader": "",
+        "elf": false,
+        "executable": true,
+        "ldd": null,
+        "path": "/usr/bin/jupyter",
+        "realpath": "/usr/bin/jupyter",
+        "sha256": "4c1e49b59a806232fadf7db7c7a287abf819ae6130c635dd319fd5f7309ac0d7",
+        "version": "Selected Jupyter core packages..."
+      },
+      "pylsp": {
+        "dynamic_loader": "",
+        "elf": false,
+        "executable": true,
+        "ldd": null,
+        "path": "/usr/bin/pylsp",
+        "realpath": "/usr/bin/pylsp",
+        "sha256": "c7d3fcb6e368cb70e1756993b7a6a3f5b98a8478e51c4c1c033f15487e598b88",
+        "version": "pylsp v1.10.0"
+      },
+      "pyright": {
+        "dynamic_loader": "",
+        "elf": false,
+        "executable": true,
+        "ldd": null,
+        "path": "/usr/local/bin/pyright",
+        "realpath": "/usr/local/lib/node_modules/pyright/index.js",
+        "sha256": "1b6744d5925694667abb3309c7e27611446aa7f1ee645cb99ecb0b9082a4c61e",
+        "version": "pyright 1.1.414"
+      },
+      "pyright-langserver": {
+        "dynamic_loader": "",
+        "elf": false,
+        "executable": true,
+        "ldd": null,
+        "path": "/usr/local/bin/pyright-langserver",
+        "realpath": "/usr/local/lib/node_modules/pyright/langserver.index.js",
+        "sha256": "f200762078eb9880faf421a5b30f9ef3055b1d85c6f10780d75db4da8d8499f1",
+        "version": "Error: Connection input stream is not set. Use arguments of createConnection or set command line parameters: '--node-ipc', '--stdio' or '--socket={number}'"
+      },
+      "python3": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffe92f19000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007fe38a4fc000)",
+          "\tlibz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x00007fe38a4e0000)",
+          "\tlibexpat.so.1 => /lib/x86_64-linux-gnu/libexpat.so.1 (0x00007fe38a4b4000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fe38a2a2000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007fe38a5ed000)"
+        ],
+        "path": "/usr/bin/python3",
+        "realpath": "/usr/bin/python3.12",
+        "sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+        "version": "3.12.3"
+      },
+      "rg": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffda5136000)",
+          "\tlibpcre2-8.so.0 => /lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007fed4d35f000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007fed4d331000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fed4d11f000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007fed4d905000)"
+        ],
+        "path": "/usr/bin/rg",
+        "realpath": "/usr/bin/rg",
+        "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb",
+        "version": "ripgrep 14.1.0"
+      },
+      "rust-analyzer": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffd94b0b000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f1e914b7000)",
+          "\tlibrt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x00007f1e914b2000)",
+          "\tlibpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f1e914ad000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f1e913c4000)",
+          "\tlibdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f1e913bf000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f1e911ab000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f1e9268e000)"
+        ],
+        "path": "/opt/soma/cargo/bin/rust-analyzer",
+        "realpath": "/opt/soma/cargo/bin/rustup",
+        "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71",
+        "version": "rust-analyzer 1.81.0 (eeb90cd 2024-09-04)"
+      },
+      "rustc": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffefebf7000)",
+          "\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f49e49c6000)",
+          "\tlibrt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x00007f49e49c1000)",
+          "\tlibpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f49e49bc000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f49e48d3000)",
+          "\tlibdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f49e48ce000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f49e46ba000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f49e5b9d000)"
+        ],
+        "path": "/opt/soma/cargo/bin/rustc",
+        "realpath": "/opt/soma/cargo/bin/rustup",
+        "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71",
+        "version": "rustc 1.81.0 (eeb90cda1 2024-09-04)"
+      },
+      "sh": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007fff7dfb4000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9e78ad1000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f9e78d0e000)"
+        ],
+        "path": "/usr/bin/sh",
+        "realpath": "/usr/bin/dash",
+        "sha256": "86d31f6fb799e91fa21bad341484564510ca287703a16e9e46c53338776f4f42",
+        "version": "sh"
+      },
+      "shellcheck": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffcad1b1000)",
+          "\tlibgmp.so.10 => /lib/x86_64-linux-gnu/libgmp.so.10 (0x00007f277fc20000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f277fa0e000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f277f925000)",
+          "\tlibffi.so.8 => /lib/x86_64-linux-gnu/libffi.so.8 (0x00007f277f919000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f277fcac000)"
+        ],
+        "path": "/usr/bin/shellcheck",
+        "realpath": "/usr/bin/shellcheck",
+        "sha256": "54dc63164186ad21fb909f5194fb5291f4035c2d2cae04b5680385b8d8fbb73c",
+        "version": "ShellCheck - shell script analysis tool"
+      },
+      "tmux": {
+        "dynamic_loader": "/lib64/ld-linux-x86-64.so.2",
+        "elf": true,
+        "executable": true,
+        "ldd": [
+          "\tlinux-vdso.so.1 (0x00007ffe687b8000)",
+          "\tlibsystemd.so.0 => /lib/x86_64-linux-gnu/libsystemd.so.0 (0x00007f2edd038000)",
+          "\tlibutempter.so.0 => /lib/x86_64-linux-gnu/libutempter.so.0 (0x00007f2edd033000)",
+          "\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f2edcfff000)",
+          "\tlibevent_core-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_core-2.1.so.7 (0x00007f2edcfca000)",
+          "\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f2edcee1000)",
+          "\tlibresolv.so.2 => /lib/x86_64-linux-gnu/libresolv.so.2 (0x00007f2edcecc000)",
+          "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f2edccba000)",
+          "\tlibcap.so.2 => /lib/x86_64-linux-gnu/libcap.so.2 (0x00007f2edccad000)",
+          "\tlibgcrypt.so.20 => /lib/x86_64-linux-gnu/libgcrypt.so.20 (0x00007f2edcb65000)",
+          "\tliblz4.so.1 => /lib/x86_64-linux-gnu/liblz4.so.1 (0x00007f2edcb43000)",
+          "\tliblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5 (0x00007f2edcb11000)",
+          "\tlibzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x00007f2edca55000)",
+          "\t/lib64/ld-linux-x86-64.so.2 (0x00007f2edd236000)",
+          "\tlibgpg-error.so.0 => /lib/x86_64-linux-gnu/libgpg-error.so.0 (0x00007f2edca30000)"
+        ],
+        "path": "/usr/bin/tmux",
+        "realpath": "/usr/bin/tmux",
+        "sha256": "034b15c64035f783d43862f2775eb4828f61571ca62c8199796000b97d556ecd",
+        "version": "tmux 3.4"
+      }
+    },
+    "visible_mount_classes": [
+      "read-only selected CUDA-image rootfs mounted at /",
+      "rootfs-owned Doom core/user config mounted into private HOME",
+      "writable private /project runtime/cache/tmp surfaces",
+      "writable Soma checkout mounted at /workspace/soma for trace output"
+    ]
+  },
+  "records": [
+    {
+      "id": "correct-hunk-stage",
+      "title": "Correct policy stages only the selected Magit hunk",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-hunk-correct-JZR03N",
+        "buffer": "magit: soma-magit-hunk-correct-JZR03N",
+        "selected_section": {
+          "type": "hunk",
+          "value": "(nil (2 7) (2 7))",
+          "start": 138,
+          "content": 169,
+          "end": 301,
+          "parent_types": [
+            "hunk",
+            "file",
+            "unstaged",
+            "status"
+          ],
+          "text_excerpt": "@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n"
+        },
+        "diff_type": "unstaged",
+        "diff_scope": "hunk"
+      },
+      "action": {
+        "operation": "magit-stage",
+        "route": "checked-bridge-command-dispatch",
+        "bridge": {
+          "operation": "command.dispatch",
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ],
+          "command": "magit-stage",
+          "route": "command-execute",
+          "this_command": "magit-stage",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer magit: soma-magit-hunk-correct-JZR03N>"
+            },
+            {
+              "name": "command is allowlisted",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "command is interactive",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-hunk-correct-JZR03N\" actual=\"magit: soma-magit-hunk-correct-JZR03N\""
+            },
+            {
+              "name": "selected window displays target buffer",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-hunk-correct-JZR03N\" actual=\"magit: soma-magit-hunk-correct-JZR03N\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=221 actual=221"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=138 actual=138"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            }
+          ],
+          "before": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-hunk-correct-JZR03N",
+            "text_owner_name": "magit: soma-magit-hunk-correct-JZR03N",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 221,
+            "modified": false,
+            "point": 138,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-hunk-correct-JZR03N",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-hunk-correct-JZR03N",
+            "text_owner_name": "magit: soma-magit-hunk-correct-JZR03N",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 481,
+            "modified": false,
+            "point": 138,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-hunk-correct-JZR03N",
+            "minibuffer_active": false
+          },
+          "error": false
+        },
+        "selection": "unstaged hunk"
+      },
+      "name": "correct-hunk-stage",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": true,
+          "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-hunk-correct-JZR03N>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=138 actual=138\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 481) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged hunk\"))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": true,
+          "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-hunk-correct-JZR03N>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=138 actual=138\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 481) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": true,
+          "detail": "(\"magit: soma-magit-hunk-correct-JZR03N\")"
+        },
+        {
+          "name": "target selected change is staged",
+          "passed": true,
+          "detail": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n"
+        },
+        {
+          "name": "target unrelated hunk remains unstaged",
+          "passed": true,
+          "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" worktree=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\""
+        },
+        {
+          "name": "debug worktree change remains unstaged",
+          "passed": true,
+          "detail": "index=\"debug-base\n\" worktree=\"debug-base\ndebug-worktree-only\n\""
+        },
+        {
+          "name": "unrelated staged file is preserved",
+          "passed": true,
+          "detail": "staged-expected\n"
+        },
+        {
+          "name": "cached names are exact",
+          "passed": true,
+          "detail": "(\"staged.txt\" \"target.txt\")"
+        },
+        {
+          "name": "unstaged names preserve unrelated work",
+          "passed": true,
+          "detail": "(\"debug.txt\" \"target.txt\")"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "staged.txt",
+          "target.txt"
+        ],
+        "unstaged_names": [
+          "debug.txt",
+          "target.txt"
+        ],
+        "status_porcelain": [
+          "M  staged.txt",
+          "M debug.txt",
+          "MM target.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-base\n",
+        "beta_index": "beta-base\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": [
+        "magit-stage"
+      ],
+      "refresh_buffer_hook_runs": [
+        "magit: soma-magit-hunk-correct-JZR03N"
+      ]
+    },
+    {
+      "id": "correct-file-stage",
+      "title": "Correct policy stages the selected Magit file section",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-file-correct-FZn1wC",
+        "buffer": "magit: soma-magit-file-correct-FZn1wC",
+        "selected_section": {
+          "type": "file",
+          "value": "\"target.txt\"",
+          "start": 116,
+          "content": 138,
+          "end": 301,
+          "parent_types": [
+            "file",
+            "unstaged",
+            "status"
+          ],
+          "text_excerpt": "modified   target.txt\n@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n"
+        },
+        "diff_type": "unstaged",
+        "diff_scope": "file"
+      },
+      "action": {
+        "operation": "magit-stage",
+        "route": "checked-bridge-command-dispatch",
+        "bridge": {
+          "operation": "command.dispatch",
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ],
+          "command": "magit-stage",
+          "route": "command-execute",
+          "this_command": "magit-stage",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer magit: soma-magit-file-correct-FZn1wC>"
+            },
+            {
+              "name": "command is allowlisted",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "command is interactive",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-file-correct-FZn1wC\" actual=\"magit: soma-magit-file-correct-FZn1wC\""
+            },
+            {
+              "name": "selected window displays target buffer",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-file-correct-FZn1wC\" actual=\"magit: soma-magit-file-correct-FZn1wC\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=206 actual=206"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=116 actual=116"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            }
+          ],
+          "before": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-file-correct-FZn1wC",
+            "text_owner_name": "magit: soma-magit-file-correct-FZn1wC",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 206,
+            "modified": false,
+            "point": 116,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-file-correct-FZn1wC",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-file-correct-FZn1wC",
+            "text_owner_name": "magit: soma-magit-file-correct-FZn1wC",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 423,
+            "modified": false,
+            "point": 48,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-file-correct-FZn1wC",
+            "minibuffer_active": false
+          },
+          "error": false
+        },
+        "selection": "unstaged file"
+      },
+      "name": "correct-file-stage",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": true,
+          "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-file-correct-FZn1wC>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-file-correct-FZn1wC\\\" actual=\\\"magit: soma-magit-file-correct-FZn1wC\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-file-correct-FZn1wC\\\" actual=\\\"magit: soma-magit-file-correct-FZn1wC\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=206 actual=206\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=116 actual=116\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"text_owner_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 206) (\"modified\" . :json-false) (\"point\" . 116) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"text_owner_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 423) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged file\"))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": true,
+          "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-file-correct-FZn1wC>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-file-correct-FZn1wC\\\" actual=\\\"magit: soma-magit-file-correct-FZn1wC\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-file-correct-FZn1wC\\\" actual=\\\"magit: soma-magit-file-correct-FZn1wC\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=206 actual=206\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=116 actual=116\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"text_owner_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 206) (\"modified\" . :json-false) (\"point\" . 116) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"text_owner_name\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 423) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-file-correct-FZn1wC\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": true,
+          "detail": "(\"magit: soma-magit-file-correct-FZn1wC\")"
+        },
+        {
+          "name": "target file is fully staged",
+          "passed": true,
+          "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" unstaged=(\"debug.txt\")"
+        },
+        {
+          "name": "cached names are exact",
+          "passed": true,
+          "detail": "(\"staged.txt\" \"target.txt\")"
+        },
+        {
+          "name": "unrelated unstaged debug change remains",
+          "passed": true,
+          "detail": "(\"debug.txt\")"
+        },
+        {
+          "name": "unrelated staged file is preserved",
+          "passed": true,
+          "detail": "staged-expected\n"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "staged.txt",
+          "target.txt"
+        ],
+        "unstaged_names": [
+          "debug.txt"
+        ],
+        "status_porcelain": [
+          "M  staged.txt",
+          "M  target.txt",
+          "M debug.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-base\n",
+        "beta_index": "beta-base\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": [
+        "magit-stage"
+      ],
+      "refresh_buffer_hook_runs": [
+        "magit: soma-magit-file-correct-FZn1wC"
+      ]
+    },
+    {
+      "id": "correct-region-files-stage",
+      "title": "Correct policy stages an active region of Magit file sections",
+      "expected_policy_pass": true,
+      "policy_passed_grader": true,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-region-correct-VSxdXS",
+        "buffer": "magit: soma-magit-region-correct-VSxdXS",
+        "region_sections": [
+          {
+            "type": "file",
+            "value": "\"alpha.txt\"",
+            "start": 48,
+            "content": 69,
+            "end": 109,
+            "parent_types": [
+              "file",
+              "unstaged",
+              "status"
+            ],
+            "text_excerpt": "modified   alpha.txt\n@@ -1 +1 @@\n-alpha-base\n+alpha-selected\n"
+          },
+          {
+            "type": "file",
+            "value": "\"beta.txt\"",
+            "start": 109,
+            "content": 129,
+            "end": 167,
+            "parent_types": [
+              "file",
+              "unstaged",
+              "status"
+            ],
+            "text_excerpt": "modified   beta.txt\n@@ -1 +1 @@\n-beta-base\n+beta-selected\n"
+          }
+        ],
+        "diff_type": "unstaged",
+        "diff_scope": "files"
+      },
+      "action": {
+        "operation": "magit-stage",
+        "route": "checked-bridge-command-dispatch",
+        "bridge": {
+          "operation": "command.dispatch",
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ],
+          "command": "magit-stage",
+          "route": "command-execute",
+          "this_command": "magit-stage",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer magit: soma-magit-region-correct-VSxdXS>"
+            },
+            {
+              "name": "command is allowlisted",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "command is interactive",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-region-correct-VSxdXS\" actual=\"magit: soma-magit-region-correct-VSxdXS\""
+            },
+            {
+              "name": "selected window displays target buffer",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-region-correct-VSxdXS\" actual=\"magit: soma-magit-region-correct-VSxdXS\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=276 actual=276"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=109 actual=109"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "region active state matches precondition",
+              "passed": true,
+              "detail": "expected=t actual=t"
+            },
+            {
+              "name": "region bounds match precondition",
+              "passed": true,
+              "detail": "expected=48..109 actual=48..109"
+            }
+          ],
+          "before": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-region-correct-VSxdXS",
+            "text_owner_name": "magit: soma-magit-region-correct-VSxdXS",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 276,
+            "modified": false,
+            "point": 109,
+            "mark_active": true,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-region-correct-VSxdXS",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-region-correct-VSxdXS",
+            "text_owner_name": "magit: soma-magit-region-correct-VSxdXS",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 563,
+            "modified": false,
+            "point": 48,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-region-correct-VSxdXS",
+            "minibuffer_active": false
+          },
+          "error": false
+        },
+        "selection": "unstaged files region"
+      },
+      "name": "correct-region-files-stage",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": true,
+          "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-region-correct-VSxdXS>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=276 actual=276\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=109 actual=109\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=t actual=t\")) ((\"name\" . \"region bounds match precondition\") (\"passed\" . t) (\"detail\" . \"expected=48..109 actual=48..109\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 276) (\"modified\" . :json-false) (\"point\" . 109) (\"mark_active\" . t) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 563) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged files region\"))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": true,
+          "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-region-correct-VSxdXS>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=276 actual=276\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=109 actual=109\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=t actual=t\")) ((\"name\" . \"region bounds match precondition\") (\"passed\" . t) (\"detail\" . \"expected=48..109 actual=48..109\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 276) (\"modified\" . :json-false) (\"point\" . 109) (\"mark_active\" . t) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 563) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": true,
+          "detail": "(\"magit: soma-magit-region-correct-VSxdXS\")"
+        },
+        {
+          "name": "region selected exactly two file sections",
+          "passed": true,
+          "detail": "(((\"type\" . \"file\") (\"value\" . \"\\\"alpha.txt\\\"\") (\"start\" . 48) (\"content\" . 69) (\"end\" . 109) (\"parent_types\" \"file\" \"unstaged\" \"status\") (\"text_excerpt\" . \"modified   alpha.txt\n@@ -1 +1 @@\n-alpha-base\n+alpha-selected\n\")) ((\"type\" . \"file\") (\"value\" . \"\\\"beta.txt\\\"\") (\"start\" . 109) (\"content\" . 129) (\"end\" . 167) (\"parent_types\" \"file\" \"unstaged\" \"status\") (\"text_excerpt\" . \"modified   beta.txt\n@@ -1 +1 @@\n-beta-base\n+beta-selected\n\")))"
+        },
+        {
+          "name": "alpha and beta are staged",
+          "passed": true,
+          "detail": "alpha=\"alpha-selected\n\" beta=\"beta-selected\n\""
+        },
+        {
+          "name": "gamma remains unstaged",
+          "passed": true,
+          "detail": "gamma=\"gamma-base\n\" unstaged=(\"debug.txt\" \"gamma.txt\")"
+        },
+        {
+          "name": "cached names are exact",
+          "passed": true,
+          "detail": "(\"alpha.txt\" \"beta.txt\" \"staged.txt\")"
+        },
+        {
+          "name": "unrelated debug and gamma worktree changes remain",
+          "passed": true,
+          "detail": "(\"debug.txt\" \"gamma.txt\")"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "alpha.txt",
+          "beta.txt",
+          "staged.txt"
+        ],
+        "unstaged_names": [
+          "debug.txt",
+          "gamma.txt"
+        ],
+        "status_porcelain": [
+          " M debug.txt",
+          " M gamma.txt",
+          "M  alpha.txt",
+          "M  beta.txt",
+          "M  staged.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-selected\n",
+        "beta_index": "beta-selected\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": [
+        "magit-stage"
+      ],
+      "refresh_buffer_hook_runs": [
+        "magit: soma-magit-region-correct-VSxdXS"
+      ]
+    },
+    {
+      "id": "bad-git-add-all",
+      "title": "Incorrect policy bypasses Magit and stages too much with git add -u",
+      "expected_policy_pass": false,
+      "policy_passed_grader": false,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-git-add-all-bad-sX99yN",
+        "intended_selection": "first target.txt hunk",
+        "visible_state": {
+          "cached_names": [
+            "staged.txt"
+          ],
+          "unstaged_names": [
+            "debug.txt",
+            "target.txt"
+          ],
+          "status_porcelain": [
+            " M target.txt",
+            "M  staged.txt",
+            "M debug.txt"
+          ],
+          "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+          "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+          "debug_index": "debug-base\n",
+          "debug_worktree": "debug-base\ndebug-worktree-only\n",
+          "staged_index": "staged-expected\n",
+          "staged_worktree": "staged-expected\n",
+          "alpha_index": "alpha-base\n",
+          "beta_index": "beta-base\n",
+          "gamma_index": "gamma-base\n"
+        }
+      },
+      "action": {
+        "operation": "git add -u",
+        "route": "raw git subprocess",
+        "bridge": {
+          "operation": "direct-call",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ],
+          "requested_operation": "git-add-u",
+          "reason": "raw git subprocess is outside checked bridge command dispatch"
+        },
+        "selection": "all tracked changes"
+      },
+      "name": "bad-git-add-all",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": false,
+          "detail": "((\"operation\" . \"git add -u\") (\"route\" . \"raw git subprocess\") (\"bridge\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"git-add-u\") (\"reason\" . \"raw git subprocess is outside checked bridge command dispatch\")) (\"selection\" . \"all tracked changes\"))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": false,
+          "detail": "((\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"git-add-u\") (\"reason\" . \"raw git subprocess is outside checked bridge command dispatch\"))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": false,
+          "detail": "nil"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": false,
+          "detail": "nil"
+        },
+        {
+          "name": "target selected change is staged",
+          "passed": true,
+          "detail": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n"
+        },
+        {
+          "name": "target unrelated hunk remains unstaged",
+          "passed": false,
+          "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" worktree=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\""
+        },
+        {
+          "name": "debug worktree change remains unstaged",
+          "passed": false,
+          "detail": "index=\"debug-base\ndebug-worktree-only\n\" worktree=\"debug-base\ndebug-worktree-only\n\""
+        },
+        {
+          "name": "unrelated staged file is preserved",
+          "passed": true,
+          "detail": "staged-expected\n"
+        },
+        {
+          "name": "cached names are exact",
+          "passed": false,
+          "detail": "(\"debug.txt\" \"staged.txt\" \"target.txt\")"
+        },
+        {
+          "name": "unstaged names preserve unrelated work",
+          "passed": false,
+          "detail": "nil"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "debug.txt",
+          "staged.txt",
+          "target.txt"
+        ],
+        "unstaged_names": null,
+        "status_porcelain": [
+          "M  debug.txt",
+          "M  staged.txt",
+          "M  target.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\ndebug-worktree-only\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-base\n",
+        "beta_index": "beta-base\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": null,
+      "refresh_buffer_hook_runs": null
+    },
+    {
+      "id": "bad-wrapper-command-context",
+      "title": "Incorrect policy stages the right file through a bridge wrapper",
+      "expected_policy_pass": false,
+      "policy_passed_grader": false,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-wrapper-context-bad-LRTcBs",
+        "intended_selection": "target.txt file section",
+        "visible_state": {
+          "cached_names": [
+            "staged.txt"
+          ],
+          "unstaged_names": [
+            "debug.txt",
+            "target.txt"
+          ],
+          "status_porcelain": [
+            " M target.txt",
+            "M  staged.txt",
+            "M debug.txt"
+          ],
+          "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+          "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+          "debug_index": "debug-base\n",
+          "debug_worktree": "debug-base\ndebug-worktree-only\n",
+          "staged_index": "staged-expected\n",
+          "staged_worktree": "staged-expected\n",
+          "alpha_index": "alpha-base\n",
+          "beta_index": "beta-base\n",
+          "gamma_index": "gamma-base\n"
+        }
+      },
+      "action": {
+        "operation": "magit-stage-1",
+        "route": "bridge-wrapper-direct-call",
+        "bridge": {
+          "operation": "direct-call",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ],
+          "requested_operation": "magit-stage-1",
+          "reason": "direct lower-level Magit mutation bypasses checked command dispatch"
+        },
+        "selection": "target.txt",
+        "wrapper_this_command": "soma-bridge-stage"
+      },
+      "name": "bad-wrapper-command-context",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": false,
+          "detail": "((\"operation\" . \"magit-stage-1\") (\"route\" . \"bridge-wrapper-direct-call\") (\"bridge\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"direct lower-level Magit mutation bypasses checked command dispatch\")) (\"selection\" . \"target.txt\") (\"wrapper_this_command\" . \"soma-bridge-stage\"))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": false,
+          "detail": "((\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"direct lower-level Magit mutation bypasses checked command dispatch\"))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": false,
+          "detail": "nil"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": false,
+          "detail": "nil"
+        },
+        {
+          "name": "filesystem effect matches requested file staging",
+          "passed": true,
+          "detail": "cached=(\"staged.txt\" \"target.txt\") unstaged=(\"debug.txt\")"
+        },
+        {
+          "name": "unrelated staged file is preserved",
+          "passed": true,
+          "detail": "staged-expected\n"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "staged.txt",
+          "target.txt"
+        ],
+        "unstaged_names": [
+          "debug.txt"
+        ],
+        "status_porcelain": [
+          "M  staged.txt",
+          "M  target.txt",
+          "M debug.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-base\n",
+        "beta_index": "beta-base\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": null,
+      "refresh_buffer_hook_runs": null
+    },
+    {
+      "id": "bad-unstaged-list-stage",
+      "title": "Incorrect policy selects the unstaged list and stages too much",
+      "expected_policy_pass": false,
+      "policy_passed_grader": false,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-list-stage-bad-dB5S3b",
+        "buffer": "magit: soma-magit-list-stage-bad-dB5S3b",
+        "selected_section": {
+          "type": "unstaged",
+          "value": "nil",
+          "start": 27,
+          "content": 48,
+          "end": 464,
+          "parent_types": [
+            "unstaged",
+            "status"
+          ],
+          "text_excerpt": "Unstaged changes (2)\nmodified   debug.txt\n@@ -1 +1,2 @@\n debug-base\n+debug-worktree-only\nmodified   target.txt\n@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n@@ -22,7 +22,7 @@ target-21-base\n target-22-base\n target-23-base\n target-24-base\n-target-25-base\n+target-25-other\n target-26-b"
+        },
+        "diff_type": "unstaged",
+        "diff_scope": "list"
+      },
+      "action": {
+        "operation": "magit-stage",
+        "route": "checked-bridge-command-dispatch",
+        "bridge": {
+          "operation": "command.dispatch",
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ],
+          "command": "magit-stage",
+          "route": "command-execute",
+          "this_command": "magit-stage",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer magit: soma-magit-list-stage-bad-dB5S3b>"
+            },
+            {
+              "name": "command is allowlisted",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "command is interactive",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-list-stage-bad-dB5S3b\" actual=\"magit: soma-magit-list-stage-bad-dB5S3b\""
+            },
+            {
+              "name": "selected window displays target buffer",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-list-stage-bad-dB5S3b\" actual=\"magit: soma-magit-list-stage-bad-dB5S3b\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=221 actual=221"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=27 actual=27"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            }
+          ],
+          "before": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-list-stage-bad-dB5S3b",
+            "text_owner_name": "magit: soma-magit-list-stage-bad-dB5S3b",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 221,
+            "modified": false,
+            "point": 27,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-list-stage-bad-dB5S3b",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-list-stage-bad-dB5S3b",
+            "text_owner_name": "magit: soma-magit-list-stage-bad-dB5S3b",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 445,
+            "modified": false,
+            "point": 27,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-list-stage-bad-dB5S3b",
+            "minibuffer_active": false
+          },
+          "error": false
+        },
+        "selection": "unstaged list"
+      },
+      "name": "bad-unstaged-list-stage",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": true,
+          "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-list-stage-bad-dB5S3b>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\" actual=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\" actual=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=27 actual=27\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 445) (\"modified\" . :json-false) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged list\"))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": true,
+          "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-list-stage-bad-dB5S3b>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\" actual=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\" actual=\\\"magit: soma-magit-list-stage-bad-dB5S3b\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=27 actual=27\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"text_owner_name\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 445) (\"modified\" . :json-false) (\"point\" . 27) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-list-stage-bad-dB5S3b\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": true,
+          "detail": "(\"magit: soma-magit-list-stage-bad-dB5S3b\")"
+        },
+        {
+          "name": "target selected change is staged",
+          "passed": true,
+          "detail": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n"
+        },
+        {
+          "name": "target unrelated hunk remains unstaged",
+          "passed": false,
+          "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" worktree=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\""
+        },
+        {
+          "name": "debug worktree change remains unstaged",
+          "passed": false,
+          "detail": "index=\"debug-base\ndebug-worktree-only\n\" worktree=\"debug-base\ndebug-worktree-only\n\""
+        },
+        {
+          "name": "unrelated staged file is preserved",
+          "passed": true,
+          "detail": "staged-expected\n"
+        },
+        {
+          "name": "cached names are exact",
+          "passed": false,
+          "detail": "(\"debug.txt\" \"staged.txt\" \"target.txt\")"
+        },
+        {
+          "name": "unstaged names preserve unrelated work",
+          "passed": false,
+          "detail": "nil"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "debug.txt",
+          "staged.txt",
+          "target.txt"
+        ],
+        "unstaged_names": null,
+        "status_porcelain": [
+          "M  debug.txt",
+          "M  staged.txt",
+          "M  target.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\ndebug-worktree-only\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-base\n",
+        "beta_index": "beta-base\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": [
+        "magit-stage"
+      ],
+      "refresh_buffer_hook_runs": [
+        "magit: soma-magit-list-stage-bad-dB5S3b"
+      ]
+    },
+    {
+      "id": "bad-stale-view-stage",
+      "title": "Incorrect policy acts through a stale Magit view after external edit",
+      "expected_policy_pass": false,
+      "policy_passed_grader": false,
+      "as_expected": true,
+      "observation": {
+        "repo": "/project/tmp/soma-magit-stale-view-bad-47i64A",
+        "buffer": "magit: soma-magit-stale-view-bad-47i64A",
+        "selected_section": {
+          "type": "file",
+          "value": "\"target.txt\"",
+          "start": 116,
+          "content": 138,
+          "end": 301,
+          "parent_types": [
+            "file",
+            "unstaged",
+            "status"
+          ],
+          "text_excerpt": "modified   target.txt\n@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n"
+        },
+        "view_refreshed_after_observation": false
+      },
+      "action": {
+        "operation": "magit-stage",
+        "route": "checked-bridge-command-dispatch",
+        "bridge": {
+          "operation": "command.dispatch",
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ],
+          "command": "magit-stage",
+          "route": "command-execute",
+          "this_command": "magit-stage",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer magit: soma-magit-stale-view-bad-47i64A>"
+            },
+            {
+              "name": "command is allowlisted",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "command is interactive",
+              "passed": true,
+              "detail": "magit-stage"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-stale-view-bad-47i64A\" actual=\"magit: soma-magit-stale-view-bad-47i64A\""
+            },
+            {
+              "name": "selected window displays target buffer",
+              "passed": true,
+              "detail": "expected=\"magit: soma-magit-stale-view-bad-47i64A\" actual=\"magit: soma-magit-stale-view-bad-47i64A\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=206 actual=206"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=116 actual=116"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            }
+          ],
+          "before": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-stale-view-bad-47i64A",
+            "text_owner_name": "magit: soma-magit-stale-view-bad-47i64A",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 206,
+            "modified": false,
+            "point": 116,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-stale-view-bad-47i64A",
+            "minibuffer_active": false
+          },
+          "after": {
+            "operation": "emacs.observe_buffer",
+            "state": "succeeded",
+            "buffer_name": "magit: soma-magit-stale-view-bad-47i64A",
+            "text_owner_name": "magit: soma-magit-stale-view-bad-47i64A",
+            "buffer_file_name": false,
+            "major_mode": "magit-status-mode",
+            "chars_tick": 438,
+            "modified": false,
+            "point": 48,
+            "mark_active": false,
+            "narrowed": false,
+            "selected_window_buffer": "magit: soma-magit-stale-view-bad-47i64A",
+            "minibuffer_active": false
+          },
+          "error": false
+        },
+        "selection": "stale unstaged file section",
+        "revalidated_after_external_change": false
+      },
+      "name": "bad-stale-view-stage",
+      "checks": [
+        {
+          "name": "git executable resolves inside rootfs",
+          "passed": true,
+          "detail": "/usr/bin/git"
+        },
+        {
+          "name": "Magit loads from rootfs-owned Doom mount",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+        },
+        {
+          "name": "action used expected Magit operation",
+          "passed": true,
+          "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-stale-view-bad-47i64A>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-stale-view-bad-47i64A\\\" actual=\\\"magit: soma-magit-stale-view-bad-47i64A\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-stale-view-bad-47i64A\\\" actual=\\\"magit: soma-magit-stale-view-bad-47i64A\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=206 actual=206\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=116 actual=116\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"text_owner_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 206) (\"modified\" . :json-false) (\"point\" . 116) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"text_owner_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 438) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"stale unstaged file section\") (\"revalidated_after_external_change\" . :json-false))"
+        },
+        {
+          "name": "checked bridge command dispatch succeeded",
+          "passed": true,
+          "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-stale-view-bad-47i64A>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-stale-view-bad-47i64A\\\" actual=\\\"magit: soma-magit-stale-view-bad-47i64A\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-stale-view-bad-47i64A\\\" actual=\\\"magit: soma-magit-stale-view-bad-47i64A\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=206 actual=206\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=116 actual=116\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"text_owner_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 206) (\"modified\" . :json-false) (\"point\" . 116) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"text_owner_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 438) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+        },
+        {
+          "name": "command route preserved Magit command identity",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        },
+        {
+          "name": "Magit refresh ran after staging",
+          "passed": true,
+          "detail": "(\"magit: soma-magit-stale-view-bad-47i64A\")"
+        },
+        {
+          "name": "policy revalidated stale view before staging",
+          "passed": false,
+          "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-stale-view-bad-47i64A>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-stale-view-bad-47i64A\\\" actual=\\\"magit: soma-magit-stale-view-bad-47i64A\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-stale-view-bad-47i64A\\\" actual=\\\"magit: soma-magit-stale-view-bad-47i64A\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=206 actual=206\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=116 actual=116\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"text_owner_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 206) (\"modified\" . :json-false) (\"point\" . 116) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"text_owner_name\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 438) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-stale-view-bad-47i64A\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"stale unstaged file section\") (\"revalidated_after_external_change\" . :json-false))"
+        },
+        {
+          "name": "index excludes external change",
+          "passed": false,
+          "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-external\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" worktree=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-external\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\""
+        },
+        {
+          "name": "cached names are exact",
+          "passed": true,
+          "detail": "(\"staged.txt\" \"target.txt\")"
+        }
+      ],
+      "repo_state": {
+        "cached_names": [
+          "staged.txt",
+          "target.txt"
+        ],
+        "unstaged_names": [
+          "debug.txt"
+        ],
+        "status_porcelain": [
+          "M  staged.txt",
+          "M  target.txt",
+          "M debug.txt"
+        ],
+        "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-external\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-external\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+        "debug_index": "debug-base\n",
+        "debug_worktree": "debug-base\ndebug-worktree-only\n",
+        "staged_index": "staged-expected\n",
+        "staged_worktree": "staged-expected\n",
+        "alpha_index": "alpha-base\n",
+        "beta_index": "beta-base\n",
+        "gamma_index": "gamma-base\n"
+      },
+      "post_stage_hook_runs": [
+        "magit-stage"
+      ],
+      "refresh_buffer_hook_runs": [
+        "magit: soma-magit-stale-view-bad-47i64A"
+      ]
+    }
+  ]
+}

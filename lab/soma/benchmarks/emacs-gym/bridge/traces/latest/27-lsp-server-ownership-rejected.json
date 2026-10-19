@@ -1,0 +1,953 @@
+{
+  "id": "lsp-server-ownership-rejected",
+  "title": "Stable coding-v0 LSP operations reject live server processes outside the selected rootfs",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "host_lsp_path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+  "observe_request": {
+    "request_id": "lsp-host-observe-1",
+    "operation": "lsp.observe_source",
+    "params": {
+      "buffer_name": "subject.py",
+      "max_text": 400
+    }
+  },
+  "observe_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "lsp-host-observe-1",
+    "operation": "lsp.observe_source",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "lsp.observe_source",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "failed"
+      ],
+      "buffer_name": "subject.py",
+      "text_owner_name": "subject.py",
+      "buffer_file_name": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+      "major_mode": "python-mode",
+      "chars_tick": 7,
+      "modified": false,
+      "read_only": false,
+      "point": 5,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "subject.py",
+      "minibuffer_active": false,
+      "workspace_present": true,
+      "workspace_status": "initialized",
+      "workspace_root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+      "document_uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+      "document_version": 1,
+      "position_encoding": "unknown",
+      "lsp_sync": {
+        "skipped": true,
+        "reason": "server_not_rootfs_owned"
+      },
+      "precondition_checks": [
+        {
+          "name": "LSP workspace is present",
+          "passed": true,
+          "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+        },
+        {
+          "name": "LSP server process is present",
+          "passed": true,
+          "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+        },
+        {
+          "name": "LSP server executable is rootfs-owned",
+          "passed": false,
+          "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+        }
+      ],
+      "capabilities": null,
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "diagnostic_cache": {},
+      "symbol": "compute_value",
+      "symbol_source": "thing-at-point",
+      "text_hash": "6ab7626143f57e998ba6e5f98dd0202b371caff22ada0a787311a0daea570883",
+      "text_excerpt": "def compute_value(x: int) -> int:\n    return x + 22\n",
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+      "error": "LSP operation requires a live rootfs-owned LSP server",
+      "server_id": "pylsp",
+      "workspace_status": "initialized",
+      "workspace_proc_type": "process",
+      "cmd_proc_type": "process",
+      "cmd_proc_status": "run",
+      "workspace_root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+      "server_pid": 360,
+      "server_executable": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+      "server_rootfs_owned": false,
+      "server_cwd": "/workspace/soma",
+      "server_command": [
+        "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+        "60"
+      ],
+      "server_stdout_tail": "",
+      "server_stderr_tail": ""
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "LSP workspace is present",
+          "passed": true,
+          "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+        },
+        {
+          "name": "LSP server process is present",
+          "passed": true,
+          "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+        },
+        {
+          "name": "LSP server executable is rootfs-owned",
+          "passed": false,
+          "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+        }
+      ],
+      "workspace": {
+        "present": true,
+        "status": "initialized",
+        "root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+        "proc_type": "process"
+      },
+      "server": {
+        "id": "pylsp",
+        "pid": 360,
+        "executable": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+        "rootfs_owned": false,
+        "cwd": "/workspace/soma",
+        "command": [
+          "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+          "60"
+        ],
+        "cmd_proc_type": "process",
+        "cmd_proc_status": "run"
+      },
+      "document": {
+        "uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "version": 1,
+        "position_encoding": "unknown"
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "diagnostic_cache": {},
+      "lsp_sync": {
+        "skipped": true,
+        "reason": "server_not_rootfs_owned"
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "source_buffer": {
+        "buffer_name": "subject.py",
+        "text_owner_name": "subject.py",
+        "buffer_file_name": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 5,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "subject.py",
+        "minibuffer_active": false,
+        "text_hash": "6ab7626143f57e998ba6e5f98dd0202b371caff22ada0a787311a0daea570883",
+        "text_excerpt": "def compute_value(x: int) -> int:\n    return x + 22\n"
+      },
+      "document": {
+        "uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "version": 1,
+        "position_encoding": "unknown"
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "symbol": {
+        "name": "compute_value",
+        "source": "thing-at-point"
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "operation_failed",
+        "message": "LSP operation requires a live rootfs-owned LSP server"
+      }
+    ],
+    "continuation": null,
+    "error_code": "operation_failed",
+    "error": "LSP operation requires a live rootfs-owned LSP server"
+  },
+  "diagnostics_request": {
+    "request_id": "lsp-host-diagnostics-1",
+    "operation": "lsp.observe_diagnostics",
+    "params": {
+      "buffer_name": "subject.py",
+      "settle_seconds": 0.0
+    }
+  },
+  "diagnostics_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "lsp-host-diagnostics-1",
+    "operation": "lsp.observe_diagnostics",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "lsp.observe_diagnostics",
+      "state": "failed",
+      "buffer_name": "subject.py",
+      "text_owner_name": "subject.py",
+      "buffer_file_name": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+      "major_mode": "python-mode",
+      "chars_tick": 7,
+      "modified": false,
+      "read_only": false,
+      "point": 5,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "subject.py",
+      "minibuffer_active": false,
+      "workspace_present": true,
+      "workspace_status": "initialized",
+      "workspace_root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+      "document_uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+      "document_version": 1,
+      "position_encoding": "unknown",
+      "lsp_sync": {
+        "skipped": true,
+        "reason": "server_not_rootfs_owned"
+      },
+      "precondition_checks": [
+        {
+          "name": "LSP workspace is present",
+          "passed": true,
+          "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+        },
+        {
+          "name": "LSP server process is present",
+          "passed": true,
+          "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+        },
+        {
+          "name": "LSP server executable is rootfs-owned",
+          "passed": false,
+          "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+        },
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer subject.py>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"subject.py\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"subject.py\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=7"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=5"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"subject.py\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "LSP workspace is present",
+          "passed": true,
+          "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+        },
+        {
+          "name": "LSP workspace is initialized",
+          "passed": true,
+          "detail": "initialized"
+        }
+      ],
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "diagnostic_cache": {},
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+      "error": "LSP diagnostics require a live rootfs-owned LSP server and matching document preconditions",
+      "server_id": "pylsp",
+      "workspace_status": "initialized",
+      "workspace_proc_type": "process",
+      "cmd_proc_type": "process",
+      "cmd_proc_status": "run",
+      "workspace_root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+      "server_pid": 360,
+      "server_executable": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+      "server_rootfs_owned": false,
+      "server_cwd": "/workspace/soma",
+      "server_command": [
+        "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+        "60"
+      ],
+      "server_stdout_tail": "",
+      "server_stderr_tail": ""
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "LSP workspace is present",
+          "passed": true,
+          "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+        },
+        {
+          "name": "LSP server process is present",
+          "passed": true,
+          "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+        },
+        {
+          "name": "LSP server executable is rootfs-owned",
+          "passed": false,
+          "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+        },
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer subject.py>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"subject.py\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"subject.py\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=7"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=5"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"subject.py\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "LSP workspace is present",
+          "passed": true,
+          "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+        },
+        {
+          "name": "LSP workspace is initialized",
+          "passed": true,
+          "detail": "initialized"
+        }
+      ],
+      "workspace": {
+        "present": true,
+        "status": "initialized",
+        "root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+        "proc_type": "process"
+      },
+      "server": {
+        "id": "pylsp",
+        "pid": 360,
+        "executable": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+        "rootfs_owned": false,
+        "cwd": "/workspace/soma",
+        "command": [
+          "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+          "60"
+        ],
+        "cmd_proc_type": "process",
+        "cmd_proc_status": "run"
+      },
+      "document": {
+        "uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "version": 1,
+        "position_encoding": "unknown"
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "diagnostic_cache": {},
+      "lsp_sync": {
+        "skipped": true,
+        "reason": "server_not_rootfs_owned"
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "source_buffer": {
+        "buffer_name": "subject.py",
+        "text_owner_name": "subject.py",
+        "buffer_file_name": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 5,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "subject.py",
+        "minibuffer_active": false,
+        "text_hash": false,
+        "text_excerpt": false
+      },
+      "document": {
+        "uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "version": 1,
+        "position_encoding": "unknown"
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "conflict",
+        "message": "LSP diagnostics require a live rootfs-owned LSP server and matching document preconditions"
+      }
+    ],
+    "continuation": null,
+    "error_code": "conflict",
+    "error": "LSP diagnostics require a live rootfs-owned LSP server and matching document preconditions"
+  },
+  "rename_request": {
+    "request_id": "lsp-host-rename-1",
+    "operation": "lsp.rename_symbol",
+    "params": {
+      "buffer_name": "subject.py",
+      "new_name": "compute_answer",
+      "timeout_seconds": 0.1,
+      "preconditions": {
+        "operation": "lsp.observe_source",
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ],
+        "buffer_name": "subject.py",
+        "text_owner_name": "subject.py",
+        "buffer_file_name": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 5,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "subject.py",
+        "minibuffer_active": false,
+        "workspace_present": true,
+        "workspace_status": "initialized",
+        "workspace_root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+        "document_uri": "file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py",
+        "document_version": 1,
+        "position_encoding": "unknown",
+        "lsp_sync": {
+          "skipped": true,
+          "reason": "server_not_rootfs_owned"
+        },
+        "precondition_checks": [
+          {
+            "name": "LSP workspace is present",
+            "passed": true,
+            "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+          },
+          {
+            "name": "LSP server process is present",
+            "passed": true,
+            "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+          },
+          {
+            "name": "LSP server executable is rootfs-owned",
+            "passed": false,
+            "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+          }
+        ],
+        "capabilities": null,
+        "diagnostics": {
+          "count": 0,
+          "raw": ""
+        },
+        "diagnostic_cache": {},
+        "symbol": "compute_value",
+        "symbol_source": "thing-at-point",
+        "text_hash": "6ab7626143f57e998ba6e5f98dd0202b371caff22ada0a787311a0daea570883",
+        "text_excerpt": "def compute_value(x: int) -> int:\n    return x + 22\n",
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json",
+        "error": "LSP operation requires a live rootfs-owned LSP server",
+        "server_id": "pylsp",
+        "workspace_status": "initialized",
+        "workspace_proc_type": "process",
+        "cmd_proc_type": "process",
+        "cmd_proc_status": "run",
+        "workspace_root": "/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/",
+        "server_pid": 360,
+        "server_executable": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+        "server_rootfs_owned": false,
+        "server_cwd": "/workspace/soma",
+        "server_command": [
+          "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp",
+          "60"
+        ],
+        "server_stdout_tail": "",
+        "server_stderr_tail": ""
+      }
+    }
+  },
+  "rename_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "lsp-host-rename-1",
+    "operation": "lsp.rename_symbol",
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ],
+    "result": {
+      "operation": "lsp.rename_symbol",
+      "state": "running",
+      "route": "queued-lsp-rename",
+      "new_name": "compute_answer",
+      "wait_timeout_seconds": 0.1
+    },
+    "evidence": {
+      "lsp_request": {
+        "methods": null,
+        "requests": null,
+        "wait_timeout_seconds": 0.1
+      },
+      "workspace_edit": {
+        "applied": false,
+        "sha256": false,
+        "excerpt": false
+      },
+      "saved_buffers": null,
+      "affected_files": null,
+      "rootfs_runtime": {
+        "run_id": false,
+        "plan": false
+      }
+    },
+    "observations": {},
+    "effects": {
+      "workspace_edit": {
+        "route": "queued-lsp-rename",
+        "new_name": "compute_answer",
+        "request_methods": null,
+        "applied": false,
+        "sha256": false,
+        "saved_buffers": null,
+        "affected_files": null
+      }
+    },
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "await_request": {
+    "request_id": "lsp-host-rename-await-1",
+    "operation": "request.await",
+    "params": {
+      "request_id": "lsp-host-rename-1",
+      "timeout_seconds": 1.0
+    }
+  },
+  "await_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "lsp-host-rename-await-1",
+    "operation": "request.await",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "lsp-host-rename-1",
+        "operation": "lsp.rename_symbol",
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "failed"
+        ],
+        "result": {
+          "operation": "lsp.rename_symbol",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ],
+          "route": "precondition-check",
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer subject.py>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"subject.py\" actual=\"subject.py\""
+            },
+            {
+              "name": "text owner matches precondition",
+              "passed": true,
+              "detail": "expected=\"subject.py\" actual=\"subject.py\""
+            },
+            {
+              "name": "visited file matches precondition",
+              "passed": true,
+              "detail": "expected=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\" actual=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=7 actual=7"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=5 actual=5"
+            },
+            {
+              "name": "selected window matches precondition",
+              "passed": true,
+              "detail": "expected=\"subject.py\" actual=\"subject.py\""
+            },
+            {
+              "name": "modified state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "read-only state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "region active state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "narrowing state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "LSP workspace is present",
+              "passed": true,
+              "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+            },
+            {
+              "name": "LSP server process is present",
+              "passed": true,
+              "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+            },
+            {
+              "name": "LSP server executable is rootfs-owned",
+              "passed": false,
+              "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+            },
+            {
+              "name": "LSP workspace is initialized",
+              "passed": true,
+              "detail": "initialized"
+            },
+            {
+              "name": "LSP rename capability is advertised",
+              "passed": false,
+              "detail": "skipped because LSP server is not rootfs-owned"
+            },
+            {
+              "name": "LSP workspace root matches precondition",
+              "passed": true,
+              "detail": "expected=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\" actual=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\""
+            },
+            {
+              "name": "LSP document version matches precondition",
+              "passed": true,
+              "detail": "expected=1 actual=1"
+            },
+            {
+              "name": "LSP symbol matches precondition",
+              "passed": false,
+              "detail": "expected=\"compute_value\" actual=nil"
+            }
+          ],
+          "error": "LSP rename precondition failed"
+        },
+        "evidence": {
+          "precondition_checks": [
+            {
+              "name": "target buffer is live",
+              "passed": true,
+              "detail": "#<buffer subject.py>"
+            },
+            {
+              "name": "buffer identity matches precondition",
+              "passed": true,
+              "detail": "expected=\"subject.py\" actual=\"subject.py\""
+            },
+            {
+              "name": "text owner matches precondition",
+              "passed": true,
+              "detail": "expected=\"subject.py\" actual=\"subject.py\""
+            },
+            {
+              "name": "visited file matches precondition",
+              "passed": true,
+              "detail": "expected=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\" actual=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\""
+            },
+            {
+              "name": "character revision matches precondition",
+              "passed": true,
+              "detail": "expected=7 actual=7"
+            },
+            {
+              "name": "point matches precondition",
+              "passed": true,
+              "detail": "expected=5 actual=5"
+            },
+            {
+              "name": "selected window matches precondition",
+              "passed": true,
+              "detail": "expected=\"subject.py\" actual=\"subject.py\""
+            },
+            {
+              "name": "modified state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "read-only state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "minibuffer state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "region active state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "narrowing state matches precondition",
+              "passed": true,
+              "detail": "expected=:json-false actual=:json-false"
+            },
+            {
+              "name": "LSP workspace is present",
+              "passed": true,
+              "detail": "((root . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (process . #<process soma-host-shadow-pylsp>))"
+            },
+            {
+              "name": "LSP server process is present",
+              "passed": true,
+              "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\"))"
+            },
+            {
+              "name": "LSP server executable is rootfs-owned",
+              "passed": false,
+              "detail": "executable=\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" rootfs_owned=:json-false"
+            },
+            {
+              "name": "LSP workspace is initialized",
+              "passed": true,
+              "detail": "initialized"
+            },
+            {
+              "name": "LSP rename capability is advertised",
+              "passed": false,
+              "detail": "skipped because LSP server is not rootfs-owned"
+            },
+            {
+              "name": "LSP workspace root matches precondition",
+              "passed": true,
+              "detail": "expected=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\" actual=\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\""
+            },
+            {
+              "name": "LSP document version matches precondition",
+              "passed": true,
+              "detail": "expected=1 actual=1"
+            },
+            {
+              "name": "LSP symbol matches precondition",
+              "passed": false,
+              "detail": "expected=\"compute_value\" actual=nil"
+            }
+          ],
+          "lsp_request": {
+            "methods": null,
+            "requests": null,
+            "wait_timeout_seconds": false
+          },
+          "workspace_edit": {
+            "applied": false,
+            "sha256": false,
+            "excerpt": false
+          },
+          "saved_buffers": null,
+          "affected_files": null,
+          "rootfs_runtime": {
+            "run_id": false,
+            "plan": false
+          }
+        },
+        "observations": {},
+        "effects": {
+          "workspace_edit": {
+            "route": "precondition-check",
+            "new_name": false,
+            "request_methods": null,
+            "applied": false,
+            "sha256": false,
+            "saved_buffers": null,
+            "affected_files": null
+          }
+        },
+        "diagnostics": [
+          {
+            "code": "operation_failed",
+            "message": "LSP rename precondition failed"
+          }
+        ],
+        "continuation": null,
+        "error_code": "operation_failed",
+        "error": "LSP rename precondition failed"
+      }
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "call_log": null,
+  "checks": [
+    {
+      "name": "lsp.observe_source rejects a live server executable outside the selected rootfs",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"lsp-host-observe-1\") (\"operation\" . \"lsp.observe_source\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"result\" (\"operation\" . \"lsp.observe_source\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"buffer_name\" . \"subject.py\") (\"text_owner_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 5) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"subject.py\") (\"minibuffer_active\" . :json-false) (\"workspace_present\" . t) (\"workspace_status\" . \"initialized\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"document_uri\" . \"file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"document_version\" . 1) (\"position_encoding\" . \"unknown\") (\"lsp_sync\" (\"skipped\" . t) (\"reason\" . \"server_not_rootfs_owned\")) (\"precondition_checks\" ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP server process is present\") (\"passed\" . t) (\"detail\" . \"((\\\"server_id\\\" . \\\"pylsp\\\") (\\\"workspace_status\\\" . \\\"initialized\\\") (\\\"workspace_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_status\\\" . \\\"run\\\") (\\\"workspace_root\\\" . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (\\\"server_pid\\\" . 360) (\\\"server_executable\\\" . \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\") (\\\"server_rootfs_owned\\\" . :json-false) (\\\"server_cwd\\\" . \\\"/workspace/soma\\\") (\\\"server_command\\\" \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" \\\"60\\\") (\\\"server_stdout_tail\\\" . \\\"\\\") (\\\"server_stderr_tail\\\" . \\\"\\\"))\")) ((\"name\" . \"LSP server executable is rootfs-owned\") (\"passed\" . :json-false) (\"detail\" . \"executable=\\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" rootfs_owned=:json-false\"))) (\"capabilities\") (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" . #s(hash-table test equal)) (\"symbol\" . \"compute_value\") (\"symbol_source\" . \"thing-at-point\") (\"text_hash\" . \"6ab7626143f57e998ba6e5f98dd0202b371caff22ada0a787311a0daea570883\") (\"text_excerpt\" . \"def compute_value(x: int) -> int:\n    return x + 22\n\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"error\" . \"LSP operation requires a live rootfs-owned LSP server\") (\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\")) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP server process is present\") (\"passed\" . t) (\"detail\" . \"((\\\"server_id\\\" . \\\"pylsp\\\") (\\\"workspace_status\\\" . \\\"initialized\\\") (\\\"workspace_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_status\\\" . \\\"run\\\") (\\\"workspace_root\\\" . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (\\\"server_pid\\\" . 360) (\\\"server_executable\\\" . \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\") (\\\"server_rootfs_owned\\\" . :json-false) (\\\"server_cwd\\\" . \\\"/workspace/soma\\\") (\\\"server_command\\\" \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" \\\"60\\\") (\\\"server_stdout_tail\\\" . \\\"\\\") (\\\"server_stderr_tail\\\" . \\\"\\\"))\")) ((\"name\" . \"LSP server executable is rootfs-owned\") (\"passed\" . :json-false) (\"detail\" . \"executable=\\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" rootfs_owned=:json-false\"))) (\"workspace\" (\"present\" . t) (\"status\" . \"initialized\") (\"root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"proc_type\" . \"process\")) (\"server\" (\"id\" . \"pylsp\") (\"pid\" . 360) (\"executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"rootfs_owned\" . :json-false) (\"cwd\" . \"/workspace/soma\") (\"command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\")) (\"document\" (\"uri\" . \"file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"version\" . 1) (\"position_encoding\" . \"unknown\")) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" . #s(hash-table test equal)) (\"lsp_sync\" (\"skipped\" . t) (\"reason\" . \"server_not_rootfs_owned\")) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"source_buffer\" (\"buffer_name\" . \"subject.py\") (\"text_owner_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 5) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"subject.py\") (\"minibuffer_active\" . :json-false) (\"text_hash\" . \"6ab7626143f57e998ba6e5f98dd0202b371caff22ada0a787311a0daea570883\") (\"text_excerpt\" . \"def compute_value(x: int) -> int:\n    return x + 22\n\")) (\"document\" (\"uri\" . \"file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"version\" . 1) (\"position_encoding\" . \"unknown\")) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"symbol\" (\"name\" . \"compute_value\") (\"source\" . \"thing-at-point\"))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"operation_failed\") (\"message\" . \"LSP operation requires a live rootfs-owned LSP server\"))]) (\"continuation\") (\"error_code\" . \"operation_failed\") (\"error\" . \"LSP operation requires a live rootfs-owned LSP server\"))"
+    },
+    {
+      "name": "lsp.observe_diagnostics rejects a live server executable outside the selected rootfs",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"lsp-host-diagnostics-1\") (\"operation\" . \"lsp.observe_diagnostics\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"result\" (\"operation\" . \"lsp.observe_diagnostics\") (\"state\" . \"failed\") (\"buffer_name\" . \"subject.py\") (\"text_owner_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 5) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"subject.py\") (\"minibuffer_active\" . :json-false) (\"workspace_present\" . t) (\"workspace_status\" . \"initialized\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"document_uri\" . \"file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"document_version\" . 1) (\"position_encoding\" . \"unknown\") (\"lsp_sync\" (\"skipped\" . t) (\"reason\" . \"server_not_rootfs_owned\")) (\"precondition_checks\" ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP server process is present\") (\"passed\" . t) (\"detail\" . \"((\\\"server_id\\\" . \\\"pylsp\\\") (\\\"workspace_status\\\" . \\\"initialized\\\") (\\\"workspace_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_status\\\" . \\\"run\\\") (\\\"workspace_root\\\" . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (\\\"server_pid\\\" . 360) (\\\"server_executable\\\" . \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\") (\\\"server_rootfs_owned\\\" . :json-false) (\\\"server_cwd\\\" . \\\"/workspace/soma\\\") (\\\"server_command\\\" \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" \\\"60\\\") (\\\"server_stdout_tail\\\" . \\\"\\\") (\\\"server_stderr_tail\\\" . \\\"\\\"))\")) ((\"name\" . \"LSP server executable is rootfs-owned\") (\"passed\" . :json-false) (\"detail\" . \"executable=\\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" rootfs_owned=:json-false\")) ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer subject.py>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"subject.py\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"subject.py\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=5\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"subject.py\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP workspace is initialized\") (\"passed\" . t) (\"detail\" . \"initialized\"))) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" . #s(hash-table test equal)) (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\") (\"error\" . \"LSP diagnostics require a live rootfs-owned LSP server and matching document preconditions\") (\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"server_pid\" . 360) (\"server_executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"server_rootfs_owned\" . :json-false) (\"server_cwd\" . \"/workspace/soma\") (\"server_command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"server_stdout_tail\" . \"\") (\"server_stderr_tail\" . \"\")) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP server process is present\") (\"passed\" . t) (\"detail\" . \"((\\\"server_id\\\" . \\\"pylsp\\\") (\\\"workspace_status\\\" . \\\"initialized\\\") (\\\"workspace_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_status\\\" . \\\"run\\\") (\\\"workspace_root\\\" . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (\\\"server_pid\\\" . 360) (\\\"server_executable\\\" . \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\") (\\\"server_rootfs_owned\\\" . :json-false) (\\\"server_cwd\\\" . \\\"/workspace/soma\\\") (\\\"server_command\\\" \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" \\\"60\\\") (\\\"server_stdout_tail\\\" . \\\"\\\") (\\\"server_stderr_tail\\\" . \\\"\\\"))\")) ((\"name\" . \"LSP server executable is rootfs-owned\") (\"passed\" . :json-false) (\"detail\" . \"executable=\\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" rootfs_owned=:json-false\")) ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer subject.py>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"subject.py\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"subject.py\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=5\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"subject.py\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP workspace is initialized\") (\"passed\" . t) (\"detail\" . \"initialized\"))) (\"workspace\" (\"present\" . t) (\"status\" . \"initialized\") (\"root\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\") (\"proc_type\" . \"process\")) (\"server\" (\"id\" . \"pylsp\") (\"pid\" . 360) (\"executable\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\") (\"rootfs_owned\" . :json-false) (\"cwd\" . \"/workspace/soma\") (\"command\" \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\" \"60\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\")) (\"document\" (\"uri\" . \"file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"version\" . 1) (\"position_encoding\" . \"unknown\")) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" . #s(hash-table test equal)) (\"lsp_sync\" (\"skipped\" . t) (\"reason\" . \"server_not_rootfs_owned\")) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"source_buffer\" (\"buffer_name\" . \"subject.py\") (\"text_owner_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 5) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"subject.py\") (\"minibuffer_active\" . :json-false) (\"text_hash\" . :json-false) (\"text_excerpt\" . :json-false)) (\"document\" (\"uri\" . \"file:///project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\") (\"version\" . 1) (\"position_encoding\" . \"unknown\")) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\"))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"conflict\") (\"message\" . \"LSP diagnostics require a live rootfs-owned LSP server and matching document preconditions\"))]) (\"continuation\") (\"error_code\" . \"conflict\") (\"error\" . \"LSP diagnostics require a live rootfs-owned LSP server and matching document preconditions\"))"
+    },
+    {
+      "name": "lsp.rename_symbol fails before LSP requests on a host-owned server",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"lsp-host-rename-1\") (\"operation\" . \"lsp.rename_symbol\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"lsp.rename_symbol\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"route\" . \"precondition-check\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer subject.py>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"subject.py\\\" actual=\\\"subject.py\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"subject.py\\\" actual=\\\"subject.py\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\\\" actual=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"subject.py\\\" actual=\\\"subject.py\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP server process is present\") (\"passed\" . t) (\"detail\" . \"((\\\"server_id\\\" . \\\"pylsp\\\") (\\\"workspace_status\\\" . \\\"initialized\\\") (\\\"workspace_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_status\\\" . \\\"run\\\") (\\\"workspace_root\\\" . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (\\\"server_pid\\\" . 360) (\\\"server_executable\\\" . \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\") (\\\"server_rootfs_owned\\\" . :json-false) (\\\"server_cwd\\\" . \\\"/workspace/soma\\\") (\\\"server_command\\\" \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" \\\"60\\\") (\\\"server_stdout_tail\\\" . \\\"\\\") (\\\"server_stderr_tail\\\" . \\\"\\\"))\")) ((\"name\" . \"LSP server executable is rootfs-owned\") (\"passed\" . :json-false) (\"detail\" . \"executable=\\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" rootfs_owned=:json-false\")) ((\"name\" . \"LSP workspace is initialized\") (\"passed\" . t) (\"detail\" . \"initialized\")) ((\"name\" . \"LSP rename capability is advertised\") (\"passed\" . :json-false) (\"detail\" . \"skipped because LSP server is not rootfs-owned\")) ((\"name\" . \"LSP workspace root matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\" actual=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\"\")) ((\"name\" . \"LSP document version matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"LSP symbol matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=\\\"compute_value\\\" actual=nil\"))) (\"error\" . \"LSP rename precondition failed\")) (\"evidence\" (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer subject.py>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"subject.py\\\" actual=\\\"subject.py\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"subject.py\\\" actual=\\\"subject.py\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\\\" actual=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/subject.py\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"subject.py\\\" actual=\\\"subject.py\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"LSP workspace is present\") (\"passed\" . t) (\"detail\" . \"((root . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (process . #<process soma-host-shadow-pylsp>))\")) ((\"name\" . \"LSP server process is present\") (\"passed\" . t) (\"detail\" . \"((\\\"server_id\\\" . \\\"pylsp\\\") (\\\"workspace_status\\\" . \\\"initialized\\\") (\\\"workspace_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_type\\\" . \\\"process\\\") (\\\"cmd_proc_status\\\" . \\\"run\\\") (\\\"workspace_root\\\" . \\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\") (\\\"server_pid\\\" . 360) (\\\"server_executable\\\" . \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\") (\\\"server_rootfs_owned\\\" . :json-false) (\\\"server_cwd\\\" . \\\"/workspace/soma\\\") (\\\"server_command\\\" \\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" \\\"60\\\") (\\\"server_stdout_tail\\\" . \\\"\\\") (\\\"server_stderr_tail\\\" . \\\"\\\"))\")) ((\"name\" . \"LSP server executable is rootfs-owned\") (\"passed\" . :json-false) (\"detail\" . \"executable=\\\"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-lsp-VSUJTl/pylsp\\\" rootfs_owned=:json-false\")) ((\"name\" . \"LSP workspace is initialized\") (\"passed\" . t) (\"detail\" . \"initialized\")) ((\"name\" . \"LSP rename capability is advertised\") (\"passed\" . :json-false) (\"detail\" . \"skipped because LSP server is not rootfs-owned\")) ((\"name\" . \"LSP workspace root matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\" actual=\\\"/project/tmp/soma-bridge-lsp-host-owner-dwuf8P/\\\"\")) ((\"name\" . \"LSP document version matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=1 actual=1\")) ((\"name\" . \"LSP symbol matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=\\\"compute_value\\\" actual=nil\"))) (\"lsp_request\" (\"methods\") (\"requests\") (\"wait_timeout_seconds\" . :json-false)) (\"workspace_edit\" (\"applied\" . :json-false) (\"sha256\" . :json-false) (\"excerpt\" . :json-false)) (\"saved_buffers\") (\"affected_files\") (\"rootfs_runtime\" (\"run_id\" . :json-false) (\"plan\" . :json-false))) (\"observations\" . #s(hash-table test equal)) (\"effects\" (\"workspace_edit\" (\"route\" . \"precondition-check\") (\"new_name\" . :json-false) (\"request_methods\") (\"applied\" . :json-false) (\"sha256\" . :json-false) (\"saved_buffers\") (\"affected_files\"))) (\"diagnostics\" . [((\"code\" . \"operation_failed\") (\"message\" . \"LSP rename precondition failed\"))]) (\"continuation\") (\"error_code\" . \"operation_failed\") (\"error\" . \"LSP rename precondition failed\"))"
+    },
+    {
+      "name": "host-owned LSP rejection does not flush, pull diagnostics, or request rename",
+      "passed": true,
+      "detail": "nil"
+    }
+  ]
+}

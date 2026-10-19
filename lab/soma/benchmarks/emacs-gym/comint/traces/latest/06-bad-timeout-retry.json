@@ -1,0 +1,39 @@
+{
+  "id": "bad-timeout-retry",
+  "title": "Incorrect policy retries non-idempotent command after timeout",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-timeout-retry*",
+    "process": "timeout-retry",
+    "pid": 11,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260928T074814Z-3665582",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/comint/traces/latest/insula-plan.json"
+  },
+  "name": "bad-timeout-retry",
+  "checks": [
+    {
+      "name": "short wait returned outcome_unknown",
+      "passed": true,
+      "detail": "early=nil"
+    },
+    {
+      "name": "policy did not retry",
+      "passed": false,
+      "detail": "((\"operation\" . \"comint-send-input\") (\"timeout_state\" . \"retried_after_timeout\") (\"retry_count\" . 1))"
+    },
+    {
+      "name": "non-idempotent side effect occurred exactly once",
+      "passed": false,
+      "detail": "final=374 counter-lines=2 output=\"sleep 0.6; printf 'x\\\\n' >> /project/tmp/soma-comint-bench-yz3Hyo/counter; printf 'SOMA_TIMEOUT_DONE:%s\\\\n' \\\"$(wc -l < /project/tmp/soma-comint-bench-yz3Hyo/counter)\\\"\n$ sleep 0.6; printf 'x\\\\n' >> /project/tmp/soma-comint-bench-yz3Hyo/counter; printf 'SOMA_TIMEOUT_DONE:%s\\\\n' \\\"$(wc -l < /project/tmp/soma-comint-bench-yz3Hyo/counter)\\\"\nSOMA_TIMEOUT_DONE:1\n$ SOMA_TIMEOUT_DONE:2\n$ \""
+    }
+  ],
+  "output": "sleep 0.6; printf 'x\\n' >> /project/tmp/soma-comint-bench-yz3Hyo/counter; printf 'SOMA_TIMEOUT_DONE:%s\\n' \"$(wc -l < /project/tmp/soma-comint-bench-yz3Hyo/counter)\"\n$ sleep 0.6; printf 'x\\n' >> /project/tmp/soma-comint-bench-yz3Hyo/counter; printf 'SOMA_TIMEOUT_DONE:%s\\n' \"$(wc -l < /project/tmp/soma-comint-bench-yz3Hyo/counter)\"\nSOMA_TIMEOUT_DONE:1\n$ SOMA_TIMEOUT_DONE:2\n$ ",
+  "counter_lines": 2
+}

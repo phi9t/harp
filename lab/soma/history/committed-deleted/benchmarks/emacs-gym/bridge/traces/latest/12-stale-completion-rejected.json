@@ -1,0 +1,197 @@
+{
+  "id": "stale-completion-rejected",
+  "title": "A stale completion.accept request is rejected after intervening human editing",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "stale-completion-1",
+    "operation": "completion.accept",
+    "params": {
+      "buffer_name": "soma-bridge-stale-completion",
+      "start": 7,
+      "end": 7,
+      "text": "beta",
+      "preconditions": {
+        "buffer_name": "soma-bridge-stale-completion",
+        "text_owner_name": "soma-bridge-stale-completion",
+        "chars_tick": 5,
+        "point": 7,
+        "narrowed": false,
+        "read_only": false,
+        "expected_text": "",
+        "prefix": "alpha ",
+        "suffix": "\nomega"
+      }
+    }
+  },
+  "response": {
+    "request_id": "stale-completion-1",
+    "operation": "completion.accept",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "completion.accept",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-stale-completion>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-stale-completion\" actual=\"soma-bridge-stale-completion\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-stale-completion\" actual=\"soma-bridge-stale-completion\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": false,
+          "detail": "expected=5 actual=8"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": false,
+          "detail": "expected=7 actual=13"
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=t"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "target range is valid",
+          "passed": true,
+          "detail": "range=7..7 point-min=1 point-max=20"
+        },
+        {
+          "name": "target range text matches precondition",
+          "passed": true,
+          "detail": "expected=\"\" actual=\"\""
+        },
+        {
+          "name": "completion prefix matches precondition",
+          "passed": true,
+          "detail": "expected=\"alpha \" actual=\"alpha \""
+        },
+        {
+          "name": "completion suffix matches precondition",
+          "passed": false,
+          "detail": "expected=\"\nomega\" actual=\"human-\""
+        }
+      ],
+      "error": "completion acceptance precondition failed"
+    },
+    "error_code": "conflict",
+    "error": "completion acceptance precondition failed"
+  },
+  "before": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-stale-completion",
+    "text_owner_name": "soma-bridge-stale-completion",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point": 7,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-stale-completion",
+    "minibuffer_active": false
+  },
+  "after_human_edit": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-stale-completion",
+    "text_owner_name": "soma-bridge-stale-completion",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 8,
+    "modified": true,
+    "read_only": false,
+    "point": 13,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-stale-completion",
+    "minibuffer_active": false
+  },
+  "after_human_text": "alpha human-\nomega\n",
+  "after": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-stale-completion",
+    "text_owner_name": "soma-bridge-stale-completion",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 8,
+    "modified": true,
+    "read_only": false,
+    "point": 13,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-stale-completion",
+    "minibuffer_active": false
+  },
+  "buffer_text": "alpha human-\nomega\n",
+  "checks": [
+    {
+      "name": "human edit changed completion context",
+      "passed": true,
+      "detail": "before=((\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-stale-completion\") (\"text_owner_name\" . \"soma-bridge-stale-completion\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 7) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-stale-completion\") (\"minibuffer_active\" . :json-false)) after-human=((\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-stale-completion\") (\"text_owner_name\" . \"soma-bridge-stale-completion\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 8) (\"modified\" . t) (\"read_only\" . :json-false) (\"point\" . 13) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-stale-completion\") (\"minibuffer_active\" . :json-false)) after-human-text=\"alpha human-\nomega\n\""
+    },
+    {
+      "name": "stale completion accept is rejected as conflict",
+      "passed": true,
+      "detail": "((\"request_id\" . \"stale-completion-1\") (\"operation\" . \"completion.accept\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"completion.accept\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-stale-completion>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-stale-completion\\\" actual=\\\"soma-bridge-stale-completion\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-stale-completion\\\" actual=\\\"soma-bridge-stale-completion\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=5 actual=8\")) ((\"name\" . \"point matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=7 actual=13\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=t\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"target range is valid\") (\"passed\" . t) (\"detail\" . \"range=7..7 point-min=1 point-max=20\")) ((\"name\" . \"target range text matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\\\" actual=\\\"\\\"\")) ((\"name\" . \"completion prefix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"alpha \\\" actual=\\\"alpha \\\"\")) ((\"name\" . \"completion suffix matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=\\\"\nomega\\\" actual=\\\"human-\\\"\"))) (\"error\" . \"completion acceptance precondition failed\")) (\"error_code\" . \"conflict\") (\"error\" . \"completion acceptance precondition failed\"))"
+    },
+    {
+      "name": "suffix precondition is the rejecting context check",
+      "passed": true,
+      "detail": "((\"name\" . \"completion suffix matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=\\\"\nomega\\\" actual=\\\"human-\\\"\"))"
+    },
+    {
+      "name": "stale completion did not insert proposed text",
+      "passed": true,
+      "detail": "alpha human-\nomega\n"
+    },
+    {
+      "name": "failed stale completion did not advance revision further",
+      "passed": true,
+      "detail": "after-human=8 after=8"
+    }
+  ]
+}

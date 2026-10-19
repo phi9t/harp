@@ -1,0 +1,66 @@
+{
+  "id": "comint-timeout-outcome-unknown-no-retry",
+  "title": "Comint timeout outcome_unknown without retry",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Timing out while waiting for process output means the submitted command's outcome is unknown, not that it did not run.",
+  "hypothesis": "A slow non-idempotent command submitted once through Comint should be classified `outcome_unknown' at the short deadline and later prove a single side effect.",
+  "sources": [
+    {
+      "name": "Comint contract",
+      "path": "docs/internals-atlas/package-contracts/comint.md",
+      "lines": "18-33",
+      "note": ""
+    },
+    {
+      "name": "with-timeout boundary probe",
+      "path": "probes/emacs-internals/elisp/run-probes.el",
+      "lines": "with-timeout-wait-boundary",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One long-lived shell, one counter file, one submitted slow command, and two waits: short timeout then final completion.",
+  "predicted_behavior": "The short wait should not see completion; the later wait should show the counter incremented exactly once.",
+  "observed_behavior": "early-done=nil outcome=outcome_unknown final-done=210 counter=\"1\" output=\"sleep 0.6; n=$(cat /project/tmp/soma-comint-timeout-UsFT35/counter); n=$((n+1)); printf '%s\\\\n' \\\"$n\\\" > /project/tmp/soma-comint-timeout-UsFT35/counter; printf 'SOMA_TIMEOUT_DONE:%s\\\\n' \\\"$n\\\"\n$ SOMA_TIMEOUT_DONE:1\n$ \"",
+  "independent_checks": [
+    {
+      "name": "short wait reached outcome_unknown before completion",
+      "passed": true,
+      "detail": "early-done=nil"
+    },
+    {
+      "name": "submitted command eventually completed",
+      "passed": true,
+      "detail": "sleep 0.6; n=$(cat /project/tmp/soma-comint-timeout-UsFT35/counter); n=$((n+1)); printf '%s\\n' \"$n\" > /project/tmp/soma-comint-timeout-UsFT35/counter; printf 'SOMA_TIMEOUT_DONE:%s\\n' \"$n\"\n$ SOMA_TIMEOUT_DONE:1\n$ "
+    },
+    {
+      "name": "non-idempotent side effect occurred exactly once",
+      "passed": true,
+      "detail": "counter=\"1\" output=\"sleep 0.6; n=$(cat /project/tmp/soma-comint-timeout-UsFT35/counter); n=$((n+1)); printf '%s\\\\n' \\\"$n\\\" > /project/tmp/soma-comint-timeout-UsFT35/counter; printf 'SOMA_TIMEOUT_DONE:%s\\\\n' \\\"$n\\\"\n$ SOMA_TIMEOUT_DONE:1\n$ \""
+    }
+  ],
+  "counterexample": "A retry after a timeout can duplicate non-idempotent work while still showing the expected final output.",
+  "derived_gym_requirement": "Comint and process actions must represent timeout as `outcome_unknown' and block blind retry unless the operation is proven idempotent or externally canceled."
+}

@@ -1,0 +1,60 @@
+{
+  "id": "dired-undo-does-not-restore-files",
+  "title": "Dired undo does not restore filesystem changes",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "`dired-undo' undoes changes in the Dired buffer; it explicitly does not recover files removed from the filesystem.",
+  "hypothesis": "After a real file is deleted, attempting `dired-undo' should not recreate the deleted file; any undo effect is limited to Dired-buffer state.",
+  "sources": [
+    {
+      "name": "dired-undo",
+      "path": "dired.el.gz",
+      "lines": "2823-2832",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary directory, one file, one Dired buffer mark, and one real filesystem deletion.",
+  "predicted_behavior": "The recovery attempt is a Dired-buffer operation; the deleted file remains absent.",
+  "observed_behavior": "mark-before=42 undo-result=(error \"(user-error \\\"No further undo information\\\")\") mark-after=nil file-exists-after-dired-undo=nil",
+  "independent_checks": [
+    {
+      "name": "dired mark existed before filesystem deletion",
+      "passed": true,
+      "detail": "42"
+    },
+    {
+      "name": "dired undo attempt was buffer-local",
+      "passed": true,
+      "detail": "(error \"(user-error \\\"No further undo information\\\")\")"
+    },
+    {
+      "name": "deleted file was not restored",
+      "passed": true,
+      "detail": "/project/tmp/soma-dired-probe-39VL5s/victim.txt"
+    }
+  ],
+  "counterexample": "A generic recovery strategy that runs undo after a Dired action can fail to undo even buffer-local state and still leaves destructive filesystem state unrecovered.",
+  "derived_gym_requirement": "Dired benchmarks must grade filesystem state independently from Dired buffer state and must classify destructive file operations as externally consequential."
+}

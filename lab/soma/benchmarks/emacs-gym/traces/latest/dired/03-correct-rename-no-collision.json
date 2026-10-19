@@ -1,0 +1,67 @@
+{
+  "id": "correct-rename-no-collision",
+  "title": "Correct policy renames a Dired file without a collision",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": "soma-dired-rename-correct-M1fMwU",
+    "directory": "/project/tmp/soma-dired-rename-correct-M1fMwU"
+  },
+  "name": "correct-rename-no-collision",
+  "checks": [
+    {
+      "name": "action used dired-rename-file without overwrite",
+      "passed": true,
+      "detail": "((\"operation\" . \"dired-rename-file\") (\"ok_if_already_exists\" . :json-false) (\"target\" . \"renamed.txt\"))"
+    },
+    {
+      "name": "source moved to requested target",
+      "passed": true,
+      "detail": "source=nil renamed=t contents=\"source\n\""
+    },
+    {
+      "name": "Dired buffer reflects renamed target after refresh",
+      "passed": true,
+      "detail": "source-visible=nil renamed-visible=t"
+    }
+  ],
+  "outcome": "renamed",
+  "files": [
+    {
+      "name": "keep.txt",
+      "exists": true,
+      "contents": "keep\n"
+    },
+    {
+      "name": "target-a.txt",
+      "exists": true,
+      "contents": "target-a\n"
+    },
+    {
+      "name": "target-b.txt",
+      "exists": true,
+      "contents": "target-b\n"
+    },
+    {
+      "name": "flagged-decoy.txt",
+      "exists": true,
+      "contents": "flagged-decoy\n"
+    },
+    {
+      "name": "source.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "renamed.txt",
+      "exists": true,
+      "contents": "source\n"
+    },
+    {
+      "name": "collision.txt",
+      "exists": true,
+      "contents": "collision-original\n"
+    }
+  ]
+}

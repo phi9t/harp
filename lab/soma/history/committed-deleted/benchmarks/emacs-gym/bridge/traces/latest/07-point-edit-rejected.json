@@ -1,0 +1,176 @@
+{
+  "id": "point-edit-rejected",
+  "title": "A buffer.replace_range request is rejected when point changed without a text revision",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "point-edit-1",
+    "operation": "buffer.replace_range",
+    "params": {
+      "buffer_name": "soma-bridge-point-edit",
+      "start": 7,
+      "end": 11,
+      "text": "gamma",
+      "preconditions": {
+        "buffer_name": "soma-bridge-point-edit",
+        "chars_tick": 5,
+        "point": 1,
+        "expected_text": "beta"
+      }
+    }
+  },
+  "response": {
+    "request_id": "point-edit-1",
+    "operation": "buffer.replace_range",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-point-edit>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-point-edit\" actual=\"soma-bridge-point-edit\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"soma-bridge-point-edit\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=5 actual=5"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": false,
+          "detail": "expected=1 actual=7"
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "target range is valid",
+          "passed": true,
+          "detail": "range=7..11 point-min=1 point-max=12"
+        },
+        {
+          "name": "target range text matches precondition",
+          "passed": true,
+          "detail": "expected=\"beta\" actual=\"beta\""
+        }
+      ],
+      "error": "buffer edit precondition failed"
+    },
+    "error_code": "conflict",
+    "error": "buffer edit precondition failed"
+  },
+  "before": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-point-edit",
+    "text_owner_name": "soma-bridge-point-edit",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point": 1,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-point-edit",
+    "minibuffer_active": false
+  },
+  "after_point": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-point-edit",
+    "text_owner_name": "soma-bridge-point-edit",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point": 7,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-point-edit",
+    "minibuffer_active": false
+  },
+  "after": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-point-edit",
+    "text_owner_name": "soma-bridge-point-edit",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point": 7,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-point-edit",
+    "minibuffer_active": false
+  },
+  "buffer_text": "alpha\nbeta\n",
+  "checks": [
+    {
+      "name": "point changed without text revision",
+      "passed": true,
+      "detail": "before=((\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-point-edit\") (\"text_owner_name\" . \"soma-bridge-point-edit\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-point-edit\") (\"minibuffer_active\" . :json-false)) after-point=((\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-point-edit\") (\"text_owner_name\" . \"soma-bridge-point-edit\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 7) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-point-edit\") (\"minibuffer_active\" . :json-false))"
+    },
+    {
+      "name": "point-drift edit is rejected as conflict",
+      "passed": true,
+      "detail": "((\"request_id\" . \"point-edit-1\") (\"operation\" . \"buffer.replace_range\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"buffer.replace_range\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-point-edit>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-point-edit\\\" actual=\\\"soma-bridge-point-edit\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-point-edit\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"point matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=1 actual=7\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"target range is valid\") (\"passed\" . t) (\"detail\" . \"range=7..11 point-min=1 point-max=12\")) ((\"name\" . \"target range text matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"beta\\\" actual=\\\"beta\\\"\"))) (\"error\" . \"buffer edit precondition failed\")) (\"error_code\" . \"conflict\") (\"error\" . \"buffer edit precondition failed\"))"
+    },
+    {
+      "name": "point precondition is the rejecting check",
+      "passed": true,
+      "detail": "((\"name\" . \"point matches precondition\") (\"passed\" . :json-false) (\"detail\" . \"expected=1 actual=7\"))"
+    },
+    {
+      "name": "point-drift edit did not mutate text",
+      "passed": true,
+      "detail": "alpha\nbeta\n"
+    },
+    {
+      "name": "failed point-drift edit did not advance revision",
+      "passed": true,
+      "detail": "before=5 after=5"
+    }
+  ]
+}

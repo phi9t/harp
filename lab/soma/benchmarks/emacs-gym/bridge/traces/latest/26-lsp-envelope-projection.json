@@ -1,0 +1,616 @@
+{
+  "id": "lsp-envelope-projection",
+  "title": "Stable coding-v0 LSP operations publish typed evidence, observations, and workspace-edit effects",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "source_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "lsp-source-synthetic",
+    "operation": "lsp.observe_source",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "lsp.observe_source",
+      "state": "succeeded",
+      "buffer_name": "core.py",
+      "text_owner_name": "core.py",
+      "buffer_file_name": "/project/tmp/lsp/core.py",
+      "major_mode": "python-mode",
+      "chars_tick": 7,
+      "modified": false,
+      "read_only": false,
+      "point": 42,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "core.py",
+      "minibuffer_active": false,
+      "workspace_present": true,
+      "workspace_status": "initialized",
+      "workspace_root": "/project/tmp/lsp",
+      "document_uri": "file:///project/tmp/lsp/core.py",
+      "document_version": 5,
+      "position_encoding": "utf-16",
+      "lsp_sync": {
+        "flushed_delayed_changes": true,
+        "settle_seconds": 0.2
+      },
+      "capabilities": {
+        "textDocument/rename": true
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "diagnostic_cache": {
+        "workspace": "/project/tmp/lsp",
+        "documents": null
+      },
+      "symbol": "compute_value",
+      "symbol_source": "thing-at-point",
+      "text_hash": "source-hash",
+      "text_excerpt": "def compute_value(x):\n    return x\n",
+      "server_id": "pylsp",
+      "server_pid": 1234,
+      "server_executable": "/usr/bin/pylsp",
+      "server_cwd": "/project/tmp/lsp",
+      "server_command": [
+        "pylsp"
+      ],
+      "workspace_proc_type": "real",
+      "cmd_proc_type": "real",
+      "cmd_proc_status": "run",
+      "run_id": "synthetic-run",
+      "plan": "/project/run/insula-plan.json"
+    },
+    "evidence": {
+      "workspace": {
+        "present": true,
+        "status": "initialized",
+        "root": "/project/tmp/lsp",
+        "proc_type": "real"
+      },
+      "server": {
+        "id": "pylsp",
+        "pid": 1234,
+        "executable": "/usr/bin/pylsp",
+        "rootfs_owned": false,
+        "cwd": "/project/tmp/lsp",
+        "command": [
+          "pylsp"
+        ],
+        "cmd_proc_type": "real",
+        "cmd_proc_status": "run"
+      },
+      "document": {
+        "uri": "file:///project/tmp/lsp/core.py",
+        "version": 5,
+        "position_encoding": "utf-16"
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "diagnostic_cache": {
+        "workspace": "/project/tmp/lsp",
+        "documents": null
+      },
+      "lsp_sync": {
+        "flushed_delayed_changes": true,
+        "settle_seconds": 0.2
+      },
+      "rootfs_runtime": {
+        "run_id": "synthetic-run",
+        "plan": "/project/run/insula-plan.json"
+      }
+    },
+    "observations": {
+      "source_buffer": {
+        "buffer_name": "core.py",
+        "text_owner_name": "core.py",
+        "buffer_file_name": "/project/tmp/lsp/core.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 42,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "core.py",
+        "minibuffer_active": false,
+        "text_hash": "source-hash",
+        "text_excerpt": "def compute_value(x):\n    return x\n"
+      },
+      "document": {
+        "uri": "file:///project/tmp/lsp/core.py",
+        "version": 5,
+        "position_encoding": "utf-16"
+      },
+      "diagnostics": {
+        "count": 0,
+        "raw": ""
+      },
+      "symbol": {
+        "name": "compute_value",
+        "source": "thing-at-point"
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "rename_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "lsp-rename-synthetic",
+    "operation": "lsp.rename_symbol",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "lsp.rename_symbol",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "route": "lsp-rename",
+      "new_name": "renamed_value",
+      "wait_timeout_seconds": 30.0,
+      "request_methods": [
+        "textDocument/rename"
+      ],
+      "requests": [
+        {
+          "method": "textDocument/rename",
+          "id": 99,
+          "buffer": "core.py",
+          "document_version": 5
+        }
+      ],
+      "workspace_edit_applied": true,
+      "workspace_edit_sha256": "workspace-edit-hash",
+      "workspace_edit_excerpt": "(:changes ...)",
+      "saved_buffers": [
+        {
+          "buffer_name": "core.py",
+          "file": "/project/tmp/lsp/core.py",
+          "chars_tick": 8
+        }
+      ],
+      "precondition_checks": [
+        {
+          "name": "LSP document version matches precondition",
+          "passed": true,
+          "detail": "ok"
+        }
+      ],
+      "before": {
+        "operation": "lsp.observe_source",
+        "state": "succeeded",
+        "buffer_name": "core.py",
+        "text_owner_name": "core.py",
+        "buffer_file_name": "/project/tmp/lsp/core.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 42,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "core.py",
+        "minibuffer_active": false,
+        "workspace_present": true,
+        "workspace_status": "initialized",
+        "workspace_root": "/project/tmp/lsp",
+        "document_uri": "file:///project/tmp/lsp/core.py",
+        "document_version": 5,
+        "position_encoding": "utf-16",
+        "lsp_sync": {
+          "flushed_delayed_changes": true,
+          "settle_seconds": 0.2
+        },
+        "capabilities": {
+          "textDocument/rename": true
+        },
+        "diagnostics": {
+          "count": 0,
+          "raw": ""
+        },
+        "diagnostic_cache": {
+          "workspace": "/project/tmp/lsp",
+          "documents": null
+        },
+        "symbol": "compute_value",
+        "symbol_source": "thing-at-point",
+        "text_hash": "source-hash",
+        "text_excerpt": "def compute_value(x):\n    return x\n",
+        "server_id": "pylsp",
+        "server_pid": 1234,
+        "server_executable": "/usr/bin/pylsp",
+        "server_cwd": "/project/tmp/lsp",
+        "server_command": [
+          "pylsp"
+        ],
+        "workspace_proc_type": "real",
+        "cmd_proc_type": "real",
+        "cmd_proc_status": "run",
+        "run_id": "synthetic-run",
+        "plan": "/project/run/insula-plan.json"
+      },
+      "after": {
+        "symbol": "renamed_value",
+        "document_version": 6,
+        "operation": "lsp.observe_source",
+        "state": "succeeded",
+        "buffer_name": "core.py",
+        "text_owner_name": "core.py",
+        "buffer_file_name": "/project/tmp/lsp/core.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 42,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "core.py",
+        "minibuffer_active": false,
+        "workspace_present": true,
+        "workspace_status": "initialized",
+        "workspace_root": "/project/tmp/lsp",
+        "document_uri": "file:///project/tmp/lsp/core.py",
+        "position_encoding": "utf-16",
+        "lsp_sync": {
+          "flushed_delayed_changes": true,
+          "settle_seconds": 0.2
+        },
+        "capabilities": {
+          "textDocument/rename": true
+        },
+        "diagnostics": {
+          "count": 0,
+          "raw": ""
+        },
+        "diagnostic_cache": {
+          "workspace": "/project/tmp/lsp",
+          "documents": null
+        },
+        "symbol_source": "thing-at-point",
+        "text_hash": "source-hash",
+        "text_excerpt": "def compute_value(x):\n    return x\n",
+        "server_id": "pylsp",
+        "server_pid": 1234,
+        "server_executable": "/usr/bin/pylsp",
+        "server_cwd": "/project/tmp/lsp",
+        "server_command": [
+          "pylsp"
+        ],
+        "workspace_proc_type": "real",
+        "cmd_proc_type": "real",
+        "cmd_proc_status": "run",
+        "run_id": "synthetic-run",
+        "plan": "/project/run/insula-plan.json"
+      },
+      "error": false
+    },
+    "evidence": {
+      "precondition_checks": [
+        {
+          "name": "LSP document version matches precondition",
+          "passed": true,
+          "detail": "ok"
+        }
+      ],
+      "before_after_observations": {
+        "before": {
+          "operation": "lsp.observe_source",
+          "state": "succeeded",
+          "buffer_name": "core.py",
+          "text_owner_name": "core.py",
+          "buffer_file_name": "/project/tmp/lsp/core.py",
+          "major_mode": "python-mode",
+          "chars_tick": 7,
+          "modified": false,
+          "read_only": false,
+          "point": 42,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "core.py",
+          "minibuffer_active": false,
+          "workspace_present": true,
+          "workspace_status": "initialized",
+          "workspace_root": "/project/tmp/lsp",
+          "document_uri": "file:///project/tmp/lsp/core.py",
+          "document_version": 5,
+          "position_encoding": "utf-16",
+          "lsp_sync": {
+            "flushed_delayed_changes": true,
+            "settle_seconds": 0.2
+          },
+          "capabilities": {
+            "textDocument/rename": true
+          },
+          "diagnostics": {
+            "count": 0,
+            "raw": ""
+          },
+          "diagnostic_cache": {
+            "workspace": "/project/tmp/lsp",
+            "documents": null
+          },
+          "symbol": "compute_value",
+          "symbol_source": "thing-at-point",
+          "text_hash": "source-hash",
+          "text_excerpt": "def compute_value(x):\n    return x\n",
+          "server_id": "pylsp",
+          "server_pid": 1234,
+          "server_executable": "/usr/bin/pylsp",
+          "server_cwd": "/project/tmp/lsp",
+          "server_command": [
+            "pylsp"
+          ],
+          "workspace_proc_type": "real",
+          "cmd_proc_type": "real",
+          "cmd_proc_status": "run",
+          "run_id": "synthetic-run",
+          "plan": "/project/run/insula-plan.json"
+        },
+        "after": {
+          "symbol": "renamed_value",
+          "document_version": 6,
+          "operation": "lsp.observe_source",
+          "state": "succeeded",
+          "buffer_name": "core.py",
+          "text_owner_name": "core.py",
+          "buffer_file_name": "/project/tmp/lsp/core.py",
+          "major_mode": "python-mode",
+          "chars_tick": 7,
+          "modified": false,
+          "read_only": false,
+          "point": 42,
+          "mark_active": false,
+          "narrowed": false,
+          "selected_window_buffer": "core.py",
+          "minibuffer_active": false,
+          "workspace_present": true,
+          "workspace_status": "initialized",
+          "workspace_root": "/project/tmp/lsp",
+          "document_uri": "file:///project/tmp/lsp/core.py",
+          "position_encoding": "utf-16",
+          "lsp_sync": {
+            "flushed_delayed_changes": true,
+            "settle_seconds": 0.2
+          },
+          "capabilities": {
+            "textDocument/rename": true
+          },
+          "diagnostics": {
+            "count": 0,
+            "raw": ""
+          },
+          "diagnostic_cache": {
+            "workspace": "/project/tmp/lsp",
+            "documents": null
+          },
+          "symbol_source": "thing-at-point",
+          "text_hash": "source-hash",
+          "text_excerpt": "def compute_value(x):\n    return x\n",
+          "server_id": "pylsp",
+          "server_pid": 1234,
+          "server_executable": "/usr/bin/pylsp",
+          "server_cwd": "/project/tmp/lsp",
+          "server_command": [
+            "pylsp"
+          ],
+          "workspace_proc_type": "real",
+          "cmd_proc_type": "real",
+          "cmd_proc_status": "run",
+          "run_id": "synthetic-run",
+          "plan": "/project/run/insula-plan.json"
+        }
+      },
+      "lsp_request": {
+        "methods": [
+          "textDocument/rename"
+        ],
+        "requests": [
+          {
+            "method": "textDocument/rename",
+            "id": 99,
+            "buffer": "core.py",
+            "document_version": 5
+          }
+        ],
+        "wait_timeout_seconds": 30.0
+      },
+      "workspace_edit": {
+        "applied": true,
+        "sha256": "workspace-edit-hash",
+        "excerpt": "(:changes ...)"
+      },
+      "saved_buffers": [
+        {
+          "buffer_name": "core.py",
+          "file": "/project/tmp/lsp/core.py",
+          "chars_tick": 8
+        }
+      ],
+      "affected_files": [
+        "/project/tmp/lsp/core.py"
+      ],
+      "rootfs_runtime": {
+        "run_id": "synthetic-run",
+        "plan": "/project/run/insula-plan.json"
+      }
+    },
+    "observations": {
+      "before": {
+        "operation": "lsp.observe_source",
+        "state": "succeeded",
+        "buffer_name": "core.py",
+        "text_owner_name": "core.py",
+        "buffer_file_name": "/project/tmp/lsp/core.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 42,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "core.py",
+        "minibuffer_active": false,
+        "workspace_present": true,
+        "workspace_status": "initialized",
+        "workspace_root": "/project/tmp/lsp",
+        "document_uri": "file:///project/tmp/lsp/core.py",
+        "document_version": 5,
+        "position_encoding": "utf-16",
+        "lsp_sync": {
+          "flushed_delayed_changes": true,
+          "settle_seconds": 0.2
+        },
+        "capabilities": {
+          "textDocument/rename": true
+        },
+        "diagnostics": {
+          "count": 0,
+          "raw": ""
+        },
+        "diagnostic_cache": {
+          "workspace": "/project/tmp/lsp",
+          "documents": null
+        },
+        "symbol": "compute_value",
+        "symbol_source": "thing-at-point",
+        "text_hash": "source-hash",
+        "text_excerpt": "def compute_value(x):\n    return x\n",
+        "server_id": "pylsp",
+        "server_pid": 1234,
+        "server_executable": "/usr/bin/pylsp",
+        "server_cwd": "/project/tmp/lsp",
+        "server_command": [
+          "pylsp"
+        ],
+        "workspace_proc_type": "real",
+        "cmd_proc_type": "real",
+        "cmd_proc_status": "run",
+        "run_id": "synthetic-run",
+        "plan": "/project/run/insula-plan.json"
+      },
+      "after": {
+        "symbol": "renamed_value",
+        "document_version": 6,
+        "operation": "lsp.observe_source",
+        "state": "succeeded",
+        "buffer_name": "core.py",
+        "text_owner_name": "core.py",
+        "buffer_file_name": "/project/tmp/lsp/core.py",
+        "major_mode": "python-mode",
+        "chars_tick": 7,
+        "modified": false,
+        "read_only": false,
+        "point": 42,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "core.py",
+        "minibuffer_active": false,
+        "workspace_present": true,
+        "workspace_status": "initialized",
+        "workspace_root": "/project/tmp/lsp",
+        "document_uri": "file:///project/tmp/lsp/core.py",
+        "position_encoding": "utf-16",
+        "lsp_sync": {
+          "flushed_delayed_changes": true,
+          "settle_seconds": 0.2
+        },
+        "capabilities": {
+          "textDocument/rename": true
+        },
+        "diagnostics": {
+          "count": 0,
+          "raw": ""
+        },
+        "diagnostic_cache": {
+          "workspace": "/project/tmp/lsp",
+          "documents": null
+        },
+        "symbol_source": "thing-at-point",
+        "text_hash": "source-hash",
+        "text_excerpt": "def compute_value(x):\n    return x\n",
+        "server_id": "pylsp",
+        "server_pid": 1234,
+        "server_executable": "/usr/bin/pylsp",
+        "server_cwd": "/project/tmp/lsp",
+        "server_command": [
+          "pylsp"
+        ],
+        "workspace_proc_type": "real",
+        "cmd_proc_type": "real",
+        "cmd_proc_status": "run",
+        "run_id": "synthetic-run",
+        "plan": "/project/run/insula-plan.json"
+      }
+    },
+    "effects": {
+      "workspace_edit": {
+        "route": "lsp-rename",
+        "new_name": "renamed_value",
+        "request_methods": [
+          "textDocument/rename"
+        ],
+        "applied": true,
+        "sha256": "workspace-edit-hash",
+        "saved_buffers": [
+          {
+            "buffer_name": "core.py",
+            "file": "/project/tmp/lsp/core.py",
+            "chars_tick": 8
+          }
+        ],
+        "affected_files": [
+          "/project/tmp/lsp/core.py"
+        ]
+      }
+    },
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "checks": [
+    {
+      "name": "lsp.observe_source projects typed workspace and server evidence",
+      "passed": true,
+      "detail": "((\"workspace\" (\"present\" . t) (\"status\" . \"initialized\") (\"root\" . \"/project/tmp/lsp\") (\"proc_type\" . \"real\")) (\"server\" (\"id\" . \"pylsp\") (\"pid\" . 1234) (\"executable\" . \"/usr/bin/pylsp\") (\"rootfs_owned\" . :json-false) (\"cwd\" . \"/project/tmp/lsp\") (\"command\" \"pylsp\") (\"cmd_proc_type\" . \"real\") (\"cmd_proc_status\" . \"run\")) (\"document\" (\"uri\" . \"file:///project/tmp/lsp/core.py\") (\"version\" . 5) (\"position_encoding\" . \"utf-16\")) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" (\"workspace\" . \"/project/tmp/lsp\") (\"documents\")) (\"lsp_sync\" (\"flushed_delayed_changes\" . t) (\"settle_seconds\" . 0.2)) (\"rootfs_runtime\" (\"run_id\" . \"synthetic-run\") (\"plan\" . \"/project/run/insula-plan.json\")))"
+    },
+    {
+      "name": "lsp.observe_source projects typed observations without effects",
+      "passed": true,
+      "detail": "((\"source_buffer\" (\"buffer_name\" . \"core.py\") (\"text_owner_name\" . \"core.py\") (\"buffer_file_name\" . \"/project/tmp/lsp/core.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 42) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"core.py\") (\"minibuffer_active\" . :json-false) (\"text_hash\" . \"source-hash\") (\"text_excerpt\" . \"def compute_value(x):\n    return x\n\")) (\"document\" (\"uri\" . \"file:///project/tmp/lsp/core.py\") (\"version\" . 5) (\"position_encoding\" . \"utf-16\")) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"symbol\" (\"name\" . \"compute_value\") (\"source\" . \"thing-at-point\"))) #s(hash-table test equal)"
+    },
+    {
+      "name": "lsp.rename_symbol projects typed request and workspace-edit evidence",
+      "passed": true,
+      "detail": "((\"precondition_checks\" ((\"name\" . \"LSP document version matches precondition\") (\"passed\" . t) (\"detail\" . \"ok\"))) (\"before_after_observations\" (\"before\" (\"operation\" . \"lsp.observe_source\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"core.py\") (\"text_owner_name\" . \"core.py\") (\"buffer_file_name\" . \"/project/tmp/lsp/core.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 42) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"core.py\") (\"minibuffer_active\" . :json-false) (\"workspace_present\" . t) (\"workspace_status\" . \"initialized\") (\"workspace_root\" . \"/project/tmp/lsp\") (\"document_uri\" . \"file:///project/tmp/lsp/core.py\") (\"document_version\" . 5) (\"position_encoding\" . \"utf-16\") (\"lsp_sync\" (\"flushed_delayed_changes\" . t) (\"settle_seconds\" . 0.2)) (\"capabilities\" (\"textDocument/rename\" . t)) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" (\"workspace\" . \"/project/tmp/lsp\") (\"documents\")) (\"symbol\" . \"compute_value\") (\"symbol_source\" . \"thing-at-point\") (\"text_hash\" . \"source-hash\") (\"text_excerpt\" . \"def compute_value(x):\n    return x\n\") (\"server_id\" . \"pylsp\") (\"server_pid\" . 1234) (\"server_executable\" . \"/usr/bin/pylsp\") (\"server_cwd\" . \"/project/tmp/lsp\") (\"server_command\" \"pylsp\") (\"workspace_proc_type\" . \"real\") (\"cmd_proc_type\" . \"real\") (\"cmd_proc_status\" . \"run\") (\"run_id\" . \"synthetic-run\") (\"plan\" . \"/project/run/insula-plan.json\")) (\"after\" (\"symbol\" . \"renamed_value\") (\"document_version\" . 6) (\"operation\" . \"lsp.observe_source\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"core.py\") (\"text_owner_name\" . \"core.py\") (\"buffer_file_name\" . \"/project/tmp/lsp/core.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 42) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"core.py\") (\"minibuffer_active\" . :json-false) (\"workspace_present\" . t) (\"workspace_status\" . \"initialized\") (\"workspace_root\" . \"/project/tmp/lsp\") (\"document_uri\" . \"file:///project/tmp/lsp/core.py\") (\"position_encoding\" . \"utf-16\") (\"lsp_sync\" (\"flushed_delayed_changes\" . t) (\"settle_seconds\" . 0.2)) (\"capabilities\" (\"textDocument/rename\" . t)) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" (\"workspace\" . \"/project/tmp/lsp\") (\"documents\")) (\"symbol_source\" . \"thing-at-point\") (\"text_hash\" . \"source-hash\") (\"text_excerpt\" . \"def compute_value(x):\n    return x\n\") (\"server_id\" . \"pylsp\") (\"server_pid\" . 1234) (\"server_executable\" . \"/usr/bin/pylsp\") (\"server_cwd\" . \"/project/tmp/lsp\") (\"server_command\" \"pylsp\") (\"workspace_proc_type\" . \"real\") (\"cmd_proc_type\" . \"real\") (\"cmd_proc_status\" . \"run\") (\"run_id\" . \"synthetic-run\") (\"plan\" . \"/project/run/insula-plan.json\"))) (\"lsp_request\" (\"methods\" \"textDocument/rename\") (\"requests\" ((\"method\" . \"textDocument/rename\") (\"id\" . 99) (\"buffer\" . \"core.py\") (\"document_version\" . 5))) (\"wait_timeout_seconds\" . 30.0)) (\"workspace_edit\" (\"applied\" . t) (\"sha256\" . \"workspace-edit-hash\") (\"excerpt\" . \"(:changes ...)\")) (\"saved_buffers\" ((\"buffer_name\" . \"core.py\") (\"file\" . \"/project/tmp/lsp/core.py\") (\"chars_tick\" . 8))) (\"affected_files\" \"/project/tmp/lsp/core.py\") (\"rootfs_runtime\" (\"run_id\" . \"synthetic-run\") (\"plan\" . \"/project/run/insula-plan.json\")))"
+    },
+    {
+      "name": "lsp.rename_symbol projects a multi-buffer workspace-edit effect",
+      "passed": true,
+      "detail": "((\"workspace_edit\" (\"route\" . \"lsp-rename\") (\"new_name\" . \"renamed_value\") (\"request_methods\" \"textDocument/rename\") (\"applied\" . t) (\"sha256\" . \"workspace-edit-hash\") (\"saved_buffers\" ((\"buffer_name\" . \"core.py\") (\"file\" . \"/project/tmp/lsp/core.py\") (\"chars_tick\" . 8))) (\"affected_files\" \"/project/tmp/lsp/core.py\")))"
+    },
+    {
+      "name": "lsp.rename_symbol preserves before and after observations",
+      "passed": true,
+      "detail": "((\"before\" (\"operation\" . \"lsp.observe_source\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"core.py\") (\"text_owner_name\" . \"core.py\") (\"buffer_file_name\" . \"/project/tmp/lsp/core.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 42) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"core.py\") (\"minibuffer_active\" . :json-false) (\"workspace_present\" . t) (\"workspace_status\" . \"initialized\") (\"workspace_root\" . \"/project/tmp/lsp\") (\"document_uri\" . \"file:///project/tmp/lsp/core.py\") (\"document_version\" . 5) (\"position_encoding\" . \"utf-16\") (\"lsp_sync\" (\"flushed_delayed_changes\" . t) (\"settle_seconds\" . 0.2)) (\"capabilities\" (\"textDocument/rename\" . t)) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" (\"workspace\" . \"/project/tmp/lsp\") (\"documents\")) (\"symbol\" . \"compute_value\") (\"symbol_source\" . \"thing-at-point\") (\"text_hash\" . \"source-hash\") (\"text_excerpt\" . \"def compute_value(x):\n    return x\n\") (\"server_id\" . \"pylsp\") (\"server_pid\" . 1234) (\"server_executable\" . \"/usr/bin/pylsp\") (\"server_cwd\" . \"/project/tmp/lsp\") (\"server_command\" \"pylsp\") (\"workspace_proc_type\" . \"real\") (\"cmd_proc_type\" . \"real\") (\"cmd_proc_status\" . \"run\") (\"run_id\" . \"synthetic-run\") (\"plan\" . \"/project/run/insula-plan.json\")) (\"after\" (\"symbol\" . \"renamed_value\") (\"document_version\" . 6) (\"operation\" . \"lsp.observe_source\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"core.py\") (\"text_owner_name\" . \"core.py\") (\"buffer_file_name\" . \"/project/tmp/lsp/core.py\") (\"major_mode\" . \"python-mode\") (\"chars_tick\" . 7) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point\" . 42) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"core.py\") (\"minibuffer_active\" . :json-false) (\"workspace_present\" . t) (\"workspace_status\" . \"initialized\") (\"workspace_root\" . \"/project/tmp/lsp\") (\"document_uri\" . \"file:///project/tmp/lsp/core.py\") (\"position_encoding\" . \"utf-16\") (\"lsp_sync\" (\"flushed_delayed_changes\" . t) (\"settle_seconds\" . 0.2)) (\"capabilities\" (\"textDocument/rename\" . t)) (\"diagnostics\" (\"count\" . 0) (\"raw\" . \"\")) (\"diagnostic_cache\" (\"workspace\" . \"/project/tmp/lsp\") (\"documents\")) (\"symbol_source\" . \"thing-at-point\") (\"text_hash\" . \"source-hash\") (\"text_excerpt\" . \"def compute_value(x):\n    return x\n\") (\"server_id\" . \"pylsp\") (\"server_pid\" . 1234) (\"server_executable\" . \"/usr/bin/pylsp\") (\"server_cwd\" . \"/project/tmp/lsp\") (\"server_command\" \"pylsp\") (\"workspace_proc_type\" . \"real\") (\"cmd_proc_type\" . \"real\") (\"cmd_proc_status\" . \"run\") (\"run_id\" . \"synthetic-run\") (\"plan\" . \"/project/run/insula-plan.json\")))"
+    }
+  ]
+}

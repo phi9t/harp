@@ -1,0 +1,361 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+mode="${1:-all}"
+case "$mode" in
+  unit|integration|all) ;;
+  *) printf 'usage: %s [unit|integration|all]\n' "$0" >&2; exit 64 ;;
+esac
+
+find_emacs() {
+  if [[ -n "${DEVX_EMACS:-}" && -x "$DEVX_EMACS" ]]; then
+    printf '%s\n' "$DEVX_EMACS"
+    return
+  fi
+  if command -v emacs >/dev/null 2>&1; then
+    command -v emacs
+    return
+  fi
+  local doom_env="$HOME/.emacs.d/.local/env" saved_path directory
+  [[ -r "$doom_env" ]] || {
+    printf 'Missing Doom environment file: %s\n' "$doom_env" >&2
+    return 1
+  }
+  saved_path="$(sed -n 's/^ "PATH=\(.*\)"$/\1/p' "$doom_env" | head -n 1)"
+  IFS=: read -r -a directories <<<"$saved_path"
+  for directory in "${directories[@]}"; do
+    if [[ -x "$directory/emacs" ]]; then
+      printf '%s\n' "$directory/emacs"
+      return
+    fi
+  done
+  printf 'Unable to find Emacs; set DEVX_EMACS to its absolute path.\n' >&2
+  return 1
+}
+
+emacs_bin="$(find_emacs)"
+emacsclient_bin="$(dirname -- "$emacs_bin")/emacsclient"
+[[ -x "$emacsclient_bin" ]] || {
+  printf 'Missing emacsclient beside %s\n' "$emacs_bin" >&2
+  exit 69
+}
+
+lsp_timeout=30
+auth_timeout=15
+completion_timeout=30
+language_count=4
+orchestration_margin=60
+minimum_client_timeout=$((
+  language_count * (lsp_timeout + auth_timeout + completion_timeout) +
+  orchestration_margin
+))
+startup_timeout="${DEVX_AI_LSP_STARTUP_TIMEOUT:-30}"
+client_timeout="${DEVX_AI_LSP_CLIENT_TIMEOUT:-$minimum_client_timeout}"
+cleanup_timeout="${DEVX_AI_LSP_CLEANUP_TIMEOUT:-5}"
+kill_grace="${DEVX_AI_LSP_KILL_GRACE:-3}"
+for timeout_value in \
+  "$startup_timeout" "$client_timeout" "$cleanup_timeout" "$kill_grace"; do
+  [[ "$timeout_value" =~ ^[1-9][0-9]*$ ]] || {
+    printf 'Verifier timeouts must be positive integer seconds.\n' >&2
+    exit 64
+  }
+done
+if [[ "$mode" != unit ]] && ((client_timeout < minimum_client_timeout)); then
+  printf 'Integration client timeout must be at least %d seconds.\n' \
+    "$minimum_client_timeout" >&2
+  exit 64
+fi
+
+run_parent="$(cd -- "${TMPDIR:-/tmp}" && pwd -P)"
+umask 077
+run_root="$(mktemp -d "$run_parent/devx-ai-lsp.XXXXXXXX")"
+chmod 700 "$run_root"
+run_root_validated=0
+if [[ "$(dirname -- "$run_root")" == "$run_parent" &&
+      "$(basename -- "$run_root")" == devx-ai-lsp.* &&
+      -d "$run_root" ]]; then
+  run_root_validated=1
+else
+  printf 'Unable to validate verifier temporary root.\n' >&2
+  exit 70
+fi
+run_nonce="${run_root##*.}"
+server_name="devx-ai-lsp-${BASHPID}-${run_nonce}"
+owner_token="${server_name}-owner"
+doom_root="$HOME/.emacs.d"
+daemon_fifo="$run_root/daemon.pipe"
+daemon_log="$run_root/daemon.sanitized.log"
+pass_log="$run_root/pass.log"
+daemon_pid=""
+daemon_pgid=""
+daemon_start_marker=""
+group_owned=0
+identity_validated=0
+sanitizer_pid=""
+daemon_stream_fd=""
+
+sanitize_stream() {
+  sed -u -E \
+    -e 's/([Aa]uthorization|[Aa]ccess[-_ ]?[Tt]oken|[Rr]efresh[-_ ]?[Tt]oken|[Oo][Aa]uth[-_ ]?[Tt]oken|[Tt]oken)[[:space:]]*[:=][[:space:]]*(Bearer[[:space:]]+)?[^[:space:],;}]+/\1=<redacted>/g' \
+    -e 's/"(access_token|refresh_token|oauth_token|token)"[[:space:]]*:[[:space:]]*"[^"]+"/"\1":"<redacted>"/gI' \
+    -e 's/(Bearer[[:space:]]+)[^[:space:],;}]+/\1<redacted>/g' \
+    -e 's/(gh[opsu]_[[:alnum:]_]+|github_pat_[[:alnum:]_]+)/<redacted>/g' \
+    -e 's/[[:alnum:]_+\/.=-]{32,}/<redacted>/g'
+}
+
+mkfifo -m 600 "$daemon_fifo"
+: >"$daemon_log"
+chmod 600 "$daemon_log"
+sanitize_stream <"$daemon_fifo" >"$daemon_log" &
+sanitizer_pid=$!
+exec {daemon_stream_fd}>"$daemon_fifo"
+
+flush_sanitizer() {
+  local marker attempt
+  marker="SANITIZER-FLUSH ${BASHPID} ${RANDOM}"
+  printf '%s\n' "$marker" >&"$daemon_stream_fd"
+  for attempt in {1..100}; do
+    grep -F -x -- "$marker" "$daemon_log" >/dev/null 2>&1 && return 0
+    sleep 0.01
+  done
+  return 1
+}
+
+finish_sanitizer() {
+  if [[ -n "${daemon_stream_fd:-}" ]]; then
+    exec {daemon_stream_fd}>&-
+    daemon_stream_fd=""
+  fi
+  if [[ -n "$sanitizer_pid" ]]; then
+    wait "$sanitizer_pid" >/dev/null 2>&1 || true
+    sanitizer_pid=""
+  fi
+}
+
+safe_log_tail() {
+  local source_size diagnostic_log diagnostic_size
+  flush_sanitizer || true
+  if [[ -s "$daemon_log" ]]; then
+    source_size="$(wc -c <"$daemon_log")"
+    diagnostic_log="$run_root/diagnostic.sanitized.log"
+    : >"$diagnostic_log"
+    chmod 600 "$diagnostic_log"
+    if ((source_size > 8000)); then
+      tail -c 8000 "$daemon_log" | sed '1d'
+    else
+      command cat -- "$daemon_log"
+    fi | sanitize_stream >"$diagnostic_log"
+    diagnostic_size="$(wc -c <"$diagnostic_log")"
+    printf '\nBounded sanitized Doom daemon log tail:\n' >&2
+    if ((diagnostic_size > 4000)); then
+      tail -c 4000 "$diagnostic_log" | sed '1d' >&2
+    else
+      command cat -- "$diagnostic_log" >&2
+    fi
+    printf '\n' >&2
+  else
+    printf '\nBounded sanitized Doom daemon log tail: unavailable\n' >&2
+  fi
+}
+
+fail() {
+  local message="$1" status="${2:-1}"
+  printf '%s\n' "$message" >&2
+  safe_log_tail
+  exit "$status"
+}
+
+run_client() {
+  local seconds=$1 expression=$2 output
+  if ! output="$(timeout --foreground --kill-after="${kill_grace}s" \
+      "${seconds}s" "$emacsclient_bin" -s "$server_name" -e "$expression" \
+      2>&"$daemon_stream_fd")"; then
+    return 124
+  fi
+  printf '%s' "$output"
+}
+
+process_start_marker() {
+  local pid=$1 process_stat process_tail
+  local -a process_fields
+  [[ "$pid" =~ ^[1-9][0-9]*$ && -r "/proc/$pid/stat" ]] || return 1
+  IFS= read -r process_stat <"/proc/$pid/stat" || return 1
+  [[ "${process_stat%% *}" == "$pid" ]] || return 1
+  process_tail="${process_stat##*) }"
+  read -r -a process_fields <<<"$process_tail"
+  ((${#process_fields[@]} >= 20)) || return 1
+  printf '%s' "${process_fields[19]}"
+}
+
+process_state() {
+  local pid=$1 process_stat process_tail
+  local -a process_fields
+  [[ -r "/proc/$pid/stat" ]] || return 1
+  IFS= read -r process_stat <"/proc/$pid/stat" || return 1
+  process_tail="${process_stat##*) }"
+  read -r -a process_fields <<<"$process_tail"
+  ((${#process_fields[@]} >= 1)) || return 1
+  printf '%s' "${process_fields[0]}"
+}
+
+owned_group_is_current() {
+  local current_marker current_pgid
+  ((group_owned)) || return 1
+  [[ "$daemon_pid" =~ ^[1-9][0-9]*$ &&
+     "$daemon_pgid" == "$daemon_pid" ]] || return 1
+  current_marker="$(process_start_marker "$daemon_pid")" || return 1
+  [[ "$current_marker" == "$daemon_start_marker" ]] || return 1
+  current_pgid="$(ps -o pgid= -p "$daemon_pid" 2>/dev/null | tr -d ' ')"
+  [[ "$current_pgid" == "$daemon_pgid" ]]
+}
+
+owned_group_is_alive() {
+  ((group_owned)) && kill -0 -- "-$daemon_pgid" 2>/dev/null
+}
+
+reap_exited_daemon() {
+  local state
+  [[ -n "$daemon_pid" ]] || return 0
+  state="$(process_state "$daemon_pid")" || return 0
+  if [[ "$state" == Z ]]; then
+    wait "$daemon_pid" 2>/dev/null || true
+  fi
+}
+
+wait_for_owned_group() {
+  local seconds=$1 deadline
+  deadline=$((SECONDS + seconds))
+  while owned_group_is_alive && ((SECONDS < deadline)); do
+    reap_exited_daemon
+    owned_group_is_alive || return 0
+    read -r -t 0.05 _ || true
+  done
+  ! owned_group_is_alive
+}
+
+capture_foreground_group() {
+  local deadline current_pgid
+  daemon_start_marker="$(process_start_marker "$daemon_pid")" || return 1
+  deadline=$((SECONDS + startup_timeout))
+  while ((SECONDS < deadline)); do
+    current_pgid="$(ps -o pgid= -p "$daemon_pid" 2>/dev/null | tr -d ' ')"
+    if [[ "$current_pgid" == "$daemon_pid" ]]; then
+      daemon_pgid="$current_pgid"
+      group_owned=1
+      return 0
+    fi
+    kill -0 -- "$daemon_pid" 2>/dev/null || return 1
+    read -r -t 0.05 _ || true
+  done
+  return 1
+}
+
+capture_daemon_identity() {
+  local seconds=$1 deadline remaining identity expected_identity
+  deadline=$((SECONDS + seconds))
+  expected_identity="(\"${owner_token}\" ${daemon_pid})"
+  while ((SECONDS < deadline)); do
+    owned_group_is_current || return 1
+    remaining=$((deadline - SECONDS))
+    ((remaining > 0)) || remaining=1
+    if identity="$(run_client "$remaining" \
+        '(list (getenv "DEVX_AI_LSP_OWNER") (emacs-pid))')"; then
+      if [[ "$identity" == "$expected_identity" ]]; then
+        identity_validated=1
+        return 0
+      fi
+      return 1
+    fi
+    read -r -t 0.05 _ || true
+  done
+  return 1
+}
+
+cleanup() {
+  local status=$1 group_gone=1
+
+  if ((identity_validated)) && owned_group_is_current; then
+    run_client "$cleanup_timeout" '(kill-emacs)' >/dev/null 2>&1 || true
+  fi
+
+  wait_for_owned_group "$cleanup_timeout" || group_gone=0
+  if ((!group_gone)) && owned_group_is_current; then
+    kill -TERM -- "-$daemon_pgid" 2>/dev/null || true
+  fi
+
+  group_gone=1
+  wait_for_owned_group "$kill_grace" || group_gone=0
+  if ((!group_gone)) && owned_group_is_current; then
+    kill -KILL -- "-$daemon_pgid" 2>/dev/null || true
+    wait "$daemon_pid" 2>/dev/null || true
+  else
+    reap_exited_daemon
+  fi
+
+  group_gone=1
+  wait_for_owned_group "$kill_grace" || group_gone=0
+  finish_sanitizer
+  if ((!group_gone)); then
+    printf 'Verifier-owned process group %s survived cleanup; preserving %s.\n' \
+      "$daemon_pgid" "$run_root" >&2
+  elif ((run_root_validated)) && [[ -d "$run_root" &&
+      "$(dirname -- "$run_root")" == "$run_parent" ]]; then
+    rm -rf -- "$run_root"
+  fi
+  return "$status"
+}
+
+on_exit() {
+  local status=$?
+  trap - EXIT INT TERM
+  cleanup "$status" || true
+  exit "$status"
+}
+trap on_exit EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+DEVX_AI_LSP_OWNER="$owner_token" \
+  setsid "$emacs_bin" --init-directory "$doom_root" \
+  "--fg-daemon=$server_name" >"$daemon_fifo" 2>&1 &
+daemon_pid=$!
+
+capture_foreground_group ||
+  fail "Foreground daemon did not own its process group."
+capture_daemon_identity "$startup_timeout" ||
+  fail "Doom daemon ownership validation failed; refusing to use or stop it."
+
+test_file="$repo_root/doom/ai-lsp-verifier.el"
+case "$mode" in
+  unit) entrypoint=devx-ai-test-run-unit ;;
+  integration) entrypoint=devx-ai-test-run-integration ;;
+  all) entrypoint=devx-ai-test-run-all ;;
+esac
+
+if ! verifier_result="$(run_client "$client_timeout" \
+    "(progn (load-file \"$test_file\") ($entrypoint))")"; then
+  fail "Verifier client failed or timed out after ${client_timeout}s."
+fi
+if [[ "$verifier_result" != t ]]; then
+  fail "Verifier client returned an unexpected result."
+fi
+
+printf 't\n'
+
+if [[ "$mode" != unit ]]; then
+  if ! result_collection="$(run_client "$client_timeout" \
+      "(with-current-buffer devx-ai-test-results-buffer-name (write-region (point-min) (point-max) \"$pass_log\" nil 'silent))")"; then
+    fail "Verifier result collection failed or timed out after ${client_timeout}s."
+  fi
+  if [[ "$result_collection" != t ]]; then
+    fail "Verifier result collection returned an unexpected result."
+  fi
+  expected_passes=$'PASS Rust   rust-analyzer + Copilot rust\nPASS Python pyright + Copilot python\nPASS C++    clangd + Copilot cpp\nPASS CUDA   clangd + Copilot cuda-cpp'
+  [[ -f "$pass_log" ]] || fail "Verifier did not produce PASS results."
+  actual_passes="$(<"$pass_log")"
+  if [[ "$actual_passes" != "$expected_passes" ]]; then
+    fail "Verifier returned unexpected PASS results."
+  fi
+  printf '%s\n' "$actual_passes"
+fi

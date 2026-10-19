@@ -1,0 +1,2544 @@
+{
+  "generated_at": "2026-09-30T04:03:32Z",
+  "total": 36,
+  "passed": 36,
+  "insula_passed": true,
+  "insula_runtime": {
+    "active": true,
+    "mode": "selected-container-rootfs",
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json",
+    "env_names": [
+      "CARGO_HOME",
+      "HOME",
+      "LANG",
+      "LC_ALL",
+      "PATH",
+      "PWD",
+      "RUSTUP_HOME",
+      "SHELL",
+      "SHLVL",
+      "SOMA_INSULA_ACTIVE",
+      "SOMA_INSULA_MODE",
+      "SOMA_INSULA_PLAN",
+      "SOMA_INSULA_RUN_ID",
+      "TMPDIR",
+      "XDG_CACHE_HOME",
+      "XDG_CONFIG_HOME",
+      "XDG_DATA_HOME",
+      "XDG_RUNTIME_DIR",
+      "_"
+    ],
+    "unexpected_env_names": null,
+    "checks": [
+      {
+        "name": "SOMA_INSULA_ACTIVE is set",
+        "passed": true,
+        "detail": "1"
+      },
+      {
+        "name": "HOME is private",
+        "passed": true,
+        "detail": "/project/home"
+      },
+      {
+        "name": "TMPDIR is private",
+        "passed": true,
+        "detail": "/project/tmp"
+      },
+      {
+        "name": "XDG_RUNTIME_DIR is private",
+        "passed": true,
+        "detail": "/project/run"
+      },
+      {
+        "name": "environment is allowlisted",
+        "passed": true,
+        "detail": "nil"
+      },
+      {
+        "name": "insula plan is visible",
+        "passed": true,
+        "detail": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      }
+    ]
+  },
+  "records": [
+    {
+      "id": "insula-rootfs-dependency-closure-contract",
+      "title": "Insula rootfs dependency closure contract",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Hermetic Insula evidence is a rootfs-owned tool/package/dependency closure with ABI accounting, not merely an environment variable or a bwrap namespace.",
+      "hypothesis": "The current development Insula should truthfully report that it uses host system binds and has no ABI guarantee; a production Soma Insula must report a selected rootfs and dependency closure.",
+      "sources": [
+        {
+          "name": "Soma development Insula plan",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "37-66",
+          "note": ""
+        },
+        {
+          "name": "Atlas rootfs requirement",
+          "path": "docs/internals-atlas/README.md",
+          "lines": "55-60",
+          "note": ""
+        },
+        {
+          "name": "Soma Insula issue",
+          "path": ".scratch/emacs-gym/issues/0002-soma-insula-contract-spike.md",
+          "lines": "14-36",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The emitted `insula-plan.json' from the current run.",
+      "predicted_behavior": "Development mode is allowed only if the plan explicitly says dependency closure is not rootfs-owned and ABI guarantee is absent.",
+      "observed_behavior": "mode=\"selected-container-rootfs-insula\" rootfs=\"/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34\" dependency_closure=\"rootfs_owned\" abi_guarantee=\"container-rootfs-abi-manifest\" production_required_tools=(\"emacs\" \"emacsclient\" \"python3\" \"jupyter\" \"pylsp\" \"pyright\" \"pyright-langserver\" \"clangd\" \"clang\" \"clang++\" \"gcc\" \"g++\" \"ldd\" \"rust-analyzer\" \"rustc\" \"cargo\" \"git\" \"tmux\" \"sh\" \"bash\")",
+      "independent_checks": [
+        {
+          "name": "insula plan was readable",
+          "passed": true,
+          "detail": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+        },
+        {
+          "name": "network policy is explicit",
+          "passed": true,
+          "detail": "disabled"
+        },
+        {
+          "name": "production required tool list is recorded",
+          "passed": true,
+          "detail": "(\"emacs\" \"emacsclient\" \"python3\" \"jupyter\" \"pylsp\" \"pyright\" \"pyright-langserver\" \"clangd\" \"clang\" \"clang++\" \"gcc\" \"g++\" \"ldd\" \"rust-analyzer\" \"rustc\" \"cargo\" \"git\" \"tmux\" \"sh\" \"bash\")"
+        },
+        {
+          "name": "rootfs dependency closure is truthfully classified",
+          "passed": true,
+          "detail": "dev=nil prod=t rootfs=\"/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34\" closure=\"rootfs_owned\" abi=\"container-rootfs-abi-manifest\""
+        }
+      ],
+      "counterexample": "Treating bwrap entry as hermetic even when `/usr' and toolchains come from the host hides unaccounted ABI and package dependencies.",
+      "derived_gym_requirement": "Production benchmark runs must select a Soma-owned rootfs manifest before launching Emacs, LSP servers, Jupyter kernels, Comint shells, or language toolchains."
+    },
+    {
+      "id": "insula-plan-runtime-consistency",
+      "title": "Insula plan and runtime consistency",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "The emitted bwrap plan must agree with the runtime state observed from inside Emacs.",
+      "hypothesis": "Run id, mode, cwd, private directories, and output directory should match between environment variables, `default-directory', and `insula-plan.json'.",
+      "sources": [
+        {
+          "name": "Soma development Insula plan",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "37-66",
+          "note": ""
+        },
+        {
+          "name": "runtime environment setup",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "102-119",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The current `insula-plan.json' plus Emacs runtime variables.",
+      "predicted_behavior": "The plan and runtime should match for this episode, proving plan evidence is not detached from the process being probed.",
+      "observed_behavior": "run_id=\"20260930T040324Z-4018462\"/\"20260930T040324Z-4018462\" mode=\"selected-container-rootfs\"/\"selected-container-rootfs-insula\" cwd=\"/workspace/soma\" repo_bind=\"/workspace/soma\" output=\"/workspace/soma/probes/emacs-internals/traces/latest\" probe_output=\"/workspace/soma/probes/emacs-internals/traces/latest\"",
+      "independent_checks": [
+        {
+          "name": "run id matches plan",
+          "passed": true,
+          "detail": "\"20260930T040324Z-4018462\" / \"20260930T040324Z-4018462\""
+        },
+        {
+          "name": "runtime mode matches plan family",
+          "passed": true,
+          "detail": "\"selected-container-rootfs\" / \"selected-container-rootfs-insula\""
+        },
+        {
+          "name": "cwd matches plan repo bind",
+          "passed": true,
+          "detail": "\"/workspace/soma\" / \"/workspace/soma\""
+        },
+        {
+          "name": "output directory matches plan",
+          "passed": true,
+          "detail": "\"/workspace/soma/probes/emacs-internals/traces/latest\" / \"/workspace/soma/probes/emacs-internals/traces/latest\""
+        },
+        {
+          "name": "private runtime directories match development sentinels",
+          "passed": true,
+          "detail": "HOME=\"/project/home\" TMPDIR=\"/project/tmp\" XDG_RUNTIME_DIR=\"/project/run\""
+        }
+      ],
+      "counterexample": "A runner can emit a plausible plan and then launch Emacs with different cwd, environment, run id, or artifact paths.",
+      "derived_gym_requirement": "The production Insula gateway must validate plan/runtime consistency before accepting Emacs, LSP, Jupyter, or checker evidence."
+    },
+    {
+      "id": "rootfs-mount-boundary-evidence",
+      "title": "Rootfs mount boundary evidence",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Mount evidence must distinguish writable task/harness state, read-only configured inputs, and broad development host binds.",
+      "hypothesis": "The current development Insula should expose a writable trace directory and private HOME while truthfully declaring host-system binds rather than rootfs-owned closure.",
+      "sources": [
+        {
+          "name": "bwrap mount vector",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "64-100",
+          "note": ""
+        },
+        {
+          "name": "plan visible mount classes",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "56-66",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The current mount plan and several runtime-visible paths.",
+      "predicted_behavior": "Development evidence should show writable Soma trace output, readable Doom inputs, private writable HOME, and broad host `/usr' visibility classified as non-production.",
+      "observed_behavior": "repo=\"/workspace/soma\" doom_core=\"/project/home/.emacs.d\" doom_user=\"/project/home/.doom.d\" ownership=\"soma-selected-container-rootfs\" usr-bin-env=t temp=\"/workspace/soma/probes/emacs-internals/traces/latest/mount-boundary-Ch7zUH\"",
+      "independent_checks": [
+        {
+          "name": "trace output directory is writable",
+          "passed": true,
+          "detail": "/workspace/soma/probes/emacs-internals/traces/latest/mount-boundary-Ch7zUH"
+        },
+        {
+          "name": "private HOME is writable",
+          "passed": true,
+          "detail": "/project/home"
+        },
+        {
+          "name": "Doom inputs are readable",
+          "passed": true,
+          "detail": "core=\"/project/home/.emacs.d\" user=\"/project/home/.doom.d\""
+        },
+        {
+          "name": "development host bind is explicitly classified",
+          "passed": true,
+          "detail": "ownership=\"soma-selected-container-rootfs\" rootfs=\"/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34\""
+        }
+      ],
+      "counterexample": "A plan that simply says `rootfs=/` can be mistaken for a sealed dependency closure if mount classes are not inspected.",
+      "derived_gym_requirement": "Production plans must record normalized mounts or a mount digest and fail if undeclared host roots provide tools or libraries."
+    },
+    {
+      "id": "toolchain-resolution-closure-classification",
+      "title": "Toolchain resolution and closure classification",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A rootfs-owned gym must account for the tools Emacs and its subprocesses invoke, including language servers, compilers, package managers, and Jupyter commands.",
+      "hypothesis": "The probe should inventory tool resolution from inside Emacs and classify whether the current run is a production rootfs closure or a development non-closure.",
+      "sources": [
+        {
+          "name": "Soma development Insula PATH",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "102-119",
+          "note": ""
+        },
+        {
+          "name": "Doom lifecycle environment identity",
+          "path": "docs/internals-atlas/doom-lifecycle.md",
+          "lines": "88-103",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The current Emacs process PATH under the Soma Insula wrapper.",
+      "predicted_behavior": "Emacs should be resolvable; production mode must additionally resolve the required toolchain inside a selected rootfs.",
+      "observed_behavior": "classification=production-rootfs-closure inventory=(((\"tool\" . \"emacs\") (\"path\" . \"/opt/soma/emacs/bin/emacs\") (\"found\" . t)) ((\"tool\" . \"python3\") (\"path\" . \"/usr/bin/python3\") (\"found\" . t)) ((\"tool\" . \"jupyter\") (\"path\" . \"/usr/bin/jupyter\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t)) ((\"tool\" . \"clang\") (\"path\" . \"/usr/bin/clang\") (\"found\" . t)) ((\"tool\" . \"gcc\") (\"path\" . \"/usr/bin/gcc\") (\"found\" . t)) ((\"tool\" . \"g++\") (\"path\" . \"/usr/bin/g++\") (\"found\" . t)) ((\"tool\" . \"rustc\") (\"path\" . \"/opt/soma/cargo/bin/rustc\") (\"found\" . t)) ((\"tool\" . \"cargo\") (\"path\" . \"/opt/soma/cargo/bin/cargo\") (\"found\" . t))) missing=nil",
+      "independent_checks": [
+        {
+          "name": "tool inventory was captured",
+          "passed": true,
+          "detail": "(((\"tool\" . \"emacs\") (\"path\" . \"/opt/soma/emacs/bin/emacs\") (\"found\" . t)) ((\"tool\" . \"python3\") (\"path\" . \"/usr/bin/python3\") (\"found\" . t)) ((\"tool\" . \"jupyter\") (\"path\" . \"/usr/bin/jupyter\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t)) ((\"tool\" . \"clang\") (\"path\" . \"/usr/bin/clang\") (\"found\" . t)) ((\"tool\" . \"gcc\") (\"path\" . \"/usr/bin/gcc\") (\"found\" . t)) ((\"tool\" . \"g++\") (\"path\" . \"/usr/bin/g++\") (\"found\" . t)) ((\"tool\" . \"rustc\") (\"path\" . \"/opt/soma/cargo/bin/rustc\") (\"found\" . t)) ((\"tool\" . \"cargo\") (\"path\" . \"/opt/soma/cargo/bin/cargo\") (\"found\" . t)))"
+        },
+        {
+          "name": "Emacs command resolves in current PATH",
+          "passed": true,
+          "detail": "\"/opt/soma/emacs/bin/emacs\""
+        },
+        {
+          "name": "toolchain closure classification is explicit",
+          "passed": true,
+          "detail": "prod=t missing=nil classification=production-rootfs-closure"
+        }
+      ],
+      "counterexample": "A benchmark can appear to work while silently resolving `python', `clangd', `rust-analyzer', or `jupyter' from the host.",
+      "derived_gym_requirement": "Observation traces must record tool resolution, and production runners must fail before an episode if required tools are absent from the selected rootfs closure."
+    },
+    {
+      "id": "toolchain-executable-provenance-matrix",
+      "title": "Toolchain executable provenance matrix",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Production Insula evidence must account for executable identity, not just PATH lookup.",
+      "hypothesis": "Every production-required executable should resolve to an absolute rootfs-owned path, carry version/hash evidence where readable, and avoid forbidden host or Nix prefixes in its ABI surface.",
+      "sources": [
+        {
+          "name": "Rootfs contract tool inventory",
+          "path": "/etc/soma-insula-rootfs-contract.json",
+          "lines": "tool_inventory",
+          "note": ""
+        },
+        {
+          "name": "Selected rootfs plan",
+          "path": "probes/emacs-internals/traces/latest/insula-plan.json",
+          "lines": "tool_inventory",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The selected Insula PATH and its production_required_tools list.",
+      "predicted_behavior": "Production mode should show absolute rootfs-owned executable paths for Emacs, Python, Jupyter, LSP servers, C/C++ tools, and Rust tools.",
+      "observed_behavior": "prod=t tools=(\"emacs\" \"emacsclient\" \"python3\" \"jupyter\" \"pylsp\" \"pyright\" \"pyright-langserver\" \"clangd\" \"clang\" \"clang++\" \"gcc\" \"g++\" \"ldd\" \"rust-analyzer\" \"rustc\" \"cargo\" \"git\" \"tmux\" \"sh\" \"bash\") missing=nil non-rootfs=nil forbidden-prefix=nil",
+      "independent_checks": [
+        {
+          "name": "provenance was captured for every required tool",
+          "passed": true,
+          "detail": "20/20"
+        },
+        {
+          "name": "production required tools are present",
+          "passed": true,
+          "detail": "prod=t missing=nil"
+        },
+        {
+          "name": "production tools resolve to rootfs-owned executable paths",
+          "passed": true,
+          "detail": "nil"
+        },
+        {
+          "name": "provenance has no forbidden host or Nix prefixes",
+          "passed": true,
+          "detail": "(((\"tool\" . \"emacs\") (\"path\" . \"/opt/soma/emacs/bin/emacs\") (\"realpath\" . \"/opt/soma/emacs/bin/emacs-30.2\") (\"found\" . t) (\"rootfs_owned_path\" . t) (\"version_status\" . 0) (\"version_output\" . \"GNU Emacs 30.2\nCopyright (C) 2025 Free Software Foundation, Inc.\nGNU Emacs comes with ABSOLUTELY NO WARRANTY.\nYou may redistribute copies of GNU Emacs\nunder the terms of the GNU General Public License.\nFor more information about these matters, see the file named COPYING.\n\nProcess soma-probe-process finished\n\") (\"sha256_output\" . \"824c1318464a98778d9f1677508e05af3dc5e94c34c63653145e079e5d26f6c2  /opt/soma/emacs/bin/emacs\n\nProcess soma-probe-process finished\n\") (\"ldd_status\" . 0) (\"ldd_output\" . \"\tlinux-vdso.so.1 (0x00007fff9f5ea000)\n\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f0fa0584000)\n\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f0fa057c000)\n\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f0fa039a000)\n\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6"
+        }
+      ],
+      "counterexample": "A tool can exist in PATH but be a host bind, symlink escape, or ABI-incompatible binary.",
+      "derived_gym_requirement": "The Insula gateway and benchmark traces must record executable realpaths, versions, hashes, and ABI-relevant dynamic-library surfaces for tools used by Emacs tasks."
+    },
+    {
+      "id": "toolchain-smoke-build-rootfs-identity",
+      "title": "Toolchain smoke build rootfs identity",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A language toolchain is not proven by path lookup; it must compile or execute inside the selected rootfs with the expected runtime identity.",
+      "hypothesis": "Python should report rootfs-owned executable/prefix/sysconfig data, C/C++ should compile and run a tiny binary, and Rust should compile and run a tiny binary in production mode.",
+      "sources": [
+        {
+          "name": "Rootfs build package layer",
+          "path": "scripts/insula/build-emacs-rootfs.sh",
+          "lines": "129-144",
+          "note": ""
+        },
+        {
+          "name": "Rootfs runtime PATH",
+          "path": "scripts/insula/run-emacs-internals-probes-rootfs.sh",
+          "lines": "202-218",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "A temporary directory under the private TMPDIR, one tiny C program, one tiny Rust program, and Python sysconfig introspection.",
+      "predicted_behavior": "Production mode should successfully execute Python, compile C with a rootfs compiler, and compile Rust with the rootfs Rust toolchain.",
+      "observed_behavior": "prod=t tmp=\"/project/tmp/soma-toolchain-smoke-o4Jml4\" python-status=0 cc=\"/usr/bin/clang\" c-status=0 rustc=\"/opt/soma/cargo/bin/rustc\" rust-status=0 forbidden=nil",
+      "independent_checks": [
+        {
+          "name": "Python introspection ran",
+          "passed": true,
+          "detail": "{\"base_prefix\": \"/usr\", \"executable\": \"/usr/bin/python3\", \"paths\": {\"data\": \"/usr/local\", \"include\": \"/usr/include/python3.12\", \"platinclude\": \"/usr/include/python3.12\", \"platlib\": \"/usr/local/lib/python3.12/dist-packages\", \"platstdlib\": \"/usr/lib/python3.12\", \"purelib\": \"/usr/local/lib/python3.12/dist-packages\", \"scripts\": \"/usr/local/bin\", \"stdlib\": \"/usr/lib/python3.12\"}, \"platform\": \"Linux-5.15.152.bsk.9-amd64-x86_64-with-glibc2.39\", \"prefix\": \"/usr\", \"run_id\": \"20260930T040324Z-4018462\"}\n\nProcess soma-probe-process finished\n"
+        },
+        {
+          "name": "production C toolchain compiled and ran",
+          "passed": true,
+          "detail": "cc=\"/usr/bin/clang\" status=0 output=\"soma-c-ok\n\tlinux-vdso.so.1 (0x00007ffdb7726000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9a554fa000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f9a55719000)\n\nProcess soma-probe-process finished\n\""
+        },
+        {
+          "name": "production Rust toolchain compiled and ran",
+          "passed": true,
+          "detail": "rustc=\"/opt/soma/cargo/bin/rustc\" status=0 output=\"soma-rust-ok\n\tlinux-vdso.so.1 (0x00007fff058e0000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007feb20378000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007feb20166000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007feb20404000)\n\nProcess soma-probe-process finished\n\""
+        },
+        {
+          "name": "smoke-build ABI output has no forbidden prefixes",
+          "passed": true,
+          "detail": "{\"base_prefix\": \"/usr\", \"executable\": \"/usr/bin/python3\", \"paths\": {\"data\": \"/usr/local\", \"include\": \"/usr/include/python3.12\", \"platinclude\": \"/usr/include/python3.12\", \"platlib\": \"/usr/local/lib/python3.12/dist-packages\", \"platstdlib\": \"/usr/lib/python3.12\", \"purelib\": \"/usr/local/lib/python3.12/dist-packages\", \"scripts\": \"/usr/local/bin\", \"stdlib\": \"/usr/lib/python3.12\"}, \"platform\": \"Linux-5.15.152.bsk.9-amd64-x86_64-with-glibc2.39\", \"prefix\": \"/usr\", \"run_id\": \"20260930T040324Z-4018462\"}\n\nProcess soma-probe-process finished\nsoma-c-ok\n\tlinux-vdso.so.1 (0x00007ffdb7726000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9a554fa000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f9a55719000)\n\nProcess soma-probe-process finished\nsoma-rust-ok\n\tlinux-vdso.so.1 (0x00007fff058e0000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007feb20378000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007feb20166000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007feb20404000)\n\nProcess soma-probe-process finished\n"
+        }
+      ],
+      "counterexample": "A compiler command may resolve but fail because its sysroot, linker, headers, loader, or runtime libraries are missing from the rootfs closure.",
+      "derived_gym_requirement": "Language-source-code benchmarks must smoke-test the relevant compiler/interpreter closure inside the Insula before trusting Emacs+LSP workflow evidence."
+    },
+    {
+      "id": "subprocess-environment-closure",
+      "title": "Subprocess environment closure",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Emacs subprocesses must inherit the same controlled environment contract as the Emacs process.",
+      "hypothesis": "A shell subprocess should see the Insula allowlist variables, private directories, and no host package-manager leakage such as conda, mamba, `PYTHONPATH', or ambient `LD_LIBRARY_PATH'.",
+      "sources": [
+        {
+          "name": "environment clear and setenv",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "102-119",
+          "note": ""
+        },
+        {
+          "name": "Comint subprocess contract",
+          "path": "docs/internals-atlas/package-contracts/comint.md",
+          "lines": "18-27",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One `env' subprocess launched from Emacs.",
+      "predicted_behavior": "The subprocess environment should stay within the declared allowlist for the current development Insula.",
+      "observed_behavior": "status=0 env_names=(\"CARGO_HOME\" \"HOME\" \"LANG\" \"LC_ALL\" \"PATH\" \"PWD\" \"RUSTUP_HOME\" \"SHELL\" \"SHLVL\" \"SOMA_INSULA_ACTIVE\" \"SOMA_INSULA_MODE\" \"SOMA_INSULA_PLAN\" \"SOMA_INSULA_RUN_ID\" \"TMPDIR\" \"XDG_CACHE_HOME\" \"XDG_CONFIG_HOME\" \"XDG_DATA_HOME\" \"XDG_RUNTIME_DIR\" \"_\") unexpected=nil forbidden=nil",
+      "independent_checks": [
+        {
+          "name": "env subprocess ran",
+          "passed": true,
+          "detail": "0"
+        },
+        {
+          "name": "subprocess environment is allowlisted",
+          "passed": true,
+          "detail": "nil"
+        },
+        {
+          "name": "subprocess has no host package-manager leakage",
+          "passed": true,
+          "detail": "nil"
+        },
+        {
+          "name": "subprocess sees the same Insula run id",
+          "passed": true,
+          "detail": "20260930T040324Z-4018462"
+        }
+      ],
+      "counterexample": "A clean Emacs process can still launch subprocesses with leaked host variables if the process environment is mutated later.",
+      "derived_gym_requirement": "Every benchmark subprocess, including LSP servers, Jupyter kernels, Comint shells, and checkers, must prove environment closure before task output is trusted."
+    },
+    {
+      "id": "native-comp-cache-closure",
+      "title": "Native-comp cache closure",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Emacs native compilation introduces ABI-sensitive cache and runtime-library state that must be owned by the rootfs or sandbox cache.",
+      "hypothesis": "The probe should record native-comp availability, eln load paths, and whether cache-like paths are sandbox-owned or development-classified.",
+      "sources": [
+        {
+          "name": "Emacs native-comp feature",
+          "path": "system-configuration-features",
+          "lines": "runtime",
+          "note": ""
+        },
+        {
+          "name": "Doom lifecycle environment identity",
+          "path": "docs/internals-atlas/doom-lifecycle.md",
+          "lines": "88-103",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The current Emacs runtime variables related to native compilation.",
+      "predicted_behavior": "Development mode may include host Emacs native-lisp paths, but production benchmark evidence needs rootfs-owned ABI and cache manifests.",
+      "observed_behavior": "native-comp-feature=42 eln-paths=(\"/project/home/.emacs.d/eln-cache/\" \"/opt/soma/emacs/lib/emacs/30.2/native-lisp/\") cache-like=(\"/project/home/.emacs.d/eln-cache/\") nonprivate-cache=nil prod=t",
+      "independent_checks": [
+        {
+          "name": "native-comp availability was captured",
+          "passed": true,
+          "detail": "42"
+        },
+        {
+          "name": "eln path state was captured",
+          "passed": true,
+          "detail": "(\"/project/home/.emacs.d/eln-cache/\" \"/opt/soma/emacs/lib/emacs/30.2/native-lisp/\")"
+        },
+        {
+          "name": "native-comp nonprivate paths are classified",
+          "passed": true,
+          "detail": "prod=t nonprivate-cache=nil"
+        }
+      ],
+      "counterexample": "Ignoring native-comp paths can hide stale `.eln' artifacts compiled against a different Emacs or libgccjit ABI.",
+      "derived_gym_requirement": "The rootfs contract must record native-comp enablement, libgccjit identity, eln paths, and sandbox-owned cache/write locations."
+    },
+    {
+      "id": "abi-surface-requires-rootfs-manifest",
+      "title": "ABI surface requires a rootfs manifest",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "ABI guarantees come from a selected rootfs manifest and accounted shared-library closure, not from successfully starting Emacs once.",
+      "hypothesis": "The current development Insula may inventory the Emacs dynamic-library surface, but it should not claim an ABI guarantee without a rootfs manifest.",
+      "sources": [
+        {
+          "name": "Emacs identity fields",
+          "path": "probes/emacs-internals/elisp/run-probes.el",
+          "lines": "24-42",
+          "note": ""
+        },
+        {
+          "name": "Soma development Insula ABI field",
+          "path": "scripts/insula/run-emacs-internals-probes.sh",
+          "lines": "37-66",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The running Emacs binary plus the emitted Insula plan.",
+      "predicted_behavior": "Development mode reports `abi_guarantee=none'; production mode must report a selected rootfs or ABI manifest.",
+      "observed_behavior": "emacs=\"/opt/soma/emacs/bin/emacs-30.2\" ldd-lines=32 abi_guarantee=\"container-rootfs-abi-manifest\" manifest=\"/etc/soma-insula-rootfs-contract.json\" glibc-owner=\"container-image-rootfs\" nix-refs=nil",
+      "independent_checks": [
+        {
+          "name": "Emacs executable path exists",
+          "passed": true,
+          "detail": "/opt/soma/emacs/bin/emacs-30.2"
+        },
+        {
+          "name": "ABI inventory captured or manifest supplied",
+          "passed": true,
+          "detail": "\tlinux-vdso.so.1 (0x00007fffc07a7000)\n\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f4a76e56000)\n\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f4a76e4e000)\n\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f4a76c6c000)\n\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f4a76c38000)\n\tlibselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f4a76c0b000)\n\tlibgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f4a76a0e000)\n\tlibm.so.6 ="
+        },
+        {
+          "name": "ABI guarantee requires production manifest",
+          "passed": true,
+          "detail": "prod=t abi=\"container-rootfs-abi-manifest\" manifest=\"/etc/soma-insula-rootfs-contract.json\""
+        },
+        {
+          "name": "production glibc comes from container rootfs",
+          "passed": true,
+          "detail": "prod=t glibc-owner=\"container-image-rootfs\""
+        },
+        {
+          "name": "production ABI surface has no Nix paths",
+          "passed": true,
+          "detail": "prod=t nix-allowed=:json-false ldd=\"\tlinux-vdso.so.1 (0x00007fffc07a7000)\n\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f4a76e56000)\n\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f4a76e4e000)\n\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f4a76c6c000)\n\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6 (0x00007f4a76c38000)\n\tlibselinux.so.1 => /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f4a76c0b000)\n\tlibgnutls.so.30 => /lib/x86_64-linux-gnu/libgnutls.so.30 (0x00007f4a76a0e000)\n\tlibm.so.6 =\""
+        }
+      ],
+      "counterexample": "Recording only `emacs-version' misses glibc, libstdc++, libgccjit, tree-sitter, module, and dynamic-loader compatibility.",
+      "derived_gym_requirement": "The Soma Insula contract must make ABI-relevant library/toolchain identity part of rootfs materialization and benchmark evidence."
+    },
+    {
+      "id": "emacs-patch-provenance-contract",
+      "title": "Emacs patch provenance contract",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A patched Emacs build is a distinct runtime substrate whose source, patches, build flags, executable identity, and ABI surface must be recorded before its observability evidence is trusted.",
+      "hypothesis": "The current development Insula should explicitly classify Emacs as stock. Any non-stock variant must carry patch and stock-comparison provenance in the plan or rootfs manifest.",
+      "sources": [
+        {
+          "name": "Emacs patch discipline",
+          "path": "AGENTS.md",
+          "lines": "36-50",
+          "note": ""
+        },
+        {
+          "name": "Atlas patched-Emacs rule",
+          "path": "docs/internals-atlas/README.md",
+          "lines": "69-75",
+          "note": ""
+        },
+        {
+          "name": "RFC Emacs adaptation decision",
+          "path": "docs/rfcs/0002-doom-emacs-gym-insula.md",
+          "lines": "755-762",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The running Emacs binary and emitted `insula-plan.json'.",
+      "predicted_behavior": "Stock Emacs passes with an explicit stock variant and no patch set; patched variants require source-pinned provenance and stock-vs-patched evidence.",
+      "observed_behavior": "variant=\"stock\" patch-set=nil source-revision=\"b3f36f18a6dd2715713370166257de2fae01f9d38cfe878ced9b1e6ded5befd9\" configure-flags=\"--prefix=/opt/soma/emacs --with-native-compilation --with-tree-sitter --with-sqlite3 --without-x --without-sound --without-dbus --without-gconf --without-gsettings --without-toolkit-scroll-bars --without-xwidgets --without-mailutils\" executable-hash=\"824c1318464a98778d9f1677508e05af3dc5e94c34c63653145e079e5d26f6c2\" abi-manifest=\"/etc/soma-insula-rootfs-contract.json\" stock-comparison=\"\" emacs=\"/opt/soma/emacs/bin/emacs-30.2\"",
+      "independent_checks": [
+        {
+          "name": "emacs patch variant is explicit",
+          "passed": true,
+          "detail": "stock"
+        },
+        {
+          "name": "stock variant has no patch set",
+          "passed": true,
+          "detail": "stock=t patch-set=nil"
+        },
+        {
+          "name": "patched variant carries source, build, ABI, and comparison provenance",
+          "passed": true,
+          "detail": "stock=t patched-fields-present=nil"
+        },
+        {
+          "name": "Emacs executable path exists",
+          "passed": true,
+          "detail": "/opt/soma/emacs/bin/emacs-30.2"
+        }
+      ],
+      "counterexample": "Using a locally patched Emacs binary because it has better traces can silently change the command loop, buffer machinery, redisplay, native-comp behavior, or ABI surface being benchmarked.",
+      "derived_gym_requirement": "The Insula contract must treat patched Emacs as a named runtime variant and reject patched evidence that lacks source, patch, build, ABI, and stock-comparison provenance."
+    },
+    {
+      "id": "jupyter-kernel-rootfs-identity-proxy",
+      "title": "Jupyter kernel rootfs identity proxy",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A Jupyter benchmark is hermetic only if the kernel process and Python environment prove the same rootfs contract as Emacs.",
+      "hypothesis": "A Python subprocess launched from inside Emacs should report cwd, executable, prefix, PATH, run id, and plan path; production mode must also have a Jupyter command in the rootfs closure.",
+      "sources": [
+        {
+          "name": "Jupyter package contract",
+          "path": "docs/internals-atlas/package-contracts/jupyter.md",
+          "lines": "27-38, 64-74",
+          "note": ""
+        },
+        {
+          "name": "Existing-kernel benchmark issue",
+          "path": ".scratch/emacs-gym/issues/0006-existing-kernel-jupyter-benchmark.md",
+          "lines": "14-40",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "A Python subprocess used as a kernel-side identity proxy; no real notebook kernel is launched by this batch-safe probe.",
+      "predicted_behavior": "The proxy can record Python identity and stable run id, while production Jupyter benchmarks must additionally launch or attach a real kernel through the rootfs gateway.",
+      "observed_behavior": "python=\"/usr/bin/python3\" jupyter=\"/usr/bin/jupyter\" python-status=0 python-output=\"{\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path\\\": \\\"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\\\", \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\n\"",
+      "independent_checks": [
+        {
+          "name": "Python identity proxy ran or production is not claimed",
+          "passed": true,
+          "detail": "prod=t python=\"/usr/bin/python3\" status=0"
+        },
+        {
+          "name": "stable run id reaches Python when Python is available",
+          "passed": true,
+          "detail": "run-id=\"20260930T040324Z-4018462\" output=\"{\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path\\\": \\\"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\\\", \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\n\""
+        },
+        {
+          "name": "Jupyter command is required only for production kernel benchmark evidence",
+          "passed": true,
+          "detail": "prod=t jupyter=\"/usr/bin/jupyter\""
+        }
+      ],
+      "counterexample": "Checking only the Emacs process can miss a host Python kernel with the right printed result.",
+      "derived_gym_requirement": "Jupyter actions must verify kernel-side rootfs manifest, Python executable/prefix, cwd, import path, run id, and bwrap plan before grading execution."
+    },
+    {
+      "id": "jupyter-kernelspec-rootfs-contract",
+      "title": "Jupyter kernelspec rootfs contract",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Jupyter identity starts before execution: kernelspec argv and resource paths decide which interpreter/kernel will actually start.",
+      "hypothesis": "`jupyter_client.kernelspec.KernelSpecManager' should expose at least one Python kernelspec in production, and its absolute argv/resource paths should resolve inside the selected rootfs rather than through host state.",
+      "sources": [
+        {
+          "name": "TorchTitan Jupyter rootfs lifecycle",
+          "path": "/private-source/home/operator/workspace/torchtitan/experiments/jupyter_rootfs/run_common.sh",
+          "lines": "5-47",
+          "note": ""
+        },
+        {
+          "name": "Jupyter package contract",
+          "path": "docs/internals-atlas/package-contracts/jupyter.md",
+          "lines": "27-38, 64-74",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "The rootfs-owned Python `jupyter_client' kernelspec manager.",
+      "predicted_behavior": "Production mode should contain a usable Python kernelspec whose argv points at the rootfs Python interpreter or a resolvable rootfs-owned command.",
+      "observed_behavior": "prod=t python=\"/usr/bin/python3\" jupyter=\"/usr/bin/jupyter\" status=0 python-specs=(((\"name\" . \"python3\") (\"resource_dir\" . \"/usr/share/jupyter/kernels/python3\") (\"argv\" \"/usr/bin/python3\" \"-Xfrozen_modules=off\" \"-m\" \"ipykernel_launcher\" \"-f\" \"{connection_file}\"))) selected-launcher=\"/usr/bin/python3\" launcher-path=\"/usr/bin/python3\" bad-paths=nil",
+      "independent_checks": [
+        {
+          "name": "kernelspec manager ran in production",
+          "passed": true,
+          "detail": "python=\"/usr/bin/python3\" jupyter=\"/usr/bin/jupyter\" status=0 output=\"{\\\"jupyter\\\": \\\"/usr/bin/jupyter\\\", \\\"kernelspecs\\\": {\\\"python3\\\": {\\\"resource_dir\\\": \\\"/usr/share/jupyter/kernels/python3\\\", \\\"spec\\\": {\\\"argv\\\": [\\\"/usr/bin/python3\\\", \\\"-Xfrozen_modules=off\\\", \\\"-m\\\", \\\"ipykernel_launcher\\\", \\\"-f\\\", \\\"{connection_file}\\\"], \\\"display_name\\\": \\\"Python 3 (ipykernel)\\\", \\\"language\\\": \\\"python\\\"}}}}\n\nProcess soma-probe-process finished\n\""
+        },
+        {
+          "name": "production Python kernelspec exists",
+          "passed": true,
+          "detail": "(((\"name\" . \"python3\") (\"resource_dir\" . \"/usr/share/jupyter/kernels/python3\") (\"argv\" \"/usr/bin/python3\" \"-Xfrozen_modules=off\" \"-m\" \"ipykernel_launcher\" \"-f\" \"{connection_file}\")))"
+        },
+        {
+          "name": "production kernelspec launcher is rootfs-owned",
+          "passed": true,
+          "detail": "launcher=\"/usr/bin/python3\" launcher-path=\"/usr/bin/python3\""
+        },
+        {
+          "name": "kernelspec paths have no forbidden host prefixes",
+          "passed": true,
+          "detail": "nil"
+        }
+      ],
+      "counterexample": "A notebook can print the expected result while attached to a host kernelspec with a different Python, package set, CUDA stack, or filesystem view.",
+      "derived_gym_requirement": "Jupyter benchmarks must grade kernelspec identity before kernel execution and reject host-resolved kernel launchers."
+    },
+    {
+      "id": "jupyter-real-kernel-rootfs-identity",
+      "title": "Jupyter real kernel rootfs identity",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A Jupyter benchmark must prove the actual kernel process that executed a request, not only the Emacs process or `jupyter' CLI.",
+      "hypothesis": "A temporary Python kernel launched through `jupyter_client' should execute one request, return a matching shell reply and IOPub idle state, and print rootfs identity from inside the kernel.",
+      "sources": [
+        {
+          "name": "TorchTitan Emacs/Jupyter verifier",
+          "path": "/private-source/home/operator/workspace/torchtitan/experiments/jupyter_rootfs/verify_attach.el",
+          "lines": "96-133",
+          "note": ""
+        },
+        {
+          "name": "Jupyter package contract",
+          "path": "docs/internals-atlas/package-contracts/jupyter.md",
+          "lines": "27-38, 64-74",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "A temporary `jupyter_client.KernelManager' Python kernel launched from the selected rootfs.",
+      "predicted_behavior": "Production mode should execute code in a real kernel with matching request ids, rootfs-owned Python executable, stable Insula run id, and idle completion evidence.",
+      "observed_behavior": "prod=t status=0 ok=t msg-id=\"7c3cbf93-b32761162d0951f92248f918_276_1\" reply-parent=\"7c3cbf93-b32761162d0951f92248f918_276_1\" kernel-exe=\"/usr/bin/python3\" kernel-cwd=\"/workspace/soma\" kernel-run-id=\"20260930T040324Z-4018462\" output=\"SOMA_JUPYTER_PROBE:{\\\"connection_file\\\": \\\"/project/tmp/tmptxrc2ppn.json\\\", \\\"errors\\\": [], \\\"idle\\\": true, \\\"kernel_pid\\\": 280, \\\"msg_id\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"ok\\\": true, \\\"payload\\\": {\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path0\\\": [\\\"/usr/lib/python312.zip\\\", \\\"/usr/lib/python3.12\\\", \\\"/usr/lib/python3.12/lib-dynload\\\", \\\"\\\", \\\"/usr/local/lib/python3.12/dist-packages\\\"], \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}, \\\"reply_parent\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"reply_status\\\": \\\"ok\\\"}\n\nProcess soma-probe-process finished\n\"",
+      "independent_checks": [
+        {
+          "name": "real Jupyter kernel probe ran in production",
+          "passed": true,
+          "detail": "status=0 output=\"SOMA_JUPYTER_PROBE:{\\\"connection_file\\\": \\\"/project/tmp/tmptxrc2ppn.json\\\", \\\"errors\\\": [], \\\"idle\\\": true, \\\"kernel_pid\\\": 280, \\\"msg_id\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"ok\\\": true, \\\"payload\\\": {\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path0\\\": [\\\"/usr/lib/python312.zip\\\", \\\"/usr/lib/python3.12\\\", \\\"/usr/lib/python3.12/lib-dynload\\\", \\\"\\\", \\\"/usr/local/lib/python3.12/dist-packages\\\"], \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}, \\\"reply_parent\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"reply_status\\\": \\\"ok\\\"}\n\nProcess soma-probe-process finished\n\""
+        },
+        {
+          "name": "kernel request reached ok reply and idle",
+          "passed": true,
+          "detail": "ok=t msg-id=\"7c3cbf93-b32761162d0951f92248f918_276_1\" reply-parent=\"7c3cbf93-b32761162d0951f92248f918_276_1\" parsed=((\"connection_file\" . \"/project/tmp/tmptxrc2ppn.json\") (\"errors\") (\"idle\" . t) (\"kernel_pid\" . 280) (\"msg_id\" . \"7c3cbf93-b32761162d0951f92248f918_276_1\") (\"ok\" . t) (\"payload\" (\"cwd\" . \"/workspace/soma\") (\"executable\" . \"/usr/bin/python3\") (\"path0\" \"/usr/lib/python312.zip\" \"/usr/lib/python3.12\" \"/usr/lib/python3.12/lib-dynload\" \"\" \"/usr/local/lib/python3.12/dist-packages\") (\"plan\" . \"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\") (\"prefix\" . \"/usr\") (\"run_id\" . \"20260930T040324Z-4018462\")) (\"reply_parent\" . \"7c3cbf93-b32761162d0951f92248f918_276_1\") (\"reply_status\" . \"ok\"))"
+        },
+        {
+          "name": "kernel sees stable Insula run id",
+          "passed": true,
+          "detail": "run-id=\"20260930T040324Z-4018462\" kernel-run-id=\"20260930T040324Z-4018462\""
+        },
+        {
+          "name": "kernel executable and cwd are rootfs/runtime owned",
+          "passed": true,
+          "detail": "exe=\"/usr/bin/python3\" cwd=\"/workspace/soma\" plan=\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\""
+        }
+      ],
+      "counterexample": "A checker that accepts the right printed value can miss execution on the wrong kernel, duplicate retries, or an unknown request outcome.",
+      "derived_gym_requirement": "Jupyter actions must track kernel incarnation, request id, shell reply, parent-header outputs, idle/completion state, and kernel-side rootfs identity."
+    },
+    {
+      "id": "lsp-server-rootfs-resolution-contract",
+      "title": "LSP server rootfs resolution contract",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A real Emacs+LSP benchmark depends on both the Emacs client and the language-server process resolving from the same accounted rootfs closure.",
+      "hypothesis": "The probe should inventory likely Python, C/C++, and Rust language-server commands and classify missing or host-resolved servers as a development gap unless a production rootfs is selected.",
+      "sources": [
+        {
+          "name": "LSP package contract",
+          "path": "docs/internals-atlas/package-contracts/lsp.md",
+          "lines": "18-31",
+          "note": ""
+        },
+        {
+          "name": "Doom language modules",
+          "path": "docs/internals-atlas/doom-lifecycle.md",
+          "lines": "35-39",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Executable lookup for common LSP server commands in the current Insula PATH.",
+      "predicted_behavior": "Production mode requires Python LSP, C/C++ LSP, and Rust LSP server commands in the selected rootfs closure.",
+      "observed_behavior": "prod=t inventory=(((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"basedpyright-langserver\") (\"path\" . \"\") (\"found\" . :json-false)) ((\"tool\" . \"pylsp\") (\"path\" . \"/usr/bin/pylsp\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t))) python-lsp=t clangd=\"/usr/bin/clangd\" rust-analyzer=\"/opt/soma/cargo/bin/rust-analyzer\"",
+      "independent_checks": [
+        {
+          "name": "LSP server inventory was captured",
+          "passed": true,
+          "detail": "(((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"basedpyright-langserver\") (\"path\" . \"\") (\"found\" . :json-false)) ((\"tool\" . \"pylsp\") (\"path\" . \"/usr/bin/pylsp\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t)))"
+        },
+        {
+          "name": "production Python LSP server requirement is classified",
+          "passed": true,
+          "detail": "prod=t python-lsp=t"
+        },
+        {
+          "name": "production C/C++ and Rust LSP requirements are classified",
+          "passed": true,
+          "detail": "prod=t clangd=\"/usr/bin/clangd\" rust-analyzer=\"/opt/soma/cargo/bin/rust-analyzer\""
+        }
+      ],
+      "counterexample": "A direct text edit can pass a filesystem checker while the intended LSP server never started or came from the host.",
+      "derived_gym_requirement": "LSP tasks must prove server process identity, workspace root, synchronized document version, and rootfs-owned server/toolchain resolution."
+    },
+    {
+      "id": "lsp-stdio-initialize-rootfs-identity",
+      "title": "LSP stdio initialize rootfs identity",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "LSP task evidence must include the language-server process, protocol lifecycle, workspace root, and rootfs-owned executable path.",
+      "hypothesis": "Batch-safe JSON-RPC initialize/shutdown exchanges should succeed for the production C/C++, Python, and Rust language servers that are present in the selected rootfs.",
+      "sources": [
+        {
+          "name": "LSP package contract",
+          "path": "docs/internals-atlas/package-contracts/lsp.md",
+          "lines": "57-76",
+          "note": ""
+        },
+        {
+          "name": "Rootfs build package layer",
+          "path": "scripts/insula/build-emacs-rootfs.sh",
+          "lines": "129-144",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Temporary C++, Python, and Rust workspaces plus stdio JSON-RPC exchanges with clangd, pyright-langserver, and rust-analyzer.",
+      "predicted_behavior": "Each production server should answer `initialize', accept `shutdown', receive `exit', and expose a rootfs-owned executable path.",
+      "observed_behavior": "prod=t status=0 results=(((\"cmd\" \"clangd\" \"--log=error\") (\"exe\" . \"/usr/bin/clangd\") (\"exit_code\" . 0) (\"initialize_error\") (\"initialize_has_result\" . t) (\"name\" . \"clangd\") (\"pid\" . 302) (\"realpath\" . \"/usr/lib/llvm-18/bin/clangd\") (\"root\" . \"/project/tmp/soma-lsp-lu5imjcq\") (\"shutdown_has_result\" . t) (\"status\" . \"ok\")) ((\"cmd\" \"pyright-langserver\" \"--stdio\") (\"exe\" . \"/usr/local/bin/pyright-langserver\") (\"exit_code\" . 0) (\"initialize_error\") (\"initialize_has_result\" . t) (\"name\" . \"pyright-langserver\") (\"pid\" . 413) (\"realpath\" . \"/usr/local/lib/node_modules/pyright/langserver.index.js\") (\"root\" . \"/project/tmp/soma-lsp-etlcsrxa\") (\"shutdown_has_result\" . t) (\"status\" . \"ok\")) ((\"cmd\" \"rust-analyzer\") (\"exe\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"exit_code\" . 0) (\"initialize_error\") (\"initialize_has_result\" . t) (\"name\" . \"rust-analyzer\") (\"pid\" . 429) (\"realpath\" . \"/opt/soma/cargo/bin/rustup\") (\"root\" . \"/project/tmp/soma-lsp-o833vvdc\") (\"shutdown_has_result\" . t) (\"status\" . \"ok\"))) bad=nil bad-paths=nil output=\"SOMA_LSP_PROBE:{\\\"results\\\": [{\\\"cmd\\\": [\\\"clangd\\\", \\\"--log=error\\\"], \\\"exe\\\": \\\"/usr/bin/clangd\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"clangd\\\", \\\"pid\\\": 302, \\\"realpath\\\": \\\"/usr/lib/llvm-18/bin/clangd\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-lu5imjcq\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"pyright-langserver\\\", \\\"--stdio\\\"], \\\"exe\\\": \\\"/usr/local/bin/pyright-langserver\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"pyright-langserver\\\", \\\"pid\\\": 413, \\\"realpath\\\": \\\"/usr/local/lib/node_modules/pyright/langserver.index.js\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-etlcsrxa\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"rust-analyzer\\\"], \\\"exe\\\": \\\"/opt/soma/cargo/bin/rust-analyzer\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"rust-analyzer\\\", \\\"pid\\\": 429, \\\"realpath\\\": \\\"/opt/soma/cargo/bin/rustup\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-o833vvdc\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}]}\n\nProcess soma-probe-process finished\n\"",
+      "independent_checks": [
+        {
+          "name": "LSP stdio initializer script ran in production",
+          "passed": true,
+          "detail": "status=0 output=\"SOMA_LSP_PROBE:{\\\"results\\\": [{\\\"cmd\\\": [\\\"clangd\\\", \\\"--log=error\\\"], \\\"exe\\\": \\\"/usr/bin/clangd\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"clangd\\\", \\\"pid\\\": 302, \\\"realpath\\\": \\\"/usr/lib/llvm-18/bin/clangd\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-lu5imjcq\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"pyright-langserver\\\", \\\"--stdio\\\"], \\\"exe\\\": \\\"/usr/local/bin/pyright-langserver\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"pyright-langserver\\\", \\\"pid\\\": 413, \\\"realpath\\\": \\\"/usr/local/lib/node_modules/pyright/langserver.index.js\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-etlcsrxa\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"rust-analyzer\\\"], \\\"exe\\\": \\\"/opt/soma/cargo/bin/rust-analyzer\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"rust-analyzer\\\", \\\"pid\\\": 429, \\\"realpath\\\": \\\"/opt/soma/cargo/bin/rustup\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-o833vvdc\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}]}\n\nProcess soma-probe-process finished\n\""
+        },
+        {
+          "name": "production LSP servers initialized and shut down",
+          "passed": true,
+          "detail": "nil"
+        },
+        {
+          "name": "production LSP server executables are rootfs-owned",
+          "passed": true,
+          "detail": "nil"
+        }
+      ],
+      "counterexample": "A benchmark can pass via direct text mutation while the intended language server never starts, starts from the host, or cannot initialize against the workspace.",
+      "derived_gym_requirement": "LSP benchmarks must record server executable identity, pid, workspace root, initialize response, shutdown status, and document-version evidence before trusting refactor results."
+    },
+    {
+      "id": "comint-subprocess-rootfs-identity",
+      "title": "Comint subprocess rootfs identity",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Comint subprocesses must inherit the same rootfs contract as Emacs when they are part of a benchmark task.",
+      "hypothesis": "A shell process launched through Comint should report the same run id and current directory; production mode must additionally prove tool resolution inside the selected rootfs.",
+      "sources": [
+        {
+          "name": "Comint process benchmark issue",
+          "path": ".scratch/emacs-gym/issues/0007-comint-process-benchmark.md",
+          "lines": "16-40",
+          "note": ""
+        },
+        {
+          "name": "Comint contract",
+          "path": "docs/internals-atlas/package-contracts/comint.md",
+          "lines": "18-33",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One short-lived Comint subprocess that prints cwd, run id, PATH, and Python resolution.",
+      "predicted_behavior": "The subprocess observes the Insula run id, but development mode remains a non-hermetic host-bind classification.",
+      "observed_behavior": "prod=t run-id=\"20260930T040324Z-4018462\" output=\"cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n\"",
+      "independent_checks": [
+        {
+          "name": "Comint subprocess emitted identity",
+          "passed": true,
+          "detail": "cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n"
+        },
+        {
+          "name": "Insula run id reached Comint subprocess",
+          "passed": true,
+          "detail": "run-id=\"20260930T040324Z-4018462\" output=\"cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n\""
+        },
+        {
+          "name": "Comint rootfs closure requirement is classified",
+          "passed": true,
+          "detail": "prod=t output=\"cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n\""
+        }
+      ],
+      "counterexample": "A process-buffer benchmark can pass with the right output while the shell and tools came from the host runtime.",
+      "derived_gym_requirement": "Comint benchmark graders must record process identity, cwd, PATH/tool resolution, rootfs manifest, and timeout/unknown state before trusting process output."
+    },
+    {
+      "id": "comint-long-lived-shell-cwd-tool-drift",
+      "title": "Comint long-lived shell cwd and tool drift",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Comint owns a live process buffer whose cwd, input boundary, and environment can drift across submitted commands.",
+      "hypothesis": "A persistent shell launched through Comint should retain cwd changes, preserve the Insula run id, and resolve tools through the selected rootfs after state changes.",
+      "sources": [
+        {
+          "name": "Comint contract",
+          "path": "docs/internals-atlas/package-contracts/comint.md",
+          "lines": "18-33",
+          "note": ""
+        },
+        {
+          "name": "Comint input boundary probe",
+          "path": "probes/emacs-internals/elisp/run-probes.el",
+          "lines": "comint-process-mark-input-boundary",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One long-lived `/bin/sh' Comint process, a submitted command that changes cwd, and tool/Python identity probes after the change.",
+      "predicted_behavior": "Production mode should show a live shell process, cwd persistence into `/project/tmp', stable run id, and rootfs-owned tool resolution.",
+      "observed_behavior": "prod=t pid=760 proc-exe=\"/usr/bin/dash\" output=\"printf 'SOMA_BEFORE:%s\\\\n' \\\"$PWD\\\"; cd \\\"$TMPDIR\\\"; printf 'SOMA_AFTER:%s\\\\n' \\\"$PWD\\\"; printf 'SOMA_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_PY:%s\\\\n' \\\"$(command -v python3 || true)\\\"; python3 -c 'import json, os, sys; print(\\\"SOMA_PY_JSON:\\\" + json.dumps({\\\"executable\\\": sys.executable, \\\"cwd\\\": os.getcwd(), \\\"run_id\\\": os.environ.get(\\\"SOMA_INSULA_RUN_ID\\\", \\\"\\\")}, sort_keys=True))'; printf 'SOMA_DONE\\\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\\\"cwd\\\": \\\"/project/tmp\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\nSOMA_DONE\n$ \"",
+      "independent_checks": [
+        {
+          "name": "Comint shell process was live and identifiable",
+          "passed": true,
+          "detail": "pid=760 proc-exe=\"/usr/bin/dash\""
+        },
+        {
+          "name": "Comint shell retained cwd change",
+          "passed": true,
+          "detail": "printf 'SOMA_BEFORE:%s\\n' \"$PWD\"; cd \"$TMPDIR\"; printf 'SOMA_AFTER:%s\\n' \"$PWD\"; printf 'SOMA_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_PY:%s\\n' \"$(command -v python3 || true)\"; python3 -c 'import json, os, sys; print(\"SOMA_PY_JSON:\" + json.dumps({\"executable\": sys.executable, \"cwd\": os.getcwd(), \"run_id\": os.environ.get(\"SOMA_INSULA_RUN_ID\", \"\")}, sort_keys=True))'; printf 'SOMA_DONE\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\"cwd\": \"/project/tmp\", \"executable\": \"/usr/bin/python3\", \"run_id\": \"20260930T040324Z-4018462\"}\nSOMA_DONE\n$ "
+        },
+        {
+          "name": "Insula run id persisted in long-lived shell",
+          "passed": true,
+          "detail": "run-id=\"20260930T040324Z-4018462\" output=\"printf 'SOMA_BEFORE:%s\\\\n' \\\"$PWD\\\"; cd \\\"$TMPDIR\\\"; printf 'SOMA_AFTER:%s\\\\n' \\\"$PWD\\\"; printf 'SOMA_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_PY:%s\\\\n' \\\"$(command -v python3 || true)\\\"; python3 -c 'import json, os, sys; print(\\\"SOMA_PY_JSON:\\\" + json.dumps({\\\"executable\\\": sys.executable, \\\"cwd\\\": os.getcwd(), \\\"run_id\\\": os.environ.get(\\\"SOMA_INSULA_RUN_ID\\\", \\\"\\\")}, sort_keys=True))'; printf 'SOMA_DONE\\\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\\\"cwd\\\": \\\"/project/tmp\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\nSOMA_DONE\n$ \""
+        },
+        {
+          "name": "production long-lived shell resolves rootfs Python",
+          "passed": true,
+          "detail": "printf 'SOMA_BEFORE:%s\\n' \"$PWD\"; cd \"$TMPDIR\"; printf 'SOMA_AFTER:%s\\n' \"$PWD\"; printf 'SOMA_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_PY:%s\\n' \"$(command -v python3 || true)\"; python3 -c 'import json, os, sys; print(\"SOMA_PY_JSON:\" + json.dumps({\"executable\": sys.executable, \"cwd\": os.getcwd(), \"run_id\": os.environ.get(\"SOMA_INSULA_RUN_ID\", \"\")}, sort_keys=True))'; printf 'SOMA_DONE\\n'\n$ SOMA_BEFORE:/workspace/soma\nSOMA_AFTER:/project/tmp\nSOMA_RUN:20260930T040324Z-4018462\nSOMA_PY:/usr/bin/python3\nSOMA_PY_JSON:{\"cwd\": \"/project/tmp\", \"executable\": \"/usr/bin/python3\", \"run_id\": \"20260930T040324Z-4018462\"}\nSOMA_DONE\n$ "
+        },
+        {
+          "name": "production shell executable path is rootfs-owned",
+          "passed": true,
+          "detail": "/usr/bin/dash"
+        }
+      ],
+      "counterexample": "A one-shot subprocess check can miss cwd drift, stale process identity, user input below the process mark, or PATH mutation across later sends.",
+      "derived_gym_requirement": "Comint actions must record process pid/executable, process mark, cwd, live input, tool resolution, and environment after every wait or submitted command."
+    },
+    {
+      "id": "comint-timeout-outcome-unknown-no-retry",
+      "title": "Comint timeout outcome_unknown without retry",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Timing out while waiting for process output means the submitted command's outcome is unknown, not that it did not run.",
+      "hypothesis": "A slow non-idempotent command submitted once through Comint should be classified `outcome_unknown' at the short deadline and later prove a single side effect.",
+      "sources": [
+        {
+          "name": "Comint contract",
+          "path": "docs/internals-atlas/package-contracts/comint.md",
+          "lines": "18-33",
+          "note": ""
+        },
+        {
+          "name": "with-timeout boundary probe",
+          "path": "probes/emacs-internals/elisp/run-probes.el",
+          "lines": "with-timeout-wait-boundary",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One long-lived shell, one counter file, one submitted slow command, and two waits: short timeout then final completion.",
+      "predicted_behavior": "The short wait should not see completion; the later wait should show the counter incremented exactly once.",
+      "observed_behavior": "early-done=nil outcome=outcome_unknown final-done=210 counter=\"1\" output=\"sleep 0.6; n=$(cat /project/tmp/soma-comint-timeout-UsFT35/counter); n=$((n+1)); printf '%s\\\\n' \\\"$n\\\" > /project/tmp/soma-comint-timeout-UsFT35/counter; printf 'SOMA_TIMEOUT_DONE:%s\\\\n' \\\"$n\\\"\n$ SOMA_TIMEOUT_DONE:1\n$ \"",
+      "independent_checks": [
+        {
+          "name": "short wait reached outcome_unknown before completion",
+          "passed": true,
+          "detail": "early-done=nil"
+        },
+        {
+          "name": "submitted command eventually completed",
+          "passed": true,
+          "detail": "sleep 0.6; n=$(cat /project/tmp/soma-comint-timeout-UsFT35/counter); n=$((n+1)); printf '%s\\n' \"$n\" > /project/tmp/soma-comint-timeout-UsFT35/counter; printf 'SOMA_TIMEOUT_DONE:%s\\n' \"$n\"\n$ SOMA_TIMEOUT_DONE:1\n$ "
+        },
+        {
+          "name": "non-idempotent side effect occurred exactly once",
+          "passed": true,
+          "detail": "counter=\"1\" output=\"sleep 0.6; n=$(cat /project/tmp/soma-comint-timeout-UsFT35/counter); n=$((n+1)); printf '%s\\\\n' \\\"$n\\\" > /project/tmp/soma-comint-timeout-UsFT35/counter; printf 'SOMA_TIMEOUT_DONE:%s\\\\n' \\\"$n\\\"\n$ SOMA_TIMEOUT_DONE:1\n$ \""
+        }
+      ],
+      "counterexample": "A retry after a timeout can duplicate non-idempotent work while still showing the expected final output.",
+      "derived_gym_requirement": "Comint and process actions must represent timeout as `outcome_unknown' and block blind retry unless the operation is proven idempotent or externally canceled."
+    },
+    {
+      "id": "current-buffer-selected-window",
+      "title": "Current buffer versus selected window",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Current buffer, selected window, and displayed buffer are separate pieces of state.",
+      "hypothesis": "`with-current-buffer' should change the current buffer for the dynamic extent without changing the selected window's displayed buffer; `switch-to-buffer' should display the target in the selected window.",
+      "sources": [
+        {
+          "name": "with-current-buffer",
+          "path": "subr.el.gz",
+          "lines": "4849",
+          "note": ""
+        },
+        {
+          "name": "selected-window helpers",
+          "path": "window.el.gz",
+          "lines": "30-75",
+          "note": ""
+        },
+        {
+          "name": "switch-to-buffer references",
+          "path": "window.el.gz",
+          "lines": "4037-4059, 5013, 6942",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Two temporary buffers and the initial selected window in batch Emacs.",
+      "predicted_behavior": "Reading or mutating a hidden buffer with `with-current-buffer' will not display it. Selecting/showing it requires a window operation.",
+      "observed_behavior": "selected-before=soma-probe-a current-during=soma-probe-b selected-during=soma-probe-a selected-after=soma-probe-b",
+      "independent_checks": [
+        {
+          "name": "with-current-buffer changed current buffer",
+          "passed": true,
+          "detail": "soma-probe-b"
+        },
+        {
+          "name": "with-current-buffer preserved selected window buffer",
+          "passed": true,
+          "detail": "soma-probe-a"
+        },
+        {
+          "name": "switch-to-buffer displayed target",
+          "passed": true,
+          "detail": "soma-probe-b"
+        }
+      ],
+      "counterexample": "Treating `with-current-buffer' as equivalent to user-visible selection loses window history and focus semantics.",
+      "derived_gym_requirement": "Bridge operations must separate read/operate-in-buffer, display-buffer, and select-for-user actions."
+    },
+    {
+      "id": "command-routes",
+      "title": "Direct call versus interactive invocation versus command dispatch",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Command execution path changes implicit context such as interactive arguments, command recording, and keymap resolution.",
+      "hypothesis": "In batch Emacs, `call-interactively' and `command-execute' acquire arguments but do not reproduce full command-loop state; keyboard-macro dispatch through a keymap changes `this-command'.",
+      "sources": [
+        {
+          "name": "command-execute",
+          "path": "simple.el.gz",
+          "lines": "2753-2815",
+          "note": ""
+        },
+        {
+          "name": "call-interactively caller sites",
+          "path": "simple.el.gz",
+          "lines": "2204, 2797-2804",
+          "note": ""
+        },
+        {
+          "name": "Doom map!",
+          "path": "~/.emacs.d/lisp/doom-keybinds.el",
+          "lines": "439-486",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary interactive command, one temporary key binding, and no real PTY.",
+      "predicted_behavior": "Direct call, `call-interactively', `command-execute', and keymap dispatch are observably different in batch, but none prove terminal byte decoding through Ghostty/SSH/tmux.",
+      "observed_behavior": "(((\"arg\" . \"direct\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)) ((\"arg\" . \"(4)\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)) ((\"arg\" . \"nil\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)) ((\"arg\" . \"nil\") (\"this_command\" . \"soma-probe-command\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)))",
+      "independent_checks": [
+        {
+          "name": "four routes recorded",
+          "passed": true,
+          "detail": "4"
+        },
+        {
+          "name": "direct call was not command-loop interactive",
+          "passed": true,
+          "detail": "((\"arg\" . \"direct\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+        },
+        {
+          "name": "call-interactively acquired prefix argument",
+          "passed": true,
+          "detail": "((\"arg\" . \"(4)\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+        },
+        {
+          "name": "command-execute route recorded separately",
+          "passed": true,
+          "detail": "((\"arg\" . \"nil\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+        },
+        {
+          "name": "keymap dispatch set this-command",
+          "passed": true,
+          "detail": "((\"arg\" . \"nil\") (\"this_command\" . \"soma-probe-command\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+        }
+      ],
+      "counterexample": "A bridge that only invokes functions directly can miss interactive argument acquisition and command-loop bookkeeping.",
+      "derived_gym_requirement": "Action profiles must classify direct, interactive, command-dispatch, and terminal-input paths; terminal fidelity remains a separate PTY probe gate."
+    },
+    {
+      "id": "magit-wrapper-this-command",
+      "title": "Magit post-stage hook and bridge wrapper command identity",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "`magit-run-post-stage-hook' uses command identity, so a direct function call inside a wrapper can have correct Git effects but different Magit semantics.",
+      "hypothesis": "Calling `magit-run-post-stage-hook' while `this-command' is a bridge wrapper should not run `magit-post-stage-hook`; setting `this-command' to a recognized staging command should run it.",
+      "sources": [
+        {
+          "name": "magit-stage dispatch",
+          "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-apply.el",
+          "lines": "282-306",
+          "note": ""
+        },
+        {
+          "name": "magit-stage-1 side effects",
+          "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-apply.el",
+          "lines": "340-345",
+          "note": ""
+        },
+        {
+          "name": "magit-run-post-stage-hook",
+          "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-apply.el",
+          "lines": "400-408",
+          "note": ""
+        },
+        {
+          "name": "magit post-refresh hook includes post-stage runner",
+          "path": "~/.emacs.d/.local/straight/repos/magit/lisp/magit-mode.el",
+          "lines": "94-115",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Magit loaded from the installed Straight build; no Git repository is mutated.",
+      "predicted_behavior": "Hook execution depends on `this-command', independent of whether lower-level Git state was already changed.",
+      "observed_behavior": "post-stage-hook-runs=(\"magit-stage\")",
+      "independent_checks": [
+        {
+          "name": "wrapper command did not trigger post-stage hook",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        },
+        {
+          "name": "recognized staging command triggered hook",
+          "passed": true,
+          "detail": "(\"magit-stage\")"
+        }
+      ],
+      "counterexample": "A wrapper command that calls Magit lower-level functions can pass an index checker while skipping package hooks.",
+      "derived_gym_requirement": "Faithful Magit actions must either enter through a recognized command path or explicitly model and test the command identity consequences."
+    },
+    {
+      "id": "base-indirect-buffers",
+      "title": "Base and indirect buffers share text",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Indirect buffers are distinct buffer objects whose text changes affect the base buffer.",
+      "hypothesis": "Editing the indirect buffer should change the base buffer text while preserving separate buffer identities.",
+      "sources": [
+        {
+          "name": "buffer identity runtime",
+          "path": "Emacs primitive introspection",
+          "lines": "buffer-base-buffer, clone-indirect-buffer",
+          "note": ""
+        },
+        {
+          "name": "reported C source gap",
+          "path": "source-directory",
+          "lines": "missing Spack source directory",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One base buffer and one indirect buffer.",
+      "predicted_behavior": "The base buffer text changes after insertion in the indirect buffer; buffer-local state such as point can still differ.",
+      "observed_behavior": "base=\"soma-base\" indirect=\"soma-indirect\" indirect-base=\"soma-base\" base-text=\"alpha-from-indirect\"",
+      "independent_checks": [
+        {
+          "name": "buffer objects differ",
+          "passed": true,
+          "detail": "base-eq-indirect=nil"
+        },
+        {
+          "name": "indirect records base buffer",
+          "passed": true,
+          "detail": "#<buffer soma-base>"
+        },
+        {
+          "name": "base text reflects indirect edit",
+          "passed": true,
+          "detail": "alpha-from-indirect"
+        }
+      ],
+      "counterexample": "A checker that says only one buffer object changed misses shared text ownership.",
+      "derived_gym_requirement": "Observations must include buffer identity, base-buffer/text-owner identity, and visited file identity separately."
+    },
+    {
+      "id": "marker-movement",
+      "title": "Marker movement under edits",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Markers preserve a moving position, not a semantic target.",
+      "hypothesis": "A marker should move when text is inserted before it, while text around the marker may no longer match the original target context.",
+      "sources": [
+        {
+          "name": "marker runtime",
+          "path": "Emacs primitive introspection",
+          "lines": "make-marker, set-marker, marker-position",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary buffer, one marker before a target character, and two edits before/around it.",
+      "predicted_behavior": "The marker remains live and moves, but the original semantic context is stale.",
+      "observed_behavior": "before-pos=4 before-context=\"cDE\" after-pos=7 after-context=\"cZE\" text=\"xxxabcZEF\"",
+      "independent_checks": [
+        {
+          "name": "marker moved after insertion before it",
+          "passed": true,
+          "detail": "4 -> 7"
+        },
+        {
+          "name": "original context changed",
+          "passed": true,
+          "detail": "\"cDE\" -> \"cZE\""
+        }
+      ],
+      "counterexample": "Accepting a delayed edit because its marker is live can apply it to the wrong text.",
+      "derived_gym_requirement": "Delayed edits and FIM suggestions must validate prefix, suffix, buffer incarnation, and target range text before mutation."
+    },
+    {
+      "id": "narrowing-region-without-text-change",
+      "title": "Narrowing or region changes without character changes",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Character modification ticks do not cover interaction state such as narrowing, point, mark, and active region.",
+      "hypothesis": "Changing narrowing and the active region should leave `buffer-chars-modified-tick' unchanged.",
+      "sources": [
+        {
+          "name": "buffer revision runtime",
+          "path": "Emacs primitive introspection",
+          "lines": "buffer-chars-modified-tick",
+          "note": ""
+        },
+        {
+          "name": "narrowing runtime",
+          "path": "Emacs primitive introspection",
+          "lines": "narrow-to-region, widen",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary buffer with stable text.",
+      "predicted_behavior": "Character tick remains stable while visible accessible range and region state change.",
+      "observed_behavior": "tick=5->5 range=1-15->5-9 region-active=t",
+      "independent_checks": [
+        {
+          "name": "character tick unchanged",
+          "passed": true,
+          "detail": "5 -> 5"
+        },
+        {
+          "name": "accessible range changed",
+          "passed": true,
+          "detail": "1-15 -> 5-9"
+        },
+        {
+          "name": "region active changed interaction state",
+          "passed": true,
+          "detail": "mark=8 point=5"
+        }
+      ],
+      "counterexample": "A stale-edit guard using only character ticks misses interaction state changes.",
+      "derived_gym_requirement": "Every action needs operation-specific preconditions beyond a universal character revision guard."
+    },
+    {
+      "id": "minibuffer-transient-interruption",
+      "title": "Minibuffer cancellation and transient argument context",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Prompt cancellation and transient suffix execution are interaction states, not ordinary function calls.",
+      "hypothesis": "A batch minibuffer can be canceled and observed as a quit; transient source can be loaded and its command-context requirement recorded, but real transient keymaps require a terminal-frame probe.",
+      "sources": [
+        {
+          "name": "minibuffer selected window references",
+          "path": "minibuffer.el.gz",
+          "lines": "212-258",
+          "note": ""
+        },
+        {
+          "name": "transient source",
+          "path": "~/.emacs.d/.local/straight/repos/transient/lisp/transient.el",
+          "lines": "installed package",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One minibuffer setup hook that aborts recursive edit; transient source availability check.",
+      "predicted_behavior": "The minibuffer cancellation is observable as a quit. Transient terminal-key lifecycle is not fully exercised in batch.",
+      "observed_behavior": "minibuffer-result=end-of-file transient-library=\"/project/home/.emacs.d/.local/straight/build-30.2/transient/transient.elc\"",
+      "independent_checks": [
+        {
+          "name": "minibuffer cancellation produced quit",
+          "passed": true,
+          "detail": "end-of-file"
+        },
+        {
+          "name": "transient package source is available for terminal follow-up",
+          "passed": true,
+          "detail": "\"/project/home/.emacs.d/.local/straight/build-30.2/transient/transient.elc\""
+        }
+      ],
+      "counterexample": "Treating every prompt as a direct function call cannot model cancellation and continuation.",
+      "derived_gym_requirement": "Bridge observations must expose active minibuffer/transient state, and terminal-path probes must cover transient prefix/infix/suffix lifetimes before those actions are benchmarked."
+    },
+    {
+      "id": "reentrant-process-output",
+      "title": "Reentrant process output while instrumentation is active",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Process filters can run during waits initiated from Lisp; instrumentation must tolerate callbacks during an action.",
+      "hypothesis": "A filter that calls `accept-process-output' while the process continues producing output can observe nested or at least interleaved output processing before the outer action returns.",
+      "sources": [
+        {
+          "name": "Comint process mark source",
+          "path": "comint.el.gz",
+          "lines": "467, 889, 998",
+          "note": ""
+        },
+        {
+          "name": "process wait primitive",
+          "path": "Emacs primitive introspection",
+          "lines": "accept-process-output",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One shell process that emits two lines with a short delay and one filter that waits inside the first callback.",
+      "predicted_behavior": "The trace records process output arriving while the filter/action is active; recursive depth may be runtime-dependent.",
+      "observed_behavior": "max-depth=2 events=(\"depth=1 text=\\\"first\\\"\" \"depth=2 text=\\\"second\\\"\")",
+      "independent_checks": [
+        {
+          "name": "process output captured",
+          "passed": true,
+          "detail": "(\"depth=2 text=\\\"second\\\"\")"
+        },
+        {
+          "name": "action observed output before final completion",
+          "passed": true,
+          "detail": "(\"depth=2 text=\\\"second\\\"\")"
+        }
+      ],
+      "counterexample": "Assuming no asynchronous callbacks occur until an operation returns hides race points.",
+      "derived_gym_requirement": "Actions that wait for external output must repeat relevant consistency checks after waits and represent outcome_unknown where completion cannot be proven."
+    },
+    {
+      "id": "doom-cold-warmed-state",
+      "title": "Cold versus warmed Doom session",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Doom environment identity includes generated profile/module artifacts and lazy package activation state, not just user declarations.",
+      "hypothesis": "The generated module file should exist and list declared modules; package autoload files should exist before the corresponding feature is loaded in a clean batch process.",
+      "sources": [
+        {
+          "name": "doom! macro",
+          "path": "~/.emacs.d/lisp/doom-lib.el",
+          "lines": "1528-1547",
+          "note": ""
+        },
+        {
+          "name": "generated module state",
+          "path": "~/.emacs.d/.local/etc/@/init.30.d/95-modules.auto.el",
+          "lines": "1",
+          "note": ""
+        },
+        {
+          "name": "user module declarations",
+          "path": "~/.doom.d/init.el",
+          "lines": "1-220",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Filesystem-only inspection under `emacs --quick --batch`; no user Doom session is opened.",
+      "predicted_behavior": "Generated modules and autoloads exist while features such as Magit are not loaded in the clean probe process.",
+      "observed_behavior": "module-file=\"/project/home/.emacs.d/.local/etc/@/init.30.d/95-modules.auto.el\" has-magit-module=1172 magit-autoload=t feature-before=nil",
+      "independent_checks": [
+        {
+          "name": "generated module file exists",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/etc/@/init.30.d/95-modules.auto.el"
+        },
+        {
+          "name": "generated module file records Magit module",
+          "passed": true,
+          "detail": "found or not found in first 4000 chars"
+        },
+        {
+          "name": "Magit autoload/build artifact exists",
+          "passed": true,
+          "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-autoloads.el"
+        },
+        {
+          "name": "Magit feature is not loaded in clean quick batch",
+          "passed": true,
+          "detail": "nil"
+        }
+      ],
+      "counterexample": "Inferring readiness from `doom!' declarations confuses module declaration with installed package, autoload, loaded feature, active mode, or external service.",
+      "derived_gym_requirement": "Gym environment identity must record Doom core/user config/generated profile/package build ids and current feature/mode/service readiness separately."
+    },
+    {
+      "id": "org-source-edit-propagation",
+      "title": "Org source-edit propagation",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "Org source block editing uses a separate edit buffer and writes back on the source-edit exit path.",
+      "hypothesis": "Editing the source edit buffer should not immediately prove the parent Org block changed; `org-edit-src-exit' should propagate the edited contents.",
+      "sources": [
+        {
+          "name": "org-edit-src-code",
+          "path": "~/.emacs.d/.local/straight/repos/org/lisp/org-src.el",
+          "lines": "1321-1363",
+          "note": ""
+        },
+        {
+          "name": "org-edit-src-save/exit",
+          "path": "~/.emacs.d/.local/straight/repos/org/lisp/org-src.el",
+          "lines": "1447-1494",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary Org buffer containing one emacs-lisp source block.",
+      "predicted_behavior": "The edit buffer change becomes authoritative only after the exit/write-back path.",
+      "observed_behavior": "before=\"#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n\" after-edit-parent=\"#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n\" after-exit-parent=\"#+begin_src emacs-lisp\n  (+ 3 4)\n#+end_src\n\"",
+      "independent_checks": [
+        {
+          "name": "parent unchanged before source-edit exit",
+          "passed": true,
+          "detail": "#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n"
+        },
+        {
+          "name": "parent updated after source-edit exit",
+          "passed": true,
+          "detail": "#+begin_src emacs-lisp\n  (+ 3 4)\n#+end_src\n"
+        }
+      ],
+      "counterexample": "Checking only the edit buffer can report success when the parent Org document is unchanged.",
+      "derived_gym_requirement": "Org gym actions must distinguish source-edit buffers from parent Org buffers and grade the parent document after write-back."
+    },
+    {
+      "id": "jupyter-delayed-reply-duplicate-retry",
+      "title": "Jupyter delayed reply and duplicate retry",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A timeout after request submission means the outcome is unknown; retrying a non-idempotent execution can duplicate work.",
+      "hypothesis": "The fake transport should mark a request as submitted, report outcome_unknown before the delayed reply, and demonstrate that a blind retry creates a second request.",
+      "sources": [
+        {
+          "name": "jupyter current client association",
+          "path": "~/.emacs.d/.local/straight/repos/jupyter/jupyter-repl.el",
+          "lines": "2006-2014",
+          "note": ""
+        },
+        {
+          "name": "jupyter completion busy guard",
+          "path": "~/.emacs.d/.local/straight/repos/jupyter/jupyter-client.el",
+          "lines": "1614-1638",
+          "note": ""
+        },
+        {
+          "name": "jupyter code context",
+          "path": "~/.emacs.d/.local/straight/repos/jupyter/jupyter-client.el",
+          "lines": "1283-1308",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "A deterministic fake request table and timer; no real kernel is launched.",
+      "predicted_behavior": "Before the delayed reply arrives the only honest state is outcome_unknown. A retry increments submitted request count.",
+      "observed_behavior": "first=1 retry=2 reply=2 requests=((:id 1 :code \"counter += 1\" :state replied) (:id 2 :code \"counter += 1\" :state replied))",
+      "independent_checks": [
+        {
+          "name": "timeout before reply is outcome_unknown",
+          "passed": true,
+          "detail": "outcome_unknown"
+        },
+        {
+          "name": "blind retry created a second request",
+          "passed": true,
+          "detail": "((:id 2 :code \"counter += 1\" :state replied) (:id 1 :code \"counter += 1\" :state replied))"
+        },
+        {
+          "name": "delayed replies eventually arrived",
+          "passed": true,
+          "detail": "((:id 2 :code \"counter += 1\" :state replied) (:id 1 :code \"counter += 1\" :state replied))"
+        }
+      ],
+      "counterexample": "Treating timeout as not-run can submit a training cell twice.",
+      "derived_gym_requirement": "Jupyter actions need request ids, parent headers or equivalent handles, kernel incarnation, and an outcome_unknown state that blocks blind retry of non-idempotent code."
+    },
+    {
+      "id": "fim-stale-acceptance",
+      "title": "FIM acceptance after human editing",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "A delayed completion suggestion must be rejected if the buffer context that authorized it is stale.",
+      "hypothesis": "Changing the prefix before accepting a suggestion should change the character tick and prefix validation even if a marker still identifies a live position.",
+      "sources": [
+        {
+          "name": "buffer revision runtime",
+          "path": "Emacs primitive introspection",
+          "lines": "buffer-chars-modified-tick",
+          "note": ""
+        },
+        {
+          "name": "marker runtime",
+          "path": "Emacs primitive introspection",
+          "lines": "copy-marker",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary code buffer, one suggestion snapshot, one simulated human edit.",
+      "predicted_behavior": "The stale suggestion is rejected because tick and prefix changed.",
+      "observed_behavior": "marker=28 tick=6->9 accepted=nil text=\"def f(value):\n    return x\n\"",
+      "independent_checks": [
+        {
+          "name": "marker remained live",
+          "passed": true,
+          "detail": "28"
+        },
+        {
+          "name": "buffer tick changed after human edit",
+          "passed": true,
+          "detail": "6 -> 9"
+        },
+        {
+          "name": "stale suggestion rejected",
+          "passed": true,
+          "detail": "accepted=nil suggestion=\" + 1\""
+        }
+      ],
+      "counterexample": "Accepting ghost text solely by marker position can splice stale text into a human-edited buffer.",
+      "derived_gym_requirement": "Completion acceptance must validate buffer identity, modification tick, target range, prefix, suffix, and intended replacement before editing."
+    },
+    {
+      "id": "observation-fontification-side-effect",
+      "title": "Observation reads can trigger fontification hooks",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "`buffer-substring' and `buffer-substring-no-properties' are different observation operations; the former can run `buffer-access-fontify-functions'.",
+      "hypothesis": "Reading text with properties should invoke `buffer-access-fontify-functions', while `buffer-substring-no-properties' should not invoke the access fontification hook.",
+      "sources": [
+        {
+          "name": "buffer-substring",
+          "path": "C-source",
+          "lines": "Emacs primitive introspection",
+          "note": ""
+        },
+        {
+          "name": "buffer-substring-no-properties",
+          "path": "C-source",
+          "lines": "Emacs primitive introspection",
+          "note": ""
+        },
+        {
+          "name": "buffer-access-fontify-functions",
+          "path": "Emacs runtime variable",
+          "lines": "observed by local hook execution",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary buffer with a buffer-local `buffer-access-fontify-functions' hook.",
+      "predicted_behavior": "`buffer-substring-no-properties' returns text without triggering the hook; `buffer-substring' triggers it for the accessed range.",
+      "observed_behavior": "after-no-properties=nil after-buffer-substring=(\"1-11\")",
+      "independent_checks": [
+        {
+          "name": "no-properties read did not invoke fontification",
+          "passed": true,
+          "detail": "nil"
+        },
+        {
+          "name": "property-preserving read invoked fontification",
+          "passed": true,
+          "detail": "(\"1-11\")"
+        }
+      ],
+      "counterexample": "A read-only observer that uses the wrong text API can load or compute display-derived state while claiming to be passive.",
+      "derived_gym_requirement": "Observation APIs must be classified as passive state reads, derived inspections, or active diagnostics, and probe traces must record which class was used."
+    },
+    {
+      "id": "capf-provider-exclusivity",
+      "title": "Completion-at-point provider exclusivity",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "`completion-at-point-functions' providers are queried through hook wrapping; `:exclusive no' changes whether later providers are tried after a failed prefix match.",
+      "hypothesis": "An exclusive first CAPF with no matching candidate should prevent the second CAPF from being queried; marking it `:exclusive no' should allow the second CAPF to answer.",
+      "sources": [
+        {
+          "name": "completion-at-point-functions",
+          "path": "minibuffer.el.gz",
+          "lines": "2918-2941",
+          "note": ""
+        },
+        {
+          "name": "completion--capf-wrapper",
+          "path": "minibuffer.el.gz",
+          "lines": "2950-2979",
+          "note": ""
+        },
+        {
+          "name": "completion-at-point",
+          "path": "minibuffer.el.gz",
+          "lines": "2986-3009",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Two synthetic CAPFs over the prefix `zz': the first offers only `aa', the second offers `zz-top'.",
+      "predicted_behavior": "Provider ordering is not a simple merge: the exclusive first provider blocks fallback, while a non-exclusive first provider permits fallback.",
+      "observed_behavior": "exclusive-calls=(\"first\") exclusive-result=(#[nil ((progn (setq exclusive-calls (cons \"first\" exclusive-calls)) (list (point-min) (point-max) (list \"aa\")))) ((exclusive-calls \"first\"))] 1 3 (\"aa\")) nonexclusive-calls=(\"first\" \"second\") nonexclusive-result=(#[nil ((progn (setq nonexclusive-calls (cons \"second\" nonexclusive-calls)) (list (point-min) (point-max) (list \"zz-top\")))) ((nonexclusive-calls \"first\" \"second\"))] 1 3 (\"zz-top\"))",
+      "independent_checks": [
+        {
+          "name": "exclusive first provider blocked fallback",
+          "passed": true,
+          "detail": "(\"first\")"
+        },
+        {
+          "name": "nonexclusive first provider allowed fallback",
+          "passed": true,
+          "detail": "(\"first\" \"second\")"
+        },
+        {
+          "name": "fallback result came from second provider",
+          "passed": true,
+          "detail": "(#[nil ((progn (setq nonexclusive-calls (cons \"second\" nonexclusive-calls)) (list (point-min) (point-max) (list \"zz-top\")))) ((nonexclusive-calls \"first\" \"second\"))] 1 3 (\"zz-top\"))"
+        }
+      ],
+      "counterexample": "A FIM overlay that assumes all completion sources are merged can fight CAPF ownership and show stale or duplicate candidates.",
+      "derived_gym_requirement": "Completion integration must record provider order, replacement range, exclusivity, and whether the model path is separate from or participates in CAPF."
+    },
+    {
+      "id": "capf-exit-function-acceptance",
+      "title": "Completion-at-point exit function acceptance",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "CAPF metadata can include a provider-owned `:exit-function'; faithful acceptance must run that function, not merely produce the same buffer text.",
+      "hypothesis": "Accepting a sole candidate through `completion-at-point' should insert the candidate and call `:exit-function' with the accepted string and status, while a raw text replacement can produce identical text without that side effect.",
+      "sources": [
+        {
+          "name": "completion-extra-properties",
+          "path": "minibuffer.el.gz",
+          "lines": "2451-2498",
+          "note": ""
+        },
+        {
+          "name": "completion-at-point",
+          "path": "minibuffer.el.gz",
+          "lines": "2986-3003",
+          "note": ""
+        },
+        {
+          "name": "completion-preview-insert",
+          "path": "completion-preview.el.gz",
+          "lines": "482-491",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Two temporary buffers starting with `fo': one uses a synthetic CAPF for `foobar', the other deletes and inserts the same final text directly.",
+      "predicted_behavior": "The CAPF path and raw insertion path converge on the same text, but only the CAPF path records the provider exit event.",
+      "observed_behavior": "capf-return=t capf-text=\"foobar\" capf-events=((\"foobar\" finished)) raw-text=\"foobar\" raw-events=nil",
+      "independent_checks": [
+        {
+          "name": "CAPF acceptance produced the expected text",
+          "passed": true,
+          "detail": "foobar"
+        },
+        {
+          "name": "CAPF acceptance ran provider exit function",
+          "passed": true,
+          "detail": "((\"foobar\" finished))"
+        },
+        {
+          "name": "raw replacement produced the same final text",
+          "passed": true,
+          "detail": "raw=\"foobar\" capf=\"foobar\""
+        },
+        {
+          "name": "raw replacement skipped provider exit function",
+          "passed": true,
+          "detail": "nil"
+        }
+      ],
+      "counterexample": "A ghost-text or model-completion accept path can appear text-correct while skipping provider side effects such as imports, snippets, caches, or backend state transitions.",
+      "derived_gym_requirement": "Completion acceptance evidence must record whether a provider exit function existed, whether it ran, which candidate/status it saw, and whether the edit path was CAPF, preview, or a separate model overlay."
+    },
+    {
+      "id": "comint-process-mark-input-boundary",
+      "title": "Comint input depends on point relative to process mark",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "`comint-send-input' sends text from the process mark to point when point is after the mark, but retrieves old input when point is before the process mark.",
+      "hypothesis": "Sending from old history should submit `comint-get-old-input' and copy it to the process mark; sending from the live input area should submit the text after the process mark.",
+      "sources": [
+        {
+          "name": "comint-send-input docstring and branch",
+          "path": "comint.el.gz",
+          "lines": "1886-1955",
+          "note": ""
+        },
+        {
+          "name": "process mark helpers",
+          "path": "comint.el.gz",
+          "lines": "3580-3612",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Two temporary Comint buffers backed by a shell process that echoes submitted lines with a `got:' prefix.",
+      "predicted_behavior": "The same visible buffer text can produce different submissions depending on point relative to `process-mark'.",
+      "observed_behavior": "old-point-output=(#(\"got:old-cmd\" 0 11 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output))) live-input-output=(#(\"got:bottom-cmd\" 0 14 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output)))",
+      "independent_checks": [
+        {
+          "name": "old history submission used comint-get-old-input",
+          "passed": true,
+          "detail": "(#(\"got:old-cmd\" 0 11 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output)))"
+        },
+        {
+          "name": "live input submission used text after process mark",
+          "passed": true,
+          "detail": "(#(\"got:bottom-cmd\" 0 14 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output)))"
+        }
+      ],
+      "counterexample": "A bridge that appends text and sends a newline can submit the wrong command when point is in scrollback or history.",
+      "derived_gym_requirement": "Comint actions must observe point, process mark, live input text, old-input policy, process identity, and working directory before submitting."
+    },
+    {
+      "id": "dired-undo-does-not-restore-files",
+      "title": "Dired undo does not restore filesystem changes",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "`dired-undo' undoes changes in the Dired buffer; it explicitly does not recover files removed from the filesystem.",
+      "hypothesis": "After a real file is deleted, attempting `dired-undo' should not recreate the deleted file; any undo effect is limited to Dired-buffer state.",
+      "sources": [
+        {
+          "name": "dired-undo",
+          "path": "dired.el.gz",
+          "lines": "2823-2832",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "One temporary directory, one file, one Dired buffer mark, and one real filesystem deletion.",
+      "predicted_behavior": "The recovery attempt is a Dired-buffer operation; the deleted file remains absent.",
+      "observed_behavior": "mark-before=42 undo-result=(error \"(user-error \\\"No further undo information\\\")\") mark-after=nil file-exists-after-dired-undo=nil",
+      "independent_checks": [
+        {
+          "name": "dired mark existed before filesystem deletion",
+          "passed": true,
+          "detail": "42"
+        },
+        {
+          "name": "dired undo attempt was buffer-local",
+          "passed": true,
+          "detail": "(error \"(user-error \\\"No further undo information\\\")\")"
+        },
+        {
+          "name": "deleted file was not restored",
+          "passed": true,
+          "detail": "/project/tmp/soma-dired-probe-39VL5s/victim.txt"
+        }
+      ],
+      "counterexample": "A generic recovery strategy that runs undo after a Dired action can fail to undo even buffer-local state and still leaves destructive filesystem state unrecovered.",
+      "derived_gym_requirement": "Dired benchmarks must grade filesystem state independently from Dired buffer state and must classify destructive file operations as externally consequential."
+    },
+    {
+      "id": "with-timeout-wait-boundary",
+      "title": "with-timeout only fires at wait points",
+      "status": "pass",
+      "execution_mode": "emacs --quick --batch",
+      "environment": {
+        "emacs_version": "30.2",
+        "system_configuration": "x86_64-pc-linux-gnu",
+        "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+        "executable": "emacs",
+        "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+        "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+        "source_directory_exists": true,
+        "home": "/project/home",
+        "tmpdir": "/project/tmp",
+        "xdg_runtime_dir": "/project/run",
+        "xdg_cache_home": "/project/cache",
+        "xdg_data_home": "/project/home/.local/share",
+        "user_emacs_directory": "~/.emacs.d/",
+        "doom_core": "/project/home/.emacs.d",
+        "doom_user": "/project/home/.doom.d",
+        "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+        "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+        "insula_active": true,
+        "insula_mode": "selected-container-rootfs",
+        "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+      },
+      "mechanism": "`with-timeout' checks its deadline when Emacs waits for external events; CPU-bound Lisp that does not wait can run past the deadline.",
+      "hypothesis": "A body that calls `sleep-for' should return the timeout form, while a short busy loop should run past the deadline and return normally.",
+      "sources": [
+        {
+          "name": "with-timeout",
+          "path": "emacs-lisp/timer.el.gz",
+          "lines": "478-484",
+          "note": ""
+        }
+      ],
+      "minimal_fixture": "Two short timed forms: one waiting with `sleep-for', one CPU-bound loop guarded by an outer wall-clock limit.",
+      "predicted_behavior": "Timeout behavior differs at wait points versus CPU-bound work.",
+      "observed_behavior": "wait-result=timed-out busy-result=finished busy-elapsed=0.0803",
+      "independent_checks": [
+        {
+          "name": "waiting form timed out",
+          "passed": true,
+          "detail": "timed-out"
+        },
+        {
+          "name": "busy loop ran past timeout and returned normally",
+          "passed": true,
+          "detail": "result=finished elapsed=0.0803"
+        }
+      ],
+      "counterexample": "In-Emacs timeouts cannot be the only watchdog for model actions or package code that can loop without waiting.",
+      "derived_gym_requirement": "The gym supervisor needs an out-of-process watchdog, and operation results must distinguish failed, canceled, and outcome_unknown."
+    }
+  ]
+}

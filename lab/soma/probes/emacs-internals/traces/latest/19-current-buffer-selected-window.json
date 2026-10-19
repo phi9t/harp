@@ -1,0 +1,72 @@
+{
+  "id": "current-buffer-selected-window",
+  "title": "Current buffer versus selected window",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Current buffer, selected window, and displayed buffer are separate pieces of state.",
+  "hypothesis": "`with-current-buffer' should change the current buffer for the dynamic extent without changing the selected window's displayed buffer; `switch-to-buffer' should display the target in the selected window.",
+  "sources": [
+    {
+      "name": "with-current-buffer",
+      "path": "subr.el.gz",
+      "lines": "4849",
+      "note": ""
+    },
+    {
+      "name": "selected-window helpers",
+      "path": "window.el.gz",
+      "lines": "30-75",
+      "note": ""
+    },
+    {
+      "name": "switch-to-buffer references",
+      "path": "window.el.gz",
+      "lines": "4037-4059, 5013, 6942",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Two temporary buffers and the initial selected window in batch Emacs.",
+  "predicted_behavior": "Reading or mutating a hidden buffer with `with-current-buffer' will not display it. Selecting/showing it requires a window operation.",
+  "observed_behavior": "selected-before=soma-probe-a current-during=soma-probe-b selected-during=soma-probe-a selected-after=soma-probe-b",
+  "independent_checks": [
+    {
+      "name": "with-current-buffer changed current buffer",
+      "passed": true,
+      "detail": "soma-probe-b"
+    },
+    {
+      "name": "with-current-buffer preserved selected window buffer",
+      "passed": true,
+      "detail": "soma-probe-a"
+    },
+    {
+      "name": "switch-to-buffer displayed target",
+      "passed": true,
+      "detail": "soma-probe-b"
+    }
+  ],
+  "counterexample": "Treating `with-current-buffer' as equivalent to user-visible selection loses window history and focus semantics.",
+  "derived_gym_requirement": "Bridge operations must separate read/operate-in-buffer, display-buffer, and select-for-user actions."
+}

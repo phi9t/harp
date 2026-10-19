@@ -1,0 +1,75 @@
+{
+  "id": "bad-flagged-delete-confused-with-marked",
+  "title": "Incorrect policy confuses deletion flags with ordinary Dired marks",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": "soma-dired-delete-flagged-bad-re8lBS",
+    "directory": "/project/tmp/soma-dired-delete-flagged-bad-re8lBS",
+    "marked_before": [
+      "target-a.txt",
+      "target-b.txt"
+    ]
+  },
+  "name": "bad-flagged-delete-confused-with-marked",
+  "checks": [
+    {
+      "name": "action used dired-do-delete for marked files",
+      "passed": false,
+      "detail": "((\"operation\" . \"dired-do-flagged-delete\") (\"selection\" . \"deletion-flags\") (\"marked_before\" \"target-a.txt\" \"target-b.txt\"))"
+    },
+    {
+      "name": "marked targets deleted from filesystem",
+      "passed": false,
+      "detail": "target-a=t target-b=t"
+    },
+    {
+      "name": "unrelated files preserved",
+      "passed": false,
+      "detail": "keep=t decoy=nil"
+    },
+    {
+      "name": "Dired buffer no longer shows deleted files after refresh",
+      "passed": false,
+      "detail": "visible-a=t visible-b=t visible-keep=t"
+    }
+  ],
+  "files": [
+    {
+      "name": "keep.txt",
+      "exists": true,
+      "contents": "keep\n"
+    },
+    {
+      "name": "target-a.txt",
+      "exists": true,
+      "contents": "target-a\n"
+    },
+    {
+      "name": "target-b.txt",
+      "exists": true,
+      "contents": "target-b\n"
+    },
+    {
+      "name": "flagged-decoy.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "source.txt",
+      "exists": true,
+      "contents": "source\n"
+    },
+    {
+      "name": "renamed.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "collision.txt",
+      "exists": true,
+      "contents": "collision-original\n"
+    }
+  ]
+}

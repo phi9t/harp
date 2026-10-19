@@ -1,0 +1,324 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-g"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "tmux cancel key send succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-x",
+          "b"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "tmux switch-buffer prefix send succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "enter": {
+          "argv": [
+            "tmux",
+            "-S",
+            "/project/run/soma-gym-bridge-terminal-tmux.sock",
+            "send-keys",
+            "-t",
+            "soma-gym-bridge-terminal:0.0",
+            "Enter"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        "literal": {
+          "argv": [
+            "tmux",
+            "-S",
+            "/project/run/soma-gym-bridge-terminal-tmux.sock",
+            "send-keys",
+            "-l",
+            "-t",
+            "soma-gym-bridge-terminal:0.0",
+            "soma-bridge-daemon-target"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        "returncode": 0
+      },
+      "name": "tmux target buffer submit succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_frames",
+        "request_id": "daemon-terminal-key-frames-1",
+        "result": {
+          "client_frame_count": 1,
+          "daemonp": true,
+          "emacs_pid": 4,
+          "frame_count": 2,
+          "frames": [
+            {
+              "client_frame": true,
+              "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+              "graphic": false,
+              "height": 23,
+              "index": 1,
+              "name": "F2",
+              "selected": true,
+              "selected_window_buffer": "soma-bridge-daemon-target",
+              "selected_window_live": true,
+              "terminal_live": true,
+              "terminal_name": "/dev/pts/0",
+              "visible": "t",
+              "width": 80
+            },
+            {
+              "client_frame": false,
+              "client_repr": false,
+              "graphic": false,
+              "height": 24,
+              "index": 2,
+              "name": "F1",
+              "selected": false,
+              "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+              "selected_window_live": true,
+              "terminal_live": true,
+              "terminal_name": "initial_terminal",
+              "visible": "t",
+              "width": 80
+            }
+          ],
+          "graphic_frame_count": 0,
+          "operation": "emacs.observe_frames",
+          "server_name": "soma-gym-bridge-daemon",
+          "state": "succeeded",
+          "terminal_frame_count": 2
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "frame observation after key dispatch succeeded",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "soma-bridge-daemon-target",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "name": "client terminal frame displays target buffer after keys",
+      "passed": true
+    },
+    {
+      "detail": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/terminal-key-dispatch-pane.txt",
+      "name": "terminal pane capture includes target buffer",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-terminal-key-dispatch",
+  "observation_attempts": [
+    {
+      "attempt": 1,
+      "client_terminal_buffers": [
+        "soma-bridge-daemon-target"
+      ],
+      "request": {
+        "operation": "emacs.observe_frames",
+        "params": {},
+        "request_id": "daemon-terminal-key-frames-1"
+      },
+      "response_state": "succeeded"
+    }
+  ],
+  "policy_passed_grader": true,
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_frames",
+    "request_id": "daemon-terminal-key-frames-1",
+    "result": {
+      "client_frame_count": 1,
+      "daemonp": true,
+      "emacs_pid": 4,
+      "frame_count": 2,
+      "frames": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "soma-bridge-daemon-target",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-WdIgqd",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "graphic_frame_count": 0,
+      "operation": "emacs.observe_frames",
+      "server_name": "soma-gym-bridge-daemon",
+      "state": "succeeded",
+      "terminal_frame_count": 2
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "terminal": {
+    "pane_capture": "/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/terminal-key-dispatch-pane.txt",
+    "pane_capture_sample": "File Edit Options Buffers Tools Help\ndaemon bridge buffer\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n-UUU:@---  F2  soma-bridge-daemon-target   All   L1     (Fundamental) ----------\n\n"
+  },
+  "terminal_key_sequence": [
+    "C-g",
+    "C-x",
+    "b",
+    "soma-bridge-daemon-target",
+    "Enter"
+  ],
+  "title": "Real terminal key input switches the daemon-owned emacsclient frame to the target buffer",
+  "tmux_cancel": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "C-g"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "tmux_prefix": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "C-x",
+      "b"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "tmux_target": "soma-gym-bridge-terminal:0.0",
+  "tmux_target_submit": {
+    "enter": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "Enter"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "literal": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-l",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "soma-bridge-daemon-target"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "returncode": 0
+  }
+}

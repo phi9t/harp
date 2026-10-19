@@ -1,0 +1,2146 @@
+{
+  "id": "correct-rust-lsp-source",
+  "title": "Open a Rust crate in Emacs, use rust-analyzer through lsp-mode, and run rootfs cargo tests.",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "name": "correct-rust-lsp-source",
+  "checks": [
+    {
+      "name": "workspace initialized",
+      "passed": true,
+      "detail": "((\"server_id\" . \"rust-analyzer\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-lsp-rust-rust-9jF8Q6\") (\"server_pid\" . 227) (\"server_executable\" . \"/opt/soma/rustup/toolchains/1.81.0-x86_64-unknown-linux-gnu/bin/rust-analyzer\") (\"server_cwd\" . \"/project/tmp/soma-lsp-rust-rust-9jF8Q6\") (\"server_environment\" (\"CARGO_HOME\" . \"/opt/soma/cargo\") (\"HOME\" . \"/project/home\") (\"PATH\" . \"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\") (\"RUSTUP_HOME\" . \"/opt/soma/rustup\") (\"SOMA_INSULA_ACTIVE\" . \"1\") (\"SOMA_INSULA_RUN_ID\" . \"20260929T040533Z-3771476\") (\"TMPDIR\" . \"/project/tmp\") (\"XDG_CACHE_HOME\" . \"/project/cache\") (\"XDG_RUNTIME_DIR\" . \"/project/run\")) (\"server_command\" \"/opt/soma/cargo/bin/rust-analyzer\") (\"server_buffer_tail\" . \"\") (\"server_stderr_tail\" . \"\") (\"messages_tail\" . \"Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-ulOmuO].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-ulOmuO)\nLSP :: clangd has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [rust-analyzer:227/starting /project/tmp/soma-lsp-rust-rust-9jF8Q6].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: rust-analyzer:227 initialized successfully in folders: (/project/tmp/soma-lsp-rust-rust-9jF8Q6)\n\") (\"transport\" (\"transport\" . \"lsp-mode-stdio-process-filter\") (\"json_rpc_connection_suppressed\" . t) (\"reason\" . \"noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits\")))"
+    },
+    {
+      "name": "expected server id",
+      "passed": true,
+      "detail": "((\"server_id\" . \"rust-analyzer\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-lsp-rust-rust-9jF8Q6\") (\"server_pid\" . 227) (\"server_executable\" . \"/opt/soma/rustup/toolchains/1.81.0-x86_64-unknown-linux-gnu/bin/rust-analyzer\") (\"server_cwd\" . \"/project/tmp/soma-lsp-rust-rust-9jF8Q6\") (\"server_environment\" (\"CARGO_HOME\" . \"/opt/soma/cargo\") (\"HOME\" . \"/project/home\") (\"PATH\" . \"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\") (\"RUSTUP_HOME\" . \"/opt/soma/rustup\") (\"SOMA_INSULA_ACTIVE\" . \"1\") (\"SOMA_INSULA_RUN_ID\" . \"20260929T040533Z-3771476\") (\"TMPDIR\" . \"/project/tmp\") (\"XDG_CACHE_HOME\" . \"/project/cache\") (\"XDG_RUNTIME_DIR\" . \"/project/run\")) (\"server_command\" \"/opt/soma/cargo/bin/rust-analyzer\") (\"server_buffer_tail\" . \"\") (\"server_stderr_tail\" . \"\") (\"messages_tail\" . \"Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-ulOmuO].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-ulOmuO)\nLSP :: clangd has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [rust-analyzer:227/starting /project/tmp/soma-lsp-rust-rust-9jF8Q6].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: rust-analyzer:227 initialized successfully in folders: (/project/tmp/soma-lsp-rust-rust-9jF8Q6)\n\") (\"transport\" (\"transport\" . \"lsp-mode-stdio-process-filter\") (\"json_rpc_connection_suppressed\" . t) (\"reason\" . \"noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits\")))"
+    },
+    {
+      "name": "server executable is rootfs-owned",
+      "passed": true,
+      "detail": "/opt/soma/rustup/toolchains/1.81.0-x86_64-unknown-linux-gnu/bin/rust-analyzer"
+    },
+    {
+      "name": "workspace root is inside Insula runtime",
+      "passed": true,
+      "detail": "/project/tmp/soma-lsp-rust-rust-9jF8Q6"
+    },
+    {
+      "name": "document uri is file URI",
+      "passed": true,
+      "detail": "file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs"
+    },
+    {
+      "name": "document version recorded",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "position encoding recorded",
+      "passed": true,
+      "detail": "utf-32"
+    },
+    {
+      "name": "supported semantic LSP request observed",
+      "passed": true,
+      "detail": "requests=(((\"method\" . \"initialize\") (\"id\" . 9) (\"buffer\" . \"main.rs\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/hover\") (\"id\" . 10) (\"buffer\" . \"main.rs\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/references\") (\"id\" . 11) (\"buffer\" . \"main.rs\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/definition\") (\"id\" . 12) (\"buffer\" . \"main.rs\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/hover\") (\"id\" . 13) (\"buffer\" . \"main.rs\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/references\") (\"id\" . 14) (\"buffer\" . \"main.rs\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/definition\") (\"id\" . 15) (\"buffer\" . \"main.rs\") (\"document_version\" . 0))) evidence=((\"target_symbol\" . \"soma_metric\") (\"capabilities\" (\"textDocument/hover\" . t) (\"textDocument/references\" . t) (\"textDocument/definition\" . t) (\"textDocument/documentSymbol\" . t) (\"textDocument/rename\" . t)) (\"hover\" (\"method\" . \"textDocument/hover\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"(:contents (:kind \\\"markdown\\\" :value \\\"\n```rust\nsoma_lsp_fixture\n```\n\n```rust\npub fn soma_metric(x: i32) -> i32\n```\\\") :range (:start (:line 1 :character 35) :end (:line 1 :character 46)))\") (\"count\" . 4) (\"error\" . \"\")) (\"references\" (\"method\" . \"textDocument/references\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"((:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs\\\" :range (:start (:line 1 :character 35) :end (:line 1 :character 46))) (:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :range (:start (:line 6 :character 15) :end (:line 6 :character 26))) (:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :range (:start (:line 10 :character 19) :end (:line 10 :character 30))) (:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :range (:start (:line 0 :character 7) :end (:line 0 :character 18))))\") (\"count\" . 4) (\"error\" . \"\")) (\"definition\" (\"method\" . \"textDocument/definition\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"((:originSelectionRange (:start (:line 1 :character 35) :end (:line 1 :character 46)) :targetUri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :targetRange (:start (:line 0 :character 0) :end (:line 2 :character 1)) :targetSelectionRange (:start (:line 0 :character 7) :end (:line 0 :character 18))))\") (\"count\" . 1) (\"error\" . \"\")) (\"hover_raw\" . \"(:contents (:kind \\\"markdown\\\" :value \\\"\n```rust\nsoma_lsp_fixture\n```\n\n```rust\npub fn soma_metric(x: i32) -> i32\n```\\\") :range (:start (:line 1 :character 35) :end (:line 1 :character 46)))\") (\"references_raw\" . \"((:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs\\\" :range (:start (:line 1 :character 35) :end (:line 1 :character 46))) (:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :range (:start (:line 6 :character 15) :end (:line 6 :character 26))) (:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :range (:start (:line 10 :character 19) :end (:line 10 :character 30))) (:uri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :range (:start (:line 0 :character 7) :end (:line 0 :character 18))))\") (\"definition_raw\" . \"((:originSelectionRange (:start (:line 1 :character 35) :end (:line 1 :character 46)) :targetUri \\\"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\\\" :targetRange (:start (:line 0 :character 0) :end (:line 2 :character 1)) :targetSelectionRange (:start (:line 0 :character 7) :end (:line 0 :character 18))))\") (\"reference_count\" . 4) (\"semantic_attempts\" . 2) (\"semantic_ready\" . t))"
+    },
+    {
+      "name": "LSP response names expected definition path",
+      "passed": true,
+      "detail": "expected=/src/lib.rs definition=((:originSelectionRange (:start (:line 1 :character 35) :end (:line 1 :character 46)) :targetUri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :targetRange (:start (:line 0 :character 0) :end (:line 2 :character 1)) :targetSelectionRange (:start (:line 0 :character 7) :end (:line 0 :character 18)))) references=((:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs\" :range (:start (:line 1 :character 35) :end (:line 1 :character 46))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 6 :character 15) :end (:line 6 :character 26))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 10 :character 19) :end (:line 10 :character 30))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 0 :character 7) :end (:line 0 :character 18))))"
+    },
+    {
+      "name": "build or test command succeeded",
+      "passed": true,
+      "detail": "((\"program\" . \"cargo\") (\"args\" \"test\" \"--offline\" \"--quiet\") (\"status\" . 0) (\"output\" . \"\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\"))"
+    },
+    {
+      "name": "rust-analyzer executable is rootfs-owned",
+      "passed": true,
+      "detail": "((\"name\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"realpath\" . \"/opt/soma/cargo/bin/rustup\") (\"rootfs_owned\" . t) (\"version\" . \"rust-analyzer 1.81.0 (eeb90cd 2024-09-04)\"))"
+    },
+    {
+      "name": "rustc and cargo executables are rootfs-owned",
+      "passed": true,
+      "detail": "rustc=((\"name\" . \"rustc\") (\"path\" . \"/opt/soma/cargo/bin/rustc\") (\"realpath\" . \"/opt/soma/cargo/bin/rustup\") (\"rootfs_owned\" . t) (\"version\" . \"rustc 1.81.0 (eeb90cda1 2024-09-04)\")) cargo=((\"name\" . \"cargo\") (\"path\" . \"/opt/soma/cargo/bin/cargo\") (\"realpath\" . \"/opt/soma/cargo/bin/rustup\") (\"rootfs_owned\" . t) (\"version\" . \"cargo 1.81.0 (2dbb1af80 2024-08-20)\"))"
+    },
+    {
+      "name": "rust tool cache roots are rootfs-owned",
+      "passed": true,
+      "detail": "RUSTUP_HOME=\"/opt/soma/rustup\" CARGO_HOME=\"/opt/soma/cargo\""
+    },
+    {
+      "name": "crate manifest is inside Insula runtime",
+      "passed": true,
+      "detail": "/project/tmp/soma-lsp-rust-rust-9jF8Q6/Cargo.toml"
+    }
+  ],
+  "state_sequence": [
+    "fixture-created",
+    "buffer-opened",
+    "lsp-start-requested",
+    "workspace-initialized",
+    "diagnostics-observed",
+    "symbol-requests-completed",
+    "build-test-command-completed"
+  ],
+  "fixture": {
+    "language": "rust",
+    "server_id": "rust-analyzer",
+    "root": "/project/tmp/soma-lsp-rust-rust-9jF8Q6",
+    "file": "/project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs",
+    "symbol": "soma_metric",
+    "expected_path_fragment": "/src/lib.rs",
+    "fixture_origin": "generated-inside-bwrap-private-project-runtime"
+  },
+  "buffer": {
+    "buffer": "main.rs",
+    "file": "/project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs",
+    "major_mode": "rust-mode",
+    "workspace_root": "/project/tmp/soma-lsp-rust-rust-9jF8Q6/",
+    "document_uri": "file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs",
+    "document_version": 0,
+    "position_encoding": "utf-32",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "diagnostics": {
+      "count": 0,
+      "raw": ""
+    }
+  },
+  "server": {
+    "server_id": "rust-analyzer",
+    "workspace_status": "initialized",
+    "workspace_proc_type": "process",
+    "cmd_proc_type": "process",
+    "cmd_proc_status": "run",
+    "workspace_root": "/project/tmp/soma-lsp-rust-rust-9jF8Q6",
+    "server_pid": 227,
+    "server_executable": "/opt/soma/rustup/toolchains/1.81.0-x86_64-unknown-linux-gnu/bin/rust-analyzer",
+    "server_cwd": "/project/tmp/soma-lsp-rust-rust-9jF8Q6",
+    "server_environment": {
+      "CARGO_HOME": "/opt/soma/cargo",
+      "HOME": "/project/home",
+      "PATH": "/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin",
+      "RUSTUP_HOME": "/opt/soma/rustup",
+      "SOMA_INSULA_ACTIVE": "1",
+      "SOMA_INSULA_RUN_ID": "20260929T040533Z-3771476",
+      "TMPDIR": "/project/tmp",
+      "XDG_CACHE_HOME": "/project/cache",
+      "XDG_RUNTIME_DIR": "/project/run"
+    },
+    "server_command": [
+      "/opt/soma/cargo/bin/rust-analyzer"
+    ],
+    "server_buffer_tail": "",
+    "server_stderr_tail": "",
+    "messages_tail": "Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-ulOmuO].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-ulOmuO)\nLSP :: clangd has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [rust-analyzer:227/starting /project/tmp/soma-lsp-rust-rust-9jF8Q6].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: rust-analyzer:227 initialized successfully in folders: (/project/tmp/soma-lsp-rust-rust-9jF8Q6)\n",
+    "transport": {
+      "transport": "lsp-mode-stdio-process-filter",
+      "json_rpc_connection_suppressed": true,
+      "reason": "noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits"
+    }
+  },
+  "request_evidence": {
+    "target_symbol": "soma_metric",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "hover": {
+      "method": "textDocument/hover",
+      "supported": true,
+      "status": "ok",
+      "raw": "(:contents (:kind \"markdown\" :value \"\n```rust\nsoma_lsp_fixture\n```\n\n```rust\npub fn soma_metric(x: i32) -> i32\n```\") :range (:start (:line 1 :character 35) :end (:line 1 :character 46)))",
+      "count": 4,
+      "error": ""
+    },
+    "references": {
+      "method": "textDocument/references",
+      "supported": true,
+      "status": "ok",
+      "raw": "((:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs\" :range (:start (:line 1 :character 35) :end (:line 1 :character 46))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 6 :character 15) :end (:line 6 :character 26))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 10 :character 19) :end (:line 10 :character 30))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 0 :character 7) :end (:line 0 :character 18))))",
+      "count": 4,
+      "error": ""
+    },
+    "definition": {
+      "method": "textDocument/definition",
+      "supported": true,
+      "status": "ok",
+      "raw": "((:originSelectionRange (:start (:line 1 :character 35) :end (:line 1 :character 46)) :targetUri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :targetRange (:start (:line 0 :character 0) :end (:line 2 :character 1)) :targetSelectionRange (:start (:line 0 :character 7) :end (:line 0 :character 18))))",
+      "count": 1,
+      "error": ""
+    },
+    "hover_raw": "(:contents (:kind \"markdown\" :value \"\n```rust\nsoma_lsp_fixture\n```\n\n```rust\npub fn soma_metric(x: i32) -> i32\n```\") :range (:start (:line 1 :character 35) :end (:line 1 :character 46)))",
+    "references_raw": "((:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/main.rs\" :range (:start (:line 1 :character 35) :end (:line 1 :character 46))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 6 :character 15) :end (:line 6 :character 26))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 10 :character 19) :end (:line 10 :character 30))) (:uri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :range (:start (:line 0 :character 7) :end (:line 0 :character 18))))",
+    "definition_raw": "((:originSelectionRange (:start (:line 1 :character 35) :end (:line 1 :character 46)) :targetUri \"file:///project/tmp/soma-lsp-rust-rust-9jF8Q6/src/lib.rs\" :targetRange (:start (:line 0 :character 0) :end (:line 2 :character 1)) :targetSelectionRange (:start (:line 0 :character 7) :end (:line 0 :character 18))))",
+    "reference_count": 4,
+    "semantic_attempts": 2,
+    "semantic_ready": true
+  },
+  "build_test": {
+    "program": "cargo",
+    "args": [
+      "test",
+      "--offline",
+      "--quiet"
+    ],
+    "status": 0,
+    "output": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+  },
+  "toolchain": {
+    "rust-analyzer": {
+      "name": "rust-analyzer",
+      "path": "/opt/soma/cargo/bin/rust-analyzer",
+      "realpath": "/opt/soma/cargo/bin/rustup",
+      "rootfs_owned": true,
+      "version": "rust-analyzer 1.81.0 (eeb90cd 2024-09-04)"
+    },
+    "rustc": {
+      "name": "rustc",
+      "path": "/opt/soma/cargo/bin/rustc",
+      "realpath": "/opt/soma/cargo/bin/rustup",
+      "rootfs_owned": true,
+      "version": "rustc 1.81.0 (eeb90cda1 2024-09-04)"
+    },
+    "cargo": {
+      "name": "cargo",
+      "path": "/opt/soma/cargo/bin/cargo",
+      "realpath": "/opt/soma/cargo/bin/rustup",
+      "rootfs_owned": true,
+      "version": "cargo 1.81.0 (2dbb1af80 2024-08-20)"
+    },
+    "rustup_home": "/opt/soma/rustup",
+    "cargo_home": "/opt/soma/cargo",
+    "crate_manifest": "/project/tmp/soma-lsp-rust-rust-9jF8Q6/Cargo.toml",
+    "build_result": {
+      "program": "cargo",
+      "args": [
+        "test",
+        "--offline",
+        "--quiet"
+      ],
+      "status": 0,
+      "output": "\nrunning 1 test\n.\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+    }
+  },
+  "requests": [
+    {
+      "method": "initialize",
+      "id": 9,
+      "buffer": "main.rs",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/hover",
+      "id": 10,
+      "buffer": "main.rs",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/references",
+      "id": 11,
+      "buffer": "main.rs",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/definition",
+      "id": 12,
+      "buffer": "main.rs",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/hover",
+      "id": 13,
+      "buffer": "main.rs",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/references",
+      "id": 14,
+      "buffer": "main.rs",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/definition",
+      "id": 15,
+      "buffer": "main.rs",
+      "document_version": 0
+    }
+  ],
+  "incoming_messages": [
+    {
+      "message_type": "response",
+      "id": 9,
+      "method": "",
+      "workspace_status_before": "starting",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 9,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 0,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 0,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 1,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 1,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 2,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 2,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 3,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 3,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 4,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 4,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 5,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 5,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "textDocument/publishDiagnostics",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 6,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 6,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "response",
+      "id": 10,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "response",
+      "id": 11,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "response",
+      "id": 12,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 7,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 7,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 8,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 8,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 9,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 9,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 10,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 10,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 11,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 11,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 12,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 12,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 13,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 13,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 14,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 14,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 15,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 15,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 16,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 16,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 17,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 17,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 18,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 18,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 19,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 19,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "response",
+      "id": 13,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "response",
+      "id": 14,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    },
+    {
+      "message_type": "response",
+      "id": 15,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "rust-analyzer"
+    }
+  ],
+  "request_ids": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ]
+}

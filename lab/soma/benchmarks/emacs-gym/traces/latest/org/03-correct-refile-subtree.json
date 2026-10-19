@@ -1,0 +1,40 @@
+{
+  "id": "correct-refile-subtree",
+  "title": "Correct policy refiles a subtree while preserving metadata and children",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": "tasks.org",
+    "target": "Archive"
+  },
+  "name": "correct-refile-subtree",
+  "checks": [
+    {
+      "name": "action used org-refile move",
+      "passed": true,
+      "detail": "((\"operation\" . \"org-refile\") (\"keep\" . :json-false) (\"target\" . \"Archive\"))"
+    },
+    {
+      "name": "source subtree removed from Inbox",
+      "passed": true,
+      "detail": "* Inbox\n"
+    },
+    {
+      "name": "subtree inserted under Archive",
+      "passed": true,
+      "detail": "* Archive\n** Existing\nold\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+    },
+    {
+      "name": "ID and custom property preserved exactly once",
+      "passed": true,
+      "detail": "id-count=1 custom-count=1"
+    },
+    {
+      "name": "child subtree preserved",
+      "passed": true,
+      "detail": "* Archive\n** Existing\nold\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+    }
+  ],
+  "final_text": "* Inbox\n* Archive\n** Existing\nold\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+}

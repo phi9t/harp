@@ -1,0 +1,210 @@
+{
+  "id": "correct-hunk-stage",
+  "title": "Correct policy stages only the selected Magit hunk",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "repo": "/project/tmp/soma-magit-hunk-correct-JZR03N",
+    "buffer": "magit: soma-magit-hunk-correct-JZR03N",
+    "selected_section": {
+      "type": "hunk",
+      "value": "(nil (2 7) (2 7))",
+      "start": 138,
+      "content": 169,
+      "end": 301,
+      "parent_types": [
+        "hunk",
+        "file",
+        "unstaged",
+        "status"
+      ],
+      "text_excerpt": "@@ -2,7 +2,7 @@ target-01-base\n target-02-base\n target-03-base\n target-04-base\n-target-05-base\n+target-05-selected\n target-06-base\n target-07-base\n target-08-base\n"
+    },
+    "diff_type": "unstaged",
+    "diff_scope": "hunk"
+  },
+  "action": {
+    "operation": "magit-stage",
+    "route": "checked-bridge-command-dispatch",
+    "bridge": {
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "command": "magit-stage",
+      "route": "command-execute",
+      "this_command": "magit-stage",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer magit: soma-magit-hunk-correct-JZR03N>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "magit-stage"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "magit-stage"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"magit: soma-magit-hunk-correct-JZR03N\" actual=\"magit: soma-magit-hunk-correct-JZR03N\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"magit: soma-magit-hunk-correct-JZR03N\" actual=\"magit: soma-magit-hunk-correct-JZR03N\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=221 actual=221"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=138 actual=138"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "magit: soma-magit-hunk-correct-JZR03N",
+        "text_owner_name": "magit: soma-magit-hunk-correct-JZR03N",
+        "buffer_file_name": false,
+        "major_mode": "magit-status-mode",
+        "chars_tick": 221,
+        "modified": false,
+        "point": 138,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "magit: soma-magit-hunk-correct-JZR03N",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "magit: soma-magit-hunk-correct-JZR03N",
+        "text_owner_name": "magit: soma-magit-hunk-correct-JZR03N",
+        "buffer_file_name": false,
+        "major_mode": "magit-status-mode",
+        "chars_tick": 481,
+        "modified": false,
+        "point": 138,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "magit: soma-magit-hunk-correct-JZR03N",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "selection": "unstaged hunk"
+  },
+  "name": "correct-hunk-stage",
+  "checks": [
+    {
+      "name": "git executable resolves inside rootfs",
+      "passed": true,
+      "detail": "/usr/bin/git"
+    },
+    {
+      "name": "Magit loads from rootfs-owned Doom mount",
+      "passed": true,
+      "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+    },
+    {
+      "name": "action used expected Magit operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-hunk-correct-JZR03N>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=138 actual=138\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 481) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged hunk\"))"
+    },
+    {
+      "name": "checked bridge command dispatch succeeded",
+      "passed": true,
+      "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-hunk-correct-JZR03N>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-hunk-correct-JZR03N\\\" actual=\\\"magit: soma-magit-hunk-correct-JZR03N\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=221 actual=221\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=138 actual=138\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 221) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"text_owner_name\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 481) (\"modified\" . :json-false) (\"point\" . 138) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-hunk-correct-JZR03N\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    },
+    {
+      "name": "command route preserved Magit command identity",
+      "passed": true,
+      "detail": "(\"magit-stage\")"
+    },
+    {
+      "name": "Magit refresh ran after staging",
+      "passed": true,
+      "detail": "(\"magit: soma-magit-hunk-correct-JZR03N\")"
+    },
+    {
+      "name": "target selected change is staged",
+      "passed": true,
+      "detail": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n"
+    },
+    {
+      "name": "target unrelated hunk remains unstaged",
+      "passed": true,
+      "detail": "index=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\" worktree=\"target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n\""
+    },
+    {
+      "name": "debug worktree change remains unstaged",
+      "passed": true,
+      "detail": "index=\"debug-base\n\" worktree=\"debug-base\ndebug-worktree-only\n\""
+    },
+    {
+      "name": "unrelated staged file is preserved",
+      "passed": true,
+      "detail": "staged-expected\n"
+    },
+    {
+      "name": "cached names are exact",
+      "passed": true,
+      "detail": "(\"staged.txt\" \"target.txt\")"
+    },
+    {
+      "name": "unstaged names preserve unrelated work",
+      "passed": true,
+      "detail": "(\"debug.txt\" \"target.txt\")"
+    }
+  ],
+  "repo_state": {
+    "cached_names": [
+      "staged.txt",
+      "target.txt"
+    ],
+    "unstaged_names": [
+      "debug.txt",
+      "target.txt"
+    ],
+    "status_porcelain": [
+      "M  staged.txt",
+      "M debug.txt",
+      "MM target.txt"
+    ],
+    "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-selected\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-other\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "debug_index": "debug-base\n",
+    "debug_worktree": "debug-base\ndebug-worktree-only\n",
+    "staged_index": "staged-expected\n",
+    "staged_worktree": "staged-expected\n",
+    "alpha_index": "alpha-base\n",
+    "beta_index": "beta-base\n",
+    "gamma_index": "gamma-base\n"
+  },
+  "post_stage_hook_runs": [
+    "magit-stage"
+  ],
+  "refresh_buffer_hook_runs": [
+    "magit: soma-magit-hunk-correct-JZR03N"
+  ]
+}

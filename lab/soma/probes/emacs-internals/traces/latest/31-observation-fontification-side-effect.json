@@ -1,0 +1,67 @@
+{
+  "id": "observation-fontification-side-effect",
+  "title": "Observation reads can trigger fontification hooks",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "`buffer-substring' and `buffer-substring-no-properties' are different observation operations; the former can run `buffer-access-fontify-functions'.",
+  "hypothesis": "Reading text with properties should invoke `buffer-access-fontify-functions', while `buffer-substring-no-properties' should not invoke the access fontification hook.",
+  "sources": [
+    {
+      "name": "buffer-substring",
+      "path": "C-source",
+      "lines": "Emacs primitive introspection",
+      "note": ""
+    },
+    {
+      "name": "buffer-substring-no-properties",
+      "path": "C-source",
+      "lines": "Emacs primitive introspection",
+      "note": ""
+    },
+    {
+      "name": "buffer-access-fontify-functions",
+      "path": "Emacs runtime variable",
+      "lines": "observed by local hook execution",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary buffer with a buffer-local `buffer-access-fontify-functions' hook.",
+  "predicted_behavior": "`buffer-substring-no-properties' returns text without triggering the hook; `buffer-substring' triggers it for the accessed range.",
+  "observed_behavior": "after-no-properties=nil after-buffer-substring=(\"1-11\")",
+  "independent_checks": [
+    {
+      "name": "no-properties read did not invoke fontification",
+      "passed": true,
+      "detail": "nil"
+    },
+    {
+      "name": "property-preserving read invoked fontification",
+      "passed": true,
+      "detail": "(\"1-11\")"
+    }
+  ],
+  "counterexample": "A read-only observer that uses the wrong text API can load or compute display-derived state while claiming to be passive.",
+  "derived_gym_requirement": "Observation APIs must be classified as passive state reads, derived inspections, or active diagnostics, and probe traces must record which class was used."
+}

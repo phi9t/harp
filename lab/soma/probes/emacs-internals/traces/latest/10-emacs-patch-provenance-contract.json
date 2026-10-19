@@ -1,0 +1,77 @@
+{
+  "id": "emacs-patch-provenance-contract",
+  "title": "Emacs patch provenance contract",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A patched Emacs build is a distinct runtime substrate whose source, patches, build flags, executable identity, and ABI surface must be recorded before its observability evidence is trusted.",
+  "hypothesis": "The current development Insula should explicitly classify Emacs as stock. Any non-stock variant must carry patch and stock-comparison provenance in the plan or rootfs manifest.",
+  "sources": [
+    {
+      "name": "Emacs patch discipline",
+      "path": "AGENTS.md",
+      "lines": "36-50",
+      "note": ""
+    },
+    {
+      "name": "Atlas patched-Emacs rule",
+      "path": "docs/internals-atlas/README.md",
+      "lines": "69-75",
+      "note": ""
+    },
+    {
+      "name": "RFC Emacs adaptation decision",
+      "path": "docs/rfcs/0002-doom-emacs-gym-insula.md",
+      "lines": "755-762",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The running Emacs binary and emitted `insula-plan.json'.",
+  "predicted_behavior": "Stock Emacs passes with an explicit stock variant and no patch set; patched variants require source-pinned provenance and stock-vs-patched evidence.",
+  "observed_behavior": "variant=\"stock\" patch-set=nil source-revision=\"b3f36f18a6dd2715713370166257de2fae01f9d38cfe878ced9b1e6ded5befd9\" configure-flags=\"--prefix=/opt/soma/emacs --with-native-compilation --with-tree-sitter --with-sqlite3 --without-x --without-sound --without-dbus --without-gconf --without-gsettings --without-toolkit-scroll-bars --without-xwidgets --without-mailutils\" executable-hash=\"824c1318464a98778d9f1677508e05af3dc5e94c34c63653145e079e5d26f6c2\" abi-manifest=\"/etc/soma-insula-rootfs-contract.json\" stock-comparison=\"\" emacs=\"/opt/soma/emacs/bin/emacs-30.2\"",
+  "independent_checks": [
+    {
+      "name": "emacs patch variant is explicit",
+      "passed": true,
+      "detail": "stock"
+    },
+    {
+      "name": "stock variant has no patch set",
+      "passed": true,
+      "detail": "stock=t patch-set=nil"
+    },
+    {
+      "name": "patched variant carries source, build, ABI, and comparison provenance",
+      "passed": true,
+      "detail": "stock=t patched-fields-present=nil"
+    },
+    {
+      "name": "Emacs executable path exists",
+      "passed": true,
+      "detail": "/opt/soma/emacs/bin/emacs-30.2"
+    }
+  ],
+  "counterexample": "Using a locally patched Emacs binary because it has better traces can silently change the command loop, buffer machinery, redisplay, native-comp behavior, or ABI surface being benchmarked.",
+  "derived_gym_requirement": "The Insula contract must treat patched Emacs as a named runtime variant and reject patched evidence that lacks source, patch, build, ABI, and stock-comparison provenance."
+}

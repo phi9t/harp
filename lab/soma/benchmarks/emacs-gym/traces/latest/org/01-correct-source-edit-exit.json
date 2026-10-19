@@ -1,0 +1,40 @@
+{
+  "id": "correct-source-edit-exit",
+  "title": "Correct policy edits an Org source block through org-edit-src-exit",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "parent_buffer": "notebook.org",
+    "edit_buffer": null,
+    "same_buffer": false,
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/org/insula-plan.json"
+  },
+  "name": "correct-source-edit-exit",
+  "checks": [
+    {
+      "name": "action used org-edit-src-exit",
+      "passed": true,
+      "detail": "((\"operation\" . \"org-edit-src-exit\") (\"source_edit_buffer_was_separate\" . t) (\"parent_buffer\" . \"notebook.org\") (\"edit_buffer\"))"
+    },
+    {
+      "name": "source edit buffer is separate",
+      "passed": true,
+      "detail": "((\"operation\" . \"org-edit-src-exit\") (\"source_edit_buffer_was_separate\" . t) (\"parent_buffer\" . \"notebook.org\") (\"edit_buffer\"))"
+    },
+    {
+      "name": "parent unchanged before source-edit exit",
+      "passed": true,
+      "detail": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n"
+    },
+    {
+      "name": "parent updated after source-edit exit",
+      "passed": true,
+      "detail": "* Notebook\n#+begin_src emacs-lisp\n  (+ 3 4)\n#+end_src\n"
+    }
+  ],
+  "parent_text_before": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n",
+  "parent_text_after_edit": "* Notebook\n#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n",
+  "parent_text_after_final": "* Notebook\n#+begin_src emacs-lisp\n  (+ 3 4)\n#+end_src\n"
+}

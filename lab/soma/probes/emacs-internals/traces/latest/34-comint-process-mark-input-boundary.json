@@ -1,0 +1,61 @@
+{
+  "id": "comint-process-mark-input-boundary",
+  "title": "Comint input depends on point relative to process mark",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "`comint-send-input' sends text from the process mark to point when point is after the mark, but retrieves old input when point is before the process mark.",
+  "hypothesis": "Sending from old history should submit `comint-get-old-input' and copy it to the process mark; sending from the live input area should submit the text after the process mark.",
+  "sources": [
+    {
+      "name": "comint-send-input docstring and branch",
+      "path": "comint.el.gz",
+      "lines": "1886-1955",
+      "note": ""
+    },
+    {
+      "name": "process mark helpers",
+      "path": "comint.el.gz",
+      "lines": "3580-3612",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Two temporary Comint buffers backed by a shell process that echoes submitted lines with a `got:' prefix.",
+  "predicted_behavior": "The same visible buffer text can produce different submissions depending on point relative to `process-mark'.",
+  "observed_behavior": "old-point-output=(#(\"got:old-cmd\" 0 11 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output))) live-input-output=(#(\"got:bottom-cmd\" 0 14 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output)))",
+  "independent_checks": [
+    {
+      "name": "old history submission used comint-get-old-input",
+      "passed": true,
+      "detail": "(#(\"got:old-cmd\" 0 11 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output)))"
+    },
+    {
+      "name": "live input submission used text after process mark",
+      "passed": true,
+      "detail": "(#(\"got:bottom-cmd\" 0 14 (insert-in-front-hooks (comint--mark-as-output comint--mark-yanked-as-output) inhibit-line-move-field-capture t front-sticky (field inhibit-line-move-field-capture) rear-nonsticky (field inhibit-line-move-field-capture read-only font-lock-face insert-in-front-hooks) field output)))"
+    }
+  ],
+  "counterexample": "A bridge that appends text and sends a newline can submit the wrong command when point is in scrollback or history.",
+  "derived_gym_requirement": "Comint actions must observe point, process mark, live input text, old-input policy, process identity, and working directory before submitting."
+}

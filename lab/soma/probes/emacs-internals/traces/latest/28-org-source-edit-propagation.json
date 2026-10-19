@@ -1,0 +1,61 @@
+{
+  "id": "org-source-edit-propagation",
+  "title": "Org source-edit propagation",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Org source block editing uses a separate edit buffer and writes back on the source-edit exit path.",
+  "hypothesis": "Editing the source edit buffer should not immediately prove the parent Org block changed; `org-edit-src-exit' should propagate the edited contents.",
+  "sources": [
+    {
+      "name": "org-edit-src-code",
+      "path": "~/.emacs.d/.local/straight/repos/org/lisp/org-src.el",
+      "lines": "1321-1363",
+      "note": ""
+    },
+    {
+      "name": "org-edit-src-save/exit",
+      "path": "~/.emacs.d/.local/straight/repos/org/lisp/org-src.el",
+      "lines": "1447-1494",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary Org buffer containing one emacs-lisp source block.",
+  "predicted_behavior": "The edit buffer change becomes authoritative only after the exit/write-back path.",
+  "observed_behavior": "before=\"#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n\" after-edit-parent=\"#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n\" after-exit-parent=\"#+begin_src emacs-lisp\n  (+ 3 4)\n#+end_src\n\"",
+  "independent_checks": [
+    {
+      "name": "parent unchanged before source-edit exit",
+      "passed": true,
+      "detail": "#+begin_src emacs-lisp\n(+ 1 2)\n#+end_src\n"
+    },
+    {
+      "name": "parent updated after source-edit exit",
+      "passed": true,
+      "detail": "#+begin_src emacs-lisp\n  (+ 3 4)\n#+end_src\n"
+    }
+  ],
+  "counterexample": "Checking only the edit buffer can report success when the parent Org document is unchanged.",
+  "derived_gym_requirement": "Org gym actions must distinguish source-edit buffers from parent Org buffers and grade the parent document after write-back."
+}

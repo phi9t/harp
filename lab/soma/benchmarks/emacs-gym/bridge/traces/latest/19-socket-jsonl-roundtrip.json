@@ -1,0 +1,106 @@
+{
+  "id": "socket-jsonl-roundtrip",
+  "title": "A JSONL Unix-domain socket request returns a structured bridge response",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "socket-1",
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-bridge-socket"
+    }
+  },
+  "response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "socket-1",
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-socket",
+      "text_owner_name": "soma-bridge-socket",
+      "buffer_file_name": false,
+      "major_mode": "fundamental-mode",
+      "chars_tick": 4,
+      "modified": false,
+      "read_only": false,
+      "point_min": 1,
+      "point_max": 7,
+      "point": 1,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "soma-bridge-socket",
+      "minibuffer_active": false
+    },
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": "soma-bridge-socket",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "selected_window_buffer": "soma-bridge-socket",
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": "soma-bridge-socket",
+        "text_owner_name": "soma-bridge-socket",
+        "buffer_file_name": false,
+        "same_buffer": true
+      },
+      "point_region_narrowing": {
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": "soma-bridge-socket",
+        "text_owner_name": "soma-bridge-socket",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-socket",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "socket": "/project/run/soma-bridge-20261001T062920Z-2817516.sock",
+  "checks": [
+    {
+      "name": "socket request id is echoed",
+      "passed": true,
+      "detail": "#s(hash-table test equal data (\"api_version\" \"soma-emacs-agent-v0\" \"request_id\" \"socket-1\" \"operation\" \"emacs.observe_buffer\" \"state\" \"succeeded\" \"state_sequence\" [\"accepted\" \"running\" \"succeeded\"] \"result\" #s(hash-table test equal data (\"operation\" \"emacs.observe_buffer\" \"state\" \"succeeded\" \"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"chars_tick\" 4 \"modified\" :json-false \"read_only\" :json-false \"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false)) \"evidence\" #s(hash-table test equal data (\"buffer_identity\" #s(hash-table test equal data (\"buffer_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false)) \"text_owner\" #s(hash-table test equal data (\"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"same_buffer\" t)) \"point_region_narrowing\" #s(hash-table test equal data (\"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false)))) \"observations\" #s(hash-table test equal data (\"buffer_state\" #s(hash-table test equal data (\"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"chars_tick\" 4 \"modified\" :json-false \"read_only\" :json-false \"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false)))) \"effects\" #s(hash-table test equal) \"diagnostics\" [] \"continuation\" nil \"error_code\" :json-false \"error\" :json-false))"
+    },
+    {
+      "name": "socket request succeeded",
+      "passed": true,
+      "detail": "#s(hash-table test equal data (\"api_version\" \"soma-emacs-agent-v0\" \"request_id\" \"socket-1\" \"operation\" \"emacs.observe_buffer\" \"state\" \"succeeded\" \"state_sequence\" [\"accepted\" \"running\" \"succeeded\"] \"result\" #s(hash-table test equal data (\"operation\" \"emacs.observe_buffer\" \"state\" \"succeeded\" \"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"chars_tick\" 4 \"modified\" :json-false \"read_only\" :json-false \"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false)) \"evidence\" #s(hash-table test equal data (\"buffer_identity\" #s(hash-table test equal data (\"buffer_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false)) \"text_owner\" #s(hash-table test equal data (\"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"same_buffer\" t)) \"point_region_narrowing\" #s(hash-table test equal data (\"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false)))) \"observations\" #s(hash-table test equal data (\"buffer_state\" #s(hash-table test equal data (\"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"chars_tick\" 4 \"modified\" :json-false \"read_only\" :json-false \"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false)))) \"effects\" #s(hash-table test equal) \"diagnostics\" [] \"continuation\" nil \"error_code\" :json-false \"error\" :json-false))"
+    },
+    {
+      "name": "socket observe result names target buffer",
+      "passed": true,
+      "detail": "#s(hash-table test equal data (\"operation\" \"emacs.observe_buffer\" \"state\" \"succeeded\" \"buffer_name\" \"soma-bridge-socket\" \"text_owner_name\" \"soma-bridge-socket\" \"buffer_file_name\" :json-false \"major_mode\" \"fundamental-mode\" \"chars_tick\" 4 \"modified\" :json-false \"read_only\" :json-false \"point_min\" 1 \"point_max\" 7 \"point\" 1 \"mark_active\" :json-false \"narrowed\" :json-false \"selected_window_buffer\" \"soma-bridge-socket\" \"minibuffer_active\" :json-false))"
+    }
+  ]
+}

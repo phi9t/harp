@@ -1,0 +1,66 @@
+{
+  "id": "lsp-stdio-initialize-rootfs-identity",
+  "title": "LSP stdio initialize rootfs identity",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "LSP task evidence must include the language-server process, protocol lifecycle, workspace root, and rootfs-owned executable path.",
+  "hypothesis": "Batch-safe JSON-RPC initialize/shutdown exchanges should succeed for the production C/C++, Python, and Rust language servers that are present in the selected rootfs.",
+  "sources": [
+    {
+      "name": "LSP package contract",
+      "path": "docs/internals-atlas/package-contracts/lsp.md",
+      "lines": "57-76",
+      "note": ""
+    },
+    {
+      "name": "Rootfs build package layer",
+      "path": "scripts/insula/build-emacs-rootfs.sh",
+      "lines": "129-144",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Temporary C++, Python, and Rust workspaces plus stdio JSON-RPC exchanges with clangd, pyright-langserver, and rust-analyzer.",
+  "predicted_behavior": "Each production server should answer `initialize', accept `shutdown', receive `exit', and expose a rootfs-owned executable path.",
+  "observed_behavior": "prod=t status=0 results=(((\"cmd\" \"clangd\" \"--log=error\") (\"exe\" . \"/usr/bin/clangd\") (\"exit_code\" . 0) (\"initialize_error\") (\"initialize_has_result\" . t) (\"name\" . \"clangd\") (\"pid\" . 302) (\"realpath\" . \"/usr/lib/llvm-18/bin/clangd\") (\"root\" . \"/project/tmp/soma-lsp-lu5imjcq\") (\"shutdown_has_result\" . t) (\"status\" . \"ok\")) ((\"cmd\" \"pyright-langserver\" \"--stdio\") (\"exe\" . \"/usr/local/bin/pyright-langserver\") (\"exit_code\" . 0) (\"initialize_error\") (\"initialize_has_result\" . t) (\"name\" . \"pyright-langserver\") (\"pid\" . 413) (\"realpath\" . \"/usr/local/lib/node_modules/pyright/langserver.index.js\") (\"root\" . \"/project/tmp/soma-lsp-etlcsrxa\") (\"shutdown_has_result\" . t) (\"status\" . \"ok\")) ((\"cmd\" \"rust-analyzer\") (\"exe\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"exit_code\" . 0) (\"initialize_error\") (\"initialize_has_result\" . t) (\"name\" . \"rust-analyzer\") (\"pid\" . 429) (\"realpath\" . \"/opt/soma/cargo/bin/rustup\") (\"root\" . \"/project/tmp/soma-lsp-o833vvdc\") (\"shutdown_has_result\" . t) (\"status\" . \"ok\"))) bad=nil bad-paths=nil output=\"SOMA_LSP_PROBE:{\\\"results\\\": [{\\\"cmd\\\": [\\\"clangd\\\", \\\"--log=error\\\"], \\\"exe\\\": \\\"/usr/bin/clangd\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"clangd\\\", \\\"pid\\\": 302, \\\"realpath\\\": \\\"/usr/lib/llvm-18/bin/clangd\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-lu5imjcq\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"pyright-langserver\\\", \\\"--stdio\\\"], \\\"exe\\\": \\\"/usr/local/bin/pyright-langserver\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"pyright-langserver\\\", \\\"pid\\\": 413, \\\"realpath\\\": \\\"/usr/local/lib/node_modules/pyright/langserver.index.js\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-etlcsrxa\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"rust-analyzer\\\"], \\\"exe\\\": \\\"/opt/soma/cargo/bin/rust-analyzer\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"rust-analyzer\\\", \\\"pid\\\": 429, \\\"realpath\\\": \\\"/opt/soma/cargo/bin/rustup\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-o833vvdc\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}]}\n\nProcess soma-probe-process finished\n\"",
+  "independent_checks": [
+    {
+      "name": "LSP stdio initializer script ran in production",
+      "passed": true,
+      "detail": "status=0 output=\"SOMA_LSP_PROBE:{\\\"results\\\": [{\\\"cmd\\\": [\\\"clangd\\\", \\\"--log=error\\\"], \\\"exe\\\": \\\"/usr/bin/clangd\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"clangd\\\", \\\"pid\\\": 302, \\\"realpath\\\": \\\"/usr/lib/llvm-18/bin/clangd\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-lu5imjcq\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"pyright-langserver\\\", \\\"--stdio\\\"], \\\"exe\\\": \\\"/usr/local/bin/pyright-langserver\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"pyright-langserver\\\", \\\"pid\\\": 413, \\\"realpath\\\": \\\"/usr/local/lib/node_modules/pyright/langserver.index.js\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-etlcsrxa\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}, {\\\"cmd\\\": [\\\"rust-analyzer\\\"], \\\"exe\\\": \\\"/opt/soma/cargo/bin/rust-analyzer\\\", \\\"exit_code\\\": 0, \\\"initialize_error\\\": null, \\\"initialize_has_result\\\": true, \\\"name\\\": \\\"rust-analyzer\\\", \\\"pid\\\": 429, \\\"realpath\\\": \\\"/opt/soma/cargo/bin/rustup\\\", \\\"root\\\": \\\"/project/tmp/soma-lsp-o833vvdc\\\", \\\"shutdown_has_result\\\": true, \\\"status\\\": \\\"ok\\\"}]}\n\nProcess soma-probe-process finished\n\""
+    },
+    {
+      "name": "production LSP servers initialized and shut down",
+      "passed": true,
+      "detail": "nil"
+    },
+    {
+      "name": "production LSP server executables are rootfs-owned",
+      "passed": true,
+      "detail": "nil"
+    }
+  ],
+  "counterexample": "A benchmark can pass via direct text mutation while the intended language server never starts, starts from the host, or cannot initialize against the workspace.",
+  "derived_gym_requirement": "LSP benchmarks must record server executable identity, pid, workspace root, initialize response, shutdown status, and document-version evidence before trusting refactor results."
+}

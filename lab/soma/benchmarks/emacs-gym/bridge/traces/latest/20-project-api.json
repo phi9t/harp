@@ -1,0 +1,656 @@
+{
+  "id": "project-api",
+  "title": "Stable coding-v0 project operations observe Git project identity and search through rootfs-owned ripgrep",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observe_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-observe-1",
+    "operation": "project.observe",
+    "capability": "passive_observation",
+    "params": {
+      "buffer_name": "subject.py",
+      "root": "/project/tmp/soma-bridge-project-api-hs6Ivt"
+    }
+  },
+  "observe_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-observe-1",
+    "operation": "project.observe",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "project.observe",
+      "state": "succeeded",
+      "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+      "buffer_name": "subject.py",
+      "buffer_file_name": "/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py",
+      "default_directory": "/project/tmp/soma-bridge-project-api-hs6Ivt/src/",
+      "vcs": {
+        "type": "git",
+        "root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+        "git_dir": ".git",
+        "branch": "master",
+        "head": "",
+        "tool": {
+          "name": "git",
+          "path": "/usr/bin/git",
+          "realpath": "/usr/bin/git",
+          "rootfs_owned": true,
+          "version": "git version 2.43.0",
+          "signature": {
+            "exists": true,
+            "path": "/usr/bin/git",
+            "truename": "/usr/bin/git",
+            "type": "regular",
+            "size": 4066232,
+            "mode": "-rwxr-xr-x",
+            "inode": 184570682,
+            "device": 66308,
+            "mtime": "(26725 38222 0 0)",
+            "ctime": "(27322 57465 388028 486000)",
+            "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668"
+          }
+        }
+      },
+      "search_tool": {
+        "name": "rg",
+        "path": "/usr/bin/rg",
+        "realpath": "/usr/bin/rg",
+        "rootfs_owned": true,
+        "version": "ripgrep 14.1.0",
+        "signature": {
+          "exists": true,
+          "path": "/usr/bin/rg",
+          "truename": "/usr/bin/rg",
+          "type": "regular",
+          "size": 5257872,
+          "mode": "-rwxr-xr-x",
+          "inode": 184570910,
+          "device": 66308,
+          "mtime": "(26017 2896 0 0)",
+          "ctime": "(27322 57465 476028 486000)",
+          "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb"
+        }
+      },
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+    },
+    "evidence": {
+      "project_root": {
+        "path": "/project/tmp/soma-bridge-project-api-hs6Ivt/"
+      },
+      "vcs_identity": {
+        "type": "git",
+        "root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+        "git_dir": ".git",
+        "branch": "master",
+        "head": "",
+        "tool": {
+          "name": "git",
+          "path": "/usr/bin/git",
+          "realpath": "/usr/bin/git",
+          "rootfs_owned": true,
+          "version": "git version 2.43.0",
+          "signature": {
+            "exists": true,
+            "path": "/usr/bin/git",
+            "truename": "/usr/bin/git",
+            "type": "regular",
+            "size": 4066232,
+            "mode": "-rwxr-xr-x",
+            "inode": 184570682,
+            "device": 66308,
+            "mtime": "(26725 38222 0 0)",
+            "ctime": "(27322 57465 388028 486000)",
+            "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668"
+          }
+        }
+      },
+      "search_tool_identity": {
+        "name": "rg",
+        "path": "/usr/bin/rg",
+        "realpath": "/usr/bin/rg",
+        "rootfs_owned": true,
+        "version": "ripgrep 14.1.0",
+        "signature": {
+          "exists": true,
+          "path": "/usr/bin/rg",
+          "truename": "/usr/bin/rg",
+          "type": "regular",
+          "size": 5257872,
+          "mode": "-rwxr-xr-x",
+          "inode": 184570910,
+          "device": 66308,
+          "mtime": "(26017 2896 0 0)",
+          "ctime": "(27322 57465 476028 486000)",
+          "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb"
+        }
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "project_context": {
+        "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+        "buffer_name": "subject.py",
+        "buffer_file_name": "/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py",
+        "default_directory": "/project/tmp/soma-bridge-project-api-hs6Ivt/src/",
+        "vcs": {
+          "type": "git",
+          "root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+          "git_dir": ".git",
+          "branch": "master",
+          "head": "",
+          "tool": {
+            "name": "git",
+            "path": "/usr/bin/git",
+            "realpath": "/usr/bin/git",
+            "rootfs_owned": true,
+            "version": "git version 2.43.0",
+            "signature": {
+              "exists": true,
+              "path": "/usr/bin/git",
+              "truename": "/usr/bin/git",
+              "type": "regular",
+              "size": 4066232,
+              "mode": "-rwxr-xr-x",
+              "inode": 184570682,
+              "device": 66308,
+              "mtime": "(26725 38222 0 0)",
+              "ctime": "(27322 57465 388028 486000)",
+              "sha256": "2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668"
+            }
+          }
+        },
+        "search_tool": {
+          "name": "rg",
+          "path": "/usr/bin/rg",
+          "realpath": "/usr/bin/rg",
+          "rootfs_owned": true,
+          "version": "ripgrep 14.1.0",
+          "signature": {
+            "exists": true,
+            "path": "/usr/bin/rg",
+            "truename": "/usr/bin/rg",
+            "type": "regular",
+            "size": 5257872,
+            "mode": "-rwxr-xr-x",
+            "inode": 184570910,
+            "device": 66308,
+            "mtime": "(26017 2896 0 0)",
+            "ctime": "(27322 57465 476028 486000)",
+            "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb"
+          }
+        }
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "search_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-search-1",
+    "operation": "project.search",
+    "capability": "passive_observation",
+    "params": {
+      "root": "/project/tmp/soma-bridge-project-api-hs6Ivt",
+      "query": "soma-project-needle",
+      "max_results": 10,
+      "max_text": 200
+    }
+  },
+  "search_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-search-1",
+    "operation": "project.search",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "project.search",
+      "state": "succeeded",
+      "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+      "query": "soma-project-needle",
+      "search_tool": {
+        "name": "rg",
+        "path": "/usr/bin/rg",
+        "realpath": "/usr/bin/rg",
+        "rootfs_owned": true,
+        "version": "ripgrep 14.1.0",
+        "signature": {
+          "exists": true,
+          "path": "/usr/bin/rg",
+          "truename": "/usr/bin/rg",
+          "type": "regular",
+          "size": 5257872,
+          "mode": "-rwxr-xr-x",
+          "inode": 184570910,
+          "device": 66308,
+          "mtime": "(26017 2896 0 0)",
+          "ctime": "(27322 57465 476028 486000)",
+          "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb"
+        }
+      },
+      "exit_status": 0,
+      "result_count": 1,
+      "results_returned": 1,
+      "results_truncated": false,
+      "results": [
+        {
+          "path": "/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py",
+          "line": 2,
+          "absolute_offset": 21,
+          "text": "    return 'soma-project-needle'\n",
+          "text_truncated": false,
+          "submatches": [
+            {
+              "match": {
+                "text": "soma-project-needle"
+              },
+              "start": 12,
+              "end": 31
+            }
+          ]
+        }
+      ],
+      "parse_errors": null,
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+    },
+    "evidence": {
+      "search_tool_identity": {
+        "name": "rg",
+        "path": "/usr/bin/rg",
+        "realpath": "/usr/bin/rg",
+        "rootfs_owned": true,
+        "version": "ripgrep 14.1.0",
+        "signature": {
+          "exists": true,
+          "path": "/usr/bin/rg",
+          "truename": "/usr/bin/rg",
+          "type": "regular",
+          "size": 5257872,
+          "mode": "-rwxr-xr-x",
+          "inode": 184570910,
+          "device": 66308,
+          "mtime": "(26017 2896 0 0)",
+          "ctime": "(27322 57465 476028 486000)",
+          "sha256": "be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb"
+        }
+      },
+      "bounded_results": {
+        "exit_status": 0,
+        "result_count": 1,
+        "results_returned": 1,
+        "results_truncated": false,
+        "parse_errors": null
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "matches": {
+        "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+        "query": "soma-project-needle",
+        "results": [
+          {
+            "path": "/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py",
+            "line": 2,
+            "absolute_offset": 21,
+            "text": "    return 'soma-project-needle'\n",
+            "text_truncated": false,
+            "submatches": [
+              {
+                "match": {
+                  "text": "soma-project-needle"
+                },
+                "start": 12,
+                "end": 31
+              }
+            ]
+          }
+        ],
+        "parse_errors": null
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "host_rg_path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+  "host_rg_marker": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/called",
+  "host_rg_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-search-host-rg-rejected",
+    "operation": "project.search",
+    "capability": "passive_observation",
+    "params": {
+      "root": "/project/tmp/soma-bridge-project-api-hs6Ivt",
+      "query": "soma-project-needle",
+      "max_results": 10,
+      "max_text": 200
+    }
+  },
+  "host_rg_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-search-host-rg-rejected",
+    "operation": "project.search",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ],
+    "result": {
+      "operation": "project.search",
+      "state": "failed",
+      "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+      "search_tool": {
+        "name": "rg",
+        "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+        "realpath": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+        "rootfs_owned": false,
+        "version": "",
+        "signature": {
+          "exists": true,
+          "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+          "truename": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+          "type": "regular",
+          "size": 159,
+          "mode": "-rwxr-xr-x",
+          "inode": 1861053,
+          "device": 66308,
+          "mtime": "(27325 64961 148632 90000)",
+          "ctime": "(27325 64961 148632 90000)",
+          "sha256": "2e1cb8c2765258bca487e60680be87e3ef057bfce0d2ed22f0f36ca22d881d65"
+        }
+      },
+      "error": "rootfs-owned ripgrep is not available"
+    },
+    "evidence": {
+      "search_tool_identity": {
+        "name": "rg",
+        "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+        "realpath": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+        "rootfs_owned": false,
+        "version": "",
+        "signature": {
+          "exists": true,
+          "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+          "truename": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg",
+          "type": "regular",
+          "size": 159,
+          "mode": "-rwxr-xr-x",
+          "inode": 1861053,
+          "device": 66308,
+          "mtime": "(27325 64961 148632 90000)",
+          "ctime": "(27325 64961 148632 90000)",
+          "sha256": "2e1cb8c2765258bca487e60680be87e3ef057bfce0d2ed22f0f36ca22d881d65"
+        }
+      },
+      "bounded_results": {
+        "exit_status": false,
+        "result_count": false,
+        "results_returned": false,
+        "results_truncated": false,
+        "parse_errors": null
+      },
+      "rootfs_runtime": {
+        "run_id": false,
+        "plan": false
+      }
+    },
+    "observations": {
+      "matches": {
+        "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+        "query": false,
+        "results": null,
+        "parse_errors": null
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "operation_failed",
+        "message": "rootfs-owned ripgrep is not available"
+      }
+    ],
+    "continuation": null,
+    "error_code": "operation_failed",
+    "error": "rootfs-owned ripgrep is not available"
+  },
+  "host_git_path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+  "host_git_marker": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/called",
+  "host_git_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-observe-host-git-rejected",
+    "operation": "project.observe",
+    "capability": "passive_observation",
+    "params": {
+      "root": "/project/tmp/soma-bridge-project-api-hs6Ivt"
+    }
+  },
+  "host_git_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "project-observe-host-git-rejected",
+    "operation": "project.observe",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "project.observe",
+      "state": "succeeded",
+      "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+      "buffer_name": false,
+      "buffer_file_name": false,
+      "default_directory": false,
+      "vcs": {
+        "type": false,
+        "root": false,
+        "git_dir": false,
+        "branch": "",
+        "head": "",
+        "tool": {
+          "name": "git",
+          "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+          "realpath": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+          "rootfs_owned": false,
+          "version": "",
+          "signature": {
+            "exists": true,
+            "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+            "truename": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+            "type": "regular",
+            "size": 134,
+            "mode": "-rwxr-xr-x",
+            "inode": 1861055,
+            "device": 66308,
+            "mtime": "(27325 64961 149632 90000)",
+            "ctime": "(27325 64961 149632 90000)",
+            "sha256": "80b958bc632f8ba4c9d11df7a5a298f43bdbb213ebdf45aef4c3c3fd3ba6cf86"
+          }
+        }
+      },
+      "search_tool": {
+        "name": "rg",
+        "path": false,
+        "realpath": false,
+        "rootfs_owned": false,
+        "version": "",
+        "signature": false
+      },
+      "run_id": "20261001T062920Z-2817516",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+    },
+    "evidence": {
+      "project_root": {
+        "path": "/project/tmp/soma-bridge-project-api-hs6Ivt/"
+      },
+      "vcs_identity": {
+        "type": false,
+        "root": false,
+        "git_dir": false,
+        "branch": "",
+        "head": "",
+        "tool": {
+          "name": "git",
+          "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+          "realpath": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+          "rootfs_owned": false,
+          "version": "",
+          "signature": {
+            "exists": true,
+            "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+            "truename": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+            "type": "regular",
+            "size": 134,
+            "mode": "-rwxr-xr-x",
+            "inode": 1861055,
+            "device": 66308,
+            "mtime": "(27325 64961 149632 90000)",
+            "ctime": "(27325 64961 149632 90000)",
+            "sha256": "80b958bc632f8ba4c9d11df7a5a298f43bdbb213ebdf45aef4c3c3fd3ba6cf86"
+          }
+        }
+      },
+      "search_tool_identity": {
+        "name": "rg",
+        "path": false,
+        "realpath": false,
+        "rootfs_owned": false,
+        "version": "",
+        "signature": false
+      },
+      "rootfs_runtime": {
+        "run_id": "20261001T062920Z-2817516",
+        "plan": "/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json"
+      }
+    },
+    "observations": {
+      "project_context": {
+        "project_root": "/project/tmp/soma-bridge-project-api-hs6Ivt/",
+        "buffer_name": false,
+        "buffer_file_name": false,
+        "default_directory": false,
+        "vcs": {
+          "type": false,
+          "root": false,
+          "git_dir": false,
+          "branch": "",
+          "head": "",
+          "tool": {
+            "name": "git",
+            "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+            "realpath": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+            "rootfs_owned": false,
+            "version": "",
+            "signature": {
+              "exists": true,
+              "path": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+              "truename": "/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git",
+              "type": "regular",
+              "size": 134,
+              "mode": "-rwxr-xr-x",
+              "inode": 1861055,
+              "device": 66308,
+              "mtime": "(27325 64961 149632 90000)",
+              "ctime": "(27325 64961 149632 90000)",
+              "sha256": "80b958bc632f8ba4c9d11df7a5a298f43bdbb213ebdf45aef4c3c3fd3ba6cf86"
+            }
+          }
+        },
+        "search_tool": {
+          "name": "rg",
+          "path": false,
+          "realpath": false,
+          "rootfs_owned": false,
+          "version": "",
+          "signature": false
+        }
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "checks": [
+    {
+      "name": "project operations are stable and implemented",
+      "passed": true,
+      "detail": "(((\"operation\" . \"project.observe\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"profile\" . \"coding-v0\") (\"maturity\" . \"stable\") (\"owner\" . \"project\") (\"side_effect_class\" . \"passive_observation\") (\"observation_class\" . \"derived\") (\"implemented\" . t) (\"enabled\" . t) (\"route\" . \"project-helper\") (\"required_params\") (\"required_preconditions\") (\"possible_states\" \"succeeded\" \"failed\") (\"evidence\" \"project_root\" \"vcs_identity\" \"search_tool_identity\" \"rootfs_runtime\") (\"request_contract\" (\"envelope\" . \"soma-emacs-agent-v0.request\") (\"required_fields\" \"request_id\" \"operation\") (\"optional_fields\" \"api_version\" \"capability\" \"params\" \"preconditions\" \"timeout_ms\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"capability\" . \"passive_observation\") (\"params_mode\" . \"typed-object\") (\"required_params\") (\"preconditions_mode\" . \"not-required\")) (\"precondition_contract\" (\"mode\" . \"typed-object\") (\"top_level_field\" . \"preconditions\") (\"params_field\" . \"params.preconditions\") (\"required_fields\") (\"conflict_error_code\" . \"conflict\")) (\"result_contract\" (\"envelope\" . \"soma-emacs-agent-v0.result\") (\"required_fields\" \"api_version\" \"request_id\" \"operation\" \"state\" \"state_sequence\" \"result\" \"evidence\" \"observations\" \"effects\" \"diagnostics\" \"continuation\") (\"states\" \"succeeded\" \"failed\") (\"terminal_states\" \"succeeded\" \"failed\" \"outcome_unknown\") (\"evidence_channels\" \"project_root\" \"vcs_identity\" \"search_tool_identity\" \"rootfs_runtime\")) (\"description\" . \"Observe source project identity without shelling out arbitrarily.\")) ((\"operation\" . \"project.search\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"profile\" . \"coding-v0\") (\"maturity\" . \"stable\") (\"owner\" . \"project\") (\"side_effect_class\" . \"passive_observation\") (\"observation_class\" . \"derived\") (\"implemented\" . t) (\"enabled\" . t) (\"route\" . \"rootfs-owned-search-tool\") (\"required_params\" \"query\") (\"required_preconditions\") (\"possible_states\" \"succeeded\" \"failed\") (\"evidence\" \"bounded_results\" \"search_tool_identity\" \"rootfs_runtime\") (\"request_contract\" (\"envelope\" . \"soma-emacs-agent-v0.request\") (\"required_fields\" \"request_id\" \"operation\") (\"optional_fields\" \"api_version\" \"capability\" \"params\" \"preconditions\" \"timeout_ms\") (\"api_version\" . \"soma-emacs-agent-v0\") (\"capability\" . \"passive_observation\") (\"params_mode\" . \"typed-object\") (\"required_params\" \"query\") (\"preconditions_mode\" . \"not-required\")) (\"precondition_contract\" (\"mode\" . \"typed-object\") (\"top_level_field\" . \"preconditions\") (\"params_field\" . \"params.preconditions\") (\"required_fields\") (\"conflict_error_code\" . \"conflict\")) (\"result_contract\" (\"envelope\" . \"soma-emacs-agent-v0.result\") (\"required_fields\" \"api_version\" \"request_id\" \"operation\" \"state\" \"state_sequence\" \"result\" \"evidence\" \"observations\" \"effects\" \"diagnostics\" \"continuation\") (\"states\" \"succeeded\" \"failed\") (\"terminal_states\" \"succeeded\" \"failed\" \"outcome_unknown\") (\"evidence_channels\" \"bounded_results\" \"search_tool_identity\" \"rootfs_runtime\")) (\"description\" . \"Search source text through a bounded rootfs-owned project search path.\")))"
+    },
+    {
+      "name": "project.observe succeeds through the v0 envelope",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"project-observe-1\") (\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"default_directory\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/\") (\"vcs\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\")) (\"evidence\" (\"project_root\" (\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\")) (\"vcs_identity\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool_identity\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"project_context\" (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"default_directory\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/\") (\"vcs\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "project.observe reports Git project and rootfs search tool",
+      "passed": true,
+      "detail": "((\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"default_directory\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/\") (\"vcs\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))"
+    },
+    {
+      "name": "project.observe publishes typed project context sections",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"project-observe-1\") (\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"default_directory\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/\") (\"vcs\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\")) (\"evidence\" (\"project_root\" (\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\")) (\"vcs_identity\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool_identity\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"project_context\" (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . \"subject.py\") (\"buffer_file_name\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"default_directory\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/\") (\"vcs\" (\"type\" . \"git\") (\"root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"git_dir\" . \".git\") (\"branch\" . \"master\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/usr/bin/git\") (\"realpath\" . \"/usr/bin/git\") (\"rootfs_owned\" . t) (\"version\" . \"git version 2.43.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/git\") (\"truename\" . \"/usr/bin/git\") (\"type\" . \"regular\") (\"size\" . 4066232) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570682) (\"device\" . 66308) (\"mtime\" . \"(26725 38222 0 0)\") (\"ctime\" . \"(27322 57465 388028 486000)\") (\"sha256\" . \"2a8c18fbf43da9f692d75474c72bea9dfd796c260b0f3dfe456376abc3bbd668\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "project.search succeeds through rootfs-owned ripgrep",
+      "passed": true,
+      "detail": "((\"operation\" . \"project.search\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . \"soma-project-needle\") (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"exit_status\" . 0) (\"result_count\" . 1) (\"results_returned\" . 1) (\"results_truncated\" . :json-false) (\"results\" ((\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"line\" . 2) (\"absolute_offset\" . 21) (\"text\" . \"    return 'soma-project-needle'\n\") (\"text_truncated\" . :json-false) (\"submatches\" ((\"match\" (\"text\" . \"soma-project-needle\")) (\"start\" . 12) (\"end\" . 31))))) (\"parse_errors\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))"
+    },
+    {
+      "name": "project.search publishes typed search evidence and match observations",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"project-search-1\") (\"operation\" . \"project.search\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"project.search\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . \"soma-project-needle\") (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"exit_status\" . 0) (\"result_count\" . 1) (\"results_returned\" . 1) (\"results_truncated\" . :json-false) (\"results\" ((\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"line\" . 2) (\"absolute_offset\" . 21) (\"text\" . \"    return 'soma-project-needle'\n\") (\"text_truncated\" . :json-false) (\"submatches\" ((\"match\" (\"text\" . \"soma-project-needle\")) (\"start\" . 12) (\"end\" . 31))))) (\"parse_errors\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\")) (\"evidence\" (\"search_tool_identity\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"bounded_results\" (\"exit_status\" . 0) (\"result_count\" . 1) (\"results_returned\" . 1) (\"results_truncated\" . :json-false) (\"parse_errors\")) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"matches\" (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . \"soma-project-needle\") (\"results\" ((\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"line\" . 2) (\"absolute_offset\" . 21) (\"text\" . \"    return 'soma-project-needle'\n\") (\"text_truncated\" . :json-false) (\"submatches\" ((\"match\" (\"text\" . \"soma-project-needle\")) (\"start\" . 12) (\"end\" . 31))))) (\"parse_errors\"))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "project.search returns bounded source match evidence",
+      "passed": true,
+      "detail": "((\"operation\" . \"project.search\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . \"soma-project-needle\") (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"exit_status\" . 0) (\"result_count\" . 1) (\"results_returned\" . 1) (\"results_truncated\" . :json-false) (\"results\" ((\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"line\" . 2) (\"absolute_offset\" . 21) (\"text\" . \"    return 'soma-project-needle'\n\") (\"text_truncated\" . :json-false) (\"submatches\" ((\"match\" (\"text\" . \"soma-project-needle\")) (\"start\" . 12) (\"end\" . 31))))) (\"parse_errors\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))"
+    },
+    {
+      "name": "project.search returns structured submatch evidence",
+      "passed": true,
+      "detail": "((\"operation\" . \"project.search\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . \"soma-project-needle\") (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/usr/bin/rg\") (\"realpath\" . \"/usr/bin/rg\") (\"rootfs_owned\" . t) (\"version\" . \"ripgrep 14.1.0\") (\"signature\" (\"exists\" . t) (\"path\" . \"/usr/bin/rg\") (\"truename\" . \"/usr/bin/rg\") (\"type\" . \"regular\") (\"size\" . 5257872) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 184570910) (\"device\" . 66308) (\"mtime\" . \"(26017 2896 0 0)\") (\"ctime\" . \"(27322 57465 476028 486000)\") (\"sha256\" . \"be2fbcdd985161603bfa268c7647eec670b9e94374f0e972da708d7de670a8fb\"))) (\"exit_status\" . 0) (\"result_count\" . 1) (\"results_returned\" . 1) (\"results_truncated\" . :json-false) (\"results\" ((\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/src/subject.py\") (\"line\" . 2) (\"absolute_offset\" . 21) (\"text\" . \"    return 'soma-project-needle'\n\") (\"text_truncated\" . :json-false) (\"submatches\" ((\"match\" (\"text\" . \"soma-project-needle\")) (\"start\" . 12) (\"end\" . 31))))) (\"parse_errors\") (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))"
+    },
+    {
+      "name": "project.search rejects executable rg outside the selected rootfs",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"project-search-host-rg-rejected\") (\"operation\" . \"project.search\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"result\" (\"operation\" . \"project.search\") (\"state\" . \"failed\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"type\" . \"regular\") (\"size\" . 159) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861053) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 148632 90000)\") (\"ctime\" . \"(27325 64961 148632 90000)\") (\"sha256\" . \"2e1cb8c2765258bca487e60680be87e3ef057bfce0d2ed22f0f36ca22d881d65\"))) (\"error\" . \"rootfs-owned ripgrep is not available\")) (\"evidence\" (\"search_tool_identity\" (\"name\" . \"rg\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"type\" . \"regular\") (\"size\" . 159) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861053) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 148632 90000)\") (\"ctime\" . \"(27325 64961 148632 90000)\") (\"sha256\" . \"2e1cb8c2765258bca487e60680be87e3ef057bfce0d2ed22f0f36ca22d881d65\"))) (\"bounded_results\" (\"exit_status\" . :json-false) (\"result_count\" . :json-false) (\"results_returned\" . :json-false) (\"results_truncated\" . :json-false) (\"parse_errors\")) (\"rootfs_runtime\" (\"run_id\" . :json-false) (\"plan\" . :json-false))) (\"observations\" (\"matches\" (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . :json-false) (\"results\") (\"parse_errors\"))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"operation_failed\") (\"message\" . \"rootfs-owned ripgrep is not available\"))]) (\"continuation\") (\"error_code\" . \"operation_failed\") (\"error\" . \"rootfs-owned ripgrep is not available\"))"
+    },
+    {
+      "name": "project.search does not execute rejected rg for version probing",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"project-search-host-rg-rejected\") (\"operation\" . \"project.search\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"running\" \"failed\") (\"result\" (\"operation\" . \"project.search\") (\"state\" . \"failed\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"search_tool\" (\"name\" . \"rg\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"type\" . \"regular\") (\"size\" . 159) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861053) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 148632 90000)\") (\"ctime\" . \"(27325 64961 148632 90000)\") (\"sha256\" . \"2e1cb8c2765258bca487e60680be87e3ef057bfce0d2ed22f0f36ca22d881d65\"))) (\"error\" . \"rootfs-owned ripgrep is not available\")) (\"evidence\" (\"search_tool_identity\" (\"name\" . \"rg\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-rg-nN08g9/rg\") (\"type\" . \"regular\") (\"size\" . 159) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861053) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 148632 90000)\") (\"ctime\" . \"(27325 64961 148632 90000)\") (\"sha256\" . \"2e1cb8c2765258bca487e60680be87e3ef057bfce0d2ed22f0f36ca22d881d65\"))) (\"bounded_results\" (\"exit_status\" . :json-false) (\"result_count\" . :json-false) (\"results_returned\" . :json-false) (\"results_truncated\" . :json-false) (\"parse_errors\")) (\"rootfs_runtime\" (\"run_id\" . :json-false) (\"plan\" . :json-false))) (\"observations\" (\"matches\" (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"query\" . :json-false) (\"results\") (\"parse_errors\"))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"operation_failed\") (\"message\" . \"rootfs-owned ripgrep is not available\"))]) (\"continuation\") (\"error_code\" . \"operation_failed\") (\"error\" . \"rootfs-owned ripgrep is not available\"))"
+    },
+    {
+      "name": "project.observe does not execute rejected git for VCS probing",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"project-observe-host-git-rejected\") (\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"project.observe\") (\"state\" . \"succeeded\") (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"default_directory\" . :json-false) (\"vcs\" (\"type\" . :json-false) (\"root\" . :json-false) (\"git_dir\" . :json-false) (\"branch\" . \"\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"type\" . \"regular\") (\"size\" . 134) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861055) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 149632 90000)\") (\"ctime\" . \"(27325 64961 149632 90000)\") (\"sha256\" . \"80b958bc632f8ba4c9d11df7a5a298f43bdbb213ebdf45aef4c3c3fd3ba6cf86\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . :json-false) (\"realpath\" . :json-false) (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" . :json-false)) (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\")) (\"evidence\" (\"project_root\" (\"path\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\")) (\"vcs_identity\" (\"type\" . :json-false) (\"root\" . :json-false) (\"git_dir\" . :json-false) (\"branch\" . \"\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"type\" . \"regular\") (\"size\" . 134) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861055) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 149632 90000)\") (\"ctime\" . \"(27325 64961 149632 90000)\") (\"sha256\" . \"80b958bc632f8ba4c9d11df7a5a298f43bdbb213ebdf45aef4c3c3fd3ba6cf86\")))) (\"search_tool_identity\" (\"name\" . \"rg\") (\"path\" . :json-false) (\"realpath\" . :json-false) (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" . :json-false)) (\"rootfs_runtime\" (\"run_id\" . \"20261001T062920Z-2817516\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/bridge/traces/latest/insula-plan.json\"))) (\"observations\" (\"project_context\" (\"project_root\" . \"/project/tmp/soma-bridge-project-api-hs6Ivt/\") (\"buffer_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"default_directory\" . :json-false) (\"vcs\" (\"type\" . :json-false) (\"root\" . :json-false) (\"git_dir\" . :json-false) (\"branch\" . \"\") (\"head\" . \"\") (\"tool\" (\"name\" . \"git\") (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"realpath\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" (\"exists\" . t) (\"path\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"truename\" . \"/workspace/soma/.scratch/emacs-gym/host-shadow-tools/soma-bridge-host-git-zsJqui/git\") (\"type\" . \"regular\") (\"size\" . 134) (\"mode\" . \"-rwxr-xr-x\") (\"inode\" . 1861055) (\"device\" . 66308) (\"mtime\" . \"(27325 64961 149632 90000)\") (\"ctime\" . \"(27325 64961 149632 90000)\") (\"sha256\" . \"80b958bc632f8ba4c9d11df7a5a298f43bdbb213ebdf45aef4c3c3fd3ba6cf86\")))) (\"search_tool\" (\"name\" . \"rg\") (\"path\" . :json-false) (\"realpath\" . :json-false) (\"rootfs_owned\" . :json-false) (\"version\" . \"\") (\"signature\" . :json-false)))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    }
+  ]
+}

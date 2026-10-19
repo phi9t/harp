@@ -1,0 +1,87 @@
+{
+  "id": "bad-stale-mark-deletes-external-replacement",
+  "title": "Incorrect policy trusts a stale Dired mark after external replacement",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": "soma-dired-stale-mark-bad-Tc7PJ8",
+    "directory": "/project/tmp/soma-dired-stale-mark-bad-Tc7PJ8",
+    "target": "/project/tmp/soma-dired-stale-mark-bad-Tc7PJ8/target-a.txt",
+    "marked_before_external_change": [
+      "target-a.txt"
+    ]
+  },
+  "name": "bad-stale-mark-deletes-external-replacement",
+  "checks": [
+    {
+      "name": "action revalidated Dired buffer before destructive operation",
+      "passed": false,
+      "detail": "((\"operation\" . \"dired-do-delete\") (\"selection\" . \"stale-marked\") (\"marked_before_external_change\" \"target-a.txt\") (\"stale_detected\" . :json-false))"
+    },
+    {
+      "name": "action detected same-path replacement by file signature",
+      "passed": false,
+      "detail": "((\"operation\" . \"dired-do-delete\") (\"selection\" . \"stale-marked\") (\"marked_before_external_change\" \"target-a.txt\") (\"stale_detected\" . :json-false))"
+    },
+    {
+      "name": "action did not trust stale visible Dired mark",
+      "passed": false,
+      "detail": "marked-after-policy=nil action=((\"operation\" . \"dired-do-delete\") (\"selection\" . \"stale-marked\") (\"marked_before_external_change\" \"target-a.txt\") (\"stale_detected\" . :json-false))"
+    },
+    {
+      "name": "external replacement file was preserved",
+      "passed": false,
+      "detail": "exists=nil contents=nil"
+    },
+    {
+      "name": "unrelated file was preserved",
+      "passed": true,
+      "detail": "keep=t contents=\"keep\n\""
+    },
+    {
+      "name": "same-path entry stayed visible while stale mark was cleared",
+      "passed": false,
+      "detail": "visible=nil marked-after-revalidate=nil marked-after-policy=nil"
+    }
+  ],
+  "marked_after_refresh": null,
+  "marked_after_policy": null,
+  "files": [
+    {
+      "name": "keep.txt",
+      "exists": true,
+      "contents": "keep\n"
+    },
+    {
+      "name": "target-a.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "target-b.txt",
+      "exists": true,
+      "contents": "target-b\n"
+    },
+    {
+      "name": "flagged-decoy.txt",
+      "exists": true,
+      "contents": "flagged-decoy\n"
+    },
+    {
+      "name": "source.txt",
+      "exists": true,
+      "contents": "source\n"
+    },
+    {
+      "name": "renamed.txt",
+      "exists": false,
+      "contents": ""
+    },
+    {
+      "name": "collision.txt",
+      "exists": true,
+      "contents": "collision-original\n"
+    }
+  ]
+}

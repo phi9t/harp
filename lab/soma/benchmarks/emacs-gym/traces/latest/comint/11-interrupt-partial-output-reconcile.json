@@ -1,0 +1,59 @@
+{
+  "id": "interrupt-partial-output-reconcile",
+  "title": "Correct policy interrupts after partial output and reconciles state",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-interrupt-partial*",
+    "process": "interrupt-partial",
+    "pid": 24,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/insula-plan.json"
+  },
+  "name": "interrupt-partial-output-reconcile",
+  "action": {
+    "operation": "comint-interrupt-subjob",
+    "interrupted_after_partial_output": true,
+    "post_interrupt_process_status": "run"
+  },
+  "checks": [
+    {
+      "name": "partial output was observed before interrupt",
+      "passed": true,
+      "detail": "printf 'SOMA_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-comint-bench-kzcHDJ/counter; printf 'SOMA_INTERRUPT_DONE\\n'; }\n$ SOMA_INTERRUPT_START\n  \n$ "
+    },
+    {
+      "name": "policy used Comint interrupt operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"comint-interrupt-subjob\") (\"interrupted_after_partial_output\" . t) (\"post_interrupt_process_status\" . \"run\"))"
+    },
+    {
+      "name": "interrupted command did not reach completion marker",
+      "passed": true,
+      "detail": "printf 'SOMA_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-comint-bench-kzcHDJ/counter; printf 'SOMA_INTERRUPT_DONE\\n'; }\n$ SOMA_INTERRUPT_START\n  \n$ "
+    },
+    {
+      "name": "interrupted command side effect did not occur",
+      "passed": true,
+      "detail": "counter-lines=0"
+    },
+    {
+      "name": "Comint shell process survived interrupt",
+      "passed": true,
+      "detail": "status=run"
+    },
+    {
+      "name": "process executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/dash"
+    }
+  ],
+  "output": "printf 'SOMA_INTERRUPT_START\\n'; sleep 5 && { printf 'finished\\n' >> /project/tmp/soma-comint-bench-kzcHDJ/counter; printf 'SOMA_INTERRUPT_DONE\\n'; }\n$ SOMA_INTERRUPT_START\n  \n$ ",
+  "counter_lines": 0
+}

@@ -1,0 +1,1029 @@
+{
+  "id": "response-envelope-validation",
+  "title": "Captured bridge responses recursively satisfy the v0 result envelope published by the operation manifest",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "validated_response_count": 111,
+  "validated_responses": [
+    {
+      "path": "records[0].response",
+      "request_id": "observe-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[0].status",
+      "request_id": "observe-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[1].list_response",
+      "request_id": "api-list-1",
+      "operation": "api.list_capabilities",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[1].describe_response",
+      "request_id": "api-describe-1",
+      "operation": "api.describe_operation",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[2].response",
+      "request_id": "session-observe-1",
+      "operation": "emacs.observe_session",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[2].status",
+      "request_id": "session-observe-1",
+      "operation": "emacs.observe_session",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[3].response",
+      "request_id": "command-1",
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[3].status",
+      "request_id": "command-1",
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[4].response",
+      "request_id": "selected-window-command-1",
+      "operation": "command.dispatch",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[5].response",
+      "request_id": "read-1",
+      "operation": "buffer.read",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[6].edit_response",
+      "request_id": "edit-1",
+      "operation": "buffer.replace_range",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[6].save_response",
+      "request_id": "save-1",
+      "operation": "buffer.save",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[7].response",
+      "request_id": "apply-patch-1",
+      "operation": "buffer.apply_patch",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[7].stale_response",
+      "request_id": "apply-patch-stale-1",
+      "operation": "buffer.apply_patch",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[8].response",
+      "request_id": "stale-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[9].response",
+      "request_id": "point-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[10].response",
+      "request_id": "narrowed-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[11].response",
+      "request_id": "mark-active-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[12].response",
+      "request_id": "read-only-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[13].observe_response",
+      "request_id": "completion-observe-1",
+      "operation": "completion.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[13].response",
+      "request_id": "completion-accept-1",
+      "operation": "completion.accept",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[14].observe_response",
+      "request_id": "stale-completion-observe-1",
+      "operation": "completion.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[14].response",
+      "request_id": "stale-completion-1",
+      "operation": "completion.accept",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[15].edit_response",
+      "request_id": "finish-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[15].save_response",
+      "request_id": "finish-save-1",
+      "operation": "buffer.save",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[15].finish_response",
+      "request_id": "finish-1",
+      "operation": "episode.finish",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[15].finish_response.result.request_checks.(name . required request reached expected terminal state).detail",
+      "request_id": "finish-edit-1",
+      "operation": "buffer.replace_range",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[15].finish_response.result.request_checks.(name . required request reached expected terminal state).detail",
+      "request_id": "finish-save-1",
+      "operation": "buffer.save",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[16].first_response",
+      "request_id": "duplicate-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[16].second_response",
+      "request_id": "duplicate-1",
+      "operation": "emacs.observe_buffer",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[16].status",
+      "request_id": "duplicate-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[17].response",
+      "request_id": "direct-1",
+      "operation": "direct-call",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[17].status",
+      "request_id": "direct-1",
+      "operation": "direct-call",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[18].response",
+      "request_id": "socket-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[19].observe_response",
+      "request_id": "project-observe-1",
+      "operation": "project.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[19].search_response",
+      "request_id": "project-search-1",
+      "operation": "project.search",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[19].host_rg_response",
+      "request_id": "project-search-host-rg-rejected",
+      "operation": "project.search",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[19].host_git_response",
+      "request_id": "project-observe-host-git-rejected",
+      "operation": "project.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_observe_response",
+      "request_id": "reports-org-observe-1",
+      "operation": "org.observe_tree",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_update_response",
+      "request_id": "reports-org-update-heading-1",
+      "operation": "org.update_heading",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_after_update_response",
+      "request_id": "reports-org-after-update-observe-1",
+      "operation": "org.observe_tree",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_stale_update_response",
+      "request_id": "reports-org-update-heading-stale-1",
+      "operation": "org.update_heading",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_edit_response",
+      "request_id": "reports-org-edit-src-block-1",
+      "operation": "org.edit_src_block",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_edit_buffer_observe_response",
+      "request_id": "reports-org-edit-buffer-observe-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_edit_replace_response",
+      "request_id": "reports-org-edit-buffer-replace-1",
+      "operation": "buffer.replace_range",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_exit_response",
+      "request_id": "reports-org-exit-src-edit-1",
+      "operation": "org.exit_src_edit",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_after_exit_response",
+      "request_id": "reports-org-after-exit-observe-1",
+      "operation": "org.observe_tree",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_stale_edit_response",
+      "request_id": "reports-org-edit-src-block-stale-1",
+      "operation": "org.edit_src_block",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_stale_edit_buffer_observe_response",
+      "request_id": "reports-org-stale-edit-buffer-observe-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_stale_replace_response",
+      "request_id": "reports-org-stale-edit-buffer-replace-1",
+      "operation": "buffer.replace_range",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_stale_exit_response",
+      "request_id": "reports-org-exit-src-edit-stale-1",
+      "operation": "org.exit_src_edit",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_before_babel_response",
+      "request_id": "reports-org-before-babel-observe-1",
+      "operation": "org.observe_tree",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_babel_response",
+      "request_id": "reports-org-execute-babel-1",
+      "operation": "org.execute_babel_block",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_after_babel_response",
+      "request_id": "reports-org-after-babel-observe-1",
+      "operation": "org.observe_tree",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_stale_babel_response",
+      "request_id": "reports-org-execute-babel-stale-1",
+      "operation": "org.execute_babel_block",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[20].org_export_response",
+      "request_id": "reports-org-export-1",
+      "operation": "org.export_html",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].dired_observe_response",
+      "request_id": "vcs-dired-observe-1",
+      "operation": "dired.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].dired_rename_response",
+      "request_id": "vcs-dired-rename-1",
+      "operation": "dired.rename_no_overwrite",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].collision_response",
+      "request_id": "vcs-dired-collision-1",
+      "operation": "dired.rename_no_overwrite",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[20].dired_delete_response",
+      "request_id": "vcs-dired-delete-marked-1",
+      "operation": "dired.delete_marked",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[20].stale_delete_response",
+      "request_id": "vcs-dired-delete-stale-1",
+      "operation": "dired.delete_marked",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[21].initial_response",
+      "request_id": "comint-api-observe-1",
+      "operation": "comint.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[21].submit_response",
+      "request_id": "comint-api-submit-1",
+      "operation": "comint.submit_input",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[21].await_response",
+      "request_id": "comint-api-await-1",
+      "operation": "comint.await_output",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[21].stale_response",
+      "request_id": "comint-api-stale-submit-1",
+      "operation": "comint.submit_input",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[21].checks.(name . stale process-mark submit is rejected before side effects).detail.stale_response",
+      "request_id": "comint-api-stale-submit-1",
+      "operation": "comint.submit_input",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[22].initial_response",
+      "request_id": "comint-host-owner-observe-1",
+      "operation": "comint.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[22].submit_response",
+      "request_id": "comint-host-owner-submit-1",
+      "operation": "comint.submit_input",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[22].await_response",
+      "request_id": "comint-host-owner-await-1",
+      "operation": "comint.await_output",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[22].interrupt_response",
+      "request_id": "comint-host-owner-interrupt-1",
+      "operation": "comint.interrupt",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[22].checks.(name . host-shadow Comint fixture starts a live process).detail",
+      "request_id": "comint-host-owner-observe-1",
+      "operation": "comint.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[22].checks.(name . comint.submit_input rejects non-rootfs-owned process before input).detail",
+      "request_id": "comint-host-owner-submit-1",
+      "operation": "comint.submit_input",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[22].checks.(name . comint.await_output rejects non-rootfs-owned process before waiting).detail",
+      "request_id": "comint-host-owner-await-1",
+      "operation": "comint.await_output",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[22].checks.(name . comint.interrupt rejects non-rootfs-owned process before control).detail",
+      "request_id": "comint-host-owner-interrupt-1",
+      "operation": "comint.interrupt",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[23].initial_response",
+      "request_id": "comint-interrupt-api-observe-1",
+      "operation": "comint.observe",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[23].submit_response",
+      "request_id": "comint-interrupt-api-submit-1",
+      "operation": "comint.submit_input",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[23].await_response",
+      "request_id": "comint-interrupt-api-await-start-1",
+      "operation": "comint.await_output",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[23].stale_interrupt_response",
+      "request_id": "comint-interrupt-api-stale-1",
+      "operation": "comint.interrupt",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[23].fresh_interrupt_response",
+      "request_id": "comint-interrupt-api-fresh-1",
+      "operation": "comint.interrupt",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].hunk_observe_response",
+      "request_id": "magit-api-hunk-observe-1",
+      "operation": "magit.observe_sections",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].hunk_stage_response",
+      "request_id": "magit-api-stage-hunk-1",
+      "operation": "magit.stage_hunk",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].file_observe_response",
+      "request_id": "magit-api-file-observe-1",
+      "operation": "magit.observe_sections",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].file_stage_response",
+      "request_id": "magit-api-stage-file-1",
+      "operation": "magit.stage_file",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].stale_observe_response",
+      "request_id": "magit-api-stale-observe-1",
+      "operation": "magit.observe_sections",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].stale_stage_response",
+      "request_id": "magit-api-stage-stale-hunk-1",
+      "operation": "magit.stage_hunk",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[24].checks.(name . magit.stage_file stages the selected file section).detail.response",
+      "request_id": "magit-api-stage-file-1",
+      "operation": "magit.stage_file",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[24].checks.(name . stale Magit hunk request is rejected before staging).detail.response",
+      "request_id": "magit-api-stage-stale-hunk-1",
+      "operation": "magit.stage_hunk",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[25].source_response",
+      "request_id": "lsp-source-synthetic",
+      "operation": "lsp.observe_source",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[25].rename_response",
+      "request_id": "lsp-rename-synthetic",
+      "operation": "lsp.rename_symbol",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[26].observe_response",
+      "request_id": "lsp-host-observe-1",
+      "operation": "lsp.observe_source",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[26].diagnostics_response",
+      "request_id": "lsp-host-diagnostics-1",
+      "operation": "lsp.observe_diagnostics",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[26].rename_response",
+      "request_id": "lsp-host-rename-1",
+      "operation": "lsp.rename_symbol",
+      "state": "running",
+      "issues": null
+    },
+    {
+      "path": "records[26].await_response",
+      "request_id": "lsp-host-rename-await-1",
+      "operation": "request.await",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[26].await_response.result.status",
+      "request_id": "lsp-host-rename-1",
+      "operation": "lsp.rename_symbol",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[27].valid_response",
+      "request_id": "envelope-valid-1",
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[27].invalid_version_response",
+      "request_id": "envelope-invalid-version-1",
+      "operation": "emacs.observe_buffer",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[27].capability_mismatch_response",
+      "request_id": "envelope-capability-mismatch-1",
+      "operation": "emacs.observe_buffer",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[27].invalid_preconditions_response",
+      "request_id": "envelope-invalid-preconditions-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[27].missing_param_response",
+      "request_id": "envelope-missing-param-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[27].missing_precondition_response",
+      "request_id": "envelope-missing-precondition-1",
+      "operation": "buffer.replace_range",
+      "state": "failed",
+      "issues": null
+    },
+    {
+      "path": "records[27].defer_response",
+      "request_id": "envelope-defer-1",
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "issues": null
+    },
+    {
+      "path": "records[27].await_response",
+      "request_id": "envelope-await-1",
+      "operation": "request.await",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[27].await_response.result.status",
+      "request_id": "envelope-defer-1",
+      "operation": "bridge.defer_echo",
+      "state": "succeeded",
+      "issues": null
+    },
+    {
+      "path": "records[27].timeout_defer_response",
+      "request_id": "envelope-timeout-defer-1",
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "issues": null
+    },
+    {
+      "path": "records[27].timeout_await_response",
+      "request_id": "envelope-timeout-await-1",
+      "operation": "request.await",
+      "state": "outcome_unknown",
+      "issues": null
+    },
+    {
+      "path": "records[27].timeout_await_response.result.status",
+      "request_id": "envelope-timeout-defer-1",
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "issues": null
+    },
+    {
+      "path": "records[27].false_error_diagnostic_response",
+      "request_id": "envelope-false-error-diagnostic-1",
+      "operation": "request.await",
+      "state": "outcome_unknown",
+      "issues": null
+    },
+    {
+      "path": "records[27].jupyter_outcome_target_response",
+      "request_id": "envelope-jupyter-outcome-target-1",
+      "operation": "jupyter.eval_region",
+      "state": "outcome_unknown",
+      "issues": null
+    },
+    {
+      "path": "records[27].jupyter_outcome_await_response",
+      "request_id": "envelope-jupyter-outcome-await-1",
+      "operation": "jupyter.await_request",
+      "state": "outcome_unknown",
+      "issues": null
+    },
+    {
+      "path": "records[27].jupyter_outcome_await_response.result.status",
+      "request_id": "envelope-jupyter-outcome-target-1",
+      "operation": "jupyter.eval_region",
+      "state": "outcome_unknown",
+      "issues": null
+    },
+    {
+      "path": "records[27].invalid_timeout_response",
+      "request_id": "envelope-invalid-timeout-1",
+      "operation": "request.await",
+      "state": "failed",
+      "issues": null
+    }
+  ],
+  "issues": null,
+  "checks": [
+    {
+      "name": "captured bridge responses are discovered recursively",
+      "passed": true,
+      "detail": [
+        "records[0].response",
+        "records[0].status",
+        "records[1].list_response",
+        "records[1].describe_response",
+        "records[2].response",
+        "records[2].status",
+        "records[3].response",
+        "records[3].status",
+        "records[4].response",
+        "records[5].response",
+        "records[6].edit_response",
+        "records[6].save_response",
+        "records[7].response",
+        "records[7].stale_response",
+        "records[8].response",
+        "records[9].response",
+        "records[10].response",
+        "records[11].response",
+        "records[12].response",
+        "records[13].observe_response",
+        "records[13].response",
+        "records[14].observe_response",
+        "records[14].response",
+        "records[15].edit_response",
+        "records[15].save_response",
+        "records[15].finish_response",
+        "records[15].finish_response.result.request_checks.(name . required request reached expected terminal state).detail",
+        "records[15].finish_response.result.request_checks.(name . required request reached expected terminal state).detail",
+        "records[16].first_response",
+        "records[16].second_response",
+        "records[16].status",
+        "records[17].response",
+        "records[17].status",
+        "records[18].response",
+        "records[19].observe_response",
+        "records[19].search_response",
+        "records[19].host_rg_response",
+        "records[19].host_git_response",
+        "records[20].org_observe_response",
+        "records[20].org_update_response",
+        "records[20].org_after_update_response",
+        "records[20].org_stale_update_response",
+        "records[20].org_edit_response",
+        "records[20].org_edit_buffer_observe_response",
+        "records[20].org_edit_replace_response",
+        "records[20].org_exit_response",
+        "records[20].org_after_exit_response",
+        "records[20].org_stale_edit_response",
+        "records[20].org_stale_edit_buffer_observe_response",
+        "records[20].org_stale_replace_response",
+        "records[20].org_stale_exit_response",
+        "records[20].org_before_babel_response",
+        "records[20].org_babel_response",
+        "records[20].org_after_babel_response",
+        "records[20].org_stale_babel_response",
+        "records[20].org_export_response",
+        "records[20].dired_observe_response",
+        "records[20].dired_rename_response",
+        "records[20].collision_response",
+        "records[20].dired_delete_response",
+        "records[20].stale_delete_response",
+        "records[21].initial_response",
+        "records[21].submit_response",
+        "records[21].await_response",
+        "records[21].stale_response",
+        "records[21].checks.(name . stale process-mark submit is rejected before side effects).detail.stale_response",
+        "records[22].initial_response",
+        "records[22].submit_response",
+        "records[22].await_response",
+        "records[22].interrupt_response",
+        "records[22].checks.(name . host-shadow Comint fixture starts a live process).detail",
+        "records[22].checks.(name . comint.submit_input rejects non-rootfs-owned process before input).detail",
+        "records[22].checks.(name . comint.await_output rejects non-rootfs-owned process before waiting).detail",
+        "records[22].checks.(name . comint.interrupt rejects non-rootfs-owned process before control).detail",
+        "records[23].initial_response",
+        "records[23].submit_response",
+        "records[23].await_response",
+        "records[23].stale_interrupt_response",
+        "records[23].fresh_interrupt_response",
+        "records[24].hunk_observe_response",
+        "records[24].hunk_stage_response",
+        "records[24].file_observe_response",
+        "records[24].file_stage_response",
+        "records[24].stale_observe_response",
+        "records[24].stale_stage_response",
+        "records[24].checks.(name . magit.stage_file stages the selected file section).detail.response",
+        "records[24].checks.(name . stale Magit hunk request is rejected before staging).detail.response",
+        "records[25].source_response",
+        "records[25].rename_response",
+        "records[26].observe_response",
+        "records[26].diagnostics_response",
+        "records[26].rename_response",
+        "records[26].await_response",
+        "records[26].await_response.result.status",
+        "records[27].valid_response",
+        "records[27].invalid_version_response",
+        "records[27].capability_mismatch_response",
+        "records[27].invalid_preconditions_response",
+        "records[27].missing_param_response",
+        "records[27].missing_precondition_response",
+        "records[27].defer_response",
+        "records[27].await_response",
+        "records[27].await_response.result.status",
+        "records[27].timeout_defer_response",
+        "records[27].timeout_await_response",
+        "records[27].timeout_await_response.result.status",
+        "records[27].false_error_diagnostic_response",
+        "records[27].jupyter_outcome_target_response",
+        "records[27].jupyter_outcome_await_response",
+        "records[27].jupyter_outcome_await_response.result.status",
+        "records[27].invalid_timeout_response"
+      ]
+    },
+    {
+      "name": "nested stored request responses are included",
+      "passed": true,
+      "detail": [
+        "records[0].response",
+        "records[0].status",
+        "records[1].list_response",
+        "records[1].describe_response",
+        "records[2].response",
+        "records[2].status",
+        "records[3].response",
+        "records[3].status",
+        "records[4].response",
+        "records[5].response",
+        "records[6].edit_response",
+        "records[6].save_response",
+        "records[7].response",
+        "records[7].stale_response",
+        "records[8].response",
+        "records[9].response",
+        "records[10].response",
+        "records[11].response",
+        "records[12].response",
+        "records[13].observe_response",
+        "records[13].response",
+        "records[14].observe_response",
+        "records[14].response",
+        "records[15].edit_response",
+        "records[15].save_response",
+        "records[15].finish_response",
+        "records[15].finish_response.result.request_checks.(name . required request reached expected terminal state).detail",
+        "records[15].finish_response.result.request_checks.(name . required request reached expected terminal state).detail",
+        "records[16].first_response",
+        "records[16].second_response",
+        "records[16].status",
+        "records[17].response",
+        "records[17].status",
+        "records[18].response",
+        "records[19].observe_response",
+        "records[19].search_response",
+        "records[19].host_rg_response",
+        "records[19].host_git_response",
+        "records[20].org_observe_response",
+        "records[20].org_update_response",
+        "records[20].org_after_update_response",
+        "records[20].org_stale_update_response",
+        "records[20].org_edit_response",
+        "records[20].org_edit_buffer_observe_response",
+        "records[20].org_edit_replace_response",
+        "records[20].org_exit_response",
+        "records[20].org_after_exit_response",
+        "records[20].org_stale_edit_response",
+        "records[20].org_stale_edit_buffer_observe_response",
+        "records[20].org_stale_replace_response",
+        "records[20].org_stale_exit_response",
+        "records[20].org_before_babel_response",
+        "records[20].org_babel_response",
+        "records[20].org_after_babel_response",
+        "records[20].org_stale_babel_response",
+        "records[20].org_export_response",
+        "records[20].dired_observe_response",
+        "records[20].dired_rename_response",
+        "records[20].collision_response",
+        "records[20].dired_delete_response",
+        "records[20].stale_delete_response",
+        "records[21].initial_response",
+        "records[21].submit_response",
+        "records[21].await_response",
+        "records[21].stale_response",
+        "records[21].checks.(name . stale process-mark submit is rejected before side effects).detail.stale_response",
+        "records[22].initial_response",
+        "records[22].submit_response",
+        "records[22].await_response",
+        "records[22].interrupt_response",
+        "records[22].checks.(name . host-shadow Comint fixture starts a live process).detail",
+        "records[22].checks.(name . comint.submit_input rejects non-rootfs-owned process before input).detail",
+        "records[22].checks.(name . comint.await_output rejects non-rootfs-owned process before waiting).detail",
+        "records[22].checks.(name . comint.interrupt rejects non-rootfs-owned process before control).detail",
+        "records[23].initial_response",
+        "records[23].submit_response",
+        "records[23].await_response",
+        "records[23].stale_interrupt_response",
+        "records[23].fresh_interrupt_response",
+        "records[24].hunk_observe_response",
+        "records[24].hunk_stage_response",
+        "records[24].file_observe_response",
+        "records[24].file_stage_response",
+        "records[24].stale_observe_response",
+        "records[24].stale_stage_response",
+        "records[24].checks.(name . magit.stage_file stages the selected file section).detail.response",
+        "records[24].checks.(name . stale Magit hunk request is rejected before staging).detail.response",
+        "records[25].source_response",
+        "records[25].rename_response",
+        "records[26].observe_response",
+        "records[26].diagnostics_response",
+        "records[26].rename_response",
+        "records[26].await_response",
+        "records[26].await_response.result.status",
+        "records[27].valid_response",
+        "records[27].invalid_version_response",
+        "records[27].capability_mismatch_response",
+        "records[27].invalid_preconditions_response",
+        "records[27].missing_param_response",
+        "records[27].missing_precondition_response",
+        "records[27].defer_response",
+        "records[27].await_response",
+        "records[27].await_response.result.status",
+        "records[27].timeout_defer_response",
+        "records[27].timeout_await_response",
+        "records[27].timeout_await_response.result.status",
+        "records[27].false_error_diagnostic_response",
+        "records[27].jupyter_outcome_target_response",
+        "records[27].jupyter_outcome_await_response",
+        "records[27].jupyter_outcome_await_response.result.status",
+        "records[27].invalid_timeout_response"
+      ]
+    },
+    {
+      "name": "all captured responses satisfy the manifest result envelope",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

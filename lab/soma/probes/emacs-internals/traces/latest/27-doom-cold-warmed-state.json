@@ -1,0 +1,77 @@
+{
+  "id": "doom-cold-warmed-state",
+  "title": "Cold versus warmed Doom session",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Doom environment identity includes generated profile/module artifacts and lazy package activation state, not just user declarations.",
+  "hypothesis": "The generated module file should exist and list declared modules; package autoload files should exist before the corresponding feature is loaded in a clean batch process.",
+  "sources": [
+    {
+      "name": "doom! macro",
+      "path": "~/.emacs.d/lisp/doom-lib.el",
+      "lines": "1528-1547",
+      "note": ""
+    },
+    {
+      "name": "generated module state",
+      "path": "~/.emacs.d/.local/etc/@/init.30.d/95-modules.auto.el",
+      "lines": "1",
+      "note": ""
+    },
+    {
+      "name": "user module declarations",
+      "path": "~/.doom.d/init.el",
+      "lines": "1-220",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Filesystem-only inspection under `emacs --quick --batch`; no user Doom session is opened.",
+  "predicted_behavior": "Generated modules and autoloads exist while features such as Magit are not loaded in the clean probe process.",
+  "observed_behavior": "module-file=\"/project/home/.emacs.d/.local/etc/@/init.30.d/95-modules.auto.el\" has-magit-module=1172 magit-autoload=t feature-before=nil",
+  "independent_checks": [
+    {
+      "name": "generated module file exists",
+      "passed": true,
+      "detail": "/project/home/.emacs.d/.local/etc/@/init.30.d/95-modules.auto.el"
+    },
+    {
+      "name": "generated module file records Magit module",
+      "passed": true,
+      "detail": "found or not found in first 4000 chars"
+    },
+    {
+      "name": "Magit autoload/build artifact exists",
+      "passed": true,
+      "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-autoloads.el"
+    },
+    {
+      "name": "Magit feature is not loaded in clean quick batch",
+      "passed": true,
+      "detail": "nil"
+    }
+  ],
+  "counterexample": "Inferring readiness from `doom!' declarations confuses module declaration with installed package, autoload, loaded feature, active mode, or external service.",
+  "derived_gym_requirement": "Gym environment identity must record Doom core/user config/generated profile/package build ids and current feature/mode/service readiness separately."
+}

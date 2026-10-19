@@ -1,0 +1,72 @@
+{
+  "id": "jupyter-delayed-reply-duplicate-retry",
+  "title": "Jupyter delayed reply and duplicate retry",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A timeout after request submission means the outcome is unknown; retrying a non-idempotent execution can duplicate work.",
+  "hypothesis": "The fake transport should mark a request as submitted, report outcome_unknown before the delayed reply, and demonstrate that a blind retry creates a second request.",
+  "sources": [
+    {
+      "name": "jupyter current client association",
+      "path": "~/.emacs.d/.local/straight/repos/jupyter/jupyter-repl.el",
+      "lines": "2006-2014",
+      "note": ""
+    },
+    {
+      "name": "jupyter completion busy guard",
+      "path": "~/.emacs.d/.local/straight/repos/jupyter/jupyter-client.el",
+      "lines": "1614-1638",
+      "note": ""
+    },
+    {
+      "name": "jupyter code context",
+      "path": "~/.emacs.d/.local/straight/repos/jupyter/jupyter-client.el",
+      "lines": "1283-1308",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "A deterministic fake request table and timer; no real kernel is launched.",
+  "predicted_behavior": "Before the delayed reply arrives the only honest state is outcome_unknown. A retry increments submitted request count.",
+  "observed_behavior": "first=1 retry=2 reply=2 requests=((:id 1 :code \"counter += 1\" :state replied) (:id 2 :code \"counter += 1\" :state replied))",
+  "independent_checks": [
+    {
+      "name": "timeout before reply is outcome_unknown",
+      "passed": true,
+      "detail": "outcome_unknown"
+    },
+    {
+      "name": "blind retry created a second request",
+      "passed": true,
+      "detail": "((:id 2 :code \"counter += 1\" :state replied) (:id 1 :code \"counter += 1\" :state replied))"
+    },
+    {
+      "name": "delayed replies eventually arrived",
+      "passed": true,
+      "detail": "((:id 2 :code \"counter += 1\" :state replied) (:id 1 :code \"counter += 1\" :state replied))"
+    }
+  ],
+  "counterexample": "Treating timeout as not-run can submit a training cell twice.",
+  "derived_gym_requirement": "Jupyter actions need request ids, parent headers or equivalent handles, kernel incarnation, and an outcome_unknown state that blocks blind retry of non-idempotent code."
+}

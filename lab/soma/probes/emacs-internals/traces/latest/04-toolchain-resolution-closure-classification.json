@@ -1,0 +1,66 @@
+{
+  "id": "toolchain-resolution-closure-classification",
+  "title": "Toolchain resolution and closure classification",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A rootfs-owned gym must account for the tools Emacs and its subprocesses invoke, including language servers, compilers, package managers, and Jupyter commands.",
+  "hypothesis": "The probe should inventory tool resolution from inside Emacs and classify whether the current run is a production rootfs closure or a development non-closure.",
+  "sources": [
+    {
+      "name": "Soma development Insula PATH",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "102-119",
+      "note": ""
+    },
+    {
+      "name": "Doom lifecycle environment identity",
+      "path": "docs/internals-atlas/doom-lifecycle.md",
+      "lines": "88-103",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The current Emacs process PATH under the Soma Insula wrapper.",
+  "predicted_behavior": "Emacs should be resolvable; production mode must additionally resolve the required toolchain inside a selected rootfs.",
+  "observed_behavior": "classification=production-rootfs-closure inventory=(((\"tool\" . \"emacs\") (\"path\" . \"/opt/soma/emacs/bin/emacs\") (\"found\" . t)) ((\"tool\" . \"python3\") (\"path\" . \"/usr/bin/python3\") (\"found\" . t)) ((\"tool\" . \"jupyter\") (\"path\" . \"/usr/bin/jupyter\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t)) ((\"tool\" . \"clang\") (\"path\" . \"/usr/bin/clang\") (\"found\" . t)) ((\"tool\" . \"gcc\") (\"path\" . \"/usr/bin/gcc\") (\"found\" . t)) ((\"tool\" . \"g++\") (\"path\" . \"/usr/bin/g++\") (\"found\" . t)) ((\"tool\" . \"rustc\") (\"path\" . \"/opt/soma/cargo/bin/rustc\") (\"found\" . t)) ((\"tool\" . \"cargo\") (\"path\" . \"/opt/soma/cargo/bin/cargo\") (\"found\" . t))) missing=nil",
+  "independent_checks": [
+    {
+      "name": "tool inventory was captured",
+      "passed": true,
+      "detail": "(((\"tool\" . \"emacs\") (\"path\" . \"/opt/soma/emacs/bin/emacs\") (\"found\" . t)) ((\"tool\" . \"python3\") (\"path\" . \"/usr/bin/python3\") (\"found\" . t)) ((\"tool\" . \"jupyter\") (\"path\" . \"/usr/bin/jupyter\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t)) ((\"tool\" . \"clang\") (\"path\" . \"/usr/bin/clang\") (\"found\" . t)) ((\"tool\" . \"gcc\") (\"path\" . \"/usr/bin/gcc\") (\"found\" . t)) ((\"tool\" . \"g++\") (\"path\" . \"/usr/bin/g++\") (\"found\" . t)) ((\"tool\" . \"rustc\") (\"path\" . \"/opt/soma/cargo/bin/rustc\") (\"found\" . t)) ((\"tool\" . \"cargo\") (\"path\" . \"/opt/soma/cargo/bin/cargo\") (\"found\" . t)))"
+    },
+    {
+      "name": "Emacs command resolves in current PATH",
+      "passed": true,
+      "detail": "\"/opt/soma/emacs/bin/emacs\""
+    },
+    {
+      "name": "toolchain closure classification is explicit",
+      "passed": true,
+      "detail": "prod=t missing=nil classification=production-rootfs-closure"
+    }
+  ],
+  "counterexample": "A benchmark can appear to work while silently resolving `python', `clangd', `rust-analyzer', or `jupyter' from the host.",
+  "derived_gym_requirement": "Observation traces must record tool resolution, and production runners must fail before an episode if required tools are absent from the selected rootfs closure."
+}

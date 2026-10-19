@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "execution": "fresh selected-rootfs foreground via shared Insula execute_prepared",
+  "durable_admission_qualified": false,
+  "authenticated_ai_lsp_qualified": false,
+  "benchmark_suites": [
+    {
+      "suite": "bridge",
+      "total": 30,
+      "as_expected": 30
+    },
+    {
+      "suite": "bridge-daemon",
+      "total": 63,
+      "as_expected": 63
+    },
+    {
+      "suite": "comint",
+      "total": 11,
+      "as_expected": 11
+    },
+    {
+      "suite": "dired",
+      "total": 8,
+      "as_expected": 8
+    },
+    {
+      "suite": "jupyter",
+      "total": 8,
+      "as_expected": 8
+    },
+    {
+      "suite": "lsp",
+      "total": 6,
+      "as_expected": 6
+    },
+    {
+      "suite": "magit",
+      "total": 7,
+      "as_expected": 7
+    },
+    {
+      "suite": "org",
+      "total": 6,
+      "as_expected": 6
+    }
+  ],
+  "probes-01": {
+    "total": 36,
+    "passed": 36,
+    "insula_passed": true
+  },
+  "lifecycle-01": {
+    "status": "pass",
+    "child_count": 4
+  },
+  "launcher": {
+    "diagnostic_cases": 3,
+    "lifecycle_cases": 13,
+    "exit_code": 0,
+    "authentication": "deterministic fixture; no live AI calls"
+  },
+  "executed_source_hashes": {
+    "insula/capsule.py": "24743b1b9662e36073f23d14f78f5990f5ebef2b8a4247ee97e58ba9e79f3bde",
+    "lab/soma/scripts/insula/soma_insula.py": "084c6bbdd9070c144d2461274d4997bea45014bcb52f83b82ced6f0cb343b9a7",
+    "lab/soma/benchmarks/emacs-gym/elisp/soma-gym-bridge.el": "a3974dde884edeb2a3671ccb25c8c8e13ee7676db66c00d977cbe5f71720ed88",
+    "lab/soma/ai_lsp/bin/verify-ai-lsp": "dca255696b90a7883623546ef3d7130d25c0ae39ddd03b9b7ab6d216382f5cf6",
+    "lab/soma/ai_lsp/bin/verify-ai-lsp-launcher": "91ba66d098562cd57d5319c83558da7719bdc1906bd28eb4d37d2ed1be975bf0"
+  }
+}

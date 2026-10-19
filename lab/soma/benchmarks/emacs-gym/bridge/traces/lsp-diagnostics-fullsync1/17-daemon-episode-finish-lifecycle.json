@@ -1,0 +1,731 @@
+{
+  "as_expected": true,
+  "async_request": {
+    "operation": "bridge.defer_echo",
+    "params": {
+      "delay_seconds": 0.5,
+      "value": "finish ok"
+    },
+    "request_id": "daemon-finish-async-1"
+  },
+  "async_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "bridge.defer_echo",
+    "request_id": "daemon-finish-async-1",
+    "result": {
+      "delay_seconds": 0.5,
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "finish ok"
+    },
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ]
+  },
+  "await_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-finish-async-1",
+      "timeout_seconds": 2.0
+    },
+    "request_id": "daemon-finish-await-1"
+  },
+  "await_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-finish-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-finish-async-1",
+        "result": {
+          "completed_after_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "finish ok"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-finish-async-1",
+        "result": {
+          "delay_seconds": 0.5,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "finish ok"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "finish async request starts running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "episode completion evidence is incomplete",
+        "error_code": "incomplete_episode",
+        "operation": "episode.finish",
+        "request_id": "daemon-finish-premature-1",
+        "result": {
+          "buffer_checks": null,
+          "buffer_checks_passed": true,
+          "operation": "episode.finish",
+          "request_checks": [
+            {
+              "actual_state": "running",
+              "detail": {
+                "error": false,
+                "error_code": false,
+                "operation": "bridge.defer_echo",
+                "request_id": "daemon-finish-async-1",
+                "result": {
+                  "delay_seconds": 0.5,
+                  "operation": "bridge.defer_echo",
+                  "state": "running",
+                  "value": "finish ok"
+                },
+                "state": "running",
+                "state_sequence": [
+                  "accepted",
+                  "running"
+                ]
+              },
+              "expected_state": "succeeded",
+              "name": "required request reached expected terminal state",
+              "passed": false,
+              "request_id": "daemon-finish-async-1",
+              "terminal": false
+            }
+          ],
+          "request_checks_passed": false,
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "premature finish is rejected",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "episode completion evidence is incomplete",
+        "error_code": "incomplete_episode",
+        "operation": "episode.finish",
+        "request_id": "daemon-finish-premature-1",
+        "result": {
+          "buffer_checks": null,
+          "buffer_checks_passed": true,
+          "operation": "episode.finish",
+          "request_checks": [
+            {
+              "actual_state": "running",
+              "detail": {
+                "error": false,
+                "error_code": false,
+                "operation": "bridge.defer_echo",
+                "request_id": "daemon-finish-async-1",
+                "result": {
+                  "delay_seconds": 0.5,
+                  "operation": "bridge.defer_echo",
+                  "state": "running",
+                  "value": "finish ok"
+                },
+                "state": "running",
+                "state_sequence": [
+                  "accepted",
+                  "running"
+                ]
+              },
+              "expected_state": "succeeded",
+              "name": "required request reached expected terminal state",
+              "passed": false,
+              "request_id": "daemon-finish-async-1",
+              "terminal": false
+            }
+          ],
+          "request_checks_passed": false,
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "premature finish reports incomplete episode",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_checks": null,
+        "buffer_checks_passed": true,
+        "operation": "episode.finish",
+        "request_checks": [
+          {
+            "actual_state": "running",
+            "detail": {
+              "error": false,
+              "error_code": false,
+              "operation": "bridge.defer_echo",
+              "request_id": "daemon-finish-async-1",
+              "result": {
+                "delay_seconds": 0.5,
+                "operation": "bridge.defer_echo",
+                "state": "running",
+                "value": "finish ok"
+              },
+              "state": "running",
+              "state_sequence": [
+                "accepted",
+                "running"
+              ]
+            },
+            "expected_state": "succeeded",
+            "name": "required request reached expected terminal state",
+            "passed": false,
+            "request_id": "daemon-finish-async-1",
+            "terminal": false
+          }
+        ],
+        "request_checks_passed": false,
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "failed"
+        ]
+      },
+      "name": "premature finish identifies running dependency",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.await",
+        "request_id": "daemon-finish-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-finish-async-1",
+            "result": {
+              "completed_after_seconds": 0.5,
+              "operation": "bridge.defer_echo",
+              "state": "succeeded",
+              "value": "finish ok"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "await before final finish succeeds",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "episode.finish",
+        "request_id": "daemon-finish-1",
+        "result": {
+          "buffer_checks": null,
+          "buffer_checks_passed": true,
+          "operation": "episode.finish",
+          "request_checks": [
+            {
+              "actual_state": "succeeded",
+              "detail": {
+                "error": false,
+                "error_code": false,
+                "operation": "bridge.defer_echo",
+                "request_id": "daemon-finish-async-1",
+                "result": {
+                  "completed_after_seconds": 0.5,
+                  "operation": "bridge.defer_echo",
+                  "state": "succeeded",
+                  "value": "finish ok"
+                },
+                "state": "succeeded",
+                "state_sequence": [
+                  "accepted",
+                  "running",
+                  "succeeded"
+                ]
+              },
+              "expected_state": "succeeded",
+              "name": "required request reached expected terminal state",
+              "passed": true,
+              "request_id": "daemon-finish-async-1",
+              "terminal": true
+            },
+            {
+              "actual_state": "succeeded",
+              "detail": {
+                "error": false,
+                "error_code": false,
+                "operation": "request.await",
+                "request_id": "daemon-finish-await-1",
+                "result": {
+                  "operation": "request.await",
+                  "state": "succeeded",
+                  "status": {
+                    "error": false,
+                    "error_code": false,
+                    "operation": "bridge.defer_echo",
+                    "request_id": "daemon-finish-async-1",
+                    "result": {
+                      "completed_after_seconds": 0.5,
+                      "operation": "bridge.defer_echo",
+                      "state": "succeeded",
+                      "value": "finish ok"
+                    },
+                    "state": "succeeded",
+                    "state_sequence": [
+                      "accepted",
+                      "running",
+                      "succeeded"
+                    ]
+                  }
+                },
+                "state": "succeeded",
+                "state_sequence": [
+                  "accepted",
+                  "running",
+                  "succeeded"
+                ]
+              },
+              "expected_state": "succeeded",
+              "name": "required request reached expected terminal state",
+              "passed": true,
+              "request_id": "daemon-finish-await-1",
+              "terminal": true
+            }
+          ],
+          "request_checks_passed": true,
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final finish request succeeds",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_checks": null,
+        "buffer_checks_passed": true,
+        "operation": "episode.finish",
+        "request_checks": [
+          {
+            "actual_state": "succeeded",
+            "detail": {
+              "error": false,
+              "error_code": false,
+              "operation": "bridge.defer_echo",
+              "request_id": "daemon-finish-async-1",
+              "result": {
+                "completed_after_seconds": 0.5,
+                "operation": "bridge.defer_echo",
+                "state": "succeeded",
+                "value": "finish ok"
+              },
+              "state": "succeeded",
+              "state_sequence": [
+                "accepted",
+                "running",
+                "succeeded"
+              ]
+            },
+            "expected_state": "succeeded",
+            "name": "required request reached expected terminal state",
+            "passed": true,
+            "request_id": "daemon-finish-async-1",
+            "terminal": true
+          },
+          {
+            "actual_state": "succeeded",
+            "detail": {
+              "error": false,
+              "error_code": false,
+              "operation": "request.await",
+              "request_id": "daemon-finish-await-1",
+              "result": {
+                "operation": "request.await",
+                "state": "succeeded",
+                "status": {
+                  "error": false,
+                  "error_code": false,
+                  "operation": "bridge.defer_echo",
+                  "request_id": "daemon-finish-async-1",
+                  "result": {
+                    "completed_after_seconds": 0.5,
+                    "operation": "bridge.defer_echo",
+                    "state": "succeeded",
+                    "value": "finish ok"
+                  },
+                  "state": "succeeded",
+                  "state_sequence": [
+                    "accepted",
+                    "running",
+                    "succeeded"
+                  ]
+                }
+              },
+              "state": "succeeded",
+              "state_sequence": [
+                "accepted",
+                "running",
+                "succeeded"
+              ]
+            },
+            "expected_state": "succeeded",
+            "name": "required request reached expected terminal state",
+            "passed": true,
+            "request_id": "daemon-finish-await-1",
+            "terminal": true
+          }
+        ],
+        "request_checks_passed": true,
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final finish records episode completion",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_checks": null,
+        "buffer_checks_passed": true,
+        "operation": "episode.finish",
+        "request_checks": [
+          {
+            "actual_state": "succeeded",
+            "detail": {
+              "error": false,
+              "error_code": false,
+              "operation": "bridge.defer_echo",
+              "request_id": "daemon-finish-async-1",
+              "result": {
+                "completed_after_seconds": 0.5,
+                "operation": "bridge.defer_echo",
+                "state": "succeeded",
+                "value": "finish ok"
+              },
+              "state": "succeeded",
+              "state_sequence": [
+                "accepted",
+                "running",
+                "succeeded"
+              ]
+            },
+            "expected_state": "succeeded",
+            "name": "required request reached expected terminal state",
+            "passed": true,
+            "request_id": "daemon-finish-async-1",
+            "terminal": true
+          },
+          {
+            "actual_state": "succeeded",
+            "detail": {
+              "error": false,
+              "error_code": false,
+              "operation": "request.await",
+              "request_id": "daemon-finish-await-1",
+              "result": {
+                "operation": "request.await",
+                "state": "succeeded",
+                "status": {
+                  "error": false,
+                  "error_code": false,
+                  "operation": "bridge.defer_echo",
+                  "request_id": "daemon-finish-async-1",
+                  "result": {
+                    "completed_after_seconds": 0.5,
+                    "operation": "bridge.defer_echo",
+                    "state": "succeeded",
+                    "value": "finish ok"
+                  },
+                  "state": "succeeded",
+                  "state_sequence": [
+                    "accepted",
+                    "running",
+                    "succeeded"
+                  ]
+                }
+              },
+              "state": "succeeded",
+              "state_sequence": [
+                "accepted",
+                "running",
+                "succeeded"
+              ]
+            },
+            "expected_state": "succeeded",
+            "name": "required request reached expected terminal state",
+            "passed": true,
+            "request_id": "daemon-finish-await-1",
+            "terminal": true
+          }
+        ],
+        "request_checks_passed": true,
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final finish validated required requests",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "final_finish_request": {
+    "operation": "episode.finish",
+    "params": {
+      "required_requests": [
+        {
+          "request_id": "daemon-finish-async-1",
+          "state": "succeeded"
+        },
+        {
+          "request_id": "daemon-finish-await-1",
+          "state": "succeeded"
+        }
+      ]
+    },
+    "request_id": "daemon-finish-1"
+  },
+  "final_finish_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "episode.finish",
+    "request_id": "daemon-finish-1",
+    "result": {
+      "buffer_checks": null,
+      "buffer_checks_passed": true,
+      "operation": "episode.finish",
+      "request_checks": [
+        {
+          "actual_state": "succeeded",
+          "detail": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-finish-async-1",
+            "result": {
+              "completed_after_seconds": 0.5,
+              "operation": "bridge.defer_echo",
+              "state": "succeeded",
+              "value": "finish ok"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          },
+          "expected_state": "succeeded",
+          "name": "required request reached expected terminal state",
+          "passed": true,
+          "request_id": "daemon-finish-async-1",
+          "terminal": true
+        },
+        {
+          "actual_state": "succeeded",
+          "detail": {
+            "error": false,
+            "error_code": false,
+            "operation": "request.await",
+            "request_id": "daemon-finish-await-1",
+            "result": {
+              "operation": "request.await",
+              "state": "succeeded",
+              "status": {
+                "error": false,
+                "error_code": false,
+                "operation": "bridge.defer_echo",
+                "request_id": "daemon-finish-async-1",
+                "result": {
+                  "completed_after_seconds": 0.5,
+                  "operation": "bridge.defer_echo",
+                  "state": "succeeded",
+                  "value": "finish ok"
+                },
+                "state": "succeeded",
+                "state_sequence": [
+                  "accepted",
+                  "running",
+                  "succeeded"
+                ]
+              }
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          },
+          "expected_state": "succeeded",
+          "name": "required request reached expected terminal state",
+          "passed": true,
+          "request_id": "daemon-finish-await-1",
+          "terminal": true
+        }
+      ],
+      "request_checks_passed": true,
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "id": "daemon-episode-finish-lifecycle",
+  "policy_passed_grader": true,
+  "premature_finish_request": {
+    "operation": "episode.finish",
+    "params": {
+      "required_requests": [
+        {
+          "request_id": "daemon-finish-async-1",
+          "state": "succeeded"
+        }
+      ]
+    },
+    "request_id": "daemon-finish-premature-1"
+  },
+  "premature_finish_response": {
+    "error": "episode completion evidence is incomplete",
+    "error_code": "incomplete_episode",
+    "operation": "episode.finish",
+    "request_id": "daemon-finish-premature-1",
+    "result": {
+      "buffer_checks": null,
+      "buffer_checks_passed": true,
+      "operation": "episode.finish",
+      "request_checks": [
+        {
+          "actual_state": "running",
+          "detail": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-finish-async-1",
+            "result": {
+              "delay_seconds": 0.5,
+              "operation": "bridge.defer_echo",
+              "state": "running",
+              "value": "finish ok"
+            },
+            "state": "running",
+            "state_sequence": [
+              "accepted",
+              "running"
+            ]
+          },
+          "expected_state": "succeeded",
+          "name": "required request reached expected terminal state",
+          "passed": false,
+          "request_id": "daemon-finish-async-1",
+          "terminal": false
+        }
+      ],
+      "request_checks_passed": false,
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "failed"
+      ]
+    },
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "failed"
+    ]
+  },
+  "title": "episode.finish rejects a running dependency and succeeds after required daemon requests are terminal"
+}

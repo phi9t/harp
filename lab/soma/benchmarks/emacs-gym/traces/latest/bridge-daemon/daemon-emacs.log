@@ -1,0 +1,53 @@
+Starting Emacs daemon.
+Loading /workspace/soma/benchmarks/emacs-gym/bridge/elisp/daemon-start.el (source)...
+
+Added to /project/tmp/soma-daemon-magit-3AhYpt/soma-daemon-magit-hooks.log
+Added to /project/tmp/soma-daemon-magit-j4h18d/soma-daemon-magit-hooks.log
+Added to /project/tmp/soma-daemon-magit-x5cXjc/soma-daemon-magit-hooks.log
+Added to /project/tmp/soma-daemon-magit-2JR7xy/soma-daemon-magit-hooks.log
+Added to /project/tmp/soma-daemon-magit-anpaVb/soma-daemon-magit-hooks.log
+Added to /project/tmp/soma-daemon-magit-wBdFCg/soma-daemon-magit-hooks.log
+Added to /project/tmp/soma-daemon-magit-XuXY0P/soma-daemon-magit-hooks.log
+Requesting kernel info...
+Loading /project/home/.emacs.d/.local/straight/build-30.2/zmq/emacs-zmq (module)...
+Loading /project/home/.emacs.d/.local/straight/build-30.2/zmq/emacs-zmq (module)...done
+Requesting kernel info...done
+Can’t guess python-indent-offset, using defaults: 4
+Can’t guess python-indent-offset, using defaults: 4
+Can’t guess python-indent-offset, using defaults: 4
+Requesting kernel info...
+Requesting kernel info...done
+Can’t guess python-indent-offset, using defaults: 4
+Requesting kernel info...
+Requesting kernel info...done
+Can’t guess python-indent-offset, using defaults: 4
+Blocking call to accept-process-output with quit inhibited!!
+Can’t guess python-indent-offset, using defaults: 4
+lsp-session-file is nil, not persisting session.
+LSP :: Connected to [pylsp:1377/starting /project/tmp/soma-daemon-lsp-python-ODkzMR].
+Can’t guess python-indent-offset, using defaults: 4
+LSP :: Connected to [pylsp:1377/starting /project/tmp/soma-daemon-lsp-python-ODkzMR].
+LSP :: Connected to [pylsp:1377/starting /project/tmp/soma-daemon-lsp-python-ODkzMR].
+LSP :: Unable to autoconfigure company-mode.
+LSP :: Unable to autoconfigure company-mode.
+LSP :: Unable to autoconfigure company-mode.
+LSP :: pylsp:1377 initialized successfully in folders: (/project/tmp/soma-daemon-lsp-python-ODkzMR)
+LSP :: Client semgrep-ls is not in lsp-enabled-clients
+LSP :: Client ruff is not in lsp-enabled-clients
+LSP :: Client ty-ls is not in lsp-enabled-clients
+LSP :: Client pyls is not in lsp-enabled-clients
+LSP :: Client pylsp is not in lsp-enabled-clients
+LSP :: Client semgrep-ls is not in lsp-enabled-clients
+LSP :: Client ruff is not in lsp-enabled-clients
+LSP :: Client ty-ls is not in lsp-enabled-clients
+LSP :: Client pyls is not in lsp-enabled-clients
+LSP :: Client pylsp is not in lsp-enabled-clients
+lsp-session-file is nil, not persisting session.
+LSP :: Connected to [soma-pyright-diagnostics:1744/starting /project/tmp/soma-daemon-lsp-pyright-VP2Mcb].
+LSP :: Unable to autoconfigure company-mode.
+LSP :: soma-pyright-diagnostics:1744 initialized successfully in folders: (/project/tmp/soma-daemon-lsp-pyright-VP2Mcb)
+Loading /workspace/soma/benchmarks/emacs-gym/bridge/elisp/daemon-start.el (source)...done
+Error saving transient history: (file-error "Creating directory" "Read-only file system" "/project/home/.emacs.d/transient")
+LSP :: soma-pyright-diagnostics has exited (killed)
+LSP :: pylsp has exited (killed)
+LSP :: Sending to process failed with the following error: Process pylsp not running: killed

@@ -1,0 +1,66 @@
+{
+  "id": "base-indirect-buffers",
+  "title": "Base and indirect buffers share text",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Indirect buffers are distinct buffer objects whose text changes affect the base buffer.",
+  "hypothesis": "Editing the indirect buffer should change the base buffer text while preserving separate buffer identities.",
+  "sources": [
+    {
+      "name": "buffer identity runtime",
+      "path": "Emacs primitive introspection",
+      "lines": "buffer-base-buffer, clone-indirect-buffer",
+      "note": ""
+    },
+    {
+      "name": "reported C source gap",
+      "path": "source-directory",
+      "lines": "missing Spack source directory",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One base buffer and one indirect buffer.",
+  "predicted_behavior": "The base buffer text changes after insertion in the indirect buffer; buffer-local state such as point can still differ.",
+  "observed_behavior": "base=\"soma-base\" indirect=\"soma-indirect\" indirect-base=\"soma-base\" base-text=\"alpha-from-indirect\"",
+  "independent_checks": [
+    {
+      "name": "buffer objects differ",
+      "passed": true,
+      "detail": "base-eq-indirect=nil"
+    },
+    {
+      "name": "indirect records base buffer",
+      "passed": true,
+      "detail": "#<buffer soma-base>"
+    },
+    {
+      "name": "base text reflects indirect edit",
+      "passed": true,
+      "detail": "alpha-from-indirect"
+    }
+  ],
+  "counterexample": "A checker that says only one buffer object changed misses shared text ownership.",
+  "derived_gym_requirement": "Observations must include buffer identity, base-buffer/text-owner identity, and visited file identity separately."
+}

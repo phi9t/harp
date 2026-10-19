@@ -1,0 +1,61 @@
+{
+  "id": "minibuffer-transient-interruption",
+  "title": "Minibuffer cancellation and transient argument context",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Prompt cancellation and transient suffix execution are interaction states, not ordinary function calls.",
+  "hypothesis": "A batch minibuffer can be canceled and observed as a quit; transient source can be loaded and its command-context requirement recorded, but real transient keymaps require a terminal-frame probe.",
+  "sources": [
+    {
+      "name": "minibuffer selected window references",
+      "path": "minibuffer.el.gz",
+      "lines": "212-258",
+      "note": ""
+    },
+    {
+      "name": "transient source",
+      "path": "~/.emacs.d/.local/straight/repos/transient/lisp/transient.el",
+      "lines": "installed package",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One minibuffer setup hook that aborts recursive edit; transient source availability check.",
+  "predicted_behavior": "The minibuffer cancellation is observable as a quit. Transient terminal-key lifecycle is not fully exercised in batch.",
+  "observed_behavior": "minibuffer-result=end-of-file transient-library=\"/project/home/.emacs.d/.local/straight/build-30.2/transient/transient.elc\"",
+  "independent_checks": [
+    {
+      "name": "minibuffer cancellation produced quit",
+      "passed": true,
+      "detail": "end-of-file"
+    },
+    {
+      "name": "transient package source is available for terminal follow-up",
+      "passed": true,
+      "detail": "\"/project/home/.emacs.d/.local/straight/build-30.2/transient/transient.elc\""
+    }
+  ],
+  "counterexample": "Treating every prompt as a direct function call cannot model cancellation and continuation.",
+  "derived_gym_requirement": "Bridge observations must expose active minibuffer/transient state, and terminal-path probes must cover transient prefix/infix/suffix lifetimes before those actions are benchmarked."
+}

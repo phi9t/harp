@@ -1,0 +1,71 @@
+{
+  "id": "jupyter-real-kernel-rootfs-identity",
+  "title": "Jupyter real kernel rootfs identity",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A Jupyter benchmark must prove the actual kernel process that executed a request, not only the Emacs process or `jupyter' CLI.",
+  "hypothesis": "A temporary Python kernel launched through `jupyter_client' should execute one request, return a matching shell reply and IOPub idle state, and print rootfs identity from inside the kernel.",
+  "sources": [
+    {
+      "name": "TorchTitan Emacs/Jupyter verifier",
+      "path": "/private-source/home/operator/workspace/torchtitan/experiments/jupyter_rootfs/verify_attach.el",
+      "lines": "96-133",
+      "note": ""
+    },
+    {
+      "name": "Jupyter package contract",
+      "path": "docs/internals-atlas/package-contracts/jupyter.md",
+      "lines": "27-38, 64-74",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "A temporary `jupyter_client.KernelManager' Python kernel launched from the selected rootfs.",
+  "predicted_behavior": "Production mode should execute code in a real kernel with matching request ids, rootfs-owned Python executable, stable Insula run id, and idle completion evidence.",
+  "observed_behavior": "prod=t status=0 ok=t msg-id=\"7c3cbf93-b32761162d0951f92248f918_276_1\" reply-parent=\"7c3cbf93-b32761162d0951f92248f918_276_1\" kernel-exe=\"/usr/bin/python3\" kernel-cwd=\"/workspace/soma\" kernel-run-id=\"20260930T040324Z-4018462\" output=\"SOMA_JUPYTER_PROBE:{\\\"connection_file\\\": \\\"/project/tmp/tmptxrc2ppn.json\\\", \\\"errors\\\": [], \\\"idle\\\": true, \\\"kernel_pid\\\": 280, \\\"msg_id\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"ok\\\": true, \\\"payload\\\": {\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path0\\\": [\\\"/usr/lib/python312.zip\\\", \\\"/usr/lib/python3.12\\\", \\\"/usr/lib/python3.12/lib-dynload\\\", \\\"\\\", \\\"/usr/local/lib/python3.12/dist-packages\\\"], \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}, \\\"reply_parent\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"reply_status\\\": \\\"ok\\\"}\n\nProcess soma-probe-process finished\n\"",
+  "independent_checks": [
+    {
+      "name": "real Jupyter kernel probe ran in production",
+      "passed": true,
+      "detail": "status=0 output=\"SOMA_JUPYTER_PROBE:{\\\"connection_file\\\": \\\"/project/tmp/tmptxrc2ppn.json\\\", \\\"errors\\\": [], \\\"idle\\\": true, \\\"kernel_pid\\\": 280, \\\"msg_id\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"ok\\\": true, \\\"payload\\\": {\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path0\\\": [\\\"/usr/lib/python312.zip\\\", \\\"/usr/lib/python3.12\\\", \\\"/usr/lib/python3.12/lib-dynload\\\", \\\"\\\", \\\"/usr/local/lib/python3.12/dist-packages\\\"], \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}, \\\"reply_parent\\\": \\\"7c3cbf93-b32761162d0951f92248f918_276_1\\\", \\\"reply_status\\\": \\\"ok\\\"}\n\nProcess soma-probe-process finished\n\""
+    },
+    {
+      "name": "kernel request reached ok reply and idle",
+      "passed": true,
+      "detail": "ok=t msg-id=\"7c3cbf93-b32761162d0951f92248f918_276_1\" reply-parent=\"7c3cbf93-b32761162d0951f92248f918_276_1\" parsed=((\"connection_file\" . \"/project/tmp/tmptxrc2ppn.json\") (\"errors\") (\"idle\" . t) (\"kernel_pid\" . 280) (\"msg_id\" . \"7c3cbf93-b32761162d0951f92248f918_276_1\") (\"ok\" . t) (\"payload\" (\"cwd\" . \"/workspace/soma\") (\"executable\" . \"/usr/bin/python3\") (\"path0\" \"/usr/lib/python312.zip\" \"/usr/lib/python3.12\" \"/usr/lib/python3.12/lib-dynload\" \"\" \"/usr/local/lib/python3.12/dist-packages\") (\"plan\" . \"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\") (\"prefix\" . \"/usr\") (\"run_id\" . \"20260930T040324Z-4018462\")) (\"reply_parent\" . \"7c3cbf93-b32761162d0951f92248f918_276_1\") (\"reply_status\" . \"ok\"))"
+    },
+    {
+      "name": "kernel sees stable Insula run id",
+      "passed": true,
+      "detail": "run-id=\"20260930T040324Z-4018462\" kernel-run-id=\"20260930T040324Z-4018462\""
+    },
+    {
+      "name": "kernel executable and cwd are rootfs/runtime owned",
+      "passed": true,
+      "detail": "exe=\"/usr/bin/python3\" cwd=\"/workspace/soma\" plan=\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\""
+    }
+  ],
+  "counterexample": "A checker that accepts the right printed value can miss execution on the wrong kernel, duplicate retries, or an unknown request outcome.",
+  "derived_gym_requirement": "Jupyter actions must track kernel incarnation, request id, shell reply, parent-header outputs, idle/completion state, and kernel-side rootfs identity."
+}

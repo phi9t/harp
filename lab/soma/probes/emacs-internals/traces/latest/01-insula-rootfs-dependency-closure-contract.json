@@ -1,0 +1,77 @@
+{
+  "id": "insula-rootfs-dependency-closure-contract",
+  "title": "Insula rootfs dependency closure contract",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Hermetic Insula evidence is a rootfs-owned tool/package/dependency closure with ABI accounting, not merely an environment variable or a bwrap namespace.",
+  "hypothesis": "The current development Insula should truthfully report that it uses host system binds and has no ABI guarantee; a production Soma Insula must report a selected rootfs and dependency closure.",
+  "sources": [
+    {
+      "name": "Soma development Insula plan",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "37-66",
+      "note": ""
+    },
+    {
+      "name": "Atlas rootfs requirement",
+      "path": "docs/internals-atlas/README.md",
+      "lines": "55-60",
+      "note": ""
+    },
+    {
+      "name": "Soma Insula issue",
+      "path": ".scratch/emacs-gym/issues/0002-soma-insula-contract-spike.md",
+      "lines": "14-36",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The emitted `insula-plan.json' from the current run.",
+  "predicted_behavior": "Development mode is allowed only if the plan explicitly says dependency closure is not rootfs-owned and ABI guarantee is absent.",
+  "observed_behavior": "mode=\"selected-container-rootfs-insula\" rootfs=\"/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34\" dependency_closure=\"rootfs_owned\" abi_guarantee=\"container-rootfs-abi-manifest\" production_required_tools=(\"emacs\" \"emacsclient\" \"python3\" \"jupyter\" \"pylsp\" \"pyright\" \"pyright-langserver\" \"clangd\" \"clang\" \"clang++\" \"gcc\" \"g++\" \"ldd\" \"rust-analyzer\" \"rustc\" \"cargo\" \"git\" \"tmux\" \"sh\" \"bash\")",
+  "independent_checks": [
+    {
+      "name": "insula plan was readable",
+      "passed": true,
+      "detail": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+    },
+    {
+      "name": "network policy is explicit",
+      "passed": true,
+      "detail": "disabled"
+    },
+    {
+      "name": "production required tool list is recorded",
+      "passed": true,
+      "detail": "(\"emacs\" \"emacsclient\" \"python3\" \"jupyter\" \"pylsp\" \"pyright\" \"pyright-langserver\" \"clangd\" \"clang\" \"clang++\" \"gcc\" \"g++\" \"ldd\" \"rust-analyzer\" \"rustc\" \"cargo\" \"git\" \"tmux\" \"sh\" \"bash\")"
+    },
+    {
+      "name": "rootfs dependency closure is truthfully classified",
+      "passed": true,
+      "detail": "dev=nil prod=t rootfs=\"/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34\" closure=\"rootfs_owned\" abi=\"container-rootfs-abi-manifest\""
+    }
+  ],
+  "counterexample": "Treating bwrap entry as hermetic even when `/usr' and toolchains come from the host hides unaccounted ABI and package dependencies.",
+  "derived_gym_requirement": "Production benchmark runs must select a Soma-owned rootfs manifest before launching Emacs, LSP servers, Jupyter kernels, Comint shells, or language toolchains."
+}

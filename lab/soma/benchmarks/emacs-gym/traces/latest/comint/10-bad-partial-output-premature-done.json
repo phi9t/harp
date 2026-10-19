@@ -1,0 +1,45 @@
+{
+  "id": "bad-partial-output-premature-done",
+  "title": "Incorrect policy treats partial output as command completion",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-partial-premature*",
+    "process": "partial-premature",
+    "pid": 22,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/insula-plan.json"
+  },
+  "name": "bad-partial-output-premature-done",
+  "action": {
+    "operation": "comint-send-input",
+    "completion_state": "succeeded_on_partial_output",
+    "partial_output_seen": true,
+    "final_output_seen": false
+  },
+  "checks": [
+    {
+      "name": "partial output was observed",
+      "passed": true,
+      "detail": "printf 'SOMA_PARTIAL_START:partial\\n'; sleep 0.4; printf 'partial\\n' >> /project/tmp/soma-comint-bench-fz5ABL/counter; printf 'SOMA_PARTIAL_DONE:partial\\n'\n$ SOMA_PARTIAL_START:partial\n"
+    },
+    {
+      "name": "policy did not treat partial output as completion",
+      "passed": false,
+      "detail": "final-before-success=nil action=((\"operation\" . \"comint-send-input\") (\"completion_state\" . \"succeeded_on_partial_output\") (\"partial_output_seen\" . t) (\"final_output_seen\" . :json-false))"
+    },
+    {
+      "name": "side effect completed before success",
+      "passed": false,
+      "detail": "counter-lines=0"
+    }
+  ],
+  "output": "printf 'SOMA_PARTIAL_START:partial\\n'; sleep 0.4; printf 'partial\\n' >> /project/tmp/soma-comint-bench-fz5ABL/counter; printf 'SOMA_PARTIAL_DONE:partial\\n'\n$ SOMA_PARTIAL_START:partial\n",
+  "counter_lines": 0
+}

@@ -1,0 +1,216 @@
+{
+  "id": "bad-new-kernel-continuity",
+  "title": "Incorrect policy connects to a new kernel instead of the observed existing kernel",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json",
+    "connection_file": "/project/tmp/tmparqw2tfs.json",
+    "kernel_pid": 124,
+    "kernel_exe": "/usr/bin/python3.12",
+    "kernel_token": "20260929T040533Z-3771476-intended-66329a",
+    "client_class": "jupyter-repl-client",
+    "client_session_id": "",
+    "source_buffer": "soma-jupyter-wrong-kernel.py",
+    "source_major_mode": "python-mode",
+    "repl_buffer": "*jupyter-repl[soma-fresh]*"
+  },
+  "name": "bad-new-kernel-continuity",
+  "checks": [
+    {
+      "name": "fixture kernel existed before Emacs connected",
+      "passed": true,
+      "detail": "((\"connection_file\" . \"/project/tmp/tmparqw2tfs.json\") (\"cwd\" . \"/workspace/soma\") (\"helper_executable\" . \"/usr/bin/python3\") (\"helper_prefix\" . \"/usr\") (\"kernel_exe\" . \"/usr/bin/python3.12\") (\"kernel_pid\" . 124) (\"kernel_token\" . \"20260929T040533Z-3771476-intended-66329a\") (\"ok\" . t) (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json\") (\"prelude\" (\"errors\") (\"idle\" . t) (\"msg_id\" . \"90af8237-1edf3929c8e8d9e603dd5a58_120_1\") (\"reply_parent\" . \"90af8237-1edf3929c8e8d9e603dd5a58_120_1\") (\"reply_status\" . \"ok\") (\"streams\")) (\"run_id\" . \"20260929T040533Z-3771476\"))"
+    },
+    {
+      "name": "kernel process executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/python3.12"
+    },
+    {
+      "name": "action connected through existing connection file",
+      "passed": false,
+      "detail": "action=((\"connect_operation\" . \"jupyter-connect-repl\") (\"connection_file\" . \"/project/tmp/tmp46fnppy4.json\") (\"associate_operation\" . \"jupyter-repl-associate-buffer\") (\"associated\" . t) (\"associated_buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"source_buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"kernel_policy\" . \"new-kernel-after-observation\") (\"retry_count\" . 0)) expected=\"/project/tmp/tmparqw2tfs.json\""
+    },
+    {
+      "name": "source buffer associated with intended REPL client",
+      "passed": true,
+      "detail": "action=((\"connect_operation\" . \"jupyter-connect-repl\") (\"connection_file\" . \"/project/tmp/tmp46fnppy4.json\") (\"associate_operation\" . \"jupyter-repl-associate-buffer\") (\"associated\" . t) (\"associated_buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"source_buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"kernel_policy\" . \"new-kernel-after-observation\") (\"retry_count\" . 0)) expected-source=\"soma-jupyter-wrong-kernel.py\""
+    },
+    {
+      "name": "action evaluated the intended source buffer",
+      "passed": true,
+      "detail": "action=((\"connect_operation\" . \"jupyter-connect-repl\") (\"connection_file\" . \"/project/tmp/tmp46fnppy4.json\") (\"associate_operation\" . \"jupyter-repl-associate-buffer\") (\"associated\" . t) (\"associated_buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"source_buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"kernel_policy\" . \"new-kernel-after-observation\") (\"retry_count\" . 0)) expected-source=\"soma-jupyter-wrong-kernel.py\""
+    },
+    {
+      "name": "operation used jupyter-eval-region",
+      "passed": true,
+      "detail": "((\"operation\" . \"jupyter-eval-region\") (\"buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"idle\" . t) (\"wait_timeout_seconds\" . 20) (\"error\" . \"\") (\"submitted_code\" . \"import json, os, sys\nSOMA_BENCH_COUNTER += 1\nprint('SOMA_SELECTED_JSON:' + json.dumps({\n    'counter': SOMA_BENCH_COUNTER,\n    'kernel_token': SOMA_BENCH_KERNEL_TOKEN,\n    'run_id': SOMA_BENCH_RUN_ID,\n    'training_executions': SOMA_TRAINING_EXECUTIONS,\n}, sort_keys=True))\n\") (\"request_id\" . \"40557a84-14a6-4a4b-bb21-bf76fea425e2\") (\"request_idle_flag\" . t) (\"message_types\" \"status\" \"execute_input\" \"stream\" \"execute_reply\" \"status\") (\"parent_ids\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{\\\"counter\\\": 1, \\\"kernel_token\\\": \\\"20260929T040533Z-3771476-fresh-b04873\\\", \\\"run_id\\\": \\\"20260929T040533Z-3771476\\\", \\\"training_executions\\\": 0}\n\") (\"display_events\") (\"display_update_events\") (\"reply_status\" . \"ok\") (\"reply_parent\" . \"40557a84-14a6-4a4b-bb21-bf76fea425e2\"))"
+    },
+    {
+      "name": "selected-region request id reached idle",
+      "passed": true,
+      "detail": "((\"operation\" . \"jupyter-eval-region\") (\"buffer\" . \"soma-jupyter-wrong-kernel.py\") (\"idle\" . t) (\"wait_timeout_seconds\" . 20) (\"error\" . \"\") (\"submitted_code\" . \"import json, os, sys\nSOMA_BENCH_COUNTER += 1\nprint('SOMA_SELECTED_JSON:' + json.dumps({\n    'counter': SOMA_BENCH_COUNTER,\n    'kernel_token': SOMA_BENCH_KERNEL_TOKEN,\n    'run_id': SOMA_BENCH_RUN_ID,\n    'training_executions': SOMA_TRAINING_EXECUTIONS,\n}, sort_keys=True))\n\") (\"request_id\" . \"40557a84-14a6-4a4b-bb21-bf76fea425e2\") (\"request_idle_flag\" . t) (\"message_types\" \"status\" \"execute_input\" \"stream\" \"execute_reply\" \"status\") (\"parent_ids\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\" \"40557a84-14a6-4a4b-bb21-bf76fea425e2\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{\\\"counter\\\": 1, \\\"kernel_token\\\": \\\"20260929T040533Z-3771476-fresh-b04873\\\", \\\"run_id\\\": \\\"20260929T040533Z-3771476\\\", \\\"training_executions\\\": 0}\n\") (\"display_events\") (\"display_update_events\") (\"reply_status\" . \"ok\") (\"reply_parent\" . \"40557a84-14a6-4a4b-bb21-bf76fea425e2\"))"
+    },
+    {
+      "name": "submitted exact selected region",
+      "passed": true,
+      "detail": "submitted-sha=16fdce6ece3f739b92687283cf9a75dceb5c49b23ace07ad8f024516e17936dd expected-sha=16fdce6ece3f739b92687283cf9a75dceb5c49b23ace07ad8f024516e17936dd submitted=\"import json, os, sys\nSOMA_BENCH_COUNTER += 1\nprint('SOMA_SELECTED_JSON:' + json.dumps({\n    'counter': SOMA_BENCH_COUNTER,\n    'kernel_token': SOMA_BENCH_KERNEL_TOKEN,\n    'run_id': SOMA_BENCH_RUN_ID,\n    'training_executions': SOMA_TRAINING_EXECUTIONS,\n}, sort_keys=True))\n\""
+    },
+    {
+      "name": "submitted code excludes training cell",
+      "passed": true,
+      "detail": "import json, os, sys\nSOMA_BENCH_COUNTER += 1\nprint('SOMA_SELECTED_JSON:' + json.dumps({\n    'counter': SOMA_BENCH_COUNTER,\n    'kernel_token': SOMA_BENCH_KERNEL_TOKEN,\n    'run_id': SOMA_BENCH_RUN_ID,\n    'training_executions': SOMA_TRAINING_EXECUTIONS,\n}, sort_keys=True))\n"
+    },
+    {
+      "name": "timeout after submit is treated as outcome_unknown without retry",
+      "passed": true,
+      "detail": "timeout_state=\"\" retry_count=0"
+    },
+    {
+      "name": "state query reached ok reply and idle",
+      "passed": true,
+      "detail": "((\"operation\" . \"jupyter-eval-string\") (\"idle\" . t) (\"state_path\" . \"/project/tmp/soma-jupyter-state-W44evV.json\") (\"state_file_exists\" . t) (\"error\" . \"\") (\"payload\" (\"counter\" . 1) (\"cwd\" . \"/workspace/soma\") (\"executable\" . \"/usr/bin/python3\") (\"kernel_token\" . \"20260929T040533Z-3771476-fresh-b04873\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json\") (\"prefix\" . \"/usr\") (\"run_id\" . \"20260929T040533Z-3771476\") (\"training_executions\" . 0)) (\"request_id\" . \"1a36344a-a636-4f69-954a-e5f8d4922c07\") (\"request_idle_flag\" . t) (\"message_types\" \"status\" \"execute_input\" \"stream\" \"status\" \"execute_reply\") (\"parent_ids\" \"1a36344a-a636-4f69-954a-e5f8d4922c07\" \"1a36344a-a636-4f69-954a-e5f8d4922c07\" \"1a36344a-a636-4f69-954a-e5f8d4922c07\" \"1a36344a-a636-4f69-954a-e5f8d4922c07\" \"1a36344a-a636-4f69-954a-e5f8d4922c07\") (\"stream_texts\" \"SOMA_STATE_JSON_WRITTEN:/project/tmp/soma-jupyter-state-W44evV.json\n\") (\"display_events\") (\"display_update_events\") (\"reply_status\" . \"ok\") (\"reply_parent\" . \"1a36344a-a636-4f69-954a-e5f8d4922c07\"))"
+    },
+    {
+      "name": "kernel continuity token matches intended existing kernel",
+      "passed": false,
+      "detail": "payload-token=\"20260929T040533Z-3771476-fresh-b04873\" expected=\"20260929T040533Z-3771476-intended-66329a\" payload=((\"counter\" . 1) (\"cwd\" . \"/workspace/soma\") (\"executable\" . \"/usr/bin/python3\") (\"kernel_token\" . \"20260929T040533Z-3771476-fresh-b04873\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json\") (\"prefix\" . \"/usr\") (\"run_id\" . \"20260929T040533Z-3771476\") (\"training_executions\" . 0))"
+    },
+    {
+      "name": "kernel sees stable Insula run id",
+      "passed": true,
+      "detail": "run-id=\"20260929T040533Z-3771476\" payload-run-id=\"20260929T040533Z-3771476\""
+    },
+    {
+      "name": "selected side effect occurred exactly once",
+      "passed": true,
+      "detail": "counter=1 payload=((\"counter\" . 1) (\"cwd\" . \"/workspace/soma\") (\"executable\" . \"/usr/bin/python3\") (\"kernel_token\" . \"20260929T040533Z-3771476-fresh-b04873\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json\") (\"prefix\" . \"/usr\") (\"run_id\" . \"20260929T040533Z-3771476\") (\"training_executions\" . 0))"
+    },
+    {
+      "name": "training cell was not executed",
+      "passed": true,
+      "detail": "training=0 payload=((\"counter\" . 1) (\"cwd\" . \"/workspace/soma\") (\"executable\" . \"/usr/bin/python3\") (\"kernel_token\" . \"20260929T040533Z-3771476-fresh-b04873\") (\"plan\" . \"/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json\") (\"prefix\" . \"/usr\") (\"run_id\" . \"20260929T040533Z-3771476\") (\"training_executions\" . 0))"
+    },
+    {
+      "name": "kernel payload is rootfs/runtime owned",
+      "passed": true,
+      "detail": "exe=\"/usr/bin/python3\" cwd=\"/workspace/soma\" plan=\"/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json\""
+    }
+  ],
+  "action": {
+    "connect_operation": "jupyter-connect-repl",
+    "connection_file": "/project/tmp/tmp46fnppy4.json",
+    "associate_operation": "jupyter-repl-associate-buffer",
+    "associated": true,
+    "associated_buffer": "soma-jupyter-wrong-kernel.py",
+    "source_buffer": "soma-jupyter-wrong-kernel.py",
+    "kernel_policy": "new-kernel-after-observation",
+    "retry_count": 0
+  },
+  "evaluation": {
+    "operation": "jupyter-eval-region",
+    "buffer": "soma-jupyter-wrong-kernel.py",
+    "idle": true,
+    "wait_timeout_seconds": 20,
+    "error": "",
+    "submitted_code": "import json, os, sys\nSOMA_BENCH_COUNTER += 1\nprint('SOMA_SELECTED_JSON:' + json.dumps({\n    'counter': SOMA_BENCH_COUNTER,\n    'kernel_token': SOMA_BENCH_KERNEL_TOKEN,\n    'run_id': SOMA_BENCH_RUN_ID,\n    'training_executions': SOMA_TRAINING_EXECUTIONS,\n}, sort_keys=True))\n",
+    "request_id": "40557a84-14a6-4a4b-bb21-bf76fea425e2",
+    "request_idle_flag": true,
+    "message_types": [
+      "status",
+      "execute_input",
+      "stream",
+      "execute_reply",
+      "status"
+    ],
+    "parent_ids": [
+      "40557a84-14a6-4a4b-bb21-bf76fea425e2",
+      "40557a84-14a6-4a4b-bb21-bf76fea425e2",
+      "40557a84-14a6-4a4b-bb21-bf76fea425e2",
+      "40557a84-14a6-4a4b-bb21-bf76fea425e2",
+      "40557a84-14a6-4a4b-bb21-bf76fea425e2"
+    ],
+    "stream_texts": [
+      "SOMA_SELECTED_JSON:{\"counter\": 1, \"kernel_token\": \"20260929T040533Z-3771476-fresh-b04873\", \"run_id\": \"20260929T040533Z-3771476\", \"training_executions\": 0}\n"
+    ],
+    "display_events": null,
+    "display_update_events": null,
+    "reply_status": "ok",
+    "reply_parent": "40557a84-14a6-4a4b-bb21-bf76fea425e2"
+  },
+  "state_query": {
+    "operation": "jupyter-eval-string",
+    "idle": true,
+    "state_path": "/project/tmp/soma-jupyter-state-W44evV.json",
+    "state_file_exists": true,
+    "error": "",
+    "payload": {
+      "counter": 1,
+      "cwd": "/workspace/soma",
+      "executable": "/usr/bin/python3",
+      "kernel_token": "20260929T040533Z-3771476-fresh-b04873",
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json",
+      "prefix": "/usr",
+      "run_id": "20260929T040533Z-3771476",
+      "training_executions": 0
+    },
+    "request_id": "1a36344a-a636-4f69-954a-e5f8d4922c07",
+    "request_idle_flag": true,
+    "message_types": [
+      "status",
+      "execute_input",
+      "stream",
+      "status",
+      "execute_reply"
+    ],
+    "parent_ids": [
+      "1a36344a-a636-4f69-954a-e5f8d4922c07",
+      "1a36344a-a636-4f69-954a-e5f8d4922c07",
+      "1a36344a-a636-4f69-954a-e5f8d4922c07",
+      "1a36344a-a636-4f69-954a-e5f8d4922c07",
+      "1a36344a-a636-4f69-954a-e5f8d4922c07"
+    ],
+    "stream_texts": [
+      "SOMA_STATE_JSON_WRITTEN:/project/tmp/soma-jupyter-state-W44evV.json\n"
+    ],
+    "display_events": null,
+    "display_update_events": null,
+    "reply_status": "ok",
+    "reply_parent": "1a36344a-a636-4f69-954a-e5f8d4922c07"
+  },
+  "source": {
+    "buffer": "soma-jupyter-wrong-kernel.py",
+    "beg": 23,
+    "end": 297,
+    "selected_sha256": "16fdce6ece3f739b92687283cf9a75dceb5c49b23ace07ad8f024516e17936dd",
+    "selected_code": "import json, os, sys\nSOMA_BENCH_COUNTER += 1\nprint('SOMA_SELECTED_JSON:' + json.dumps({\n    'counter': SOMA_BENCH_COUNTER,\n    'kernel_token': SOMA_BENCH_KERNEL_TOKEN,\n    'run_id': SOMA_BENCH_RUN_ID,\n    'training_executions': SOMA_TRAINING_EXECUTIONS,\n}, sort_keys=True))\n"
+  },
+  "fixture": {
+    "name": "intended",
+    "token": "20260929T040533Z-3771476-intended-66329a",
+    "ready": {
+      "connection_file": "/project/tmp/tmparqw2tfs.json",
+      "cwd": "/workspace/soma",
+      "helper_executable": "/usr/bin/python3",
+      "helper_prefix": "/usr",
+      "kernel_exe": "/usr/bin/python3.12",
+      "kernel_pid": 124,
+      "kernel_token": "20260929T040533Z-3771476-intended-66329a",
+      "ok": true,
+      "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json",
+      "prelude": {
+        "errors": null,
+        "idle": true,
+        "msg_id": "90af8237-1edf3929c8e8d9e603dd5a58_120_1",
+        "reply_parent": "90af8237-1edf3929c8e8d9e603dd5a58_120_1",
+        "reply_status": "ok",
+        "streams": null
+      },
+      "run_id": "20260929T040533Z-3771476"
+    },
+    "process_output": "SOMA_FIXTURE_READY:/project/tmp/soma-jupyter-intended-bFl8oY/ready.json\n"
+  }
+}

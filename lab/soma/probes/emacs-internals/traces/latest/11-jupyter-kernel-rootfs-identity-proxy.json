@@ -1,0 +1,66 @@
+{
+  "id": "jupyter-kernel-rootfs-identity-proxy",
+  "title": "Jupyter kernel rootfs identity proxy",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A Jupyter benchmark is hermetic only if the kernel process and Python environment prove the same rootfs contract as Emacs.",
+  "hypothesis": "A Python subprocess launched from inside Emacs should report cwd, executable, prefix, PATH, run id, and plan path; production mode must also have a Jupyter command in the rootfs closure.",
+  "sources": [
+    {
+      "name": "Jupyter package contract",
+      "path": "docs/internals-atlas/package-contracts/jupyter.md",
+      "lines": "27-38, 64-74",
+      "note": ""
+    },
+    {
+      "name": "Existing-kernel benchmark issue",
+      "path": ".scratch/emacs-gym/issues/0006-existing-kernel-jupyter-benchmark.md",
+      "lines": "14-40",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "A Python subprocess used as a kernel-side identity proxy; no real notebook kernel is launched by this batch-safe probe.",
+  "predicted_behavior": "The proxy can record Python identity and stable run id, while production Jupyter benchmarks must additionally launch or attach a real kernel through the rootfs gateway.",
+  "observed_behavior": "python=\"/usr/bin/python3\" jupyter=\"/usr/bin/jupyter\" python-status=0 python-output=\"{\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path\\\": \\\"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\\\", \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\n\"",
+  "independent_checks": [
+    {
+      "name": "Python identity proxy ran or production is not claimed",
+      "passed": true,
+      "detail": "prod=t python=\"/usr/bin/python3\" status=0"
+    },
+    {
+      "name": "stable run id reaches Python when Python is available",
+      "passed": true,
+      "detail": "run-id=\"20260930T040324Z-4018462\" output=\"{\\\"cwd\\\": \\\"/workspace/soma\\\", \\\"executable\\\": \\\"/usr/bin/python3\\\", \\\"path\\\": \\\"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\\\", \\\"plan\\\": \\\"/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json\\\", \\\"prefix\\\": \\\"/usr\\\", \\\"run_id\\\": \\\"20260930T040324Z-4018462\\\"}\n\""
+    },
+    {
+      "name": "Jupyter command is required only for production kernel benchmark evidence",
+      "passed": true,
+      "detail": "prod=t jupyter=\"/usr/bin/jupyter\""
+    }
+  ],
+  "counterexample": "Checking only the Emacs process can miss a host Python kernel with the right printed result.",
+  "derived_gym_requirement": "Jupyter actions must verify kernel-side rootfs manifest, Python executable/prefix, cwd, import path, run id, and bwrap plan before grading execution."
+}

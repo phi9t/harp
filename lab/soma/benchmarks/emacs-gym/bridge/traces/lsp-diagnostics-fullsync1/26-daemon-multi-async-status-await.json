@@ -1,0 +1,614 @@
+{
+  "as_expected": true,
+  "await_a_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-multi-async-a",
+      "timeout_seconds": 3.0
+    },
+    "request_id": "daemon-multi-async-a-await-1"
+  },
+  "await_a_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-multi-async-a-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "completed_after_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async A"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "await_b_request": {
+    "operation": "request.await",
+    "params": {
+      "request_id": "daemon-multi-async-b",
+      "timeout_seconds": 2.0
+    },
+    "request_id": "daemon-multi-async-b-await-1"
+  },
+  "await_b_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.await",
+    "request_id": "daemon-multi-async-b-await-1",
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "completed_after_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async B"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "delay_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async A"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "async A request is accepted as running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "delay_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async B"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "async B request is accepted as running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "delay_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async A"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "async A initial status is running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "delay_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async B"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "async B initial status is running",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.await",
+        "request_id": "daemon-multi-async-b-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-multi-async-b",
+            "result": {
+              "completed_after_seconds": 0.4,
+              "operation": "bridge.defer_echo",
+              "state": "succeeded",
+              "value": "multi async B"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "shorter async B can be awaited before A",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "completed_after_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async B"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "async B preserves its own result value",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "delay_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async A"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      },
+      "name": "awaiting B does not swap A status",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.await",
+        "request_id": "daemon-multi-async-a-await-1",
+        "result": {
+          "operation": "request.await",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "bridge.defer_echo",
+            "request_id": "daemon-multi-async-a",
+            "result": {
+              "completed_after_seconds": 2.0,
+              "operation": "bridge.defer_echo",
+              "state": "succeeded",
+              "value": "multi async A"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "longer async A can be awaited after B",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "completed_after_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async A"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "async A preserves its own result value",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "completed_after_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async A"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final A status remains independent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "completed_after_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async B"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "final B status remains independent",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "final_status_a_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-multi-async-a"
+    },
+    "request_id": "daemon-multi-async-a-status-3"
+  },
+  "final_status_a_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-multi-async-a-status-3",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "completed_after_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async A"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "final_status_b_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-multi-async-b"
+    },
+    "request_id": "daemon-multi-async-b-status-2"
+  },
+  "final_status_b_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-multi-async-b-status-2",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "completed_after_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "multi async B"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "id": "daemon-multi-async-status-await",
+  "initial_status_a_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-multi-async-a"
+    },
+    "request_id": "daemon-multi-async-a-status-1"
+  },
+  "initial_status_a_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-multi-async-a-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "delay_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async A"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "initial_status_b_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-multi-async-b"
+    },
+    "request_id": "daemon-multi-async-b-status-1"
+  },
+  "initial_status_b_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-multi-async-b-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-b",
+        "result": {
+          "delay_seconds": 0.4,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async B"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "mid_status_a_request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-multi-async-a"
+    },
+    "request_id": "daemon-multi-async-a-status-2"
+  },
+  "mid_status_a_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-multi-async-a-status-2",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "bridge.defer_echo",
+        "request_id": "daemon-multi-async-a",
+        "result": {
+          "delay_seconds": 2.0,
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "multi async A"
+        },
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "policy_passed_grader": true,
+  "request_a": {
+    "operation": "bridge.defer_echo",
+    "params": {
+      "delay_seconds": 2.0,
+      "value": "multi async A"
+    },
+    "request_id": "daemon-multi-async-a"
+  },
+  "request_b": {
+    "operation": "bridge.defer_echo",
+    "params": {
+      "delay_seconds": 0.4,
+      "value": "multi async B"
+    },
+    "request_id": "daemon-multi-async-b"
+  },
+  "response_a": {
+    "error": false,
+    "error_code": false,
+    "operation": "bridge.defer_echo",
+    "request_id": "daemon-multi-async-a",
+    "result": {
+      "delay_seconds": 2.0,
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "multi async A"
+    },
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ]
+  },
+  "response_b": {
+    "error": false,
+    "error_code": false,
+    "operation": "bridge.defer_echo",
+    "request_id": "daemon-multi-async-b",
+    "result": {
+      "delay_seconds": 0.4,
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "multi async B"
+    },
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ]
+  },
+  "title": "Two daemon-owned async requests keep independent status and can be awaited out of submission order"
+}

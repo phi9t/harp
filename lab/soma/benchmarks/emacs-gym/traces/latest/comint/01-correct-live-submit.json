@@ -1,0 +1,64 @@
+{
+  "id": "correct-live-submit",
+  "title": "Correct policy submits live input through Comint",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-correct-live*",
+    "process": "correct-live",
+    "pid": 3,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/insula-plan.json"
+  },
+  "name": "correct-live-submit",
+  "checks": [
+    {
+      "name": "action used comint-send-input",
+      "passed": true,
+      "detail": "((\"operation\" . \"comint-send-input\") (\"buffer\" . \" *soma-bench-correct-live*\"))"
+    },
+    {
+      "name": "comint input markers were updated",
+      "passed": true,
+      "detail": "start=#<marker at 1 in  *soma-bench-correct-live*> end=#<marker at 221 in  *soma-bench-correct-live*>"
+    },
+    {
+      "name": "output came from intended buffer",
+      "passed": true,
+      "detail": "intended=\"printf 'SOMA_BENCH_SENT:live\\\\n'; printf 'SOMA_BENCH_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_BENCH_CWD:%s\\\\n' \\\"$PWD\\\"; printf 'live\\\\n' >> /project/tmp/soma-comint-bench-HkKuso/counter; printf 'SOMA_BENCH_DONE:live\\\\n'\n$ SOMA_BENCH_SENT:live\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:live\n$ \" unintended=nil"
+    },
+    {
+      "name": "submitted expected live input",
+      "passed": true,
+      "detail": "printf 'SOMA_BENCH_SENT:live\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-comint-bench-HkKuso/counter; printf 'SOMA_BENCH_DONE:live\\n'\n$ SOMA_BENCH_SENT:live\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:live\n$ "
+    },
+    {
+      "name": "run id reached subprocess",
+      "passed": true,
+      "detail": "printf 'SOMA_BENCH_SENT:live\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-comint-bench-HkKuso/counter; printf 'SOMA_BENCH_DONE:live\\n'\n$ SOMA_BENCH_SENT:live\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:live\n$ "
+    },
+    {
+      "name": "side effect occurred exactly once",
+      "passed": true,
+      "detail": "counter-lines=1"
+    },
+    {
+      "name": "side effect label matches intended input",
+      "passed": true,
+      "detail": "counter-lines=(\"live\")"
+    },
+    {
+      "name": "process executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/dash"
+    }
+  ],
+  "output": "printf 'SOMA_BENCH_SENT:live\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'live\\n' >> /project/tmp/soma-comint-bench-HkKuso/counter; printf 'SOMA_BENCH_DONE:live\\n'\n$ SOMA_BENCH_SENT:live\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:live\n$ ",
+  "counter_lines": 1
+}

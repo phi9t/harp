@@ -1,0 +1,56 @@
+{
+  "id": "partial-output-collect",
+  "title": "Correct policy waits for final evidence after partial output",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-partial-output*",
+    "process": "partial-output",
+    "pid": 20,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/insula-plan.json"
+  },
+  "name": "partial-output-collect",
+  "action": {
+    "operation": "comint-send-input",
+    "completion_state": "succeeded_after_final_marker",
+    "partial_output_seen": true,
+    "early_done_seen": false,
+    "final_output_seen": true
+  },
+  "checks": [
+    {
+      "name": "partial output was observed before final marker",
+      "passed": true,
+      "detail": "partial=185 early-done=nil output=\"printf 'SOMA_PARTIAL_START:partial\\\\n'; sleep 0.4; printf 'partial\\\\n' >> /project/tmp/soma-comint-bench-kysORm/counter; printf 'SOMA_PARTIAL_DONE:partial\\\\n'\n$ SOMA_PARTIAL_START:partial\nSOMA_PARTIAL_DONE:partial\n$ \""
+    },
+    {
+      "name": "policy waited for final completion evidence",
+      "passed": true,
+      "detail": "final=211 action=((\"operation\" . \"comint-send-input\") (\"completion_state\" . \"succeeded_after_final_marker\") (\"partial_output_seen\" . t) (\"early_done_seen\" . :json-false) (\"final_output_seen\" . t))"
+    },
+    {
+      "name": "side effect occurred exactly once after completion",
+      "passed": true,
+      "detail": "counter-lines=1"
+    },
+    {
+      "name": "side effect label matches partial command",
+      "passed": true,
+      "detail": "(\"partial\")"
+    },
+    {
+      "name": "process executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/dash"
+    }
+  ],
+  "output": "printf 'SOMA_PARTIAL_START:partial\\n'; sleep 0.4; printf 'partial\\n' >> /project/tmp/soma-comint-bench-kysORm/counter; printf 'SOMA_PARTIAL_DONE:partial\\n'\n$ SOMA_PARTIAL_START:partial\nSOMA_PARTIAL_DONE:partial\n$ ",
+  "counter_lines": 1
+}

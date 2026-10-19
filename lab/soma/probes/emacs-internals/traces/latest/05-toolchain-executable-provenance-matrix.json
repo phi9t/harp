@@ -1,0 +1,71 @@
+{
+  "id": "toolchain-executable-provenance-matrix",
+  "title": "Toolchain executable provenance matrix",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Production Insula evidence must account for executable identity, not just PATH lookup.",
+  "hypothesis": "Every production-required executable should resolve to an absolute rootfs-owned path, carry version/hash evidence where readable, and avoid forbidden host or Nix prefixes in its ABI surface.",
+  "sources": [
+    {
+      "name": "Rootfs contract tool inventory",
+      "path": "/etc/soma-insula-rootfs-contract.json",
+      "lines": "tool_inventory",
+      "note": ""
+    },
+    {
+      "name": "Selected rootfs plan",
+      "path": "probes/emacs-internals/traces/latest/insula-plan.json",
+      "lines": "tool_inventory",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The selected Insula PATH and its production_required_tools list.",
+  "predicted_behavior": "Production mode should show absolute rootfs-owned executable paths for Emacs, Python, Jupyter, LSP servers, C/C++ tools, and Rust tools.",
+  "observed_behavior": "prod=t tools=(\"emacs\" \"emacsclient\" \"python3\" \"jupyter\" \"pylsp\" \"pyright\" \"pyright-langserver\" \"clangd\" \"clang\" \"clang++\" \"gcc\" \"g++\" \"ldd\" \"rust-analyzer\" \"rustc\" \"cargo\" \"git\" \"tmux\" \"sh\" \"bash\") missing=nil non-rootfs=nil forbidden-prefix=nil",
+  "independent_checks": [
+    {
+      "name": "provenance was captured for every required tool",
+      "passed": true,
+      "detail": "20/20"
+    },
+    {
+      "name": "production required tools are present",
+      "passed": true,
+      "detail": "prod=t missing=nil"
+    },
+    {
+      "name": "production tools resolve to rootfs-owned executable paths",
+      "passed": true,
+      "detail": "nil"
+    },
+    {
+      "name": "provenance has no forbidden host or Nix prefixes",
+      "passed": true,
+      "detail": "(((\"tool\" . \"emacs\") (\"path\" . \"/opt/soma/emacs/bin/emacs\") (\"realpath\" . \"/opt/soma/emacs/bin/emacs-30.2\") (\"found\" . t) (\"rootfs_owned_path\" . t) (\"version_status\" . 0) (\"version_output\" . \"GNU Emacs 30.2\nCopyright (C) 2025 Free Software Foundation, Inc.\nGNU Emacs comes with ABSOLUTELY NO WARRANTY.\nYou may redistribute copies of GNU Emacs\nunder the terms of the GNU General Public License.\nFor more information about these matters, see the file named COPYING.\n\nProcess soma-probe-process finished\n\") (\"sha256_output\" . \"824c1318464a98778d9f1677508e05af3dc5e94c34c63653145e079e5d26f6c2  /opt/soma/emacs/bin/emacs\n\nProcess soma-probe-process finished\n\") (\"ldd_status\" . 0) (\"ldd_output\" . \"\tlinux-vdso.so.1 (0x00007fff9f5ea000)\n\tlibacl.so.1 => /lib/x86_64-linux-gnu/libacl.so.1 (0x00007f0fa0584000)\n\tlibattr.so.1 => /lib/x86_64-linux-gnu/libattr.so.1 (0x00007f0fa057c000)\n\tlibxml2.so.2 => /lib/x86_64-linux-gnu/libxml2.so.2 (0x00007f0fa039a000)\n\tlibtinfo.so.6 => /lib/x86_64-linux-gnu/libtinfo.so.6"
+    }
+  ],
+  "counterexample": "A tool can exist in PATH but be a host bind, symlink escape, or ABI-incompatible binary.",
+  "derived_gym_requirement": "The Insula gateway and benchmark traces must record executable realpaths, versions, hashes, and ABI-relevant dynamic-library surfaces for tools used by Emacs tasks."
+}

@@ -1,0 +1,106 @@
+{
+  "id": "stale-workspace-root-rejected",
+  "title": "A stale workspace-root action must fail before issuing an LSP request.",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "name": "stale-workspace-root-rejected",
+  "checks": [
+    {
+      "name": "stale workspace root was rejected",
+      "passed": true,
+      "detail": "((\"operation\" . \"lsp.checked-references\") (\"state\" . \"failed\") (\"reason\" . \"workspace-root-mismatch\") (\"expected_workspace_root\" . \"/project/tmp/soma-lsp-python-root-stale-hVVyaY\") (\"actual_workspace_root\" . \"/project/tmp/soma-lsp-python-root-target-rYJKQ9/\") (\"requests\"))"
+    },
+    {
+      "name": "no LSP request was issued under stale root",
+      "passed": true,
+      "detail": "((\"operation\" . \"lsp.checked-references\") (\"state\" . \"failed\") (\"reason\" . \"workspace-root-mismatch\") (\"expected_workspace_root\" . \"/project/tmp/soma-lsp-python-root-stale-hVVyaY\") (\"actual_workspace_root\" . \"/project/tmp/soma-lsp-python-root-target-rYJKQ9/\") (\"requests\"))"
+    },
+    {
+      "name": "workspace-root mismatch did not modify file",
+      "passed": true,
+      "detail": "before-sha=5c437e08b8aa49cecf14dd5637d353712952b2c650614924799fbb5359c6a422 after-sha=5c437e08b8aa49cecf14dd5637d353712952b2c650614924799fbb5359c6a422"
+    }
+  ],
+  "fixture": {
+    "language": "python",
+    "server_id": "pylsp",
+    "root": "/project/tmp/soma-lsp-python-root-target-rYJKQ9",
+    "file": "/project/tmp/soma-lsp-python-root-target-rYJKQ9/main.py",
+    "symbol": "compute_value",
+    "expected_path_fragment": "/soma_pkg/core.py",
+    "fixture_origin": "generated-inside-bwrap-private-project-runtime"
+  },
+  "stale_fixture": {
+    "language": "python",
+    "server_id": "pylsp",
+    "root": "/project/tmp/soma-lsp-python-root-stale-hVVyaY",
+    "file": "/project/tmp/soma-lsp-python-root-stale-hVVyaY/main.py",
+    "symbol": "compute_value",
+    "expected_path_fragment": "/soma_pkg/core.py",
+    "fixture_origin": "generated-inside-bwrap-private-project-runtime"
+  },
+  "action": {
+    "operation": "lsp.checked-references",
+    "state": "failed",
+    "reason": "workspace-root-mismatch",
+    "expected_workspace_root": "/project/tmp/soma-lsp-python-root-stale-hVVyaY",
+    "actual_workspace_root": "/project/tmp/soma-lsp-python-root-target-rYJKQ9/",
+    "requests": null
+  },
+  "buffer": {
+    "buffer": "main.py<soma-lsp-python-root-target-rYJKQ9>",
+    "file": "/project/tmp/soma-lsp-python-root-target-rYJKQ9/main.py",
+    "major_mode": "python-mode",
+    "workspace_root": "/project/tmp/soma-lsp-python-root-target-rYJKQ9/",
+    "document_uri": "file:///project/tmp/soma-lsp-python-root-target-rYJKQ9/main.py",
+    "document_version": 0,
+    "position_encoding": "utf-32",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "diagnostics": {
+      "count": 0,
+      "raw": ""
+    }
+  },
+  "server": {
+    "server_id": "pylsp",
+    "workspace_status": "initialized",
+    "workspace_proc_type": "process",
+    "cmd_proc_type": "process",
+    "cmd_proc_status": "run",
+    "workspace_root": "/project/tmp/soma-lsp-python-root-target-rYJKQ9",
+    "server_pid": 2060,
+    "server_executable": "/usr/bin/python3.12",
+    "server_cwd": "/project/tmp/soma-lsp-python-root-target-rYJKQ9",
+    "server_environment": {
+      "SOMA_INSULA_RUN_ID": "20260929T040533Z-3771476",
+      "SOMA_INSULA_ACTIVE": "1",
+      "CARGO_HOME": "/opt/soma/cargo",
+      "RUSTUP_HOME": "/opt/soma/rustup",
+      "PATH": "/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin",
+      "XDG_CACHE_HOME": "/project/cache",
+      "XDG_RUNTIME_DIR": "/project/run",
+      "TMPDIR": "/project/tmp",
+      "HOME": "/project/home"
+    },
+    "server_command": [
+      "/usr/bin/pylsp"
+    ],
+    "server_buffer_tail": "",
+    "server_stderr_tail": "\nProcess pylsp stderr finished\n\nProcess pylsp stderr finished\n\nProcess pylsp stderr finished\n",
+    "messages_tail": "Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-ulOmuO].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-ulOmuO)\nLSP :: clangd has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [rust-analyzer:227/starting /project/tmp/soma-lsp-rust-rust-9jF8Q6].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: rust-analyzer:227 initialized successfully in folders: (/project/tmp/soma-lsp-rust-rust-9jF8Q6)\nLSP :: rust-analyzer has exited (killed)\nCan’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:1928/starting /project/tmp/soma-lsp-python-direct-edit-jRROCR].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:1928 initialized successfully in folders: (/project/tmp/soma-lsp-python-direct-edit-jRROCR)\nLSP :: pylsp has exited (killed)\nCan’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:1995/starting /project/tmp/soma-lsp-python-stale-version-z3Vtfp].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:1995 initialized successfully in folders: (/project/tmp/soma-lsp-python-stale-version-z3Vtfp)\nLSP :: pylsp has exited (killed)\nCan’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:2060/starting /project/tmp/soma-lsp-python-root-target-rYJKQ9].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:2060 initialized successfully in folders: (/project/tmp/soma-lsp-python-root-target-rYJKQ9)\n",
+    "transport": {
+      "transport": "lsp-mode-stdio-process-filter",
+      "json_rpc_connection_suppressed": true,
+      "reason": "noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits"
+    }
+  },
+  "before": "from soma_pkg.core import compute_value\n\nRESULT = compute_value(20)\n",
+  "after": "from soma_pkg.core import compute_value\n\nRESULT = compute_value(20)\n"
+}

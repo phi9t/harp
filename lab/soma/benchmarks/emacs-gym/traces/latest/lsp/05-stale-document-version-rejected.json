@@ -1,0 +1,97 @@
+{
+  "id": "stale-document-version-rejected",
+  "title": "A stale versioned workspace edit must be rejected without changing text.",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "name": "stale-document-version-rejected",
+  "checks": [
+    {
+      "name": "stale version was rejected",
+      "passed": true,
+      "detail": "bridge rejected stale document version before lsp--apply-workspace-edit"
+    },
+    {
+      "name": "stale edit did not modify file",
+      "passed": true,
+      "detail": "before-sha=5c437e08b8aa49cecf14dd5637d353712952b2c650614924799fbb5359c6a422 after-sha=5c437e08b8aa49cecf14dd5637d353712952b2c650614924799fbb5359c6a422"
+    },
+    {
+      "name": "current and stale versions were recorded",
+      "passed": true,
+      "detail": "current=0 stale=-1"
+    }
+  ],
+  "fixture": {
+    "language": "python",
+    "server_id": "pylsp",
+    "root": "/project/tmp/soma-lsp-python-stale-version-z3Vtfp",
+    "file": "/project/tmp/soma-lsp-python-stale-version-z3Vtfp/main.py",
+    "symbol": "compute_value",
+    "expected_path_fragment": "/soma_pkg/core.py",
+    "fixture_origin": "generated-inside-bwrap-private-project-runtime"
+  },
+  "action": {
+    "operation": "lsp--apply-workspace-edit",
+    "operation_source": "bridge-guarded-synthetic-stale-lsp-edit",
+    "state": "failed",
+    "current_document_version": 0,
+    "stale_document_version": -1,
+    "error": "bridge rejected stale document version before lsp--apply-workspace-edit"
+  },
+  "buffer": {
+    "buffer": "main.py<soma-lsp-python-stale-version-z3Vtfp>",
+    "file": "/project/tmp/soma-lsp-python-stale-version-z3Vtfp/main.py",
+    "major_mode": "python-mode",
+    "workspace_root": "/project/tmp/soma-lsp-python-stale-version-z3Vtfp/",
+    "document_uri": "file:///project/tmp/soma-lsp-python-stale-version-z3Vtfp/main.py",
+    "document_version": 0,
+    "position_encoding": "utf-32",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "diagnostics": {
+      "count": 0,
+      "raw": ""
+    }
+  },
+  "server": {
+    "server_id": "pylsp",
+    "workspace_status": "initialized",
+    "workspace_proc_type": "process",
+    "cmd_proc_type": "process",
+    "cmd_proc_status": "run",
+    "workspace_root": "/project/tmp/soma-lsp-python-stale-version-z3Vtfp",
+    "server_pid": 1995,
+    "server_executable": "/usr/bin/python3.12",
+    "server_cwd": "/project/tmp/soma-lsp-python-stale-version-z3Vtfp",
+    "server_environment": {
+      "SOMA_INSULA_RUN_ID": "20260929T040533Z-3771476",
+      "SOMA_INSULA_ACTIVE": "1",
+      "CARGO_HOME": "/opt/soma/cargo",
+      "RUSTUP_HOME": "/opt/soma/rustup",
+      "PATH": "/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin",
+      "XDG_CACHE_HOME": "/project/cache",
+      "XDG_RUNTIME_DIR": "/project/run",
+      "TMPDIR": "/project/tmp",
+      "HOME": "/project/home"
+    },
+    "server_command": [
+      "/usr/bin/pylsp"
+    ],
+    "server_buffer_tail": "",
+    "server_stderr_tail": "\nProcess pylsp stderr finished\n\nProcess pylsp stderr finished\n",
+    "messages_tail": "Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-ulOmuO].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-ulOmuO)\nLSP :: clangd has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [rust-analyzer:227/starting /project/tmp/soma-lsp-rust-rust-9jF8Q6].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: rust-analyzer:227 initialized successfully in folders: (/project/tmp/soma-lsp-rust-rust-9jF8Q6)\nLSP :: rust-analyzer has exited (killed)\nCan’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:1928/starting /project/tmp/soma-lsp-python-direct-edit-jRROCR].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:1928 initialized successfully in folders: (/project/tmp/soma-lsp-python-direct-edit-jRROCR)\nLSP :: pylsp has exited (killed)\nCan’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:1995/starting /project/tmp/soma-lsp-python-stale-version-z3Vtfp].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:1995 initialized successfully in folders: (/project/tmp/soma-lsp-python-stale-version-z3Vtfp)\n",
+    "transport": {
+      "transport": "lsp-mode-stdio-process-filter",
+      "json_rpc_connection_suppressed": true,
+      "reason": "noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits"
+    }
+  },
+  "before": "from soma_pkg.core import compute_value\n\nRESULT = compute_value(20)\n",
+  "after": "from soma_pkg.core import compute_value\n\nRESULT = compute_value(20)\n"
+}

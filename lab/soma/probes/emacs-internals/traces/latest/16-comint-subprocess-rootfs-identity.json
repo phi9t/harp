@@ -1,0 +1,66 @@
+{
+  "id": "comint-subprocess-rootfs-identity",
+  "title": "Comint subprocess rootfs identity",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Comint subprocesses must inherit the same rootfs contract as Emacs when they are part of a benchmark task.",
+  "hypothesis": "A shell process launched through Comint should report the same run id and current directory; production mode must additionally prove tool resolution inside the selected rootfs.",
+  "sources": [
+    {
+      "name": "Comint process benchmark issue",
+      "path": ".scratch/emacs-gym/issues/0007-comint-process-benchmark.md",
+      "lines": "16-40",
+      "note": ""
+    },
+    {
+      "name": "Comint contract",
+      "path": "docs/internals-atlas/package-contracts/comint.md",
+      "lines": "18-33",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One short-lived Comint subprocess that prints cwd, run id, PATH, and Python resolution.",
+  "predicted_behavior": "The subprocess observes the Insula run id, but development mode remains a non-hermetic host-bind classification.",
+  "observed_behavior": "prod=t run-id=\"20260930T040324Z-4018462\" output=\"cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n\"",
+  "independent_checks": [
+    {
+      "name": "Comint subprocess emitted identity",
+      "passed": true,
+      "detail": "cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n"
+    },
+    {
+      "name": "Insula run id reached Comint subprocess",
+      "passed": true,
+      "detail": "run-id=\"20260930T040324Z-4018462\" output=\"cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n\""
+    },
+    {
+      "name": "Comint rootfs closure requirement is classified",
+      "passed": true,
+      "detail": "prod=t output=\"cwd=/workspace/soma\nrun_id=20260930T040324Z-4018462\npython=/usr/bin/python3\npath=/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\n\nProcess soma-comint-rootfs-probe finished\n\""
+    }
+  ],
+  "counterexample": "A process-buffer benchmark can pass with the right output while the shell and tools came from the host runtime.",
+  "derived_gym_requirement": "Comint benchmark graders must record process identity, cwd, PATH/tool resolution, rootfs manifest, and timeout/unknown state before trusting process output."
+}

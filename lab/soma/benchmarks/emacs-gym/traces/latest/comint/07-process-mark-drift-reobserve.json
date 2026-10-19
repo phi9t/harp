@@ -1,0 +1,86 @@
+{
+  "id": "process-mark-drift-reobserve",
+  "title": "Correct policy reobserves the process mark after asynchronous output",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "buffer": " *soma-bench-mark-drift*",
+    "process": "mark-drift",
+    "pid": 16,
+    "process_exe": "/usr/bin/dash",
+    "default_directory": "/workspace/soma/",
+    "point": 1,
+    "process_mark": 1,
+    "point_after_process_mark": true,
+    "run_id": "20260929T040533Z-3771476",
+    "plan": "/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/insula-plan.json"
+  },
+  "async_output_seen": true,
+  "process_mark_before_async": 1,
+  "process_mark_after_async": 33,
+  "last_input_range": {
+    "start": 33,
+    "end": 256
+  },
+  "name": "process-mark-drift-reobserve",
+  "checks": [
+    {
+      "name": "action used comint-send-input",
+      "passed": true,
+      "detail": "((\"operation\" . \"comint-send-input\") (\"buffer\" . \" *soma-bench-mark-drift*\") (\"process_mark_source\" . \"post-async-reobserve\") (\"observed_process_mark_before_async\" . 1) (\"process_mark_before_submit\" . 33))"
+    },
+    {
+      "name": "comint input markers were updated",
+      "passed": true,
+      "detail": "start=#<marker at 33 in  *soma-bench-mark-drift*> end=#<marker at 256 in  *soma-bench-mark-drift*>"
+    },
+    {
+      "name": "output came from intended buffer",
+      "passed": true,
+      "detail": "intended=\"$ SOMA_ASYNC_MARK_DRIFT:ready\n$ printf 'SOMA_BENCH_SENT:drift\\\\n'; printf 'SOMA_BENCH_RUN:%s\\\\n' \\\"$SOMA_INSULA_RUN_ID\\\"; printf 'SOMA_BENCH_CWD:%s\\\\n' \\\"$PWD\\\"; printf 'drift\\\\n' >> /project/tmp/soma-comint-bench-XVQCv9/counter; printf 'SOMA_BENCH_DONE:drift\\\\n'\nSOMA_BENCH_SENT:drift\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:drift\n$ \" unintended=nil"
+    },
+    {
+      "name": "submitted expected live input",
+      "passed": true,
+      "detail": "$ SOMA_ASYNC_MARK_DRIFT:ready\n$ printf 'SOMA_BENCH_SENT:drift\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'drift\\n' >> /project/tmp/soma-comint-bench-XVQCv9/counter; printf 'SOMA_BENCH_DONE:drift\\n'\nSOMA_BENCH_SENT:drift\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:drift\n$ "
+    },
+    {
+      "name": "run id reached subprocess",
+      "passed": true,
+      "detail": "$ SOMA_ASYNC_MARK_DRIFT:ready\n$ printf 'SOMA_BENCH_SENT:drift\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'drift\\n' >> /project/tmp/soma-comint-bench-XVQCv9/counter; printf 'SOMA_BENCH_DONE:drift\\n'\nSOMA_BENCH_SENT:drift\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:drift\n$ "
+    },
+    {
+      "name": "side effect occurred exactly once",
+      "passed": true,
+      "detail": "counter-lines=1"
+    },
+    {
+      "name": "side effect label matches intended input",
+      "passed": true,
+      "detail": "counter-lines=(\"drift\")"
+    },
+    {
+      "name": "process executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/dash"
+    },
+    {
+      "name": "asynchronous output was observed before submit",
+      "passed": true,
+      "detail": "$ SOMA_ASYNC_MARK_DRIFT:ready\n$ printf 'SOMA_BENCH_SENT:drift\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'drift\\n' >> /project/tmp/soma-comint-bench-XVQCv9/counter; printf 'SOMA_BENCH_DONE:drift\\n'\nSOMA_BENCH_SENT:drift\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:drift\n$ "
+    },
+    {
+      "name": "process mark drifted after asynchronous output",
+      "passed": true,
+      "detail": "before=1 after=33"
+    },
+    {
+      "name": "policy submitted from the reobserved process mark",
+      "passed": true,
+      "detail": "action=((\"operation\" . \"comint-send-input\") (\"buffer\" . \" *soma-bench-mark-drift*\") (\"process_mark_source\" . \"post-async-reobserve\") (\"observed_process_mark_before_async\" . 1) (\"process_mark_before_submit\" . 33)) input-range=((\"start\" . 33) (\"end\" . 256))"
+    }
+  ],
+  "output": "$ SOMA_ASYNC_MARK_DRIFT:ready\n$ printf 'SOMA_BENCH_SENT:drift\\n'; printf 'SOMA_BENCH_RUN:%s\\n' \"$SOMA_INSULA_RUN_ID\"; printf 'SOMA_BENCH_CWD:%s\\n' \"$PWD\"; printf 'drift\\n' >> /project/tmp/soma-comint-bench-XVQCv9/counter; printf 'SOMA_BENCH_DONE:drift\\n'\nSOMA_BENCH_SENT:drift\nSOMA_BENCH_RUN:20260929T040533Z-3771476\nSOMA_BENCH_CWD:/workspace/soma\nSOMA_BENCH_DONE:drift\n$ ",
+  "counter_lines": 1
+}

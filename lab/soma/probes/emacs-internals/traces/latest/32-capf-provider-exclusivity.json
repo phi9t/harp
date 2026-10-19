@@ -1,0 +1,72 @@
+{
+  "id": "capf-provider-exclusivity",
+  "title": "Completion-at-point provider exclusivity",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "`completion-at-point-functions' providers are queried through hook wrapping; `:exclusive no' changes whether later providers are tried after a failed prefix match.",
+  "hypothesis": "An exclusive first CAPF with no matching candidate should prevent the second CAPF from being queried; marking it `:exclusive no' should allow the second CAPF to answer.",
+  "sources": [
+    {
+      "name": "completion-at-point-functions",
+      "path": "minibuffer.el.gz",
+      "lines": "2918-2941",
+      "note": ""
+    },
+    {
+      "name": "completion--capf-wrapper",
+      "path": "minibuffer.el.gz",
+      "lines": "2950-2979",
+      "note": ""
+    },
+    {
+      "name": "completion-at-point",
+      "path": "minibuffer.el.gz",
+      "lines": "2986-3009",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Two synthetic CAPFs over the prefix `zz': the first offers only `aa', the second offers `zz-top'.",
+  "predicted_behavior": "Provider ordering is not a simple merge: the exclusive first provider blocks fallback, while a non-exclusive first provider permits fallback.",
+  "observed_behavior": "exclusive-calls=(\"first\") exclusive-result=(#[nil ((progn (setq exclusive-calls (cons \"first\" exclusive-calls)) (list (point-min) (point-max) (list \"aa\")))) ((exclusive-calls \"first\"))] 1 3 (\"aa\")) nonexclusive-calls=(\"first\" \"second\") nonexclusive-result=(#[nil ((progn (setq nonexclusive-calls (cons \"second\" nonexclusive-calls)) (list (point-min) (point-max) (list \"zz-top\")))) ((nonexclusive-calls \"first\" \"second\"))] 1 3 (\"zz-top\"))",
+  "independent_checks": [
+    {
+      "name": "exclusive first provider blocked fallback",
+      "passed": true,
+      "detail": "(\"first\")"
+    },
+    {
+      "name": "nonexclusive first provider allowed fallback",
+      "passed": true,
+      "detail": "(\"first\" \"second\")"
+    },
+    {
+      "name": "fallback result came from second provider",
+      "passed": true,
+      "detail": "(#[nil ((progn (setq nonexclusive-calls (cons \"second\" nonexclusive-calls)) (list (point-min) (point-max) (list \"zz-top\")))) ((nonexclusive-calls \"first\" \"second\"))] 1 3 (\"zz-top\"))"
+    }
+  ],
+  "counterexample": "A FIM overlay that assumes all completion sources are merged can fight CAPF ownership and show stale or duplicate candidates.",
+  "derived_gym_requirement": "Completion integration must record provider order, replacement range, exclusivity, and whether the model path is separate from or participates in CAPF."
+}

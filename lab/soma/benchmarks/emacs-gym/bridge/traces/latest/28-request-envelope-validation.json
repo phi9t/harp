@@ -1,0 +1,883 @@
+{
+  "id": "request-envelope-validation",
+  "title": "The bridge validates api_version, capability, preconditions, and timeout_ms in the v0 request envelope",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "valid_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-valid-1",
+    "operation": "emacs.observe_buffer",
+    "capability": "passive_observation",
+    "params": {
+      "buffer_name": "soma-bridge-envelope-validation"
+    }
+  },
+  "valid_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-valid-1",
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-envelope-validation",
+      "text_owner_name": "soma-bridge-envelope-validation",
+      "buffer_file_name": false,
+      "major_mode": "fundamental-mode",
+      "chars_tick": 4,
+      "modified": false,
+      "read_only": false,
+      "point_min": 1,
+      "point_max": 7,
+      "point": 1,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "soma-bridge-envelope-validation",
+      "minibuffer_active": false
+    },
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": "soma-bridge-envelope-validation",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "selected_window_buffer": "soma-bridge-envelope-validation",
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": "soma-bridge-envelope-validation",
+        "text_owner_name": "soma-bridge-envelope-validation",
+        "buffer_file_name": false,
+        "same_buffer": true
+      },
+      "point_region_narrowing": {
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": "soma-bridge-envelope-validation",
+        "text_owner_name": "soma-bridge-envelope-validation",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 4,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 7,
+        "point": 1,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-envelope-validation",
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "invalid_version_request": {
+    "api_version": "soma-emacs-agent-v999",
+    "request_id": "envelope-invalid-version-1",
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-bridge-envelope-validation"
+    }
+  },
+  "invalid_version_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-invalid-version-1",
+    "operation": "emacs.observe_buffer",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": false,
+        "buffer_file_name": false,
+        "major_mode": false,
+        "selected_window_buffer": false,
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": false,
+        "text_owner_name": false,
+        "buffer_file_name": false,
+        "same_buffer": false
+      },
+      "point_region_narrowing": {
+        "point_min": false,
+        "point_max": false,
+        "point": false,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": false,
+        "text_owner_name": false,
+        "buffer_file_name": false,
+        "major_mode": false,
+        "chars_tick": false,
+        "modified": false,
+        "read_only": false,
+        "point_min": false,
+        "point_max": false,
+        "point": false,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": false,
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "invalid_api_version",
+        "message": "api_version is not supported by this bridge"
+      }
+    ],
+    "continuation": null,
+    "error_code": "invalid_api_version",
+    "error": "api_version is not supported by this bridge"
+  },
+  "capability_mismatch_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-capability-mismatch-1",
+    "operation": "emacs.observe_buffer",
+    "capability": "kernel_execution",
+    "params": {
+      "buffer_name": "soma-bridge-envelope-validation"
+    }
+  },
+  "capability_mismatch_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-capability-mismatch-1",
+    "operation": "emacs.observe_buffer",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {
+      "buffer_identity": {
+        "buffer_name": false,
+        "buffer_file_name": false,
+        "major_mode": false,
+        "selected_window_buffer": false,
+        "minibuffer_active": false
+      },
+      "text_owner": {
+        "buffer_name": false,
+        "text_owner_name": false,
+        "buffer_file_name": false,
+        "same_buffer": false
+      },
+      "point_region_narrowing": {
+        "point_min": false,
+        "point_max": false,
+        "point": false,
+        "mark_active": false,
+        "narrowed": false
+      }
+    },
+    "observations": {
+      "buffer_state": {
+        "buffer_name": false,
+        "text_owner_name": false,
+        "buffer_file_name": false,
+        "major_mode": false,
+        "chars_tick": false,
+        "modified": false,
+        "read_only": false,
+        "point_min": false,
+        "point_max": false,
+        "point": false,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": false,
+        "minibuffer_active": false
+      }
+    },
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "capability_mismatch",
+        "message": "capability does not match the operation side-effect class"
+      }
+    ],
+    "continuation": null,
+    "error_code": "capability_mismatch",
+    "error": "capability does not match the operation side-effect class"
+  },
+  "invalid_preconditions_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-invalid-preconditions-1",
+    "operation": "buffer.replace_range",
+    "preconditions": "not-an-object",
+    "params": {
+      "buffer_name": "soma-bridge-envelope-validation",
+      "start": 1,
+      "end": 6,
+      "text": "omega\n"
+    }
+  },
+  "invalid_preconditions_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-invalid-preconditions-1",
+    "operation": "buffer.replace_range",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "invalid_preconditions",
+        "message": "preconditions must be a JSON object when provided"
+      }
+    ],
+    "continuation": null,
+    "error_code": "invalid_preconditions",
+    "error": "preconditions must be a JSON object when provided"
+  },
+  "missing_param_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-missing-param-1",
+    "operation": "buffer.replace_range",
+    "capability": "reversible_editor_edit",
+    "preconditions": {
+      "buffer_name": "soma-bridge-envelope-validation",
+      "text_owner_name": "soma-bridge-envelope-validation",
+      "buffer_file_name": false,
+      "chars_tick": 4,
+      "expected_text": "alpha",
+      "point": 1,
+      "selected_window_buffer": "soma-bridge-envelope-validation",
+      "modified": false,
+      "read_only": false,
+      "minibuffer_active": false
+    },
+    "params": {
+      "buffer_name": "soma-bridge-envelope-validation",
+      "start": 1,
+      "end": 6
+    }
+  },
+  "missing_param_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-missing-param-1",
+    "operation": "buffer.replace_range",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "missing_required_param",
+        "message": "missing required params: text"
+      }
+    ],
+    "continuation": null,
+    "error_code": "missing_required_param",
+    "error": "missing required params: text"
+  },
+  "missing_precondition_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-missing-precondition-1",
+    "operation": "buffer.replace_range",
+    "capability": "reversible_editor_edit",
+    "preconditions": {
+      "buffer_name": "soma-bridge-envelope-validation",
+      "text_owner_name": "soma-bridge-envelope-validation",
+      "buffer_file_name": false,
+      "expected_text": "alpha",
+      "point": 1,
+      "selected_window_buffer": "soma-bridge-envelope-validation",
+      "modified": false,
+      "read_only": false,
+      "minibuffer_active": false
+    },
+    "params": {
+      "buffer_name": "soma-bridge-envelope-validation",
+      "start": 1,
+      "end": 6,
+      "text": "omega"
+    }
+  },
+  "missing_precondition_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-missing-precondition-1",
+    "operation": "buffer.replace_range",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "missing_required_precondition",
+        "message": "missing required preconditions: chars_tick"
+      }
+    ],
+    "continuation": null,
+    "error_code": "missing_required_precondition",
+    "error": "missing required preconditions: chars_tick"
+  },
+  "defer_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-defer-1",
+    "operation": "bridge.defer_echo",
+    "capability": "async_fixture",
+    "params": {
+      "delay_seconds": 0.01,
+      "value": "timeout-ms-ok"
+    }
+  },
+  "defer_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-defer-1",
+    "operation": "bridge.defer_echo",
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ],
+    "result": {
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "timeout-ms-ok",
+      "delay_seconds": 0.01
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "await_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-await-1",
+    "operation": "request.await",
+    "capability": "passive_observation",
+    "timeout_ms": 1000,
+    "params": {
+      "request_id": "envelope-defer-1"
+    }
+  },
+  "await_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-await-1",
+    "operation": "request.await",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "request.await",
+      "state": "succeeded",
+      "status": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "envelope-defer-1",
+        "operation": "bridge.defer_echo",
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ],
+        "result": {
+          "operation": "bridge.defer_echo",
+          "state": "succeeded",
+          "value": "timeout-ms-ok",
+          "completed_after_seconds": 0.01
+        },
+        "evidence": {},
+        "observations": {},
+        "effects": {},
+        "diagnostics": [],
+        "continuation": null,
+        "error_code": false,
+        "error": false
+      }
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "timeout_defer_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-timeout-defer-1",
+    "operation": "bridge.defer_echo",
+    "capability": "async_fixture",
+    "params": {
+      "delay_seconds": 0.2,
+      "value": "timeout-diagnostic-ok"
+    }
+  },
+  "timeout_defer_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-timeout-defer-1",
+    "operation": "bridge.defer_echo",
+    "state": "running",
+    "state_sequence": [
+      "accepted",
+      "running"
+    ],
+    "result": {
+      "operation": "bridge.defer_echo",
+      "state": "running",
+      "value": "timeout-diagnostic-ok",
+      "delay_seconds": 0.2
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [],
+    "continuation": null,
+    "error_code": false,
+    "error": false
+  },
+  "timeout_await_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-timeout-await-1",
+    "operation": "request.await",
+    "capability": "passive_observation",
+    "params": {
+      "request_id": "envelope-timeout-defer-1",
+      "timeout_seconds": 0.0
+    }
+  },
+  "timeout_await_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-timeout-await-1",
+    "operation": "request.await",
+    "state": "outcome_unknown",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "outcome_unknown"
+    ],
+    "result": {
+      "operation": "request.await",
+      "state": "outcome_unknown",
+      "timeout_seconds": 0.0,
+      "status": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "envelope-timeout-defer-1",
+        "operation": "bridge.defer_echo",
+        "state": "running",
+        "state_sequence": [
+          "accepted",
+          "running"
+        ],
+        "result": {
+          "operation": "bridge.defer_echo",
+          "state": "running",
+          "value": "timeout-diagnostic-ok",
+          "delay_seconds": 0.2
+        },
+        "evidence": {},
+        "observations": {},
+        "effects": {},
+        "diagnostics": [],
+        "continuation": null,
+        "error_code": false,
+        "error": false
+      }
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "timeout",
+        "message": "target request did not reach terminal state before timeout"
+      }
+    ],
+    "continuation": null,
+    "error_code": "timeout",
+    "error": "target request did not reach terminal state before timeout"
+  },
+  "false_error_diagnostic_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-false-error-diagnostic-1",
+    "operation": "request.await",
+    "state": "outcome_unknown",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "outcome_unknown"
+    ],
+    "result": false,
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "timeout",
+        "message": ""
+      }
+    ],
+    "continuation": null,
+    "error_code": "timeout",
+    "error": false
+  },
+  "jupyter_outcome_target_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-jupyter-outcome-target-1",
+    "operation": "jupyter.eval_region",
+    "state": "outcome_unknown",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "outcome_unknown"
+    ],
+    "result": {
+      "operation": "jupyter.eval_region",
+      "state": "outcome_unknown",
+      "request_id": "kernel-request-1",
+      "reply_status": "ok",
+      "stream_texts": [
+        "SOMA_SELECTED_JSON:{}"
+      ],
+      "error": false
+    },
+    "evidence": {
+      "request_id": "kernel-request-1",
+      "source_region": {
+        "start": false,
+        "end": false,
+        "text_hash": false,
+        "submitted_hash": false
+      },
+      "reply": {
+        "status": "ok",
+        "parent": false
+      },
+      "iopub": {
+        "message_types": null,
+        "parent_ids": null,
+        "stream_texts": [
+          "SOMA_SELECTED_JSON:{}"
+        ],
+        "display_events": null,
+        "display_update_events": null
+      },
+      "idle": {
+        "idle": false,
+        "request_idle_flag": false
+      },
+      "rootfs_runtime": {
+        "run_id": false,
+        "plan": false
+      }
+    },
+    "observations": {},
+    "effects": {
+      "kernel_execution": {
+        "route": false,
+        "request_id": "kernel-request-1",
+        "submitted_hash": false,
+        "wait_timeout_seconds": false,
+        "idle": false
+      }
+    },
+    "diagnostics": [
+      {
+        "code": "timeout",
+        "message": ""
+      }
+    ],
+    "continuation": null,
+    "error_code": "timeout",
+    "error": false
+  },
+  "jupyter_outcome_await_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-jupyter-outcome-await-1",
+    "operation": "jupyter.await_request",
+    "capability": "passive_observation",
+    "params": {
+      "request_id": "envelope-jupyter-outcome-target-1",
+      "timeout_seconds": 0.0
+    }
+  },
+  "jupyter_outcome_await_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-jupyter-outcome-await-1",
+    "operation": "jupyter.await_request",
+    "state": "outcome_unknown",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "outcome_unknown"
+    ],
+    "result": {
+      "operation": "jupyter.await_request",
+      "state": "outcome_unknown",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "outcome_unknown"
+      ],
+      "route": "jupyter-request-await",
+      "request_id": "envelope-jupyter-outcome-target-1",
+      "target_operation": "jupyter.eval_region",
+      "target_state": "outcome_unknown",
+      "timeout_seconds": 0.0,
+      "status": {
+        "api_version": "soma-emacs-agent-v0",
+        "request_id": "envelope-jupyter-outcome-target-1",
+        "operation": "jupyter.eval_region",
+        "state": "outcome_unknown",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "outcome_unknown"
+        ],
+        "result": {
+          "operation": "jupyter.eval_region",
+          "state": "outcome_unknown",
+          "request_id": "kernel-request-1",
+          "reply_status": "ok",
+          "stream_texts": [
+            "SOMA_SELECTED_JSON:{}"
+          ],
+          "error": false
+        },
+        "evidence": {
+          "request_id": "kernel-request-1",
+          "source_region": {
+            "start": false,
+            "end": false,
+            "text_hash": false,
+            "submitted_hash": false
+          },
+          "reply": {
+            "status": "ok",
+            "parent": false
+          },
+          "iopub": {
+            "message_types": null,
+            "parent_ids": null,
+            "stream_texts": [
+              "SOMA_SELECTED_JSON:{}"
+            ],
+            "display_events": null,
+            "display_update_events": null
+          },
+          "idle": {
+            "idle": false,
+            "request_idle_flag": false
+          },
+          "rootfs_runtime": {
+            "run_id": false,
+            "plan": false
+          }
+        },
+        "observations": {},
+        "effects": {
+          "kernel_execution": {
+            "route": false,
+            "request_id": "kernel-request-1",
+            "submitted_hash": false,
+            "wait_timeout_seconds": false,
+            "idle": false
+          }
+        },
+        "diagnostics": [
+          {
+            "code": "timeout",
+            "message": ""
+          }
+        ],
+        "continuation": null,
+        "error_code": "timeout",
+        "error": false
+      },
+      "target_result": {
+        "operation": "jupyter.eval_region",
+        "state": "outcome_unknown",
+        "request_id": "kernel-request-1",
+        "reply_status": "ok",
+        "stream_texts": [
+          "SOMA_SELECTED_JSON:{}"
+        ],
+        "error": false
+      },
+      "reply_status": "ok",
+      "reply_parent": false,
+      "message_types": null,
+      "parent_ids": null,
+      "stream_texts": [
+        "SOMA_SELECTED_JSON:{}"
+      ],
+      "idle": false,
+      "error": "target request outcome is unknown"
+    },
+    "evidence": {
+      "target_status": {
+        "request_id": "envelope-jupyter-outcome-target-1",
+        "operation": "jupyter.eval_region",
+        "state": "outcome_unknown"
+      },
+      "reply": {
+        "status": "ok",
+        "parent": false
+      },
+      "iopub": {
+        "message_types": null,
+        "parent_ids": null,
+        "stream_texts": [
+          "SOMA_SELECTED_JSON:{}"
+        ],
+        "display_events": null,
+        "display_update_events": null
+      },
+      "idle": {
+        "idle": false
+      },
+      "timeout": {
+        "seconds": 0.0
+      }
+    },
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "timeout",
+        "message": "target request outcome is unknown"
+      }
+    ],
+    "continuation": null,
+    "error_code": "timeout",
+    "error": "target request outcome is unknown"
+  },
+  "invalid_timeout_request": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-invalid-timeout-1",
+    "operation": "request.await",
+    "timeout_ms": -1,
+    "params": {
+      "request_id": "envelope-defer-1"
+    }
+  },
+  "invalid_timeout_response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "envelope-invalid-timeout-1",
+    "operation": "request.await",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "invalid_timeout_ms",
+        "message": "timeout_ms must be a number between 0 and 120000"
+      }
+    ],
+    "continuation": null,
+    "error_code": "invalid_timeout_ms",
+    "error": "timeout_ms must be a number between 0 and 120000"
+  },
+  "checks": [
+    {
+      "name": "v0 request envelope with matching capability succeeds",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-valid-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-envelope-validation\") (\"text_owner_name\" . \"soma-bridge-envelope-validation\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-envelope-validation\") (\"minibuffer_active\" . :json-false)) (\"evidence\" (\"buffer_identity\" (\"buffer_name\" . \"soma-bridge-envelope-validation\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"selected_window_buffer\" . \"soma-bridge-envelope-validation\") (\"minibuffer_active\" . :json-false)) (\"text_owner\" (\"buffer_name\" . \"soma-bridge-envelope-validation\") (\"text_owner_name\" . \"soma-bridge-envelope-validation\") (\"buffer_file_name\" . :json-false) (\"same_buffer\" . t)) (\"point_region_narrowing\" (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false))) (\"observations\" (\"buffer_state\" (\"buffer_name\" . \"soma-bridge-envelope-validation\") (\"text_owner_name\" . \"soma-bridge-envelope-validation\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-envelope-validation\") (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "unsupported api_version is rejected",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-invalid-version-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" (\"buffer_identity\" (\"buffer_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"major_mode\" . :json-false) (\"selected_window_buffer\" . :json-false) (\"minibuffer_active\" . :json-false)) (\"text_owner\" (\"buffer_name\" . :json-false) (\"text_owner_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"same_buffer\" . :json-false)) (\"point_region_narrowing\" (\"point_min\" . :json-false) (\"point_max\" . :json-false) (\"point\" . :json-false) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false))) (\"observations\" (\"buffer_state\" (\"buffer_name\" . :json-false) (\"text_owner_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"major_mode\" . :json-false) (\"chars_tick\" . :json-false) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . :json-false) (\"point_max\" . :json-false) (\"point\" . :json-false) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . :json-false) (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"invalid_api_version\") (\"message\" . \"api_version is not supported by this bridge\"))]) (\"continuation\") (\"error_code\" . \"invalid_api_version\") (\"error\" . \"api_version is not supported by this bridge\"))"
+    },
+    {
+      "name": "capability mismatch is rejected",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-capability-mismatch-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" (\"buffer_identity\" (\"buffer_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"major_mode\" . :json-false) (\"selected_window_buffer\" . :json-false) (\"minibuffer_active\" . :json-false)) (\"text_owner\" (\"buffer_name\" . :json-false) (\"text_owner_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"same_buffer\" . :json-false)) (\"point_region_narrowing\" (\"point_min\" . :json-false) (\"point_max\" . :json-false) (\"point\" . :json-false) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false))) (\"observations\" (\"buffer_state\" (\"buffer_name\" . :json-false) (\"text_owner_name\" . :json-false) (\"buffer_file_name\" . :json-false) (\"major_mode\" . :json-false) (\"chars_tick\" . :json-false) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . :json-false) (\"point_max\" . :json-false) (\"point\" . :json-false) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . :json-false) (\"minibuffer_active\" . :json-false))) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"capability_mismatch\") (\"message\" . \"capability does not match the operation side-effect class\"))]) (\"continuation\") (\"error_code\" . \"capability_mismatch\") (\"error\" . \"capability does not match the operation side-effect class\"))"
+    },
+    {
+      "name": "invalid top-level preconditions are rejected",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-invalid-preconditions-1\") (\"operation\" . \"buffer.replace_range\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"invalid_preconditions\") (\"message\" . \"preconditions must be a JSON object when provided\"))]) (\"continuation\") (\"error_code\" . \"invalid_preconditions\") (\"error\" . \"preconditions must be a JSON object when provided\"))"
+    },
+    {
+      "name": "explicit v0 requests reject missing manifest-required params",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-missing-param-1\") (\"operation\" . \"buffer.replace_range\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"missing_required_param\") (\"message\" . \"missing required params: text\"))]) (\"continuation\") (\"error_code\" . \"missing_required_param\") (\"error\" . \"missing required params: text\"))"
+    },
+    {
+      "name": "explicit v0 requests reject missing manifest-required preconditions",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-missing-precondition-1\") (\"operation\" . \"buffer.replace_range\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"missing_required_precondition\") (\"message\" . \"missing required preconditions: chars_tick\"))]) (\"continuation\") (\"error_code\" . \"missing_required_precondition\") (\"error\" . \"missing required preconditions: chars_tick\"))"
+    },
+    {
+      "name": "timeout_ms drives request.await timeout semantics",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-await-1\") (\"operation\" . \"request.await\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"request.await\") (\"state\" . \"succeeded\") (\"status\" (\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-defer-1\") (\"operation\" . \"bridge.defer_echo\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"bridge.defer_echo\") (\"state\" . \"succeeded\") (\"value\" . \"timeout-ms-ok\") (\"completed_after_seconds\" . 0.01)) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "request.await timeout diagnostic has a string message",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-timeout-await-1\") (\"operation\" . \"request.await\") (\"state\" . \"outcome_unknown\") (\"state_sequence\" \"accepted\" \"running\" \"outcome_unknown\") (\"result\" (\"operation\" . \"request.await\") (\"state\" . \"outcome_unknown\") (\"timeout_seconds\" . 0.0) (\"status\" (\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-timeout-defer-1\") (\"operation\" . \"bridge.defer_echo\") (\"state\" . \"running\") (\"state_sequence\" \"accepted\" \"running\") (\"result\" (\"operation\" . \"bridge.defer_echo\") (\"state\" . \"running\") (\"value\" . \"timeout-diagnostic-ok\") (\"delay_seconds\" . 0.2)) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . []) (\"continuation\") (\"error_code\" . :json-false) (\"error\" . :json-false))) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"timeout\") (\"message\" . \"target request did not reach terminal state before timeout\"))]) (\"continuation\") (\"error_code\" . \"timeout\") (\"error\" . \"target request did not reach terminal state before timeout\"))"
+    },
+    {
+      "name": "false legacy errors become string diagnostic messages",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-false-error-diagnostic-1\") (\"operation\" . \"request.await\") (\"state\" . \"outcome_unknown\") (\"state_sequence\" \"accepted\" \"running\" \"outcome_unknown\") (\"result\" . :json-false) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"timeout\") (\"message\" . \"\"))]) (\"continuation\") (\"error_code\" . \"timeout\") (\"error\" . :json-false))"
+    },
+    {
+      "name": "jupyter.await_request preserves outcome_unknown target state",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-jupyter-outcome-await-1\") (\"operation\" . \"jupyter.await_request\") (\"state\" . \"outcome_unknown\") (\"state_sequence\" \"accepted\" \"running\" \"outcome_unknown\") (\"result\" (\"operation\" . \"jupyter.await_request\") (\"state\" . \"outcome_unknown\") (\"state_sequence\" \"accepted\" \"running\" \"outcome_unknown\") (\"route\" . \"jupyter-request-await\") (\"request_id\" . \"envelope-jupyter-outcome-target-1\") (\"target_operation\" . \"jupyter.eval_region\") (\"target_state\" . \"outcome_unknown\") (\"timeout_seconds\" . 0.0) (\"status\" (\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-jupyter-outcome-target-1\") (\"operation\" . \"jupyter.eval_region\") (\"state\" . \"outcome_unknown\") (\"state_sequence\" \"accepted\" \"running\" \"outcome_unknown\") (\"result\" (\"operation\" . \"jupyter.eval_region\") (\"state\" . \"outcome_unknown\") (\"request_id\" . \"kernel-request-1\") (\"reply_status\" . \"ok\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{}\") (\"error\" . :json-false)) (\"evidence\" (\"request_id\" . \"kernel-request-1\") (\"source_region\" (\"start\" . :json-false) (\"end\" . :json-false) (\"text_hash\" . :json-false) (\"submitted_hash\" . :json-false)) (\"reply\" (\"status\" . \"ok\") (\"parent\" . :json-false)) (\"iopub\" (\"message_types\") (\"parent_ids\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{}\") (\"display_events\") (\"display_update_events\")) (\"idle\" (\"idle\" . :json-false) (\"request_idle_flag\" . :json-false)) (\"rootfs_runtime\" (\"run_id\" . :json-false) (\"plan\" . :json-false))) (\"observations\" . #s(hash-table test equal)) (\"effects\" (\"kernel_execution\" (\"route\" . :json-false) (\"request_id\" . \"kernel-request-1\") (\"submitted_hash\" . :json-false) (\"wait_timeout_seconds\" . :json-false) (\"idle\" . :json-false))) (\"diagnostics\" . [((\"code\" . \"timeout\") (\"message\" . \"\"))]) (\"continuation\") (\"error_code\" . \"timeout\") (\"error\" . :json-false)) (\"target_result\" (\"operation\" . \"jupyter.eval_region\") (\"state\" . \"outcome_unknown\") (\"request_id\" . \"kernel-request-1\") (\"reply_status\" . \"ok\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{}\") (\"error\" . :json-false)) (\"reply_status\" . \"ok\") (\"reply_parent\" . :json-false) (\"message_types\") (\"parent_ids\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{}\") (\"idle\" . :json-false) (\"error\" . \"target request outcome is unknown\")) (\"evidence\" (\"target_status\" (\"request_id\" . \"envelope-jupyter-outcome-target-1\") (\"operation\" . \"jupyter.eval_region\") (\"state\" . \"outcome_unknown\")) (\"reply\" (\"status\" . \"ok\") (\"parent\" . :json-false)) (\"iopub\" (\"message_types\") (\"parent_ids\") (\"stream_texts\" \"SOMA_SELECTED_JSON:{}\") (\"display_events\") (\"display_update_events\")) (\"idle\" (\"idle\" . :json-false)) (\"timeout\" (\"seconds\" . 0.0))) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"timeout\") (\"message\" . \"target request outcome is unknown\"))]) (\"continuation\") (\"error_code\" . \"timeout\") (\"error\" . \"target request outcome is unknown\"))"
+    },
+    {
+      "name": "invalid timeout_ms is rejected",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"envelope-invalid-timeout-1\") (\"operation\" . \"request.await\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"invalid_timeout_ms\") (\"message\" . \"timeout_ms must be a number between 0 and 120000\"))]) (\"continuation\") (\"error_code\" . \"invalid_timeout_ms\") (\"error\" . \"timeout_ms must be a number between 0 and 120000\"))"
+    }
+  ]
+}

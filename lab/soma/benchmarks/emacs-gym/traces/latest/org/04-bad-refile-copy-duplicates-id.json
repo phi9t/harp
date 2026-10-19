@@ -1,0 +1,40 @@
+{
+  "id": "bad-refile-copy-duplicates-id",
+  "title": "Incorrect policy copies during refile and duplicates the ID",
+  "expected_policy_pass": false,
+  "policy_passed_grader": false,
+  "as_expected": true,
+  "observation": {
+    "buffer": "tasks.org",
+    "target": "Archive"
+  },
+  "name": "bad-refile-copy-duplicates-id",
+  "checks": [
+    {
+      "name": "action used org-refile move",
+      "passed": false,
+      "detail": "((\"operation\" . \"org-refile\") (\"keep\" . t) (\"target\" . \"Archive\"))"
+    },
+    {
+      "name": "source subtree removed from Inbox",
+      "passed": false,
+      "detail": "* Inbox\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+    },
+    {
+      "name": "subtree inserted under Archive",
+      "passed": true,
+      "detail": "* Archive\n** Existing\nold\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+    },
+    {
+      "name": "ID and custom property preserved exactly once",
+      "passed": false,
+      "detail": "id-count=2 custom-count=2"
+    },
+    {
+      "name": "child subtree preserved",
+      "passed": true,
+      "detail": "* Archive\n** Existing\nold\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+    }
+  ],
+  "final_text": "* Inbox\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n* Archive\n** Existing\nold\n** TODO Train model\n:PROPERTIES:\n:ID: soma-task-1\n:CUSTOM_ID: keep-me\n:END:\nBody\n*** Child\nchild body\n"
+}

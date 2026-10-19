@@ -1,0 +1,100 @@
+{
+  "id": "direct-call-rejected",
+  "title": "Model-facing requests cannot invoke unchecked direct-call operations",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "direct-1",
+    "operation": "direct-call",
+    "params": {
+      "requested_operation": "magit-stage-1"
+    }
+  },
+  "response": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "direct-1",
+    "operation": "direct-call",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "direct-call",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "requested_operation": "magit-stage-1",
+      "reason": "model-facing transport does not expose unchecked direct calls"
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "unauthorized_operation",
+        "message": "model-facing transport does not expose unchecked direct calls"
+      }
+    ],
+    "continuation": null,
+    "error_code": "unauthorized_operation",
+    "error": "model-facing transport does not expose unchecked direct calls"
+  },
+  "status": {
+    "api_version": "soma-emacs-agent-v0",
+    "request_id": "direct-1",
+    "operation": "direct-call",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": {
+      "operation": "direct-call",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ],
+      "requested_operation": "magit-stage-1",
+      "reason": "model-facing transport does not expose unchecked direct calls"
+    },
+    "evidence": {},
+    "observations": {},
+    "effects": {},
+    "diagnostics": [
+      {
+        "code": "unauthorized_operation",
+        "message": "model-facing transport does not expose unchecked direct calls"
+      }
+    ],
+    "continuation": null,
+    "error_code": "unauthorized_operation",
+    "error": "model-facing transport does not expose unchecked direct calls"
+  },
+  "checks": [
+    {
+      "name": "direct operation is rejected",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"direct-1\") (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\")) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"unauthorized_operation\") (\"message\" . \"model-facing transport does not expose unchecked direct calls\"))]) (\"continuation\") (\"error_code\" . \"unauthorized_operation\") (\"error\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    },
+    {
+      "name": "failed response carries structured envelope diagnostics",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"direct-1\") (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\")) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"unauthorized_operation\") (\"message\" . \"model-facing transport does not expose unchecked direct calls\"))]) (\"continuation\") (\"error_code\" . \"unauthorized_operation\") (\"error\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    },
+    {
+      "name": "direct-call rejection is stored",
+      "passed": true,
+      "detail": "((\"api_version\" . \"soma-emacs-agent-v0\") (\"request_id\" . \"direct-1\") (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" (\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\")) (\"evidence\" . #s(hash-table test equal)) (\"observations\" . #s(hash-table test equal)) (\"effects\" . #s(hash-table test equal)) (\"diagnostics\" . [((\"code\" . \"unauthorized_operation\") (\"message\" . \"model-facing transport does not expose unchecked direct calls\"))]) (\"continuation\") (\"error_code\" . \"unauthorized_operation\") (\"error\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    },
+    {
+      "name": "direct-call result reports checked rejection",
+      "passed": true,
+      "detail": "((\"operation\" . \"direct-call\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"requested_operation\" . \"magit-stage-1\") (\"reason\" . \"model-facing transport does not expose unchecked direct calls\"))"
+    }
+  ]
+}

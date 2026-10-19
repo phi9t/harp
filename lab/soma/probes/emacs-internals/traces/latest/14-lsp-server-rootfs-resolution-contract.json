@@ -1,0 +1,66 @@
+{
+  "id": "lsp-server-rootfs-resolution-contract",
+  "title": "LSP server rootfs resolution contract",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A real Emacs+LSP benchmark depends on both the Emacs client and the language-server process resolving from the same accounted rootfs closure.",
+  "hypothesis": "The probe should inventory likely Python, C/C++, and Rust language-server commands and classify missing or host-resolved servers as a development gap unless a production rootfs is selected.",
+  "sources": [
+    {
+      "name": "LSP package contract",
+      "path": "docs/internals-atlas/package-contracts/lsp.md",
+      "lines": "18-31",
+      "note": ""
+    },
+    {
+      "name": "Doom language modules",
+      "path": "docs/internals-atlas/doom-lifecycle.md",
+      "lines": "35-39",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "Executable lookup for common LSP server commands in the current Insula PATH.",
+  "predicted_behavior": "Production mode requires Python LSP, C/C++ LSP, and Rust LSP server commands in the selected rootfs closure.",
+  "observed_behavior": "prod=t inventory=(((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"basedpyright-langserver\") (\"path\" . \"\") (\"found\" . :json-false)) ((\"tool\" . \"pylsp\") (\"path\" . \"/usr/bin/pylsp\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t))) python-lsp=t clangd=\"/usr/bin/clangd\" rust-analyzer=\"/opt/soma/cargo/bin/rust-analyzer\"",
+  "independent_checks": [
+    {
+      "name": "LSP server inventory was captured",
+      "passed": true,
+      "detail": "(((\"tool\" . \"pyright-langserver\") (\"path\" . \"/usr/local/bin/pyright-langserver\") (\"found\" . t)) ((\"tool\" . \"pyright\") (\"path\" . \"/usr/local/bin/pyright\") (\"found\" . t)) ((\"tool\" . \"basedpyright-langserver\") (\"path\" . \"\") (\"found\" . :json-false)) ((\"tool\" . \"pylsp\") (\"path\" . \"/usr/bin/pylsp\") (\"found\" . t)) ((\"tool\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"found\" . t)) ((\"tool\" . \"rust-analyzer\") (\"path\" . \"/opt/soma/cargo/bin/rust-analyzer\") (\"found\" . t)))"
+    },
+    {
+      "name": "production Python LSP server requirement is classified",
+      "passed": true,
+      "detail": "prod=t python-lsp=t"
+    },
+    {
+      "name": "production C/C++ and Rust LSP requirements are classified",
+      "passed": true,
+      "detail": "prod=t clangd=\"/usr/bin/clangd\" rust-analyzer=\"/opt/soma/cargo/bin/rust-analyzer\""
+    }
+  ],
+  "counterexample": "A direct text edit can pass a filesystem checker while the intended LSP server never started or came from the host.",
+  "derived_gym_requirement": "LSP tasks must prove server process identity, workspace root, synchronized document version, and rootfs-owned server/toolchain resolution."
+}

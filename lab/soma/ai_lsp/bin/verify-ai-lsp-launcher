@@ -1,0 +1,911 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+mode="${1:-diagnostics}"
+case "$mode" in
+  diagnostics|lifecycle) ;;
+  *) printf 'usage: %s [diagnostics|lifecycle]\n' "$0" >&2; exit 64 ;;
+esac
+
+fixture_root="$(mktemp -d "${TMPDIR:-/tmp}/devx-ai-launcher-test.XXXXXXXX")"
+chmod 700 "$fixture_root"
+umask 077
+
+fake_bin="$fixture_root/bin"
+state_root="$fixture_root/state"
+run_parent="$fixture_root/run"
+mkdir -m 700 "$fake_bin" "$state_root" "$run_parent"
+
+cleanup_fixture() {
+  local status=$? pid_file pid pgid
+  trap - EXIT INT TERM
+  while IFS= read -r -d '' pid_file; do
+    pid="$(<"$pid_file")"
+    [[ "$pid" =~ ^[1-9][0-9]*$ ]] || continue
+    pgid="$(ps -o pgid= -p "$pid" 2>/dev/null | tr -d ' ' || true)"
+    if [[ "$pgid" == "$pid" ]]; then
+      kill -KILL -- "-$pgid" 2>/dev/null || true
+    else
+      kill -KILL -- "$pid" 2>/dev/null || true
+    fi
+    wait "$pid" 2>/dev/null || true
+  done < <(find "$state_root" -type f \( -name daemon.pid -o -name sentinel.pid \) -print0 2>/dev/null)
+  rm -rf -- "$fixture_root"
+  exit "$status"
+}
+trap cleanup_fixture EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+fail_test() {
+  printf 'FAIL: %s\n' "$1" >&2
+  return 1
+}
+
+assert_contains() {
+  local haystack=$1 needle=$2
+  [[ "$haystack" == *"$needle"* ]] ||
+    fail_test "expected output to contain: $needle"
+}
+
+assert_not_contains() {
+  local haystack=$1 needle=$2
+  [[ "$haystack" != *"$needle"* ]] ||
+    fail_test "secret leaked to captured output: $needle"
+}
+
+assert_not_contains_tree() {
+  local needle=$1 root=$2
+  if find "$root" -type f -exec grep -F -l -- "$needle" {} + \
+      2>/dev/null | grep -q .; then
+    printf 'secret leaked to a regular file: %s\n' "$needle" >&2
+    return 1
+  fi
+}
+
+assert_state_absent() {
+  local state=$1 marker=$2
+  if grep -F -x -- "$marker" "$state" >/dev/null 2>&1; then
+    fail_test "unsafe launcher state: $marker"
+  fi
+}
+
+assert_state_not_contains() {
+  local state=$1 marker=$2
+  if grep -F -- "$marker" "$state" >/dev/null 2>&1; then
+    fail_test "unsafe launcher state contains: $marker"
+  fi
+}
+
+assert_state_present() {
+  local state=$1 marker=$2
+  grep -F -x -- "$marker" "$state" >/dev/null 2>&1 ||
+    fail_test "missing launcher state: $marker"
+}
+
+assert_equals() {
+  local actual=$1 expected=$2 context=$3
+  [[ "$actual" == "$expected" ]] ||
+    fail_test "$context: expected [$expected], got [$actual]"
+}
+
+assert_status() {
+  local actual=$1 expected=$2 context=$3
+  ((actual == expected)) ||
+    fail_test "$context: expected status $expected, got $actual"
+}
+
+assert_process_alive() {
+  local pid=$1 context=$2
+  kill -0 -- "$pid" 2>/dev/null ||
+    fail_test "$context: process $pid is not alive"
+}
+
+assert_process_gone() {
+  local pid=$1 context=$2 attempt
+  for attempt in {1..100}; do
+    if ! kill -0 -- "$pid" 2>/dev/null; then
+      return 0
+    fi
+    sleep 0.02
+  done
+  fail_test "$context: process $pid survived cleanup"
+}
+
+assert_recorded_group_gone() {
+  local state=$1 context=$2 daemon_pid child_pid daemon_pgid child_pgid
+  daemon_pid="$(<"$state/daemon.pid")"
+  child_pid="$(<"$state/child.pid")"
+  daemon_pgid="$(<"$state/daemon.pgid")"
+  child_pgid="$(<"$state/child.pgid")"
+  assert_equals "$daemon_pgid" "$daemon_pid" "$context daemon session leader"
+  assert_equals "$child_pgid" "$daemon_pgid" "$context child process group"
+  assert_process_gone "$daemon_pid" "$context daemon"
+  assert_process_gone "$child_pid" "$context child"
+}
+
+cat >"$fake_bin/emacs" <<'FAKE_EMACS'
+#!/usr/bin/env bash
+set -Eeuo pipefail
+umask 077
+
+state="$DEVX_FAKE_STATE/observed"
+touch "$state"
+chmod 600 "$state"
+
+record() {
+  printf '%s\n' "$1" >>"$state"
+}
+
+detect_raw_storage() {
+  local run_root=$1 name needle
+  for name in \
+    DEVX_SECRET_AUTH_VALUE DEVX_SECRET_ACCESS_VALUE \
+    DEVX_SECRET_REFRESH_VALUE DEVX_SECRET_OAUTH_VALUE \
+    DEVX_SECRET_JSON_VALUE DEVX_SECRET_BEARER_VALUE \
+    DEVX_SECRET_GHP_VALUE DEVX_SECRET_GITHUB_VALUE \
+    DEVX_SECRET_OPAQUE_VALUE DEVX_EDGE_8_BEFORE DEVX_EDGE_8_ACROSS \
+    DEVX_EDGE_8_INSIDE DEVX_EDGE_4_BEFORE DEVX_EDGE_4_ACROSS \
+    DEVX_EDGE_4_INSIDE; do
+    needle="${!name}"
+    if find "$run_root" -type f -exec grep -F -l -- "$needle" {} + \
+        2>/dev/null | grep -q .; then
+      record "raw-output-stored"
+      return
+    fi
+  done
+}
+
+inspect_daemon_stream() {
+  local target stderr_target run_root path mode
+  target="$(readlink "/proc/$$/fd/1")"
+  stderr_target="$(readlink "/proc/$$/fd/2")"
+  run_root="$(dirname -- "$target")"
+  [[ -p "$target" ]] && record "daemon-stdout-fifo"
+  [[ -f "$target" ]] && record "daemon-stdout-regular"
+  [[ -p "$stderr_target" ]] && record "daemon-stderr-fifo"
+  [[ -f "$stderr_target" ]] && record "daemon-stderr-regular"
+  mode="$(stat -c '%a' "$run_root")"
+  record "run-root-mode=$mode"
+  mode="$(stat -c '%a' "$target")"
+  record "daemon-stream-mode=$mode"
+  while IFS= read -r -d '' path; do
+    mode="$(stat -c '%a' "$path")"
+    [[ "$mode" == 600 ]] || record "unsafe-regular-mode=$mode"
+  done < <(find "$run_root" -type f -print0)
+}
+
+emit_text() {
+  printf '%s' "$1"
+  payload_offset=$((payload_offset + ${#1}))
+}
+
+pad_to() {
+  local target=$1 count
+  count=$((target - payload_offset))
+  ((count >= 0)) || exit 70
+  if ((count > 0)); then
+    printf '%*s' "$count" '' | tr ' ' p
+    payload_offset=$target
+  fi
+}
+
+emit_diagnostics() {
+  payload_offset=0
+  emit_text $'safe-before\n'
+  emit_text "Authorization: Bearer ${DEVX_SECRET_AUTH_VALUE}"$'\n'
+  emit_text "access_token=${DEVX_SECRET_ACCESS_VALUE}"$'\n'
+  emit_text "refresh-token: ${DEVX_SECRET_REFRESH_VALUE}"$'\n'
+  emit_text "oauthToken=${DEVX_SECRET_OAUTH_VALUE}"$'\n'
+  emit_text "\"token\":\"${DEVX_SECRET_JSON_VALUE}\""$'\n'
+  emit_text "Bearer ${DEVX_SECRET_BEARER_VALUE}"$'\n'
+  emit_text "${DEVX_SECRET_GHP_VALUE}"$'\n'
+  emit_text "${DEVX_SECRET_GITHUB_VALUE}"$'\n'
+  emit_text "${DEVX_SECRET_OPAQUE_VALUE}"$'\n'
+
+  pad_to 3850
+  emit_text "token=${DEVX_EDGE_8_BEFORE}"$'\n'
+  pad_to 3970
+  emit_text "Authorization: Bearer ${DEVX_EDGE_8_ACROSS}"$'\n'
+  pad_to 4100
+  emit_text "access_token=${DEVX_EDGE_8_INSIDE}"$'\n'
+  pad_to 7850
+  emit_text "token=${DEVX_EDGE_4_BEFORE}"$'\n'
+  pad_to 7970
+  emit_text "Authorization: Bearer ${DEVX_EDGE_4_ACROSS}"$'\n'
+  pad_to 8100
+  emit_text "access_token=${DEVX_EDGE_4_INSIDE}"$'\n'
+  pad_to 11979
+  emit_text $'\n'
+  emit_text $'complete-safe-after\n'
+  [[ "$payload_offset" == 12000 ]] || exit 71
+}
+
+repeat_canary_to() {
+  local target=$1 canary=$2
+  while ((payload_offset + ${#canary} <= target)); do
+    emit_text "$canary"
+  done
+  pad_spaces_to "$target"
+}
+
+pad_spaces_to() {
+  local target=$1 count
+  count=$((target - payload_offset))
+  ((count >= 0)) || exit 73
+  if ((count > 0)); then
+    printf '%*s' "$count" ''
+    payload_offset=$target
+  fi
+}
+
+emit_boundary_diagnostics() {
+  payload_offset=0
+  emit_text $'boundary-safe-before\n'
+  pad_spaces_to 3899
+  emit_text $'\n'
+  repeat_canary_to 4299 "$DEVX_EDGE_8_CANARY"
+  emit_text $'\n'
+  emit_text $'after-edge8-complete\n'
+  pad_spaces_to 7799
+  emit_text $'\n'
+  repeat_canary_to 8299 "$DEVX_EDGE_4_CANARY"
+  emit_text $'\n'
+  emit_text $'after-edge4-complete\n'
+  pad_spaces_to 11979
+  emit_text $'\n'
+  emit_text $'boundary-safe-after\n'
+  [[ "$payload_offset" == 12000 ]] || exit 72
+}
+
+is_foreground=0
+server_name=""
+for argument in "$@"; do
+  case "$argument" in
+    --fg-daemon=*)
+      is_foreground=1
+      server_name="${argument#--fg-daemon=}"
+      ;;
+    --daemon=*) server_name="${argument#--daemon=}" ;;
+  esac
+done
+
+start_fake_daemon() {
+  local child_pid daemon_pgid child_pgid
+  shutdown_daemon() {
+    trap - TERM
+    kill -TERM -- "$child_pid" 2>/dev/null || true
+    wait "$child_pid" 2>/dev/null || true
+    exit 0
+  }
+
+  printf '%s\n' "$$" >"$DEVX_FAKE_STATE/daemon.pid"
+  printf '%s\n' "${DEVX_AI_LSP_OWNER:-}" >"$DEVX_FAKE_STATE/owner"
+  printf '%s\n' "$server_name" >"$DEVX_FAKE_STATE/server-name"
+
+  if [[ "$DEVX_FAKE_SCENARIO" == term-ignored-forces-kill ]]; then
+    trap 'record "daemon-term-ignored"' TERM
+    (
+      trap '' TERM
+      exec sleep 1000
+    ) &
+  else
+    trap shutdown_daemon TERM
+    (
+      exec sleep 1000
+    ) &
+  fi
+  child_pid=$!
+  daemon_pgid="$(ps -o pgid= -p "$$" | tr -d ' ')"
+  child_pgid="$(ps -o pgid= -p "$child_pid" | tr -d ' ')"
+  printf '%s\n' "$child_pid" >"$DEVX_FAKE_STATE/child.pid"
+  printf '%s\n' "$daemon_pgid" >"$DEVX_FAKE_STATE/daemon.pgid"
+  printf '%s\n' "$child_pgid" >"$DEVX_FAKE_STATE/child.pgid"
+  record "foreground-daemon-started"
+  record "server-name=$server_name"
+  record "owner=${DEVX_AI_LSP_OWNER:-}"
+  printf 'ready\n' >"$DEVX_FAKE_STATE/ready"
+  if [[ "$DEVX_FAKE_SCENARIO" == term-ignored-forces-kill ]]; then
+    while kill -0 -- "$child_pid" 2>/dev/null; do
+      wait "$child_pid" 2>/dev/null || true
+    done
+  else
+    wait "$child_pid"
+  fi
+}
+
+inspect_daemon_stream
+case "$DEVX_FAKE_SCENARIO" in
+  daemon-diagnostics)
+    emit_diagnostics
+    printf 'Authorization: Bearer %s\n' "$DEVX_SECRET_BEARER_VALUE" >&2
+    run_root="$(dirname -- "$(readlink "/proc/$$/fd/1")")"
+    detect_raw_storage "$run_root"
+    exit 17
+    ;;
+  client-diagnostics)
+    printf 'daemon-ready\n'
+    if ((is_foreground)); then
+      start_fake_daemon
+    fi
+    exit 0
+    ;;
+  boundary-diagnostics)
+    emit_boundary_diagnostics
+    exit 18
+    ;;
+  exact-t-success|nil-return-rejected|client-timeout-kills-group|\
+startup-failure-kills-group|term-ignored-forces-kill|\
+name-collision-preserves-sentinel|pid-mismatch-rejected|\
+marker-mismatch-rejected|sigint-exits-130|sigterm-exits-143|\
+temp-root-removed)
+    if ((!is_foreground)); then
+      record "legacy-daemon-start"
+      exit 67
+    fi
+    start_fake_daemon
+    ;;
+  *) exit 64 ;;
+esac
+FAKE_EMACS
+
+cat >"$fake_bin/emacsclient" <<'FAKE_EMACSCLIENT'
+#!/usr/bin/env bash
+set -Eeuo pipefail
+umask 077
+
+state="$DEVX_FAKE_STATE/observed"
+touch "$state"
+chmod 600 "$state"
+
+record() {
+  printf '%s\n' "$1" >>"$state"
+}
+
+detect_raw_storage() {
+  local run_root=$1 name needle
+  for name in \
+    DEVX_SECRET_AUTH_VALUE DEVX_SECRET_ACCESS_VALUE \
+    DEVX_SECRET_REFRESH_VALUE DEVX_SECRET_OAUTH_VALUE \
+    DEVX_SECRET_JSON_VALUE DEVX_SECRET_BEARER_VALUE \
+    DEVX_SECRET_GHP_VALUE DEVX_SECRET_GITHUB_VALUE \
+    DEVX_SECRET_OPAQUE_VALUE; do
+    needle="${!name}"
+    if find "$run_root" -type f -exec grep -F -l -- "$needle" {} + \
+        2>/dev/null | grep -q .; then
+      record "raw-output-stored"
+      return
+    fi
+  done
+}
+
+expression=""
+server_name=""
+while (($#)); do
+  case "$1" in
+    -s)
+      shift
+      server_name="${1:-}"
+      ;;
+    -e)
+      shift
+      expression="${1:-}"
+      ;;
+  esac
+  (($#)) && shift
+done
+
+case "$expression" in
+  *DEVX_AI_LSP_OWNER*) client_kind=identity ;;
+  '(kill-emacs)') client_kind=kill ;;
+  *write-region*) client_kind=results ;;
+  *load-file*) client_kind=entrypoint ;;
+  *) client_kind=unknown ;;
+esac
+parent_command="$(tr '\0' ' ' <"/proc/$PPID/cmdline" 2>/dev/null || true)"
+record "client-kind=$client_kind"
+record "client-parent=$parent_command"
+record "client-server=$server_name"
+
+if [[ "$DEVX_FAKE_SCENARIO" == client-diagnostics && "$client_kind" == entrypoint ]]; then
+  target="$(readlink "/proc/$$/fd/2")"
+  run_root="$(dirname -- "$target")"
+  [[ -p "$target" ]] && record "client-stderr-fifo"
+  [[ -f "$target" ]] && record "client-stderr-regular"
+  printf 'Authorization: Bearer %s\n' "$DEVX_SECRET_AUTH_VALUE" >&2
+  printf 'access_token=%s\n' "$DEVX_SECRET_ACCESS_VALUE" >&2
+  printf 'refresh-token: %s\n' "$DEVX_SECRET_REFRESH_VALUE" >&2
+  printf 'oauthToken=%s\n' "$DEVX_SECRET_OAUTH_VALUE" >&2
+  printf '"token":"%s"\n' "$DEVX_SECRET_JSON_VALUE" >&2
+  printf 'Bearer %s\n' "$DEVX_SECRET_BEARER_VALUE" >&2
+  printf '%s\n' "$DEVX_SECRET_GHP_VALUE" >&2
+  printf '%s\n' "$DEVX_SECRET_GITHUB_VALUE" >&2
+  printf '%s\n' "$DEVX_SECRET_OPAQUE_VALUE" >&2
+  detect_raw_storage "$run_root"
+fi
+
+if [[ "$DEVX_FAKE_SCENARIO" == boundary-diagnostics && "$client_kind" == identity ]]; then
+  target="$(readlink "/proc/$$/fd/2")"
+  run_root="$(dirname -- "$target")"
+  diagnostic="$run_root/diagnostic.sanitized.log"
+  if [[ -f "$diagnostic" ]]; then
+    grep -F -q -- "$DEVX_EDGE_8_CANARY" "$diagnostic" &&
+      record "edge8-canary-suffix-present"
+    grep -F -q -- "after-edge8-complete" "$diagnostic" &&
+      record "edge8-following-line-present"
+  fi
+fi
+
+wait_for_daemon_state() {
+  local attempt
+  for attempt in {1..200}; do
+    if [[ -s "$DEVX_FAKE_STATE/daemon.pid" && -f "$DEVX_FAKE_STATE/owner" ]]; then
+      return 0
+    fi
+    sleep 0.01
+  done
+  return 1
+}
+
+case "$client_kind" in
+  identity)
+    if [[ "$DEVX_FAKE_SCENARIO" == daemon-diagnostics ||
+          "$DEVX_FAKE_SCENARIO" == boundary-diagnostics ]]; then
+      printf '(nil 0)\n'
+      exit 0
+    fi
+    if [[ "$DEVX_FAKE_SCENARIO" == startup-failure-kills-group ]]; then
+      printf 'fake startup unavailable\n' >&2
+      exit 75
+    fi
+    wait_for_daemon_state || exit 76
+    daemon_pid="$(<"$DEVX_FAKE_STATE/daemon.pid")"
+    owner="$(<"$DEVX_FAKE_STATE/owner")"
+    case "$DEVX_FAKE_SCENARIO" in
+      name-collision-preserves-sentinel)
+        sentinel_pid="$(<"$DEVX_FAKE_STATE/sentinel.pid")"
+        printf '("collision-owner" %s)\n' "$sentinel_pid"
+        ;;
+      pid-mismatch-rejected)
+        printf '("%s" %s)\n' "$owner" "$((daemon_pid + 100000))"
+        ;;
+      marker-mismatch-rejected)
+        printf '("wrong-owner" %s)\n' "$daemon_pid"
+        ;;
+      *) printf '("%s" %s)\n' "$owner" "$daemon_pid" ;;
+    esac
+    ;;
+  entrypoint)
+    case "$DEVX_FAKE_SCENARIO" in
+      client-diagnostics)
+        printf 'nil\n'
+        ;;
+      client-timeout-kills-group)
+        record "client-timeout-entered"
+        exec sleep 30
+        ;;
+      sigint-exits-130|sigterm-exits-143)
+        : >"$DEVX_FAKE_STATE/main-client-started"
+        while [[ ! -e "$DEVX_FAKE_STATE/release-client" ]]; do
+          sleep 0.05
+        done
+        printf 't\n'
+        ;;
+      nil-return-rejected)
+        printf '%s' "${DEVX_FAKE_CLIENT_RESPONSE:-nil}"
+        ;;
+      *) printf 't\n' ;;
+    esac
+    ;;
+  results)
+    pass_path="${expression#*\"}"
+    pass_path="${pass_path%%\"*}"
+    printf '%s' $'PASS Rust   rust-analyzer + Copilot rust\nPASS Python pyright + Copilot python\nPASS C++    clangd + Copilot cpp\nPASS CUDA   clangd + Copilot cuda-cpp' >"$pass_path"
+    printf 't\n'
+    ;;
+  kill)
+    record "kill-emacs-called"
+    : >"$DEVX_FAKE_STATE/release-client"
+    if [[ -s "$DEVX_FAKE_STATE/daemon.pid" ]]; then
+      kill -TERM -- "$(<"$DEVX_FAKE_STATE/daemon.pid")" 2>/dev/null || true
+    fi
+    printf 't\n'
+    ;;
+  *)
+    printf '(nil 0)\n'
+    ;;
+esac
+FAKE_EMACSCLIENT
+
+chmod 700 "$fake_bin/emacs" "$fake_bin/emacsclient"
+
+secret_tail=0123456789_abcdefghijklmnopqrstuvwxyz
+export DEVX_SECRET_AUTH_VALUE="auth_${secret_tail}"
+export DEVX_SECRET_ACCESS_VALUE="access_${secret_tail}"
+export DEVX_SECRET_REFRESH_VALUE="refresh_${secret_tail}"
+export DEVX_SECRET_OAUTH_VALUE="oauth_${secret_tail}"
+export DEVX_SECRET_JSON_VALUE="json_${secret_tail}"
+export DEVX_SECRET_BEARER_VALUE="bearer_${secret_tail}"
+export DEVX_SECRET_GHP_VALUE="ghp_${secret_tail}"
+export DEVX_SECRET_GITHUB_VALUE="github_pat_${secret_tail}"
+export DEVX_SECRET_OPAQUE_VALUE="opaque_${secret_tail}"
+export DEVX_EDGE_8_BEFORE=before8k_sensitive_1
+export DEVX_EDGE_8_ACROSS=cross8k_sensitive_12
+export DEVX_EDGE_8_INSIDE=inside8k_sensitive_1
+export DEVX_EDGE_4_BEFORE=before4k_sensitive_1
+export DEVX_EDGE_4_ACROSS=cross4k_sensitive_12
+export DEVX_EDGE_4_INSIDE=inside4k_sensitive_1
+export DEVX_EDGE_8_CANARY='edge8-suffix-canary|'
+export DEVX_EDGE_4_CANARY='edge4-suffix-canary|'
+
+secrets=(
+  "$DEVX_SECRET_AUTH_VALUE"
+  "$DEVX_SECRET_ACCESS_VALUE"
+  "$DEVX_SECRET_REFRESH_VALUE"
+  "$DEVX_SECRET_OAUTH_VALUE"
+  "$DEVX_SECRET_JSON_VALUE"
+  "$DEVX_SECRET_BEARER_VALUE"
+  "$DEVX_SECRET_GHP_VALUE"
+  "$DEVX_SECRET_GITHUB_VALUE"
+  "$DEVX_SECRET_OPAQUE_VALUE"
+  "$DEVX_EDGE_8_BEFORE"
+  "$DEVX_EDGE_8_ACROSS"
+  "$DEVX_EDGE_8_INSIDE"
+  "$DEVX_EDGE_4_BEFORE"
+  "$DEVX_EDGE_4_ACROSS"
+  "$DEVX_EDGE_4_INSIDE"
+)
+
+case_count=0
+run_case() {
+  local scenario=$1 output status state diagnostic
+  printf 'CASE %s\n' "$scenario"
+  export DEVX_FAKE_SCENARIO="$scenario"
+  export DEVX_FAKE_STATE="$state_root/$scenario"
+  mkdir -m 700 "$DEVX_FAKE_STATE"
+  state="$DEVX_FAKE_STATE/observed"
+
+  set +e
+  output="$(TMPDIR="$run_parent" DEVX_EMACS="$fake_bin/emacs" \
+    DEVX_AI_LSP_STARTUP_TIMEOUT=2 DEVX_AI_LSP_CLIENT_TIMEOUT=2 \
+    DEVX_AI_LSP_CLEANUP_TIMEOUT=1 \
+    "$repo_root/bin/verify-ai-lsp" unit 2>&1)"
+  status=$?
+  set -e
+  ((status != 0)) || fail_test "$scenario unexpectedly succeeded"
+  assert_contains "$output" "Bounded sanitized Doom daemon log tail:"
+
+  for secret in "${secrets[@]}"; do
+    assert_not_contains "$output" "$secret"
+    assert_not_contains_tree "$secret" "$fixture_root"
+  done
+
+  assert_state_absent "$state" "daemon-stdout-regular"
+  assert_state_absent "$state" "daemon-stderr-regular"
+  assert_state_absent "$state" "client-stderr-regular"
+  assert_state_absent "$state" "raw-output-stored"
+  assert_state_not_contains "$state" "unsafe-regular-mode="
+  assert_state_present "$state" "daemon-stdout-fifo"
+  assert_state_present "$state" "daemon-stderr-fifo"
+  assert_state_present "$state" "run-root-mode=700"
+  assert_state_present "$state" "daemon-stream-mode=600"
+
+  case "$scenario" in
+    daemon-diagnostics)
+      assert_contains "$output" "complete-safe-after"
+      ;;
+    client-diagnostics)
+      assert_state_present "$state" "client-stderr-fifo"
+      ;;
+    boundary-diagnostics)
+      # Inspect the public diagnostic output. The short-lived fake daemon can
+      # exit before an identity client observes the private staging file.
+      assert_not_contains "$output" "$DEVX_EDGE_4_CANARY"
+      assert_contains "$output" "after-edge4-complete"
+      ;;
+  esac
+
+  diagnostic="${output#*Bounded sanitized Doom daemon log tail:$'\n'}"
+  ((${#diagnostic} <= 4000)) ||
+    fail_test "$scenario diagnostic tail exceeded 4000 characters"
+  case_count=$((case_count + 1))
+}
+
+prepare_lifecycle_state() {
+  local scenario=$1 label=${2:-main}
+  export DEVX_FAKE_SCENARIO="$scenario"
+  export DEVX_FAKE_STATE="$state_root/$scenario/$label"
+  mkdir -m 700 -p "$DEVX_FAKE_STATE"
+}
+
+RUN_OUTPUT=""
+RUN_STATUS=0
+run_verifier() {
+  local scenario=$1 verifier_mode=${2:-unit} client_bound=${3:-1}
+  local response=${4-t} state_label=${5:-main}
+  local -a verifier_env
+  prepare_lifecycle_state "$scenario" "$state_label"
+  verifier_env=(
+    env
+    TMPDIR="$run_parent"
+    DEVX_EMACS="$fake_bin/emacs"
+    DEVX_FAKE_SCENARIO="$DEVX_FAKE_SCENARIO"
+    DEVX_FAKE_STATE="$DEVX_FAKE_STATE"
+    DEVX_FAKE_CLIENT_RESPONSE="$response"
+    DEVX_AI_LSP_STARTUP_TIMEOUT=1
+    DEVX_AI_LSP_CLEANUP_TIMEOUT=1
+    DEVX_AI_LSP_KILL_GRACE=1
+  )
+  if [[ "$client_bound" != default ]]; then
+    verifier_env+=(DEVX_AI_LSP_CLIENT_TIMEOUT="$client_bound")
+  fi
+
+  set +e
+  RUN_OUTPUT="$("${verifier_env[@]}" \
+    "$repo_root/bin/verify-ai-lsp" "$verifier_mode" 2>&1)"
+  RUN_STATUS=$?
+  set -e
+}
+
+assert_client_calls_bounded() {
+  local state=$1 context=$2 line found=0
+  while IFS= read -r line; do
+    [[ "$line" == client-parent=* ]] || continue
+    found=1
+    [[ "$line" == *"timeout --foreground --kill-after=1s "* ]] ||
+      fail_test "$context: unbounded client invocation: $line"
+  done <"$state/observed"
+  ((found)) || fail_test "$context: no client invocation was recorded"
+}
+
+assert_run_parent_empty() {
+  local context=$1
+  if find "$run_parent" -mindepth 1 -print -quit | grep -q .; then
+    fail_test "$context: temporary verifier root survived"
+  fi
+}
+
+wait_for_path() {
+  local path=$1 context=$2 attempt
+  for attempt in {1..200}; do
+    [[ -e "$path" ]] && return 0
+    sleep 0.02
+  done
+  fail_test "$context: timed out waiting for $path"
+}
+
+case_exact_t_success() {
+  local expected integration_state all_state unit_server integration_server all_server
+  printf 'CASE exact-t-success\n'
+
+  run_verifier exact-t-success unit 1 t unit
+  assert_status "$RUN_STATUS" 0 "exact unit response"
+  assert_equals "$RUN_OUTPUT" t "exact unit output"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "exact unit"
+  assert_client_calls_bounded "$DEVX_FAKE_STATE" "exact unit"
+  unit_server="$(<"$DEVX_FAKE_STATE/server-name")"
+  assert_run_parent_empty "exact unit"
+
+  expected=$'t\nPASS Rust   rust-analyzer + Copilot rust\nPASS Python pyright + Copilot python\nPASS C++    clangd + Copilot cpp\nPASS CUDA   clangd + Copilot cuda-cpp'
+  run_verifier exact-t-success integration default t integration
+  integration_state="$DEVX_FAKE_STATE"
+  assert_status "$RUN_STATUS" 0 "exact integration response"
+  assert_equals "$RUN_OUTPUT" "$expected" "exact integration output"
+  assert_recorded_group_gone "$integration_state" "exact integration"
+  assert_client_calls_bounded "$integration_state" "exact integration"
+  grep -F -- ' 360s ' "$integration_state/observed" >/dev/null ||
+    fail_test "computed integration client timeout was not 360 seconds"
+  integration_server="$(<"$integration_state/server-name")"
+  assert_run_parent_empty "exact integration"
+
+  run_verifier exact-t-success all 360 t all
+  all_state="$DEVX_FAKE_STATE"
+  assert_status "$RUN_STATUS" 0 "exact all response"
+  assert_equals "$RUN_OUTPUT" "$expected" "exact all output"
+  assert_recorded_group_gone "$all_state" "exact all"
+  assert_client_calls_bounded "$all_state" "exact all"
+  all_server="$(<"$all_state/server-name")"
+  assert_run_parent_empty "exact all"
+
+  [[ "$unit_server" != "$integration_server" &&
+     "$unit_server" != "$all_server" &&
+     "$integration_server" != "$all_server" ]] ||
+    fail_test "private daemon names did not use a fresh nonce"
+}
+
+case_nil_return_rejected() {
+  local response label
+  local -a responses=('' ' t ' nil '"t"' $'t\nnil')
+  printf 'CASE nil-return-rejected\n'
+  for response in "${responses[@]}"; do
+    label="variant-${#response}-${RANDOM}"
+    run_verifier nil-return-rejected unit 1 "$response" "$label"
+    ((RUN_STATUS != 0)) ||
+      fail_test "non-exact client response was accepted: [$response]"
+    assert_contains "$RUN_OUTPUT" "Verifier client returned an unexpected result."
+    assert_recorded_group_gone "$DEVX_FAKE_STATE" "non-exact response"
+    assert_run_parent_empty "non-exact response"
+  done
+}
+
+case_invalid_mode_rejected() {
+  printf 'CASE invalid-mode-rejected\n'
+  prepare_lifecycle_state exact-t-success invalid-mode
+  set +e
+  RUN_OUTPUT="$(TMPDIR="$run_parent" DEVX_EMACS="$fake_bin/emacs" \
+    DEVX_FAKE_SCENARIO="$DEVX_FAKE_SCENARIO" DEVX_FAKE_STATE="$DEVX_FAKE_STATE" \
+    "$repo_root/bin/verify-ai-lsp" unsupported 2>&1)"
+  RUN_STATUS=$?
+  set -e
+  assert_status "$RUN_STATUS" 64 "invalid mode"
+  assert_contains "$RUN_OUTPUT" "usage:"
+  assert_run_parent_empty "invalid mode"
+}
+
+assert_invalid_timeout() {
+  local variable=$1 value=$2 verifier_mode=${3:-unit}
+  prepare_lifecycle_state exact-t-success "invalid-${variable}-${value//[^[:alnum:]]/_}-$verifier_mode"
+  set +e
+  RUN_OUTPUT="$(env TMPDIR="$run_parent" DEVX_EMACS="$fake_bin/emacs" \
+    DEVX_FAKE_SCENARIO="$DEVX_FAKE_SCENARIO" DEVX_FAKE_STATE="$DEVX_FAKE_STATE" \
+    DEVX_AI_LSP_STARTUP_TIMEOUT=1 DEVX_AI_LSP_CLIENT_TIMEOUT=360 \
+    DEVX_AI_LSP_CLEANUP_TIMEOUT=1 DEVX_AI_LSP_KILL_GRACE=1 \
+    "$variable=$value" "$repo_root/bin/verify-ai-lsp" "$verifier_mode" 2>&1)"
+  RUN_STATUS=$?
+  set -e
+  assert_status "$RUN_STATUS" 64 "$variable=$value"
+  assert_run_parent_empty "$variable=$value"
+}
+
+case_invalid_timeout_rejected() {
+  local variable
+  printf 'CASE invalid-timeout-rejected\n'
+  for variable in \
+    DEVX_AI_LSP_STARTUP_TIMEOUT DEVX_AI_LSP_CLIENT_TIMEOUT \
+    DEVX_AI_LSP_CLEANUP_TIMEOUT DEVX_AI_LSP_KILL_GRACE; do
+    assert_invalid_timeout "$variable" 0
+    assert_invalid_timeout "$variable" -1
+    assert_invalid_timeout "$variable" 1.5
+  done
+  assert_invalid_timeout DEVX_AI_LSP_CLIENT_TIMEOUT 359 integration
+  assert_invalid_timeout DEVX_AI_LSP_CLIENT_TIMEOUT 359 all
+}
+
+case_client_timeout_kills_group() {
+  printf 'CASE client-timeout-kills-group\n'
+  run_verifier client-timeout-kills-group unit 1 t main
+  ((RUN_STATUS != 0)) || fail_test "timed-out client unexpectedly succeeded"
+  assert_contains "$RUN_OUTPUT" "Verifier client failed or timed out after 1s."
+  assert_state_present "$DEVX_FAKE_STATE/observed" "client-timeout-entered"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "client timeout"
+  assert_client_calls_bounded "$DEVX_FAKE_STATE" "client timeout"
+  assert_run_parent_empty "client timeout"
+}
+
+case_startup_failure_kills_group() {
+  printf 'CASE startup-failure-kills-group\n'
+  run_verifier startup-failure-kills-group unit 1 t main
+  ((RUN_STATUS != 0)) || fail_test "startup failure unexpectedly succeeded"
+  assert_contains "$RUN_OUTPUT" "Doom daemon ownership validation failed"
+  assert_state_absent "$DEVX_FAKE_STATE/observed" "kill-emacs-called"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "startup failure"
+  assert_client_calls_bounded "$DEVX_FAKE_STATE" "startup failure"
+  assert_run_parent_empty "startup failure"
+}
+
+case_term_ignored_forces_kill() {
+  printf 'CASE term-ignored-forces-kill\n'
+  run_verifier term-ignored-forces-kill unit 1 t main
+  assert_status "$RUN_STATUS" 0 "TERM-ignoring daemon result"
+  assert_equals "$RUN_OUTPUT" t "TERM-ignoring daemon output"
+  assert_state_present "$DEVX_FAKE_STATE/observed" "kill-emacs-called"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "forced KILL"
+  assert_run_parent_empty "forced KILL"
+}
+
+case_name_collision_preserves_sentinel() {
+  local sentinel_pid
+  printf 'CASE name-collision-preserves-sentinel\n'
+  prepare_lifecycle_state name-collision-preserves-sentinel main
+  setsid bash -c 'trap "" TERM; while :; do sleep 10; done' &
+  sentinel_pid=$!
+  printf '%s\n' "$sentinel_pid" >"$DEVX_FAKE_STATE/sentinel.pid"
+  run_verifier name-collision-preserves-sentinel unit 1 t main
+  ((RUN_STATUS != 0)) || fail_test "colliding identity unexpectedly succeeded"
+  assert_process_alive "$sentinel_pid" "same-name sentinel"
+  assert_state_absent "$DEVX_FAKE_STATE/observed" "kill-emacs-called"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "collision-owned group"
+  kill -KILL -- "-$sentinel_pid" 2>/dev/null || true
+  wait "$sentinel_pid" 2>/dev/null || true
+  rm -f -- "$DEVX_FAKE_STATE/sentinel.pid"
+  assert_run_parent_empty "name collision"
+}
+
+case_pid_mismatch_rejected() {
+  printf 'CASE pid-mismatch-rejected\n'
+  run_verifier pid-mismatch-rejected unit 1 t main
+  ((RUN_STATUS != 0)) || fail_test "PID mismatch unexpectedly succeeded"
+  assert_state_absent "$DEVX_FAKE_STATE/observed" "kill-emacs-called"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "PID mismatch"
+  assert_run_parent_empty "PID mismatch"
+}
+
+case_marker_mismatch_rejected() {
+  printf 'CASE marker-mismatch-rejected\n'
+  run_verifier marker-mismatch-rejected unit 1 t main
+  ((RUN_STATUS != 0)) || fail_test "marker mismatch unexpectedly succeeded"
+  assert_state_absent "$DEVX_FAKE_STATE/observed" "kill-emacs-called"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "marker mismatch"
+  assert_run_parent_empty "marker mismatch"
+}
+
+run_signal_case() {
+  local scenario=$1 signal=$2 expected_status=$3 verifier_pid output_file attempt status
+  printf 'CASE %s\n' "$scenario"
+  prepare_lifecycle_state "$scenario" main
+  output_file="$DEVX_FAKE_STATE/verifier.output"
+  # Asynchronous shell jobs inherit SIGINT ignored; reset it before Bash
+  # starts so this tests the launcher's signal handler rather than that fixture.
+  env --default-signal=INT TMPDIR="$run_parent" DEVX_EMACS="$fake_bin/emacs" \
+    DEVX_FAKE_SCENARIO="$DEVX_FAKE_SCENARIO" DEVX_FAKE_STATE="$DEVX_FAKE_STATE" \
+    DEVX_AI_LSP_STARTUP_TIMEOUT=1 DEVX_AI_LSP_CLIENT_TIMEOUT=5 \
+    DEVX_AI_LSP_CLEANUP_TIMEOUT=1 DEVX_AI_LSP_KILL_GRACE=1 \
+    "$repo_root/bin/verify-ai-lsp" unit >"$output_file" 2>&1 &
+  verifier_pid=$!
+  wait_for_path "$DEVX_FAKE_STATE/main-client-started" "$scenario"
+  kill -"$signal" -- "$verifier_pid"
+  for attempt in {1..300}; do
+    kill -0 -- "$verifier_pid" 2>/dev/null || break
+    sleep 0.02
+  done
+  if kill -0 -- "$verifier_pid" 2>/dev/null; then
+    fail_test "$scenario verifier ignored $signal"
+  fi
+  set +e
+  wait "$verifier_pid"
+  status=$?
+  set -e
+  if ((status != expected_status)); then
+    fail_test "$scenario: expected status $expected_status, got $status; output: $(<"$output_file")"
+  fi
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "$scenario"
+  assert_run_parent_empty "$scenario"
+}
+
+case_temp_root_removed() {
+  printf 'CASE temp-root-removed\n'
+  run_verifier temp-root-removed unit 1 t main
+  assert_status "$RUN_STATUS" 0 "temporary-root success"
+  assert_recorded_group_gone "$DEVX_FAKE_STATE" "temporary-root cleanup"
+  assert_run_parent_empty "temporary-root cleanup"
+}
+
+if [[ "$mode" == diagnostics ]]; then
+  run_case daemon-diagnostics
+  run_case client-diagnostics
+  run_case boundary-diagnostics
+  printf 'PASS %d launcher diagnostic cases\n' "$case_count"
+  exit 0
+fi
+
+lifecycle_case_count=0
+run_lifecycle_case() {
+  "$@"
+  lifecycle_case_count=$((lifecycle_case_count + 1))
+}
+
+run_lifecycle_case case_exact_t_success
+run_lifecycle_case case_nil_return_rejected
+run_lifecycle_case case_invalid_mode_rejected
+run_lifecycle_case case_invalid_timeout_rejected
+run_lifecycle_case case_client_timeout_kills_group
+run_lifecycle_case case_startup_failure_kills_group
+run_lifecycle_case case_term_ignored_forces_kill
+run_lifecycle_case case_name_collision_preserves_sentinel
+run_lifecycle_case case_pid_mismatch_rejected
+run_lifecycle_case case_marker_mismatch_rejected
+run_lifecycle_case run_signal_case sigint-exits-130 INT 130
+run_lifecycle_case run_signal_case sigterm-exits-143 TERM 143
+run_lifecycle_case case_temp_root_removed
+printf 'PASS %d launcher lifecycle cases\n' "$lifecycle_case_count"

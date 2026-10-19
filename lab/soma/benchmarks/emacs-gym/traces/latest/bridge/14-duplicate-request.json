@@ -1,0 +1,103 @@
+{
+  "id": "duplicate-request",
+  "title": "A duplicate request id is rejected without replacing the stored request",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-bridge-duplicate"
+    }
+  },
+  "first_response": {
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-duplicate",
+      "text_owner_name": "soma-bridge-duplicate",
+      "buffer_file_name": false,
+      "major_mode": "fundamental-mode",
+      "chars_tick": 4,
+      "modified": false,
+      "read_only": false,
+      "point_min": 1,
+      "point_max": 7,
+      "point": 1,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "soma-bridge-duplicate",
+      "minibuffer_active": false
+    },
+    "error_code": false,
+    "error": false
+  },
+  "second_response": {
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ],
+    "result": false,
+    "error_code": "duplicate_request_id",
+    "error": "request_id has already been submitted"
+  },
+  "status": {
+    "request_id": "duplicate-1",
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "emacs.observe_buffer",
+      "state": "succeeded",
+      "buffer_name": "soma-bridge-duplicate",
+      "text_owner_name": "soma-bridge-duplicate",
+      "buffer_file_name": false,
+      "major_mode": "fundamental-mode",
+      "chars_tick": 4,
+      "modified": false,
+      "read_only": false,
+      "point_min": 1,
+      "point_max": 7,
+      "point": 1,
+      "mark_active": false,
+      "narrowed": false,
+      "selected_window_buffer": "soma-bridge-duplicate",
+      "minibuffer_active": false
+    },
+    "error_code": false,
+    "error": false
+  },
+  "checks": [
+    {
+      "name": "first request succeeds",
+      "passed": true,
+      "detail": "((\"request_id\" . \"duplicate-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "duplicate request id is rejected",
+      "passed": true,
+      "detail": "((\"request_id\" . \"duplicate-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"failed\") (\"state_sequence\" \"accepted\" \"failed\") (\"result\" . :json-false) (\"error_code\" . \"duplicate_request_id\") (\"error\" . \"request_id has already been submitted\"))"
+    },
+    {
+      "name": "duplicate does not overwrite stored request",
+      "passed": true,
+      "detail": "((\"request_id\" . \"duplicate-1\") (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-duplicate\") (\"text_owner_name\" . \"soma-bridge-duplicate\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 4) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 7) (\"point\" . 1) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-duplicate\") (\"minibuffer_active\" . :json-false)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    }
+  ]
+}

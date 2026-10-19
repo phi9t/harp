@@ -1,0 +1,82 @@
+{
+  "id": "command-routes",
+  "title": "Direct call versus interactive invocation versus command dispatch",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Command execution path changes implicit context such as interactive arguments, command recording, and keymap resolution.",
+  "hypothesis": "In batch Emacs, `call-interactively' and `command-execute' acquire arguments but do not reproduce full command-loop state; keyboard-macro dispatch through a keymap changes `this-command'.",
+  "sources": [
+    {
+      "name": "command-execute",
+      "path": "simple.el.gz",
+      "lines": "2753-2815",
+      "note": ""
+    },
+    {
+      "name": "call-interactively caller sites",
+      "path": "simple.el.gz",
+      "lines": "2204, 2797-2804",
+      "note": ""
+    },
+    {
+      "name": "Doom map!",
+      "path": "~/.emacs.d/lisp/doom-keybinds.el",
+      "lines": "439-486",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary interactive command, one temporary key binding, and no real PTY.",
+  "predicted_behavior": "Direct call, `call-interactively', `command-execute', and keymap dispatch are observably different in batch, but none prove terminal byte decoding through Ghostty/SSH/tmux.",
+  "observed_behavior": "(((\"arg\" . \"direct\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)) ((\"arg\" . \"(4)\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)) ((\"arg\" . \"nil\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)) ((\"arg\" . \"nil\") (\"this_command\" . \"soma-probe-command\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false)))",
+  "independent_checks": [
+    {
+      "name": "four routes recorded",
+      "passed": true,
+      "detail": "4"
+    },
+    {
+      "name": "direct call was not command-loop interactive",
+      "passed": true,
+      "detail": "((\"arg\" . \"direct\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+    },
+    {
+      "name": "call-interactively acquired prefix argument",
+      "passed": true,
+      "detail": "((\"arg\" . \"(4)\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+    },
+    {
+      "name": "command-execute route recorded separately",
+      "passed": true,
+      "detail": "((\"arg\" . \"nil\") (\"this_command\" . \"nil\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+    },
+    {
+      "name": "keymap dispatch set this-command",
+      "passed": true,
+      "detail": "((\"arg\" . \"nil\") (\"this_command\" . \"soma-probe-command\") (\"last_command\" . \"nil\") (\"called_interactively\" . :json-false))"
+    }
+  ],
+  "counterexample": "A bridge that only invokes functions directly can miss interactive argument acquisition and command-loop bookkeeping.",
+  "derived_gym_requirement": "Action profiles must classify direct, interactive, command-dispatch, and terminal-input paths; terminal fidelity remains a separate PTY probe gate."
+}

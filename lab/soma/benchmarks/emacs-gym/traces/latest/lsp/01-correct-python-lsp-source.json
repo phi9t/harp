@@ -1,0 +1,322 @@
+{
+  "id": "correct-python-lsp-source",
+  "title": "Open a Python project in Emacs, use pylsp through lsp-mode, and run rootfs Python tests.",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "name": "correct-python-lsp-source",
+  "checks": [
+    {
+      "name": "workspace initialized",
+      "passed": true,
+      "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-lsp-python-python-YifNfe\") (\"server_pid\" . 9) (\"server_executable\" . \"/usr/bin/python3.12\") (\"server_cwd\" . \"/project/tmp/soma-lsp-python-python-YifNfe\") (\"server_environment\" (\"SOMA_INSULA_RUN_ID\" . \"20260929T040533Z-3771476\") (\"SOMA_INSULA_ACTIVE\" . \"1\") (\"CARGO_HOME\" . \"/opt/soma/cargo\") (\"RUSTUP_HOME\" . \"/opt/soma/rustup\") (\"PATH\" . \"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\") (\"XDG_CACHE_HOME\" . \"/project/cache\") (\"XDG_RUNTIME_DIR\" . \"/project/run\") (\"TMPDIR\" . \"/project/tmp\") (\"HOME\" . \"/project/home\")) (\"server_command\" \"/usr/bin/pylsp\") (\"server_buffer_tail\" . \"\") (\"server_stderr_tail\" . \"\") (\"messages_tail\" . \"Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\n\") (\"transport\" (\"transport\" . \"lsp-mode-stdio-process-filter\") (\"json_rpc_connection_suppressed\" . t) (\"reason\" . \"noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits\")))"
+    },
+    {
+      "name": "expected server id",
+      "passed": true,
+      "detail": "((\"server_id\" . \"pylsp\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-lsp-python-python-YifNfe\") (\"server_pid\" . 9) (\"server_executable\" . \"/usr/bin/python3.12\") (\"server_cwd\" . \"/project/tmp/soma-lsp-python-python-YifNfe\") (\"server_environment\" (\"SOMA_INSULA_RUN_ID\" . \"20260929T040533Z-3771476\") (\"SOMA_INSULA_ACTIVE\" . \"1\") (\"CARGO_HOME\" . \"/opt/soma/cargo\") (\"RUSTUP_HOME\" . \"/opt/soma/rustup\") (\"PATH\" . \"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\") (\"XDG_CACHE_HOME\" . \"/project/cache\") (\"XDG_RUNTIME_DIR\" . \"/project/run\") (\"TMPDIR\" . \"/project/tmp\") (\"HOME\" . \"/project/home\")) (\"server_command\" \"/usr/bin/pylsp\") (\"server_buffer_tail\" . \"\") (\"server_stderr_tail\" . \"\") (\"messages_tail\" . \"Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\n\") (\"transport\" (\"transport\" . \"lsp-mode-stdio-process-filter\") (\"json_rpc_connection_suppressed\" . t) (\"reason\" . \"noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits\")))"
+    },
+    {
+      "name": "server executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/bin/python3.12"
+    },
+    {
+      "name": "workspace root is inside Insula runtime",
+      "passed": true,
+      "detail": "/project/tmp/soma-lsp-python-python-YifNfe"
+    },
+    {
+      "name": "document uri is file URI",
+      "passed": true,
+      "detail": "file:///project/tmp/soma-lsp-python-python-YifNfe/main.py"
+    },
+    {
+      "name": "document version recorded",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "position encoding recorded",
+      "passed": true,
+      "detail": "utf-32"
+    },
+    {
+      "name": "supported semantic LSP request observed",
+      "passed": true,
+      "detail": "requests=(((\"method\" . \"initialize\") (\"id\" . 1) (\"buffer\" . \"main.py\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/hover\") (\"id\" . 2) (\"buffer\" . \"main.py\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/references\") (\"id\" . 3) (\"buffer\" . \"main.py\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/definition\") (\"id\" . 4) (\"buffer\" . \"main.py\") (\"document_version\" . 0))) evidence=((\"target_symbol\" . \"compute_value\") (\"capabilities\" (\"textDocument/hover\" . t) (\"textDocument/references\" . t) (\"textDocument/definition\" . t) (\"textDocument/documentSymbol\" . t) (\"textDocument/rename\" . t)) (\"hover\" (\"method\" . \"textDocument/hover\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"(:contents (:kind \\\"markdown\\\" :value \\\"```python\ncompute_value(x: int) -> int\n```\n\n\n\\\"))\") (\"count\" . 2) (\"error\" . \"\")) (\"references\" (\"method\" . \"textDocument/references\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"((:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\\\" :range (:start (:line 0 :character 26) :end (:line 0 :character 39))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\\\" :range (:start (:line 2 :character 9) :end (:line 2 :character 22))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\\\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\\\" :range (:start (:line 1 :character 26) :end (:line 1 :character 39))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\\\" :range (:start (:line 5 :character 25) :end (:line 5 :character 38))))\") (\"count\" . 5) (\"error\" . \"\")) (\"definition\" (\"method\" . \"textDocument/definition\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"((:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\\\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))))\") (\"count\" . 1) (\"error\" . \"\")) (\"hover_raw\" . \"(:contents (:kind \\\"markdown\\\" :value \\\"```python\ncompute_value(x: int) -> int\n```\n\n\n\\\"))\") (\"references_raw\" . \"((:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\\\" :range (:start (:line 0 :character 26) :end (:line 0 :character 39))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\\\" :range (:start (:line 2 :character 9) :end (:line 2 :character 22))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\\\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\\\" :range (:start (:line 1 :character 26) :end (:line 1 :character 39))) (:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\\\" :range (:start (:line 5 :character 25) :end (:line 5 :character 38))))\") (\"definition_raw\" . \"((:uri \\\"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\\\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))))\") (\"reference_count\" . 5) (\"semantic_attempts\" . 1) (\"semantic_ready\" . t))"
+    },
+    {
+      "name": "LSP response names expected definition path",
+      "passed": true,
+      "detail": "expected=/soma_pkg/core.py definition=((:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17)))) references=((:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\" :range (:start (:line 0 :character 26) :end (:line 0 :character 39))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\" :range (:start (:line 2 :character 9) :end (:line 2 :character 22))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\" :range (:start (:line 1 :character 26) :end (:line 1 :character 39))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\" :range (:start (:line 5 :character 25) :end (:line 5 :character 38))))"
+    },
+    {
+      "name": "build or test command succeeded",
+      "passed": true,
+      "detail": "((\"program\" . \"python3\") (\"args\" \"-m\" \"unittest\" \"discover\" \"-s\" \"tests\") (\"status\" . 0) (\"output\" . \".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n\"))"
+    },
+    {
+      "name": "python executable is rootfs-owned",
+      "passed": true,
+      "detail": "tool=((\"name\" . \"python3\") (\"path\" . \"/usr/bin/python3\") (\"realpath\" . \"/usr/bin/python3.12\") (\"rootfs_owned\" . t) (\"version\" . \"3.12.3\")) payload=((\"executable\" . \"/usr/bin/python3\") (\"package_path\" . \"/project/tmp/soma-lsp-python-python-YifNfe/soma_pkg\") (\"path0\" . \"\") (\"prefix\" . \"/usr\") (\"unittest_module\" . \"/usr/lib/python3.12/unittest/__init__.py\"))"
+    },
+    {
+      "name": "python prefix is rootfs-owned",
+      "passed": true,
+      "detail": "((\"executable\" . \"/usr/bin/python3\") (\"package_path\" . \"/project/tmp/soma-lsp-python-python-YifNfe/soma_pkg\") (\"path0\" . \"\") (\"prefix\" . \"/usr\") (\"unittest_module\" . \"/usr/lib/python3.12/unittest/__init__.py\"))"
+    },
+    {
+      "name": "pylsp executable is rootfs-owned",
+      "passed": true,
+      "detail": "((\"name\" . \"pylsp\") (\"path\" . \"/usr/bin/pylsp\") (\"realpath\" . \"/usr/bin/pylsp\") (\"rootfs_owned\" . t) (\"version\" . \"pylsp v1.10.0\"))"
+    },
+    {
+      "name": "package path is inside Insula runtime",
+      "passed": true,
+      "detail": "/project/tmp/soma-lsp-python-python-YifNfe/soma_pkg"
+    }
+  ],
+  "state_sequence": [
+    "fixture-created",
+    "buffer-opened",
+    "lsp-start-requested",
+    "workspace-initialized",
+    "diagnostics-observed",
+    "symbol-requests-completed",
+    "build-test-command-completed"
+  ],
+  "fixture": {
+    "language": "python",
+    "server_id": "pylsp",
+    "root": "/project/tmp/soma-lsp-python-python-YifNfe",
+    "file": "/project/tmp/soma-lsp-python-python-YifNfe/main.py",
+    "symbol": "compute_value",
+    "expected_path_fragment": "/soma_pkg/core.py",
+    "fixture_origin": "generated-inside-bwrap-private-project-runtime"
+  },
+  "buffer": {
+    "buffer": "main.py",
+    "file": "/project/tmp/soma-lsp-python-python-YifNfe/main.py",
+    "major_mode": "python-mode",
+    "workspace_root": "/project/tmp/soma-lsp-python-python-YifNfe/",
+    "document_uri": "file:///project/tmp/soma-lsp-python-python-YifNfe/main.py",
+    "document_version": 0,
+    "position_encoding": "utf-32",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "diagnostics": {
+      "count": 0,
+      "raw": ""
+    }
+  },
+  "server": {
+    "server_id": "pylsp",
+    "workspace_status": "initialized",
+    "workspace_proc_type": "process",
+    "cmd_proc_type": "process",
+    "cmd_proc_status": "run",
+    "workspace_root": "/project/tmp/soma-lsp-python-python-YifNfe",
+    "server_pid": 9,
+    "server_executable": "/usr/bin/python3.12",
+    "server_cwd": "/project/tmp/soma-lsp-python-python-YifNfe",
+    "server_environment": {
+      "SOMA_INSULA_RUN_ID": "20260929T040533Z-3771476",
+      "SOMA_INSULA_ACTIVE": "1",
+      "CARGO_HOME": "/opt/soma/cargo",
+      "RUSTUP_HOME": "/opt/soma/rustup",
+      "PATH": "/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin",
+      "XDG_CACHE_HOME": "/project/cache",
+      "XDG_RUNTIME_DIR": "/project/run",
+      "TMPDIR": "/project/tmp",
+      "HOME": "/project/home"
+    },
+    "server_command": [
+      "/usr/bin/pylsp"
+    ],
+    "server_buffer_tail": "",
+    "server_stderr_tail": "",
+    "messages_tail": "Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-YifNfe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-YifNfe)\n",
+    "transport": {
+      "transport": "lsp-mode-stdio-process-filter",
+      "json_rpc_connection_suppressed": true,
+      "reason": "noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits"
+    }
+  },
+  "request_evidence": {
+    "target_symbol": "compute_value",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "hover": {
+      "method": "textDocument/hover",
+      "supported": true,
+      "status": "ok",
+      "raw": "(:contents (:kind \"markdown\" :value \"```python\ncompute_value(x: int) -> int\n```\n\n\n\"))",
+      "count": 2,
+      "error": ""
+    },
+    "references": {
+      "method": "textDocument/references",
+      "supported": true,
+      "status": "ok",
+      "raw": "((:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\" :range (:start (:line 0 :character 26) :end (:line 0 :character 39))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\" :range (:start (:line 2 :character 9) :end (:line 2 :character 22))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\" :range (:start (:line 1 :character 26) :end (:line 1 :character 39))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\" :range (:start (:line 5 :character 25) :end (:line 5 :character 38))))",
+      "count": 5,
+      "error": ""
+    },
+    "definition": {
+      "method": "textDocument/definition",
+      "supported": true,
+      "status": "ok",
+      "raw": "((:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))))",
+      "count": 1,
+      "error": ""
+    },
+    "hover_raw": "(:contents (:kind \"markdown\" :value \"```python\ncompute_value(x: int) -> int\n```\n\n\n\"))",
+    "references_raw": "((:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\" :range (:start (:line 0 :character 26) :end (:line 0 :character 39))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/main.py\" :range (:start (:line 2 :character 9) :end (:line 2 :character 22))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\" :range (:start (:line 1 :character 26) :end (:line 1 :character 39))) (:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/tests/test_core.py\" :range (:start (:line 5 :character 25) :end (:line 5 :character 38))))",
+    "definition_raw": "((:uri \"file:///project/tmp/soma-lsp-python-python-YifNfe/soma_pkg/core.py\" :range (:start (:line 0 :character 4) :end (:line 0 :character 17))))",
+    "reference_count": 5,
+    "semantic_attempts": 1,
+    "semantic_ready": true
+  },
+  "build_test": {
+    "program": "python3",
+    "args": [
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests"
+    ],
+    "status": 0,
+    "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n"
+  },
+  "toolchain": {
+    "python3": {
+      "name": "python3",
+      "path": "/usr/bin/python3",
+      "realpath": "/usr/bin/python3.12",
+      "rootfs_owned": true,
+      "version": "3.12.3"
+    },
+    "pylsp": {
+      "name": "pylsp",
+      "path": "/usr/bin/pylsp",
+      "realpath": "/usr/bin/pylsp",
+      "rootfs_owned": true,
+      "version": "pylsp v1.10.0"
+    },
+    "pyright-langserver": {
+      "name": "pyright-langserver",
+      "path": "/usr/local/bin/pyright-langserver",
+      "realpath": "/usr/local/lib/node_modules/pyright/langserver.index.js",
+      "rootfs_owned": true,
+      "version": "Error: Connection input stream is not set. Use arguments of createConnection or set command line parameters: '--node-ipc', '--stdio' or '--socket={number}'"
+    },
+    "package_path": "/project/tmp/soma-lsp-python-python-YifNfe/soma_pkg",
+    "probe": {
+      "program": "/usr/bin/python3",
+      "args": [
+        "-c",
+        "import json, os, pathlib, sys, unittest; print(json.dumps({'executable': sys.executable, 'prefix': sys.prefix, 'path0': sys.path[0], 'package_path': str(pathlib.Path('soma_pkg').resolve()), 'unittest_module': unittest.__file__}, sort_keys=True))"
+      ],
+      "status": 0,
+      "output": "{\"executable\": \"/usr/bin/python3\", \"package_path\": \"/project/tmp/soma-lsp-python-python-YifNfe/soma_pkg\", \"path0\": \"\", \"prefix\": \"/usr\", \"unittest_module\": \"/usr/lib/python3.12/unittest/__init__.py\"}\n"
+    },
+    "payload": {
+      "executable": "/usr/bin/python3",
+      "package_path": "/project/tmp/soma-lsp-python-python-YifNfe/soma_pkg",
+      "path0": "",
+      "prefix": "/usr",
+      "unittest_module": "/usr/lib/python3.12/unittest/__init__.py"
+    }
+  },
+  "requests": [
+    {
+      "method": "initialize",
+      "id": 1,
+      "buffer": "main.py",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/hover",
+      "id": 2,
+      "buffer": "main.py",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/references",
+      "id": 3,
+      "buffer": "main.py",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/definition",
+      "id": 4,
+      "buffer": "main.py",
+      "document_version": 0
+    }
+  ],
+  "incoming_messages": [
+    {
+      "message_type": "response",
+      "id": 1,
+      "method": "",
+      "workspace_status_before": "starting",
+      "server_id": "pylsp"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 1,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "textDocument/publishDiagnostics",
+      "workspace_status_before": "initialized",
+      "server_id": "pylsp"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "response",
+      "id": 2,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "pylsp"
+    },
+    {
+      "message_type": "response",
+      "id": 3,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "pylsp"
+    },
+    {
+      "message_type": "response",
+      "id": 4,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "pylsp"
+    }
+  ],
+  "request_ids": [
+    1,
+    2,
+    3,
+    4
+  ]
+}

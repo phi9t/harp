@@ -1,0 +1,76 @@
+{
+  "id": "insula-plan-runtime-consistency",
+  "title": "Insula plan and runtime consistency",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "The emitted bwrap plan must agree with the runtime state observed from inside Emacs.",
+  "hypothesis": "Run id, mode, cwd, private directories, and output directory should match between environment variables, `default-directory', and `insula-plan.json'.",
+  "sources": [
+    {
+      "name": "Soma development Insula plan",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "37-66",
+      "note": ""
+    },
+    {
+      "name": "runtime environment setup",
+      "path": "scripts/insula/run-emacs-internals-probes.sh",
+      "lines": "102-119",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The current `insula-plan.json' plus Emacs runtime variables.",
+  "predicted_behavior": "The plan and runtime should match for this episode, proving plan evidence is not detached from the process being probed.",
+  "observed_behavior": "run_id=\"20260930T040324Z-4018462\"/\"20260930T040324Z-4018462\" mode=\"selected-container-rootfs\"/\"selected-container-rootfs-insula\" cwd=\"/workspace/soma\" repo_bind=\"/workspace/soma\" output=\"/workspace/soma/probes/emacs-internals/traces/latest\" probe_output=\"/workspace/soma/probes/emacs-internals/traces/latest\"",
+  "independent_checks": [
+    {
+      "name": "run id matches plan",
+      "passed": true,
+      "detail": "\"20260930T040324Z-4018462\" / \"20260930T040324Z-4018462\""
+    },
+    {
+      "name": "runtime mode matches plan family",
+      "passed": true,
+      "detail": "\"selected-container-rootfs\" / \"selected-container-rootfs-insula\""
+    },
+    {
+      "name": "cwd matches plan repo bind",
+      "passed": true,
+      "detail": "\"/workspace/soma\" / \"/workspace/soma\""
+    },
+    {
+      "name": "output directory matches plan",
+      "passed": true,
+      "detail": "\"/workspace/soma/probes/emacs-internals/traces/latest\" / \"/workspace/soma/probes/emacs-internals/traces/latest\""
+    },
+    {
+      "name": "private runtime directories match development sentinels",
+      "passed": true,
+      "detail": "HOME=\"/project/home\" TMPDIR=\"/project/tmp\" XDG_RUNTIME_DIR=\"/project/run\""
+    }
+  ],
+  "counterexample": "A runner can emit a plausible plan and then launch Emacs with different cwd, environment, run id, or artifact paths.",
+  "derived_gym_requirement": "The production Insula gateway must validate plan/runtime consistency before accepting Emacs, LSP, Jupyter, or checker evidence."
+}

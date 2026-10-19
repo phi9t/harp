@@ -1,7 +1,7 @@
 # 12: Bring Soma and its Emacs workloads into lab/soma
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: soma-import agent (codex/soma-migration)
 Parent: [Repository architecture](../spec.md)
 Inventory: [benchmark coverage](../../../docs/workstream/repo-architecture/benchmark-inventory.md)
 
@@ -48,3 +48,57 @@ actual migrated bridge/scenario entrypoints with independent negative and positi
 oracles. Check daemon/kernel/server cleanup and never substitute historical traces
 for current execution. No import, source snapshot or live qualification has been
 performed yet.
+
+## Acquisition and migration evidence
+
+The coherent source project is now in `lab/soma/`, including six gym families,
+checked bridge, dirty API changes, daemon client, lifecycle worker,36 probes,
+source-grounded docs and plan-only API/export tickets. Separately acquired AI/LSP
+adapters, independent expected values and fixture generators are under
+`lab/soma/ai_lsp/`, with tests colocated with adapters and launcher.
+
+- Soma source HEAD: `0bfd646a1e2263b53f723796ab2945db325aacbf`.
+- AI/LSP source HEAD: `2724406183236616badef061138208eb20417903`.
+- `lab/soma/source-map.json`:822 source/disposition records,442 destination
+  payloads. This includes historical tracked files deleted in the dirty source.
+- Exact committed archives, dirty binary patches, all untracked bytes (including
+  transient executable shadow copies), file hashes and source status retained in
+  task-private acquisition evidence. Post-acquisition source hashes/status/HEAD
+  matched with zero mismatches. Original source checkouts were never mutated.
+- Published source and traces are declared sanitized derivatives. Private host,
+  operator/storage destination and source-root configuration are excluded.
+- No upstream repository license was present; licensing remains explicit.
+- Rootfs profile/plan schema remains Soma-specific; namespace entry delegates
+  to shared `insula.capsule.execute_prepared` with an explicit minimal environment.
+  The old host-bind namespace-only wrapper now requires selected-rootfs entry.
+  The optional sibling-repository HDFS introspection/ticket writer is retired;
+  sanitized historical source remains under `history/retired-external-storage/`.
+
+### Fresh checks
+
+- Portable Python source checks:29 tests, plus5 preservation contract tests;
+  all passed. These cover selected-rootfs boundary policies, real temporary-tree
+  manifests, aggregation identity rejection and omission/mutation checks.
+- All shell wrappers passed Bash parsing; actual checked bridge passed Emacs
+  `check-parens` on the existing Emacs30.2 host toolchain.
+- Fresh Linux selected-rootfs runs via shared Insula:8 suites,139/139 scenarios
+  as expected; real Python/C++/Rust language servers, Jupyter continuity,
+  comint submission/interrupt, Magit/Dired/Org and daemon/bridge transport.
+- Fresh selected-rootfs mechanism probes:36/36; cold/warm lifecycle:4/4 children,
+  summary pass. This uses a read-only pre-existing selected rootfs and fresh
+  task-owned output/cache state, not the source checkout's historical traces.
+- AI/LSP launcher fixture runs on Linux:3 diagnostic and13 lifecycle cases passed
+  with exit0. Fixed inherited fixture problems: async-shell ignored SIGINT,
+  reaped-PID cleanup under `set -e`, and a race-dependent private-file assertion.
+  Public redaction, bounded output, ownership, signal and cleanup checks remain.
+- Aggregation wrapper now honors explicit rootfs selection consistently; macOS
+  temp-root test fixtures resolve `/var` aliases before recording identity.
+
+`lab/soma/qualification.json` records executed source hashes and exact result
+scope. That foreground qualification does not claim durable admission/recovery
+or supervisor-backed cancellation. Final integrated candidate qualification must
+run through the shared durable/runner owner. Authenticated Copilot completion
+checks remain explicitly unqualified; no credentials or external service access
+were imported. New API/export tickets remain plan-only. Source preservation is
+complete; final owner integration acceptance remains coordinated with tickets04,
+05 and13.

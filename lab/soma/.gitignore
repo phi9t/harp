@@ -1,0 +1,53 @@
+# Python/build caches
+__pycache__/
+*.py[cod]
+
+# Local secrets
+.env
+.env.*
+!.env.example
+.vault/
+.soma-vault/
+
+# Local scratch space
+tmp/
+.scratch/emacs-gym/green-*/
+.scratch/emacs-gym/red*/
+.scratch/emacs-gym/manual/
+.scratch/emacs-gym/network-allowlist-smoke/
+.scratch/emacs-gym/tmp-manual-probes/
+
+# Insula materialized artifacts
+.scratch/emacs-gym/insula/rootfs-store/content/
+.scratch/emacs-gym/insula/runs/
+.scratch/emacs-gym/insula/artifacts/
+.scratch/emacs-gym/insula/probes/
+.scratch/emacs-gym/insula/pyright-cli-probe/
+
+# Keep current benchmark/probe evidence, not historical iteration runs
+benchmarks/emacs-gym/bridge/traces/*
+!benchmarks/emacs-gym/bridge/traces/latest/
+!benchmarks/emacs-gym/bridge/traces/latest/**
+!benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/
+!benchmarks/emacs-gym/bridge/traces/lsp-diagnostics-fullsync1/**
+benchmarks/emacs-gym/dired/traces/*
+!benchmarks/emacs-gym/dired/traces/latest/
+!benchmarks/emacs-gym/dired/traces/latest/**
+benchmarks/emacs-gym/jupyter/traces/*
+!benchmarks/emacs-gym/jupyter/traces/latest/
+!benchmarks/emacs-gym/jupyter/traces/latest/**
+benchmarks/emacs-gym/lsp/traces/*
+!benchmarks/emacs-gym/lsp/traces/latest/
+!benchmarks/emacs-gym/lsp/traces/latest/**
+benchmarks/emacs-gym/traces/*
+!benchmarks/emacs-gym/traces/latest/
+!benchmarks/emacs-gym/traces/latest/**
+probes/emacs-internals/traces/*
+!probes/emacs-internals/traces/latest/
+!probes/emacs-internals/traces/latest/**
+workers/emacs-doom-lifecycle/traces/*
+!workers/emacs-doom-lifecycle/traces/latest/
+!workers/emacs-doom-lifecycle/traces/latest/**
+
+# Fresh qualification outputs are machine-local.
+.qualification/

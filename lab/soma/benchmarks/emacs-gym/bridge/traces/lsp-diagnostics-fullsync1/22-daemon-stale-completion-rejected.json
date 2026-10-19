@@ -1,0 +1,1387 @@
+{
+  "accept_request": {
+    "operation": "completion.accept",
+    "params": {
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "end": 7,
+      "preconditions": {
+        "buffer_file_name": false,
+        "buffer_name": "soma-daemon-stale-completion.txt",
+        "chars_tick": 5,
+        "expected_text": "",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": true,
+        "narrowed": false,
+        "point": 7,
+        "prefix": "alpha ",
+        "read_only": false,
+        "selected_window_buffer": "soma-daemon-stale-completion.txt",
+        "suffix": "\nomega",
+        "text_owner_name": "soma-daemon-stale-completion.txt"
+      },
+      "start": 7,
+      "text": "beta"
+    },
+    "request_id": "daemon-stale-completion-accept-1"
+  },
+  "accept_response": {
+    "error": "completion acceptance precondition failed",
+    "error_code": "conflict",
+    "operation": "completion.accept",
+    "request_id": "daemon-stale-completion-accept-1",
+    "result": {
+      "error": "completion acceptance precondition failed",
+      "operation": "completion.accept",
+      "precondition_checks": [
+        {
+          "detail": "#<buffer soma-daemon-stale-completion.txt>",
+          "name": "target buffer is live",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+          "name": "buffer identity matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+          "name": "text owner matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "visited file matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=5 actual=11",
+          "name": "character revision matches precondition",
+          "passed": false
+        },
+        {
+          "detail": "expected=7 actual=13",
+          "name": "point matches precondition",
+          "passed": false
+        },
+        {
+          "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+          "name": "selected window matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=t actual=t",
+          "name": "modified state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "read-only state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "minibuffer state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "region active state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "narrowing state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "range=7..7 point-min=1 point-max=20",
+          "name": "target range is valid",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"\" actual=\"\"",
+          "name": "target range text matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"alpha \" actual=\"alpha \"",
+          "name": "completion prefix matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"\nomega\" actual=\"human-\"",
+          "name": "completion suffix matches precondition",
+          "passed": false
+        }
+      ],
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ]
+    },
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ]
+  },
+  "after_human_observe_request": {
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-daemon-stale-completion.txt"
+    },
+    "request_id": "daemon-stale-completion-observe-after-human-1"
+  },
+  "after_human_observe_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_buffer",
+    "request_id": "daemon-stale-completion-observe-after-human-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "chars_tick": 11,
+      "major_mode": "fundamental-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": true,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 13,
+      "point_max": 20,
+      "point_min": 1,
+      "read_only": false,
+      "selected_window_buffer": "soma-daemon-stale-completion.txt",
+      "state": "succeeded",
+      "text_owner_name": "soma-daemon-stale-completion.txt"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "after_human_read_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "buffer.read",
+    "request_id": "daemon-stale-completion-read-after-human-1",
+    "result": {
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "chars_tick": 11,
+      "end": 20,
+      "operation": "buffer.read",
+      "start": 1,
+      "state": "succeeded",
+      "text": "alpha human-\nomega\n",
+      "text_owner_name": "soma-daemon-stale-completion.txt"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "after_human_text": "alpha human-\nomega\n",
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "after_human_text": "alpha human-\nomega\n",
+        "buffer_name": "soma-daemon-stale-completion.txt",
+        "end": 7,
+        "human_text": "human-",
+        "initial_text": "alpha \nomega\n",
+        "observation": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 5,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 7,
+          "point_max": 14,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        },
+        "point": 7,
+        "post_human_read_end": 20,
+        "prefix": "alpha ",
+        "proposal": "beta",
+        "start": 7,
+        "suffix": "\nomega"
+      },
+      "name": "completion fixture is present",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-g"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "completion terminal switch cancel succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "C-x",
+          "b"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "completion terminal switch prefix succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "soma-daemon-stale-completion.txt"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "completion terminal switch buffer text sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "Enter"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "completion terminal switch enter succeeded",
+      "passed": true
+    },
+    {
+      "detail": [
+        {
+          "client_frame": true,
+          "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+          "graphic": false,
+          "height": 23,
+          "index": 1,
+          "name": "F2",
+          "selected": true,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "/dev/pts/0",
+          "visible": "t",
+          "width": 80
+        },
+        {
+          "client_frame": false,
+          "client_repr": false,
+          "graphic": false,
+          "height": 24,
+          "index": 2,
+          "name": "F1",
+          "selected": false,
+          "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+          "selected_window_live": true,
+          "terminal_live": true,
+          "terminal_name": "initial_terminal",
+          "visible": "t",
+          "width": 80
+        }
+      ],
+      "name": "client terminal frame displays completion buffer",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-stale-completion-observe-initial-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 5,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 7,
+          "point_max": 14,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "initial completion observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "buffer_file_name": false,
+        "buffer_name": "soma-daemon-stale-completion.txt",
+        "chars_tick": 5,
+        "major_mode": "fundamental-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": true,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 7,
+        "point_max": 14,
+        "point_min": 1,
+        "read_only": false,
+        "selected_window_buffer": "soma-daemon-stale-completion.txt",
+        "state": "succeeded",
+        "text_owner_name": "soma-daemon-stale-completion.txt"
+      },
+      "name": "initial completion point is insertion point",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.goto_char",
+        "request_id": "daemon-stale-completion-goto-1",
+        "result": {
+          "after": {
+            "buffer_file_name": false,
+            "buffer_name": "soma-daemon-stale-completion.txt",
+            "chars_tick": 5,
+            "major_mode": "fundamental-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": true,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 7,
+            "point_max": 14,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "soma-daemon-stale-completion.txt",
+            "state": "succeeded",
+            "text_owner_name": "soma-daemon-stale-completion.txt"
+          },
+          "before": {
+            "buffer_file_name": false,
+            "buffer_name": "soma-daemon-stale-completion.txt",
+            "chars_tick": 5,
+            "major_mode": "fundamental-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": true,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 7,
+            "point_max": 14,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "soma-daemon-stale-completion.txt",
+            "state": "succeeded",
+            "text_owner_name": "soma-daemon-stale-completion.txt"
+          },
+          "error": false,
+          "operation": "emacs.goto_char",
+          "point": 7,
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-daemon-stale-completion.txt>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "text owner matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "visited file matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=5 actual=5",
+              "name": "character revision matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=7 actual=7",
+              "name": "point matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "selected window matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "modified state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "read-only state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "selected=\"soma-daemon-stale-completion.txt\" target=\"soma-daemon-stale-completion.txt\"",
+              "name": "selected window displays target buffer",
+              "passed": true
+            },
+            {
+              "detail": "point=7",
+              "name": "target point is valid",
+              "passed": true
+            }
+          ],
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "checked completion point navigation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "argv": [
+          "tmux",
+          "-S",
+          "/project/run/soma-gym-bridge-terminal-tmux.sock",
+          "send-keys",
+          "-l",
+          "-t",
+          "soma-gym-bridge-terminal:0.0",
+          "human-"
+        ],
+        "returncode": 0,
+        "stderr": "",
+        "stdout": ""
+      },
+      "name": "terminal human edit was sent",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-stale-completion-observe-after-human-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 11,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 13,
+          "point_max": 20,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "after-human completion observation succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "after": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 11,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 13,
+          "point_max": 20,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        },
+        "before": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 5,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 7,
+          "point_max": 14,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        }
+      },
+      "name": "human edit changed completion revision",
+      "passed": true
+    },
+    {
+      "detail": "alpha human-\nomega\n",
+      "name": "human edit changed completion context",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "completion acceptance precondition failed",
+        "error_code": "conflict",
+        "operation": "completion.accept",
+        "request_id": "daemon-stale-completion-accept-1",
+        "result": {
+          "error": "completion acceptance precondition failed",
+          "operation": "completion.accept",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-daemon-stale-completion.txt>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "text owner matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "visited file matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=5 actual=11",
+              "name": "character revision matches precondition",
+              "passed": false
+            },
+            {
+              "detail": "expected=7 actual=13",
+              "name": "point matches precondition",
+              "passed": false
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "selected window matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "modified state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "read-only state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "range=7..7 point-min=1 point-max=20",
+              "name": "target range is valid",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"\" actual=\"\"",
+              "name": "target range text matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"alpha \" actual=\"alpha \"",
+              "name": "completion prefix matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"\nomega\" actual=\"human-\"",
+              "name": "completion suffix matches precondition",
+              "passed": false
+            }
+          ],
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "failed"
+        ]
+      },
+      "name": "stale completion accept is rejected as conflict",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "completion acceptance precondition failed",
+        "error_code": "conflict",
+        "operation": "completion.accept",
+        "request_id": "daemon-stale-completion-accept-1",
+        "result": {
+          "error": "completion acceptance precondition failed",
+          "operation": "completion.accept",
+          "precondition_checks": [
+            {
+              "detail": "#<buffer soma-daemon-stale-completion.txt>",
+              "name": "target buffer is live",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "buffer identity matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "text owner matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "visited file matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=5 actual=11",
+              "name": "character revision matches precondition",
+              "passed": false
+            },
+            {
+              "detail": "expected=7 actual=13",
+              "name": "point matches precondition",
+              "passed": false
+            },
+            {
+              "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+              "name": "selected window matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=t actual=t",
+              "name": "modified state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "read-only state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "minibuffer state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "region active state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=:json-false actual=:json-false",
+              "name": "narrowing state matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "range=7..7 point-min=1 point-max=20",
+              "name": "target range is valid",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"\" actual=\"\"",
+              "name": "target range text matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"alpha \" actual=\"alpha \"",
+              "name": "completion prefix matches precondition",
+              "passed": true
+            },
+            {
+              "detail": "expected=\"\nomega\" actual=\"human-\"",
+              "name": "completion suffix matches precondition",
+              "passed": false
+            }
+          ],
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "failed"
+        ]
+      },
+      "name": "stale completion rejection reports context failure",
+      "passed": true
+    },
+    {
+      "detail": "alpha human-\nomega\n",
+      "name": "stale completion did not insert proposed text",
+      "passed": true
+    },
+    {
+      "detail": {
+        "after_human": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 11,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 13,
+          "point_max": 20,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        },
+        "final": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-daemon-stale-completion.txt",
+          "chars_tick": 11,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": true,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 13,
+          "point_max": 20,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "soma-daemon-stale-completion.txt",
+          "state": "succeeded",
+          "text_owner_name": "soma-daemon-stale-completion.txt"
+        }
+      },
+      "name": "failed stale completion did not advance revision further",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "final_observe_request": {
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-daemon-stale-completion.txt"
+    },
+    "request_id": "daemon-stale-completion-observe-final-1"
+  },
+  "final_observe_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_buffer",
+    "request_id": "daemon-stale-completion-observe-final-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "chars_tick": 11,
+      "major_mode": "fundamental-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": true,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 13,
+      "point_max": 20,
+      "point_min": 1,
+      "read_only": false,
+      "selected_window_buffer": "soma-daemon-stale-completion.txt",
+      "state": "succeeded",
+      "text_owner_name": "soma-daemon-stale-completion.txt"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "final_read_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "buffer.read",
+    "request_id": "daemon-stale-completion-read-final-1",
+    "result": {
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "chars_tick": 11,
+      "end": 20,
+      "operation": "buffer.read",
+      "start": 1,
+      "state": "succeeded",
+      "text": "alpha human-\nomega\n",
+      "text_owner_name": "soma-daemon-stale-completion.txt"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "final_text": "alpha human-\nomega\n",
+  "fixture": {
+    "after_human_text": "alpha human-\nomega\n",
+    "buffer_name": "soma-daemon-stale-completion.txt",
+    "end": 7,
+    "human_text": "human-",
+    "initial_text": "alpha \nomega\n",
+    "observation": {
+      "buffer_file_name": false,
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "chars_tick": 5,
+      "major_mode": "fundamental-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": true,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 7,
+      "point_max": 14,
+      "point_min": 1,
+      "read_only": false,
+      "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+      "state": "succeeded",
+      "text_owner_name": "soma-daemon-stale-completion.txt"
+    },
+    "point": 7,
+    "post_human_read_end": 20,
+    "prefix": "alpha ",
+    "proposal": "beta",
+    "start": 7,
+    "suffix": "\nomega"
+  },
+  "goto_request": {
+    "operation": "emacs.goto_char",
+    "params": {
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "point": 7,
+      "preconditions": {
+        "buffer_file_name": false,
+        "buffer_name": "soma-daemon-stale-completion.txt",
+        "chars_tick": 5,
+        "major_mode": "fundamental-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": true,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 7,
+        "point_max": 14,
+        "point_min": 1,
+        "read_only": false,
+        "selected_window_buffer": "soma-daemon-stale-completion.txt",
+        "state": "succeeded",
+        "text_owner_name": "soma-daemon-stale-completion.txt"
+      }
+    },
+    "request_id": "daemon-stale-completion-goto-1"
+  },
+  "goto_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.goto_char",
+    "request_id": "daemon-stale-completion-goto-1",
+    "result": {
+      "after": {
+        "buffer_file_name": false,
+        "buffer_name": "soma-daemon-stale-completion.txt",
+        "chars_tick": 5,
+        "major_mode": "fundamental-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": true,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 7,
+        "point_max": 14,
+        "point_min": 1,
+        "read_only": false,
+        "selected_window_buffer": "soma-daemon-stale-completion.txt",
+        "state": "succeeded",
+        "text_owner_name": "soma-daemon-stale-completion.txt"
+      },
+      "before": {
+        "buffer_file_name": false,
+        "buffer_name": "soma-daemon-stale-completion.txt",
+        "chars_tick": 5,
+        "major_mode": "fundamental-mode",
+        "mark_active": false,
+        "minibuffer_active": false,
+        "modified": true,
+        "narrowed": false,
+        "operation": "emacs.observe_buffer",
+        "point": 7,
+        "point_max": 14,
+        "point_min": 1,
+        "read_only": false,
+        "selected_window_buffer": "soma-daemon-stale-completion.txt",
+        "state": "succeeded",
+        "text_owner_name": "soma-daemon-stale-completion.txt"
+      },
+      "error": false,
+      "operation": "emacs.goto_char",
+      "point": 7,
+      "precondition_checks": [
+        {
+          "detail": "#<buffer soma-daemon-stale-completion.txt>",
+          "name": "target buffer is live",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+          "name": "buffer identity matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+          "name": "text owner matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "visited file matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=5 actual=5",
+          "name": "character revision matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=7 actual=7",
+          "name": "point matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=\"soma-daemon-stale-completion.txt\" actual=\"soma-daemon-stale-completion.txt\"",
+          "name": "selected window matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=t actual=t",
+          "name": "modified state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "read-only state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "minibuffer state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "region active state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "expected=:json-false actual=:json-false",
+          "name": "narrowing state matches precondition",
+          "passed": true
+        },
+        {
+          "detail": "selected=\"soma-daemon-stale-completion.txt\" target=\"soma-daemon-stale-completion.txt\"",
+          "name": "selected window displays target buffer",
+          "passed": true
+        },
+        {
+          "detail": "point=7",
+          "name": "target point is valid",
+          "passed": true
+        }
+      ],
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "id": "daemon-stale-completion-rejected",
+  "initial_observe_request": {
+    "operation": "emacs.observe_buffer",
+    "params": {
+      "buffer_name": "soma-daemon-stale-completion.txt"
+    },
+    "request_id": "daemon-stale-completion-observe-initial-1"
+  },
+  "initial_observe_response": {
+    "error": false,
+    "error_code": false,
+    "operation": "emacs.observe_buffer",
+    "request_id": "daemon-stale-completion-observe-initial-1",
+    "result": {
+      "buffer_file_name": false,
+      "buffer_name": "soma-daemon-stale-completion.txt",
+      "chars_tick": 5,
+      "major_mode": "fundamental-mode",
+      "mark_active": false,
+      "minibuffer_active": false,
+      "modified": true,
+      "narrowed": false,
+      "operation": "emacs.observe_buffer",
+      "point": 7,
+      "point_max": 14,
+      "point_min": 1,
+      "read_only": false,
+      "selected_window_buffer": "soma-daemon-stale-completion.txt",
+      "state": "succeeded",
+      "text_owner_name": "soma-daemon-stale-completion.txt"
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "policy_passed_grader": true,
+  "terminal_human_input": {
+    "argv": [
+      "tmux",
+      "-S",
+      "/project/run/soma-gym-bridge-terminal-tmux.sock",
+      "send-keys",
+      "-l",
+      "-t",
+      "soma-gym-bridge-terminal:0.0",
+      "human-"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "terminal_switch": {
+    "buffer_keys": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-l",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "soma-daemon-stale-completion.txt"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-g"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "cancel_attempts": [
+      {
+        "attempt": 1,
+        "cancel": {
+          "argv": [
+            "tmux",
+            "-S",
+            "/project/run/soma-gym-bridge-terminal-tmux.sock",
+            "send-keys",
+            "-t",
+            "soma-gym-bridge-terminal:0.0",
+            "C-g"
+          ],
+          "returncode": 0,
+          "stderr": "",
+          "stdout": ""
+        },
+        "minibuffer_active": false,
+        "response_state": "succeeded",
+        "selected_window_buffer": "*jupyter-repl[soma-daemon-display-update]*",
+        "transient_active": false,
+        "transient_map_installed": false
+      }
+    ],
+    "cancel_interaction_response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_interaction",
+      "request_id": "daemon-stale-completion-cancel-interaction-1",
+      "result": {
+        "daemonp": true,
+        "emacs_pid": 4,
+        "last_command": "keyboard-quit",
+        "minibuffer_active": false,
+        "minibuffer_buffer": false,
+        "minibuffer_contents": false,
+        "minibuffer_prompt": false,
+        "operation": "emacs.observe_interaction",
+        "recursive_edit_depth": 0,
+        "selected_window_buffer": "*jupyter-repl[soma-daemon-display-update]*",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "this_command": "nil",
+        "transient_active": false,
+        "transient_active_arguments": [],
+        "transient_buffer": false,
+        "transient_current_command": false,
+        "transient_map_active": false,
+        "transient_map_installed": false,
+        "transient_prefix_command": false,
+        "transient_suffixes": [],
+        "transient_window_buffer": false,
+        "transient_window_live": false
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "enter": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "Enter"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "minibuffer_attempts": [
+      {
+        "attempt": 1,
+        "minibuffer_active": true,
+        "minibuffer_prompt": "Switch to buffer (default soma-daemon-jupyter-display-update.py): ",
+        "response_state": "succeeded",
+        "selected_window_buffer": " *Minibuf-1*"
+      }
+    ],
+    "observation_attempts": [
+      {
+        "attempt": 1,
+        "client_terminal_buffers": [
+          "soma-daemon-stale-completion.txt"
+        ],
+        "response_state": "succeeded"
+      }
+    ],
+    "prefix": {
+      "argv": [
+        "tmux",
+        "-S",
+        "/project/run/soma-gym-bridge-terminal-tmux.sock",
+        "send-keys",
+        "-t",
+        "soma-gym-bridge-terminal:0.0",
+        "C-x",
+        "b"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    },
+    "response": {
+      "error": false,
+      "error_code": false,
+      "operation": "emacs.observe_frames",
+      "request_id": "daemon-stale-completion-frame-1",
+      "result": {
+        "client_frame_count": 1,
+        "daemonp": true,
+        "emacs_pid": 4,
+        "frame_count": 2,
+        "frames": [
+          {
+            "client_frame": true,
+            "client_repr": "#<process soma-gym-bridge-daemon <5>>",
+            "graphic": false,
+            "height": 23,
+            "index": 1,
+            "name": "F2",
+            "selected": true,
+            "selected_window_buffer": "soma-daemon-stale-completion.txt",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "/dev/pts/0",
+            "visible": "t",
+            "width": 80
+          },
+          {
+            "client_frame": false,
+            "client_repr": false,
+            "graphic": false,
+            "height": 24,
+            "index": 2,
+            "name": "F1",
+            "selected": false,
+            "selected_window_buffer": "magit: soma-daemon-magit-zeZD8K",
+            "selected_window_live": true,
+            "terminal_live": true,
+            "terminal_name": "initial_terminal",
+            "visible": "t",
+            "width": 80
+          }
+        ],
+        "graphic_frame_count": 0,
+        "operation": "emacs.observe_frames",
+        "server_name": "soma-gym-bridge-daemon",
+        "state": "succeeded",
+        "terminal_frame_count": 2
+      },
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ]
+    },
+    "tmux_target": "soma-gym-bridge-terminal:0.0"
+  },
+  "title": "The live daemon bridge rejects stale completion.accept after intervening terminal editing"
+}

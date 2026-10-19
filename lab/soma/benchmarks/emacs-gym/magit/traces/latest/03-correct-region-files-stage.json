@@ -1,0 +1,232 @@
+{
+  "id": "correct-region-files-stage",
+  "title": "Correct policy stages an active region of Magit file sections",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "observation": {
+    "repo": "/project/tmp/soma-magit-region-correct-VSxdXS",
+    "buffer": "magit: soma-magit-region-correct-VSxdXS",
+    "region_sections": [
+      {
+        "type": "file",
+        "value": "\"alpha.txt\"",
+        "start": 48,
+        "content": 69,
+        "end": 109,
+        "parent_types": [
+          "file",
+          "unstaged",
+          "status"
+        ],
+        "text_excerpt": "modified   alpha.txt\n@@ -1 +1 @@\n-alpha-base\n+alpha-selected\n"
+      },
+      {
+        "type": "file",
+        "value": "\"beta.txt\"",
+        "start": 109,
+        "content": 129,
+        "end": 167,
+        "parent_types": [
+          "file",
+          "unstaged",
+          "status"
+        ],
+        "text_excerpt": "modified   beta.txt\n@@ -1 +1 @@\n-beta-base\n+beta-selected\n"
+      }
+    ],
+    "diff_type": "unstaged",
+    "diff_scope": "files"
+  },
+  "action": {
+    "operation": "magit-stage",
+    "route": "checked-bridge-command-dispatch",
+    "bridge": {
+      "operation": "command.dispatch",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "command": "magit-stage",
+      "route": "command-execute",
+      "this_command": "magit-stage",
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer magit: soma-magit-region-correct-VSxdXS>"
+        },
+        {
+          "name": "command is allowlisted",
+          "passed": true,
+          "detail": "magit-stage"
+        },
+        {
+          "name": "command is interactive",
+          "passed": true,
+          "detail": "magit-stage"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"magit: soma-magit-region-correct-VSxdXS\" actual=\"magit: soma-magit-region-correct-VSxdXS\""
+        },
+        {
+          "name": "selected window displays target buffer",
+          "passed": true,
+          "detail": "expected=\"magit: soma-magit-region-correct-VSxdXS\" actual=\"magit: soma-magit-region-correct-VSxdXS\""
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=276 actual=276"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=109 actual=109"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "region active state matches precondition",
+          "passed": true,
+          "detail": "expected=t actual=t"
+        },
+        {
+          "name": "region bounds match precondition",
+          "passed": true,
+          "detail": "expected=48..109 actual=48..109"
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "magit: soma-magit-region-correct-VSxdXS",
+        "text_owner_name": "magit: soma-magit-region-correct-VSxdXS",
+        "buffer_file_name": false,
+        "major_mode": "magit-status-mode",
+        "chars_tick": 276,
+        "modified": false,
+        "point": 109,
+        "mark_active": true,
+        "narrowed": false,
+        "selected_window_buffer": "magit: soma-magit-region-correct-VSxdXS",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "magit: soma-magit-region-correct-VSxdXS",
+        "text_owner_name": "magit: soma-magit-region-correct-VSxdXS",
+        "buffer_file_name": false,
+        "major_mode": "magit-status-mode",
+        "chars_tick": 563,
+        "modified": false,
+        "point": 48,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "magit: soma-magit-region-correct-VSxdXS",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "selection": "unstaged files region"
+  },
+  "name": "correct-region-files-stage",
+  "checks": [
+    {
+      "name": "git executable resolves inside rootfs",
+      "passed": true,
+      "detail": "/usr/bin/git"
+    },
+    {
+      "name": "Magit loads from rootfs-owned Doom mount",
+      "passed": true,
+      "detail": "/project/home/.emacs.d/.local/straight/build-30.2/magit/magit-apply.elc"
+    },
+    {
+      "name": "action used expected Magit operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"magit-stage\") (\"route\" . \"checked-bridge-command-dispatch\") (\"bridge\" (\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-region-correct-VSxdXS>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=276 actual=276\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=109 actual=109\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=t actual=t\")) ((\"name\" . \"region bounds match precondition\") (\"passed\" . t) (\"detail\" . \"expected=48..109 actual=48..109\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 276) (\"modified\" . :json-false) (\"point\" . 109) (\"mark_active\" . t) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 563) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"selection\" . \"unstaged files region\"))"
+    },
+    {
+      "name": "checked bridge command dispatch succeeded",
+      "passed": true,
+      "detail": "((\"operation\" . \"command.dispatch\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"command\" . \"magit-stage\") (\"route\" . \"command-execute\") (\"this_command\" . \"magit-stage\") (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer magit: soma-magit-region-correct-VSxdXS>\")) ((\"name\" . \"command is allowlisted\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"command is interactive\") (\"passed\" . t) (\"detail\" . \"magit-stage\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"selected window displays target buffer\") (\"passed\" . t) (\"detail\" . \"expected=\\\"magit: soma-magit-region-correct-VSxdXS\\\" actual=\\\"magit: soma-magit-region-correct-VSxdXS\\\"\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=276 actual=276\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=109 actual=109\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"region active state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=t actual=t\")) ((\"name\" . \"region bounds match precondition\") (\"passed\" . t) (\"detail\" . \"expected=48..109 actual=48..109\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 276) (\"modified\" . :json-false) (\"point\" . 109) (\"mark_active\" . t) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"text_owner_name\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"magit-status-mode\") (\"chars_tick\" . 563) (\"modified\" . :json-false) (\"point\" . 48) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"magit: soma-magit-region-correct-VSxdXS\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    },
+    {
+      "name": "command route preserved Magit command identity",
+      "passed": true,
+      "detail": "(\"magit-stage\")"
+    },
+    {
+      "name": "Magit refresh ran after staging",
+      "passed": true,
+      "detail": "(\"magit: soma-magit-region-correct-VSxdXS\")"
+    },
+    {
+      "name": "region selected exactly two file sections",
+      "passed": true,
+      "detail": "(((\"type\" . \"file\") (\"value\" . \"\\\"alpha.txt\\\"\") (\"start\" . 48) (\"content\" . 69) (\"end\" . 109) (\"parent_types\" \"file\" \"unstaged\" \"status\") (\"text_excerpt\" . \"modified   alpha.txt\n@@ -1 +1 @@\n-alpha-base\n+alpha-selected\n\")) ((\"type\" . \"file\") (\"value\" . \"\\\"beta.txt\\\"\") (\"start\" . 109) (\"content\" . 129) (\"end\" . 167) (\"parent_types\" \"file\" \"unstaged\" \"status\") (\"text_excerpt\" . \"modified   beta.txt\n@@ -1 +1 @@\n-beta-base\n+beta-selected\n\")))"
+    },
+    {
+      "name": "alpha and beta are staged",
+      "passed": true,
+      "detail": "alpha=\"alpha-selected\n\" beta=\"beta-selected\n\""
+    },
+    {
+      "name": "gamma remains unstaged",
+      "passed": true,
+      "detail": "gamma=\"gamma-base\n\" unstaged=(\"debug.txt\" \"gamma.txt\")"
+    },
+    {
+      "name": "cached names are exact",
+      "passed": true,
+      "detail": "(\"alpha.txt\" \"beta.txt\" \"staged.txt\")"
+    },
+    {
+      "name": "unrelated debug and gamma worktree changes remain",
+      "passed": true,
+      "detail": "(\"debug.txt\" \"gamma.txt\")"
+    }
+  ],
+  "repo_state": {
+    "cached_names": [
+      "alpha.txt",
+      "beta.txt",
+      "staged.txt"
+    ],
+    "unstaged_names": [
+      "debug.txt",
+      "gamma.txt"
+    ],
+    "status_porcelain": [
+      " M debug.txt",
+      " M gamma.txt",
+      "M  alpha.txt",
+      "M  beta.txt",
+      "M  staged.txt"
+    ],
+    "target_index": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "target_worktree": "target-01-base\ntarget-02-base\ntarget-03-base\ntarget-04-base\ntarget-05-base\ntarget-06-base\ntarget-07-base\ntarget-08-base\ntarget-09-base\ntarget-10-base\ntarget-11-base\ntarget-12-base\ntarget-13-base\ntarget-14-base\ntarget-15-base\ntarget-16-base\ntarget-17-base\ntarget-18-base\ntarget-19-base\ntarget-20-base\ntarget-21-base\ntarget-22-base\ntarget-23-base\ntarget-24-base\ntarget-25-base\ntarget-26-base\ntarget-27-base\ntarget-28-base\ntarget-29-base\ntarget-30-base\n",
+    "debug_index": "debug-base\n",
+    "debug_worktree": "debug-base\ndebug-worktree-only\n",
+    "staged_index": "staged-expected\n",
+    "staged_worktree": "staged-expected\n",
+    "alpha_index": "alpha-selected\n",
+    "beta_index": "beta-selected\n",
+    "gamma_index": "gamma-base\n"
+  },
+  "post_stage_hook_runs": [
+    "magit-stage"
+  ],
+  "refresh_buffer_hook_runs": [
+    "magit: soma-magit-region-correct-VSxdXS"
+  ]
+}

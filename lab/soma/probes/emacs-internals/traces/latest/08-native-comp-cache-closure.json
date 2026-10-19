@@ -1,0 +1,66 @@
+{
+  "id": "native-comp-cache-closure",
+  "title": "Native-comp cache closure",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Emacs native compilation introduces ABI-sensitive cache and runtime-library state that must be owned by the rootfs or sandbox cache.",
+  "hypothesis": "The probe should record native-comp availability, eln load paths, and whether cache-like paths are sandbox-owned or development-classified.",
+  "sources": [
+    {
+      "name": "Emacs native-comp feature",
+      "path": "system-configuration-features",
+      "lines": "runtime",
+      "note": ""
+    },
+    {
+      "name": "Doom lifecycle environment identity",
+      "path": "docs/internals-atlas/doom-lifecycle.md",
+      "lines": "88-103",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "The current Emacs runtime variables related to native compilation.",
+  "predicted_behavior": "Development mode may include host Emacs native-lisp paths, but production benchmark evidence needs rootfs-owned ABI and cache manifests.",
+  "observed_behavior": "native-comp-feature=42 eln-paths=(\"/project/home/.emacs.d/eln-cache/\" \"/opt/soma/emacs/lib/emacs/30.2/native-lisp/\") cache-like=(\"/project/home/.emacs.d/eln-cache/\") nonprivate-cache=nil prod=t",
+  "independent_checks": [
+    {
+      "name": "native-comp availability was captured",
+      "passed": true,
+      "detail": "42"
+    },
+    {
+      "name": "eln path state was captured",
+      "passed": true,
+      "detail": "(\"/project/home/.emacs.d/eln-cache/\" \"/opt/soma/emacs/lib/emacs/30.2/native-lisp/\")"
+    },
+    {
+      "name": "native-comp nonprivate paths are classified",
+      "passed": true,
+      "detail": "prod=t nonprivate-cache=nil"
+    }
+  ],
+  "counterexample": "Ignoring native-comp paths can hide stale `.eln' artifacts compiled against a different Emacs or libgccjit ABI.",
+  "derived_gym_requirement": "The rootfs contract must record native-comp enablement, libgccjit identity, eln paths, and sandbox-owned cache/write locations."
+}

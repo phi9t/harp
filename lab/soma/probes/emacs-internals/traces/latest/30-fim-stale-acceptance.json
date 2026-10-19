@@ -1,0 +1,66 @@
+{
+  "id": "fim-stale-acceptance",
+  "title": "FIM acceptance after human editing",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A delayed completion suggestion must be rejected if the buffer context that authorized it is stale.",
+  "hypothesis": "Changing the prefix before accepting a suggestion should change the character tick and prefix validation even if a marker still identifies a live position.",
+  "sources": [
+    {
+      "name": "buffer revision runtime",
+      "path": "Emacs primitive introspection",
+      "lines": "buffer-chars-modified-tick",
+      "note": ""
+    },
+    {
+      "name": "marker runtime",
+      "path": "Emacs primitive introspection",
+      "lines": "copy-marker",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary code buffer, one suggestion snapshot, one simulated human edit.",
+  "predicted_behavior": "The stale suggestion is rejected because tick and prefix changed.",
+  "observed_behavior": "marker=28 tick=6->9 accepted=nil text=\"def f(value):\n    return x\n\"",
+  "independent_checks": [
+    {
+      "name": "marker remained live",
+      "passed": true,
+      "detail": "28"
+    },
+    {
+      "name": "buffer tick changed after human edit",
+      "passed": true,
+      "detail": "6 -> 9"
+    },
+    {
+      "name": "stale suggestion rejected",
+      "passed": true,
+      "detail": "accepted=nil suggestion=\" + 1\""
+    }
+  ],
+  "counterexample": "Accepting ghost text solely by marker position can splice stale text into a human-edited buffer.",
+  "derived_gym_requirement": "Completion acceptance must validate buffer identity, modification tick, target range, prefix, suffix, and intended replacement before editing."
+}

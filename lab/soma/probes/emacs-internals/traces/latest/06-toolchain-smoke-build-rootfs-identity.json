@@ -1,0 +1,71 @@
+{
+  "id": "toolchain-smoke-build-rootfs-identity",
+  "title": "Toolchain smoke build rootfs identity",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "A language toolchain is not proven by path lookup; it must compile or execute inside the selected rootfs with the expected runtime identity.",
+  "hypothesis": "Python should report rootfs-owned executable/prefix/sysconfig data, C/C++ should compile and run a tiny binary, and Rust should compile and run a tiny binary in production mode.",
+  "sources": [
+    {
+      "name": "Rootfs build package layer",
+      "path": "scripts/insula/build-emacs-rootfs.sh",
+      "lines": "129-144",
+      "note": ""
+    },
+    {
+      "name": "Rootfs runtime PATH",
+      "path": "scripts/insula/run-emacs-internals-probes-rootfs.sh",
+      "lines": "202-218",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "A temporary directory under the private TMPDIR, one tiny C program, one tiny Rust program, and Python sysconfig introspection.",
+  "predicted_behavior": "Production mode should successfully execute Python, compile C with a rootfs compiler, and compile Rust with the rootfs Rust toolchain.",
+  "observed_behavior": "prod=t tmp=\"/project/tmp/soma-toolchain-smoke-o4Jml4\" python-status=0 cc=\"/usr/bin/clang\" c-status=0 rustc=\"/opt/soma/cargo/bin/rustc\" rust-status=0 forbidden=nil",
+  "independent_checks": [
+    {
+      "name": "Python introspection ran",
+      "passed": true,
+      "detail": "{\"base_prefix\": \"/usr\", \"executable\": \"/usr/bin/python3\", \"paths\": {\"data\": \"/usr/local\", \"include\": \"/usr/include/python3.12\", \"platinclude\": \"/usr/include/python3.12\", \"platlib\": \"/usr/local/lib/python3.12/dist-packages\", \"platstdlib\": \"/usr/lib/python3.12\", \"purelib\": \"/usr/local/lib/python3.12/dist-packages\", \"scripts\": \"/usr/local/bin\", \"stdlib\": \"/usr/lib/python3.12\"}, \"platform\": \"Linux-5.15.152.bsk.9-amd64-x86_64-with-glibc2.39\", \"prefix\": \"/usr\", \"run_id\": \"20260930T040324Z-4018462\"}\n\nProcess soma-probe-process finished\n"
+    },
+    {
+      "name": "production C toolchain compiled and ran",
+      "passed": true,
+      "detail": "cc=\"/usr/bin/clang\" status=0 output=\"soma-c-ok\n\tlinux-vdso.so.1 (0x00007ffdb7726000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9a554fa000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f9a55719000)\n\nProcess soma-probe-process finished\n\""
+    },
+    {
+      "name": "production Rust toolchain compiled and ran",
+      "passed": true,
+      "detail": "rustc=\"/opt/soma/cargo/bin/rustc\" status=0 output=\"soma-rust-ok\n\tlinux-vdso.so.1 (0x00007fff058e0000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007feb20378000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007feb20166000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007feb20404000)\n\nProcess soma-probe-process finished\n\""
+    },
+    {
+      "name": "smoke-build ABI output has no forbidden prefixes",
+      "passed": true,
+      "detail": "{\"base_prefix\": \"/usr\", \"executable\": \"/usr/bin/python3\", \"paths\": {\"data\": \"/usr/local\", \"include\": \"/usr/include/python3.12\", \"platinclude\": \"/usr/include/python3.12\", \"platlib\": \"/usr/local/lib/python3.12/dist-packages\", \"platstdlib\": \"/usr/lib/python3.12\", \"purelib\": \"/usr/local/lib/python3.12/dist-packages\", \"scripts\": \"/usr/local/bin\", \"stdlib\": \"/usr/lib/python3.12\"}, \"platform\": \"Linux-5.15.152.bsk.9-amd64-x86_64-with-glibc2.39\", \"prefix\": \"/usr\", \"run_id\": \"20260930T040324Z-4018462\"}\n\nProcess soma-probe-process finished\nsoma-c-ok\n\tlinux-vdso.so.1 (0x00007ffdb7726000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9a554fa000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f9a55719000)\n\nProcess soma-probe-process finished\nsoma-rust-ok\n\tlinux-vdso.so.1 (0x00007fff058e0000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007feb20378000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007feb20166000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007feb20404000)\n\nProcess soma-probe-process finished\n"
+    }
+  ],
+  "counterexample": "A compiler command may resolve but fail because its sysroot, linker, headers, loader, or runtime libraries are missing from the rootfs closure.",
+  "derived_gym_requirement": "Language-source-code benchmarks must smoke-test the relevant compiler/interpreter closure inside the Insula before trusting Emacs+LSP workflow evidence."
+}

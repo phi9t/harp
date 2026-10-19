@@ -1,0 +1,230 @@
+{
+  "id": "completion-accept",
+  "title": "A completion.accept request inserts a suggestion only when range, revision, point, prefix, and suffix match",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "request": {
+    "request_id": "completion-accept-1",
+    "operation": "completion.accept",
+    "params": {
+      "buffer_name": "soma-bridge-completion-accept",
+      "start": 7,
+      "end": 7,
+      "text": "beta",
+      "preconditions": {
+        "buffer_name": "soma-bridge-completion-accept",
+        "text_owner_name": "soma-bridge-completion-accept",
+        "chars_tick": 5,
+        "point": 7,
+        "narrowed": false,
+        "read_only": false,
+        "expected_text": "",
+        "prefix": "alpha ",
+        "suffix": "\nomega"
+      }
+    }
+  },
+  "response": {
+    "request_id": "completion-accept-1",
+    "operation": "completion.accept",
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ],
+    "result": {
+      "operation": "completion.accept",
+      "state": "succeeded",
+      "state_sequence": [
+        "accepted",
+        "running",
+        "succeeded"
+      ],
+      "start": 7,
+      "end": 7,
+      "accepted_chars": 4,
+      "precondition_checks": [
+        {
+          "name": "target buffer is live",
+          "passed": true,
+          "detail": "#<buffer soma-bridge-completion-accept>"
+        },
+        {
+          "name": "buffer identity matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-completion-accept\" actual=\"soma-bridge-completion-accept\""
+        },
+        {
+          "name": "text owner matches precondition",
+          "passed": true,
+          "detail": "expected=\"soma-bridge-completion-accept\" actual=\"soma-bridge-completion-accept\""
+        },
+        {
+          "name": "visited file matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "character revision matches precondition",
+          "passed": true,
+          "detail": "expected=5 actual=5"
+        },
+        {
+          "name": "point matches precondition",
+          "passed": true,
+          "detail": "expected=7 actual=7"
+        },
+        {
+          "name": "selected window matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=\"soma-bridge-completion-accept\""
+        },
+        {
+          "name": "modified state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "read-only state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "minibuffer state matches precondition",
+          "passed": true,
+          "detail": "expected=nil actual=:json-false"
+        },
+        {
+          "name": "narrowing state matches precondition",
+          "passed": true,
+          "detail": "expected=:json-false actual=:json-false"
+        },
+        {
+          "name": "target range is valid",
+          "passed": true,
+          "detail": "range=7..7 point-min=1 point-max=14"
+        },
+        {
+          "name": "target range text matches precondition",
+          "passed": true,
+          "detail": "expected=\"\" actual=\"\""
+        },
+        {
+          "name": "completion prefix matches precondition",
+          "passed": true,
+          "detail": "expected=\"alpha \" actual=\"alpha \""
+        },
+        {
+          "name": "completion suffix matches precondition",
+          "passed": true,
+          "detail": "expected=\"\nomega\" actual=\"\nomega\""
+        }
+      ],
+      "before": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-completion-accept",
+        "text_owner_name": "soma-bridge-completion-accept",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 5,
+        "modified": false,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 14,
+        "point": 7,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-completion-accept",
+        "minibuffer_active": false
+      },
+      "after": {
+        "operation": "emacs.observe_buffer",
+        "state": "succeeded",
+        "buffer_name": "soma-bridge-completion-accept",
+        "text_owner_name": "soma-bridge-completion-accept",
+        "buffer_file_name": false,
+        "major_mode": "fundamental-mode",
+        "chars_tick": 8,
+        "modified": true,
+        "read_only": false,
+        "point_min": 1,
+        "point_max": 18,
+        "point": 11,
+        "mark_active": false,
+        "narrowed": false,
+        "selected_window_buffer": "soma-bridge-completion-accept",
+        "minibuffer_active": false
+      },
+      "error": false
+    },
+    "error_code": false,
+    "error": false
+  },
+  "before": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-completion-accept",
+    "text_owner_name": "soma-bridge-completion-accept",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 5,
+    "modified": false,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 14,
+    "point": 7,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-completion-accept",
+    "minibuffer_active": false
+  },
+  "after": {
+    "operation": "emacs.observe_buffer",
+    "state": "succeeded",
+    "buffer_name": "soma-bridge-completion-accept",
+    "text_owner_name": "soma-bridge-completion-accept",
+    "buffer_file_name": false,
+    "major_mode": "fundamental-mode",
+    "chars_tick": 8,
+    "modified": true,
+    "read_only": false,
+    "point_min": 1,
+    "point_max": 18,
+    "point": 11,
+    "mark_active": false,
+    "narrowed": false,
+    "selected_window_buffer": "soma-bridge-completion-accept",
+    "minibuffer_active": false
+  },
+  "buffer_text": "alpha beta\nomega\n",
+  "checks": [
+    {
+      "name": "completion accept request succeeded",
+      "passed": true,
+      "detail": "((\"request_id\" . \"completion-accept-1\") (\"operation\" . \"completion.accept\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"completion.accept\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"start\" . 7) (\"end\" . 7) (\"accepted_chars\" . 4) (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-completion-accept>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-completion-accept\\\" actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-completion-accept\\\" actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"target range is valid\") (\"passed\" . t) (\"detail\" . \"range=7..7 point-min=1 point-max=14\")) ((\"name\" . \"target range text matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\\\" actual=\\\"\\\"\")) ((\"name\" . \"completion prefix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"alpha \\\" actual=\\\"alpha \\\"\")) ((\"name\" . \"completion suffix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\nomega\\\" actual=\\\"\nomega\\\"\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-completion-accept\") (\"text_owner_name\" . \"soma-bridge-completion-accept\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 14) (\"point\" . 7) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-completion-accept\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-completion-accept\") (\"text_owner_name\" . \"soma-bridge-completion-accept\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 8) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 18) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-completion-accept\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    },
+    {
+      "name": "completion accept used checked operation",
+      "passed": true,
+      "detail": "((\"operation\" . \"completion.accept\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"start\" . 7) (\"end\" . 7) (\"accepted_chars\" . 4) (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-completion-accept>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-completion-accept\\\" actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-completion-accept\\\" actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"target range is valid\") (\"passed\" . t) (\"detail\" . \"range=7..7 point-min=1 point-max=14\")) ((\"name\" . \"target range text matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\\\" actual=\\\"\\\"\")) ((\"name\" . \"completion prefix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"alpha \\\" actual=\\\"alpha \\\"\")) ((\"name\" . \"completion suffix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\nomega\\\" actual=\\\"\nomega\\\"\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-completion-accept\") (\"text_owner_name\" . \"soma-bridge-completion-accept\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 14) (\"point\" . 7) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-completion-accept\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-completion-accept\") (\"text_owner_name\" . \"soma-bridge-completion-accept\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 8) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 18) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-completion-accept\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false))"
+    },
+    {
+      "name": "completion inserted only the proposed text",
+      "passed": true,
+      "detail": "alpha beta\nomega\n"
+    },
+    {
+      "name": "completion accept advanced character revision",
+      "passed": true,
+      "detail": "before=5 after=8"
+    },
+    {
+      "name": "completion accept records terminal success",
+      "passed": true,
+      "detail": "((\"request_id\" . \"completion-accept-1\") (\"operation\" . \"completion.accept\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"result\" (\"operation\" . \"completion.accept\") (\"state\" . \"succeeded\") (\"state_sequence\" \"accepted\" \"running\" \"succeeded\") (\"start\" . 7) (\"end\" . 7) (\"accepted_chars\" . 4) (\"precondition_checks\" ((\"name\" . \"target buffer is live\") (\"passed\" . t) (\"detail\" . \"#<buffer soma-bridge-completion-accept>\")) ((\"name\" . \"buffer identity matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-completion-accept\\\" actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"text owner matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"soma-bridge-completion-accept\\\" actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"visited file matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"character revision matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=5 actual=5\")) ((\"name\" . \"point matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=7 actual=7\")) ((\"name\" . \"selected window matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=\\\"soma-bridge-completion-accept\\\"\")) ((\"name\" . \"modified state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"read-only state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"minibuffer state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=nil actual=:json-false\")) ((\"name\" . \"narrowing state matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=:json-false actual=:json-false\")) ((\"name\" . \"target range is valid\") (\"passed\" . t) (\"detail\" . \"range=7..7 point-min=1 point-max=14\")) ((\"name\" . \"target range text matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\\\" actual=\\\"\\\"\")) ((\"name\" . \"completion prefix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"alpha \\\" actual=\\\"alpha \\\"\")) ((\"name\" . \"completion suffix matches precondition\") (\"passed\" . t) (\"detail\" . \"expected=\\\"\nomega\\\" actual=\\\"\nomega\\\"\"))) (\"before\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-completion-accept\") (\"text_owner_name\" . \"soma-bridge-completion-accept\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 5) (\"modified\" . :json-false) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 14) (\"point\" . 7) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-completion-accept\") (\"minibuffer_active\" . :json-false)) (\"after\" (\"operation\" . \"emacs.observe_buffer\") (\"state\" . \"succeeded\") (\"buffer_name\" . \"soma-bridge-completion-accept\") (\"text_owner_name\" . \"soma-bridge-completion-accept\") (\"buffer_file_name\" . :json-false) (\"major_mode\" . \"fundamental-mode\") (\"chars_tick\" . 8) (\"modified\" . t) (\"read_only\" . :json-false) (\"point_min\" . 1) (\"point_max\" . 18) (\"point\" . 11) (\"mark_active\" . :json-false) (\"narrowed\" . :json-false) (\"selected_window_buffer\" . \"soma-bridge-completion-accept\") (\"minibuffer_active\" . :json-false)) (\"error\" . :json-false)) (\"error_code\" . :json-false) (\"error\" . :json-false))"
+    }
+  ]
+}

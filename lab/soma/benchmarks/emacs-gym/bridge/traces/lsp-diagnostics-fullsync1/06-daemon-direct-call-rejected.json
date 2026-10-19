@@ -1,0 +1,87 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "error": "model-facing transport does not expose unchecked direct calls",
+        "error_code": "unauthorized_operation",
+        "operation": "direct-call",
+        "request_id": "daemon-direct-1",
+        "result": {
+          "operation": "direct-call",
+          "reason": "model-facing transport does not expose unchecked direct calls",
+          "requested_operation": "magit-stage-1",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "failed"
+        ]
+      },
+      "name": "direct operation is rejected",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": "model-facing transport does not expose unchecked direct calls",
+        "error_code": "unauthorized_operation",
+        "operation": "direct-call",
+        "request_id": "daemon-direct-1",
+        "result": {
+          "operation": "direct-call",
+          "reason": "model-facing transport does not expose unchecked direct calls",
+          "requested_operation": "magit-stage-1",
+          "state": "failed",
+          "state_sequence": [
+            "accepted",
+            "failed"
+          ]
+        },
+        "state": "failed",
+        "state_sequence": [
+          "accepted",
+          "failed"
+        ]
+      },
+      "name": "direct rejection uses unauthorized code",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-direct-call-rejected",
+  "policy_passed_grader": true,
+  "request": {
+    "operation": "direct-call",
+    "params": {
+      "requested_operation": "magit-stage-1"
+    },
+    "request_id": "daemon-direct-1"
+  },
+  "response": {
+    "error": "model-facing transport does not expose unchecked direct calls",
+    "error_code": "unauthorized_operation",
+    "operation": "direct-call",
+    "request_id": "daemon-direct-1",
+    "result": {
+      "operation": "direct-call",
+      "reason": "model-facing transport does not expose unchecked direct calls",
+      "requested_operation": "magit-stage-1",
+      "state": "failed",
+      "state_sequence": [
+        "accepted",
+        "failed"
+      ]
+    },
+    "state": "failed",
+    "state_sequence": [
+      "accepted",
+      "failed"
+    ]
+  },
+  "title": "The live daemon transport rejects unchecked direct-call operations"
+}

@@ -1,0 +1,138 @@
+{
+  "benchmark": "emacs-gym-selected-rootfs",
+  "benchmarks_passed": 8,
+  "current_rootfs": {
+    "base_image": "ghcr.io/pytorch/pytorch:2.13.0-cuda13.2-cudnn9-runtime@sha256:7492928e093d67276716440161f694a0e4ea27796d599d64b23cb76cdd665e71",
+    "image_id": "sha256:9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d349d7bd6b6bb80",
+    "image_tag": "soma-emacs-rootfs:0bddf41e6539849c",
+    "materialization_kind": "source-built-emacs-v8",
+    "rootfs": "/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34",
+    "rootfs_contract_host_path": "/private-source/home/operator/workspace/soma/.scratch/emacs-gym/insula/rootfs-store/content/soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34/etc/soma-insula-rootfs-contract.json",
+    "rootfs_recipe_sha256": "0bddf41e6539849c1d8e0a44954ebb3293f6eaa08081741c4adbf3c777fe808c",
+    "rootfs_tree_manifest": {
+      "algorithm": "sha256(canonical-json-lines(sorted-rootfs-entries))",
+      "directory_count": 18403,
+      "entry_count": 152105,
+      "excluded_paths": [
+        "/etc/soma-insula-rootfs-contract.json",
+        "/etc/soma-insula-rootfs-tree-manifest.jsonl",
+        "/etc/soma-insula-rootfs-tree-summary.json"
+      ],
+      "file_count": 130969,
+      "kind": "soma_rootfs_tree_manifest_v1",
+      "manifest_path": "/etc/soma-insula-rootfs-tree-manifest.jsonl",
+      "manifest_sha256": "931b5d4338e0c0eb876f5b14f7babb71bc89b20e5b6a625d26799d16c0cb41dd",
+      "schema_version": 1,
+      "special_count": 0,
+      "summary_path": "/etc/soma-insula-rootfs-tree-summary.json",
+      "symlink_count": 2733,
+      "total_file_bytes": 8173923428,
+      "tree_hash_sha256": "931b5d4338e0c0eb876f5b14f7babb71bc89b20e5b6a625d26799d16c0cb41dd"
+    },
+    "store_id": "soma-emacs-0bddf41e6539849c-9dbdc1166f7f8d34388e5c65f1566a736beb5bd74f8ab6151d34"
+  },
+  "generated_at": "2026-09-29T04:06:58Z",
+  "passed": true,
+  "records": [
+    {
+      "benchmark": "magit-selective-staging",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/magit/insula-plan.json",
+      "name": "magit",
+      "passed": true,
+      "scenarios_as_expected": 7,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/magit/summary.json",
+      "total_scenarios": 7
+    },
+    {
+      "benchmark": "comint-process",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/insula-plan.json",
+      "name": "comint",
+      "passed": true,
+      "scenarios_as_expected": 11,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/comint/summary.json",
+      "total_scenarios": 11
+    },
+    {
+      "benchmark": "jupyter-existing-kernel",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/insula-plan.json",
+      "name": "jupyter",
+      "passed": true,
+      "scenarios_as_expected": 8,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/jupyter/summary.json",
+      "total_scenarios": 8
+    },
+    {
+      "benchmark": "lsp-source",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/lsp/insula-plan.json",
+      "name": "lsp",
+      "passed": true,
+      "scenarios_as_expected": 6,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/lsp/summary.json",
+      "total_scenarios": 6
+    },
+    {
+      "benchmark": "org-structure",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/org/insula-plan.json",
+      "name": "org",
+      "passed": true,
+      "scenarios_as_expected": 6,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/org/summary.json",
+      "total_scenarios": 6
+    },
+    {
+      "benchmark": "dired-filesystem",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/dired/insula-plan.json",
+      "name": "dired",
+      "passed": true,
+      "scenarios_as_expected": 8,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/dired/summary.json",
+      "total_scenarios": 8
+    },
+    {
+      "benchmark": "bridge-transport",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge/insula-plan.json",
+      "name": "bridge",
+      "passed": true,
+      "scenarios_as_expected": 16,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge/summary.json",
+      "total_scenarios": 16
+    },
+    {
+      "benchmark": "bridge-daemon-transport",
+      "current_selection_checks_passed": true,
+      "current_selection_errors": [],
+      "insula_checks_passed": true,
+      "insula_plan": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/insula-plan.json",
+      "name": "bridge-daemon",
+      "passed": true,
+      "scenarios_as_expected": 28,
+      "summary": "/private-source/home/operator/workspace/soma/benchmarks/emacs-gym/traces/latest/bridge-daemon/summary.json",
+      "total_scenarios": 28
+    }
+  ],
+  "run_id": "20260929T040533Z-3771476",
+  "scenarios_as_expected": 90,
+  "total_benchmarks": 8,
+  "total_scenarios": 90
+}

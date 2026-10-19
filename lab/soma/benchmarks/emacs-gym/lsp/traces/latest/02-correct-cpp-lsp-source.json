@@ -1,0 +1,394 @@
+{
+  "id": "correct-cpp-lsp-source",
+  "title": "Open a C++ project in Emacs, use clangd through lsp-mode, and run a rootfs clang++ build.",
+  "expected_policy_pass": true,
+  "policy_passed_grader": true,
+  "as_expected": true,
+  "name": "correct-cpp-lsp-source",
+  "checks": [
+    {
+      "name": "workspace initialized",
+      "passed": true,
+      "detail": "((\"server_id\" . \"clangd\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-lsp-cpp-cpp-9Oxt0u\") (\"server_pid\" . 90) (\"server_executable\" . \"/usr/lib/llvm-18/bin/clangd\") (\"server_cwd\" . \"/project/tmp/soma-lsp-cpp-cpp-9Oxt0u\") (\"server_environment\" (\"SOMA_INSULA_RUN_ID\" . \"20260928T074919Z-3693804\") (\"SOMA_INSULA_ACTIVE\" . \"1\") (\"CARGO_HOME\" . \"/opt/soma/cargo\") (\"RUSTUP_HOME\" . \"/opt/soma/rustup\") (\"PATH\" . \"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\") (\"XDG_CACHE_HOME\" . \"/project/cache\") (\"XDG_RUNTIME_DIR\" . \"/project/run\") (\"TMPDIR\" . \"/project/tmp\") (\"HOME\" . \"/project/home\")) (\"server_command\" \"/usr/bin/clangd\" \"--header-insertion-decorators=0\" \"--query-driver=/usr/bin/g++\") (\"server_buffer_tail\" . \"\") (\"server_stderr_tail\" . \"I[07:49:25.551] Ubuntu clangd version 18.1.3 (1ubuntu1)\nI[07:49:25.552] Features: linux+grpc\nI[07:49:25.552] PID: 90\nI[07:49:25.552] Working directory: /project/tmp/soma-lsp-cpp-cpp-9Oxt0u\nI[07:49:25.552] argv[0]: /usr/bin/clangd\nI[07:49:25.552] argv[1]: --header-insertion-decorators=0\nI[07:49:25.552] argv[2]: --query-driver=/usr/bin/g++\nI[07:49:25.552] Starting LSP over stdin/stdout\nI[07:49:25.552] <-- initialize(5)\nI[07:49:25.556] --> reply:initialize(5) 3 ms\nI[07:49:25.556] <-- initialized\nI[07:49:25.556] <-- textDocument/didOpen\nI[07:49:25.556] Loaded compilation database from /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/compile_commands.json\nI[07:49:25.557] --> window/workDoneProgress/create(0)\nI[07:49:25.557] Enqueueing 1 commands for indexing\nI[07:49:25.557] <-- reply(0)\nI[07:49:25.557] --> $/progress\nI[07:49:25.557] --> $/progress\nI[07:49:25.557] --> $/progress\nI[07:49:25.564] System includes extractor: successfully executed /usr/bin/g++\n\tgot includes: \\\"/usr/include/c++/13, /usr/include/x86_64-linux-gnu/c++/13, /usr/include/c++/13/backward, /usr/local/include, /usr/include/x86_64-linux-gnu, /usr/include\\\"\n\tgot target: \\\"x86_64-linux-gnu\\\"\nI[07:49:25.564] ASTWorker building file /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp version 0 with command \n[/project/tmp/soma-lsp-cpp-cpp-9Oxt0u]\n/usr/bin/g++ --driver-mode=g++ -std=c++20 -Iinclude -c -isystem /usr/include/c++/13 -isystem /usr/include/x86_64-linux-gnu/c++/13 -isystem /usr/include/c++/13/backward -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include --target=x86_64-linux-gnu -resource-dir=/usr/lib/llvm-18/lib/clang/18 -- /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\nI[07:49:25.564] System includes extractor: successfully executed /usr/bin/g++\n\tgot includes: \\\"/usr/include/c++/13, /usr/include/x86_64-linux-gnu/c++/13, /usr/include/c++/13/backward, /usr/local/include, /usr/include/x86_64-linux-gnu, /usr/include\\\"\n\tgot target: \\\"x86_64-linux-gnu\\\"\nI[07:49:25.880] Built preamble of size 4570964 for file /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp version 0 in 0.32 seconds\nI[07:49:25.881] Indexing c++20 standard library in the context of /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\nI[07:49:25.915] --> textDocument/publishDiagnostics\nI[07:49:25.987] Indexed /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp (4180 symbols, 29171 refs, 203 files)\nI[07:49:26.037] --> $/progress\nI[07:49:26.126] <-- textDocument/hover(6)\nI[07:49:26.127] --> reply:textDocument/hover(6) 0 ms\nI[07:49:26.127] <-- textDocument/references(7)\nI[07:49:26.127] --> reply:textDocument/references(7) 0 ms\n\") (\"messages_tail\" . \"Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-eqoODe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-eqoODe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-9Oxt0u].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-9Oxt0u)\n\") (\"transport\" (\"transport\" . \"lsp-mode-stdio-process-filter\") (\"json_rpc_connection_suppressed\" . t) (\"reason\" . \"noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits\")))"
+    },
+    {
+      "name": "expected server id",
+      "passed": true,
+      "detail": "((\"server_id\" . \"clangd\") (\"workspace_status\" . \"initialized\") (\"workspace_proc_type\" . \"process\") (\"cmd_proc_type\" . \"process\") (\"cmd_proc_status\" . \"run\") (\"workspace_root\" . \"/project/tmp/soma-lsp-cpp-cpp-9Oxt0u\") (\"server_pid\" . 90) (\"server_executable\" . \"/usr/lib/llvm-18/bin/clangd\") (\"server_cwd\" . \"/project/tmp/soma-lsp-cpp-cpp-9Oxt0u\") (\"server_environment\" (\"SOMA_INSULA_RUN_ID\" . \"20260928T074919Z-3693804\") (\"SOMA_INSULA_ACTIVE\" . \"1\") (\"CARGO_HOME\" . \"/opt/soma/cargo\") (\"RUSTUP_HOME\" . \"/opt/soma/rustup\") (\"PATH\" . \"/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin\") (\"XDG_CACHE_HOME\" . \"/project/cache\") (\"XDG_RUNTIME_DIR\" . \"/project/run\") (\"TMPDIR\" . \"/project/tmp\") (\"HOME\" . \"/project/home\")) (\"server_command\" \"/usr/bin/clangd\" \"--header-insertion-decorators=0\" \"--query-driver=/usr/bin/g++\") (\"server_buffer_tail\" . \"\") (\"server_stderr_tail\" . \"I[07:49:25.551] Ubuntu clangd version 18.1.3 (1ubuntu1)\nI[07:49:25.552] Features: linux+grpc\nI[07:49:25.552] PID: 90\nI[07:49:25.552] Working directory: /project/tmp/soma-lsp-cpp-cpp-9Oxt0u\nI[07:49:25.552] argv[0]: /usr/bin/clangd\nI[07:49:25.552] argv[1]: --header-insertion-decorators=0\nI[07:49:25.552] argv[2]: --query-driver=/usr/bin/g++\nI[07:49:25.552] Starting LSP over stdin/stdout\nI[07:49:25.552] <-- initialize(5)\nI[07:49:25.556] --> reply:initialize(5) 3 ms\nI[07:49:25.556] <-- initialized\nI[07:49:25.556] <-- textDocument/didOpen\nI[07:49:25.556] Loaded compilation database from /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/compile_commands.json\nI[07:49:25.557] --> window/workDoneProgress/create(0)\nI[07:49:25.557] Enqueueing 1 commands for indexing\nI[07:49:25.557] <-- reply(0)\nI[07:49:25.557] --> $/progress\nI[07:49:25.557] --> $/progress\nI[07:49:25.557] --> $/progress\nI[07:49:25.564] System includes extractor: successfully executed /usr/bin/g++\n\tgot includes: \\\"/usr/include/c++/13, /usr/include/x86_64-linux-gnu/c++/13, /usr/include/c++/13/backward, /usr/local/include, /usr/include/x86_64-linux-gnu, /usr/include\\\"\n\tgot target: \\\"x86_64-linux-gnu\\\"\nI[07:49:25.564] ASTWorker building file /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp version 0 with command \n[/project/tmp/soma-lsp-cpp-cpp-9Oxt0u]\n/usr/bin/g++ --driver-mode=g++ -std=c++20 -Iinclude -c -isystem /usr/include/c++/13 -isystem /usr/include/x86_64-linux-gnu/c++/13 -isystem /usr/include/c++/13/backward -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include --target=x86_64-linux-gnu -resource-dir=/usr/lib/llvm-18/lib/clang/18 -- /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\nI[07:49:25.564] System includes extractor: successfully executed /usr/bin/g++\n\tgot includes: \\\"/usr/include/c++/13, /usr/include/x86_64-linux-gnu/c++/13, /usr/include/c++/13/backward, /usr/local/include, /usr/include/x86_64-linux-gnu, /usr/include\\\"\n\tgot target: \\\"x86_64-linux-gnu\\\"\nI[07:49:25.880] Built preamble of size 4570964 for file /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp version 0 in 0.32 seconds\nI[07:49:25.881] Indexing c++20 standard library in the context of /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\nI[07:49:25.915] --> textDocument/publishDiagnostics\nI[07:49:25.987] Indexed /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp (4180 symbols, 29171 refs, 203 files)\nI[07:49:26.037] --> $/progress\nI[07:49:26.126] <-- textDocument/hover(6)\nI[07:49:26.127] --> reply:textDocument/hover(6) 0 ms\nI[07:49:26.127] <-- textDocument/references(7)\nI[07:49:26.127] --> reply:textDocument/references(7) 0 ms\n\") (\"messages_tail\" . \"Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-eqoODe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-eqoODe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-9Oxt0u].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-9Oxt0u)\n\") (\"transport\" (\"transport\" . \"lsp-mode-stdio-process-filter\") (\"json_rpc_connection_suppressed\" . t) (\"reason\" . \"noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits\")))"
+    },
+    {
+      "name": "server executable is rootfs-owned",
+      "passed": true,
+      "detail": "/usr/lib/llvm-18/bin/clangd"
+    },
+    {
+      "name": "workspace root is inside Insula runtime",
+      "passed": true,
+      "detail": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u"
+    },
+    {
+      "name": "document uri is file URI",
+      "passed": true,
+      "detail": "file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp"
+    },
+    {
+      "name": "document version recorded",
+      "passed": true,
+      "detail": "0"
+    },
+    {
+      "name": "position encoding recorded",
+      "passed": true,
+      "detail": "utf-32"
+    },
+    {
+      "name": "supported semantic LSP request observed",
+      "passed": true,
+      "detail": "requests=(((\"method\" . \"initialize\") (\"id\" . 5) (\"buffer\" . \"main.cpp\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/hover\") (\"id\" . 6) (\"buffer\" . \"main.cpp\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/references\") (\"id\" . 7) (\"buffer\" . \"main.cpp\") (\"document_version\" . 0)) ((\"method\" . \"textDocument/definition\") (\"id\" . 8) (\"buffer\" . \"main.cpp\") (\"document_version\" . 0))) evidence=((\"target_symbol\" . \"soma_metric\") (\"capabilities\" (\"textDocument/hover\" . t) (\"textDocument/references\" . t) (\"textDocument/definition\" . t) (\"textDocument/documentSymbol\" . t) (\"textDocument/rename\" . t)) (\"hover\" (\"method\" . \"textDocument/hover\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"(:contents (:kind \\\"markdown\\\" :value \\\"### function `soma_metric`  \nprovided by `\\\\\\\"soma_lib.hpp\\\\\\\"`  \n\n---\n→ `int`  \nParameters:  \n- `int x`\n\n---\n```cpp\ninline int soma_metric(int x)\n```\\\") :range (:end (:character 26 :line 4) :start (:character 15 :line 4)))\") (\"count\" . 4) (\"error\" . \"\")) (\"references\" (\"method\" . \"textDocument/references\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"((:range (:end (:character 26 :line 4) :start (:character 15 :line 4)) :uri \\\"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\\\") (:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \\\"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\\\"))\") (\"count\" . 2) (\"error\" . \"\")) (\"definition\" (\"method\" . \"textDocument/definition\") (\"supported\" . t) (\"status\" . \"ok\") (\"raw\" . \"((:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \\\"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\\\"))\") (\"count\" . 1) (\"error\" . \"\")) (\"hover_raw\" . \"(:contents (:kind \\\"markdown\\\" :value \\\"### function `soma_metric`  \nprovided by `\\\\\\\"soma_lib.hpp\\\\\\\"`  \n\n---\n→ `int`  \nParameters:  \n- `int x`\n\n---\n```cpp\ninline int soma_metric(int x)\n```\\\") :range (:end (:character 26 :line 4) :start (:character 15 :line 4)))\") (\"references_raw\" . \"((:range (:end (:character 26 :line 4) :start (:character 15 :line 4)) :uri \\\"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\\\") (:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \\\"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\\\"))\") (\"definition_raw\" . \"((:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \\\"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\\\"))\") (\"reference_count\" . 2) (\"semantic_attempts\" . 1) (\"semantic_ready\" . t))"
+    },
+    {
+      "name": "LSP response names expected definition path",
+      "passed": true,
+      "detail": "expected=/include/soma_lib.hpp definition=((:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\")) references=((:range (:end (:character 26 :line 4) :start (:character 15 :line 4)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\") (:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\"))"
+    },
+    {
+      "name": "build or test command succeeded",
+      "passed": true,
+      "detail": "((\"program\" . \"g++\") (\"args\" \"-std=c++20\" \"-Iinclude\" \"src/main.cpp\" \"-o\" \"soma_cpp_app\") (\"status\" . 0) (\"output\" . \"\") (\"run_status\" . 0) (\"run_output\" . \"42\n\") (\"linked_libraries\" . \"\tlinux-vdso.so.1 (0x00007fffbbbfe000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f10c028c000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f10c007a000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f10bff91000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f10c0517000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f10bff63000)\n\"))"
+    },
+    {
+      "name": "clangd executable is rootfs-owned",
+      "passed": true,
+      "detail": "((\"name\" . \"clangd\") (\"path\" . \"/usr/bin/clangd\") (\"realpath\" . \"/usr/lib/llvm-18/bin/clangd\") (\"rootfs_owned\" . t) (\"version\" . \"Ubuntu clangd version 18.1.3 (1ubuntu1)\"))"
+    },
+    {
+      "name": "compiler and linker tools are rootfs-owned",
+      "passed": true,
+      "detail": "clang++=((\"name\" . \"clang++\") (\"path\" . \"/usr/bin/clang++\") (\"realpath\" . \"/usr/lib/llvm-18/bin/clang\") (\"rootfs_owned\" . t) (\"version\" . \"Ubuntu clang version 18.1.3 (1ubuntu1)\")) gcc=((\"name\" . \"gcc\") (\"path\" . \"/usr/bin/gcc\") (\"realpath\" . \"/usr/bin/x86_64-linux-gnu-gcc-13\") (\"rootfs_owned\" . t) (\"version\" . \"gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\")) g++=((\"name\" . \"g++\") (\"path\" . \"/usr/bin/g++\") (\"realpath\" . \"/usr/bin/x86_64-linux-gnu-g++-13\") (\"rootfs_owned\" . t) (\"version\" . \"g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\"))"
+    },
+    {
+      "name": "compile database is inside Insula runtime",
+      "passed": true,
+      "detail": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u/compile_commands.json"
+    },
+    {
+      "name": "linked libc and libstdc++ resolve from rootfs",
+      "passed": true,
+      "detail": "((\"program\" . \"g++\") (\"args\" \"-std=c++20\" \"-Iinclude\" \"src/main.cpp\" \"-o\" \"soma_cpp_app\") (\"status\" . 0) (\"output\" . \"\") (\"run_status\" . 0) (\"run_output\" . \"42\n\") (\"linked_libraries\" . \"\tlinux-vdso.so.1 (0x00007fffbbbfe000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f10c028c000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f10c007a000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f10bff91000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f10c0517000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f10bff63000)\n\"))"
+    }
+  ],
+  "state_sequence": [
+    "fixture-created",
+    "buffer-opened",
+    "lsp-start-requested",
+    "workspace-initialized",
+    "diagnostics-observed",
+    "symbol-requests-completed",
+    "build-test-command-completed"
+  ],
+  "fixture": {
+    "language": "cpp",
+    "server_id": "clangd",
+    "root": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u",
+    "file": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp",
+    "symbol": "soma_metric",
+    "expected_path_fragment": "/include/soma_lib.hpp",
+    "fixture_origin": "generated-inside-bwrap-private-project-runtime"
+  },
+  "buffer": {
+    "buffer": "main.cpp",
+    "file": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp",
+    "major_mode": "c++-mode",
+    "workspace_root": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u/",
+    "document_uri": "file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp",
+    "document_version": 0,
+    "position_encoding": "utf-32",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "diagnostics": {
+      "count": 0,
+      "raw": ""
+    }
+  },
+  "server": {
+    "server_id": "clangd",
+    "workspace_status": "initialized",
+    "workspace_proc_type": "process",
+    "cmd_proc_type": "process",
+    "cmd_proc_status": "run",
+    "workspace_root": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u",
+    "server_pid": 90,
+    "server_executable": "/usr/lib/llvm-18/bin/clangd",
+    "server_cwd": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u",
+    "server_environment": {
+      "SOMA_INSULA_RUN_ID": "20260928T074919Z-3693804",
+      "SOMA_INSULA_ACTIVE": "1",
+      "CARGO_HOME": "/opt/soma/cargo",
+      "RUSTUP_HOME": "/opt/soma/rustup",
+      "PATH": "/opt/soma/emacs/bin:/opt/soma/cargo/bin:/usr/local/bin:/usr/bin:/bin",
+      "XDG_CACHE_HOME": "/project/cache",
+      "XDG_RUNTIME_DIR": "/project/run",
+      "TMPDIR": "/project/tmp",
+      "HOME": "/project/home"
+    },
+    "server_command": [
+      "/usr/bin/clangd",
+      "--header-insertion-decorators=0",
+      "--query-driver=/usr/bin/g++"
+    ],
+    "server_buffer_tail": "",
+    "server_stderr_tail": "I[07:49:25.551] Ubuntu clangd version 18.1.3 (1ubuntu1)\nI[07:49:25.552] Features: linux+grpc\nI[07:49:25.552] PID: 90\nI[07:49:25.552] Working directory: /project/tmp/soma-lsp-cpp-cpp-9Oxt0u\nI[07:49:25.552] argv[0]: /usr/bin/clangd\nI[07:49:25.552] argv[1]: --header-insertion-decorators=0\nI[07:49:25.552] argv[2]: --query-driver=/usr/bin/g++\nI[07:49:25.552] Starting LSP over stdin/stdout\nI[07:49:25.552] <-- initialize(5)\nI[07:49:25.556] --> reply:initialize(5) 3 ms\nI[07:49:25.556] <-- initialized\nI[07:49:25.556] <-- textDocument/didOpen\nI[07:49:25.556] Loaded compilation database from /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/compile_commands.json\nI[07:49:25.557] --> window/workDoneProgress/create(0)\nI[07:49:25.557] Enqueueing 1 commands for indexing\nI[07:49:25.557] <-- reply(0)\nI[07:49:25.557] --> $/progress\nI[07:49:25.557] --> $/progress\nI[07:49:25.557] --> $/progress\nI[07:49:25.564] System includes extractor: successfully executed /usr/bin/g++\n\tgot includes: \"/usr/include/c++/13, /usr/include/x86_64-linux-gnu/c++/13, /usr/include/c++/13/backward, /usr/local/include, /usr/include/x86_64-linux-gnu, /usr/include\"\n\tgot target: \"x86_64-linux-gnu\"\nI[07:49:25.564] ASTWorker building file /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp version 0 with command \n[/project/tmp/soma-lsp-cpp-cpp-9Oxt0u]\n/usr/bin/g++ --driver-mode=g++ -std=c++20 -Iinclude -c -isystem /usr/include/c++/13 -isystem /usr/include/x86_64-linux-gnu/c++/13 -isystem /usr/include/c++/13/backward -isystem /usr/local/include -isystem /usr/include/x86_64-linux-gnu -isystem /usr/include --target=x86_64-linux-gnu -resource-dir=/usr/lib/llvm-18/lib/clang/18 -- /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\nI[07:49:25.564] System includes extractor: successfully executed /usr/bin/g++\n\tgot includes: \"/usr/include/c++/13, /usr/include/x86_64-linux-gnu/c++/13, /usr/include/c++/13/backward, /usr/local/include, /usr/include/x86_64-linux-gnu, /usr/include\"\n\tgot target: \"x86_64-linux-gnu\"\nI[07:49:25.880] Built preamble of size 4570964 for file /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp version 0 in 0.32 seconds\nI[07:49:25.881] Indexing c++20 standard library in the context of /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\nI[07:49:25.915] --> textDocument/publishDiagnostics\nI[07:49:25.987] Indexed /project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp (4180 symbols, 29171 refs, 203 files)\nI[07:49:26.037] --> $/progress\nI[07:49:26.126] <-- textDocument/hover(6)\nI[07:49:26.127] --> reply:textDocument/hover(6) 0 ms\nI[07:49:26.127] <-- textDocument/references(7)\nI[07:49:26.127] --> reply:textDocument/references(7) 0 ms\n",
+    "messages_tail": "Can’t guess python-indent-offset, using defaults: 4 [2 times]\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [pylsp:9/starting /project/tmp/soma-lsp-python-python-eqoODe].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: pylsp:9 initialized successfully in folders: (/project/tmp/soma-lsp-python-python-eqoODe)\nLSP :: pylsp has exited (killed)\nlsp-session-file is nil, not persisting session.\nLSP :: Connected to [clangd:90/starting /project/tmp/soma-lsp-cpp-cpp-9Oxt0u].\nLSP :: Unable to autoconfigure company-mode.\nLSP :: clangd:90 initialized successfully in folders: (/project/tmp/soma-lsp-cpp-cpp-9Oxt0u)\n",
+    "transport": {
+      "transport": "lsp-mode-stdio-process-filter",
+      "json_rpc_connection_suppressed": true,
+      "reason": "noninteractive batch benchmark uses lsp-mode process filters so initialize replies and capabilities settle under explicit accept-process-output waits"
+    }
+  },
+  "request_evidence": {
+    "target_symbol": "soma_metric",
+    "capabilities": {
+      "textDocument/hover": true,
+      "textDocument/references": true,
+      "textDocument/definition": true,
+      "textDocument/documentSymbol": true,
+      "textDocument/rename": true
+    },
+    "hover": {
+      "method": "textDocument/hover",
+      "supported": true,
+      "status": "ok",
+      "raw": "(:contents (:kind \"markdown\" :value \"### function `soma_metric`  \nprovided by `\\\"soma_lib.hpp\\\"`  \n\n---\n→ `int`  \nParameters:  \n- `int x`\n\n---\n```cpp\ninline int soma_metric(int x)\n```\") :range (:end (:character 26 :line 4) :start (:character 15 :line 4)))",
+      "count": 4,
+      "error": ""
+    },
+    "references": {
+      "method": "textDocument/references",
+      "supported": true,
+      "status": "ok",
+      "raw": "((:range (:end (:character 26 :line 4) :start (:character 15 :line 4)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\") (:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\"))",
+      "count": 2,
+      "error": ""
+    },
+    "definition": {
+      "method": "textDocument/definition",
+      "supported": true,
+      "status": "ok",
+      "raw": "((:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\"))",
+      "count": 1,
+      "error": ""
+    },
+    "hover_raw": "(:contents (:kind \"markdown\" :value \"### function `soma_metric`  \nprovided by `\\\"soma_lib.hpp\\\"`  \n\n---\n→ `int`  \nParameters:  \n- `int x`\n\n---\n```cpp\ninline int soma_metric(int x)\n```\") :range (:end (:character 26 :line 4) :start (:character 15 :line 4)))",
+    "references_raw": "((:range (:end (:character 26 :line 4) :start (:character 15 :line 4)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/src/main.cpp\") (:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\"))",
+    "definition_raw": "((:range (:end (:character 22 :line 1) :start (:character 11 :line 1)) :uri \"file:///project/tmp/soma-lsp-cpp-cpp-9Oxt0u/include/soma_lib.hpp\"))",
+    "reference_count": 2,
+    "semantic_attempts": 1,
+    "semantic_ready": true
+  },
+  "build_test": {
+    "program": "g++",
+    "args": [
+      "-std=c++20",
+      "-Iinclude",
+      "src/main.cpp",
+      "-o",
+      "soma_cpp_app"
+    ],
+    "status": 0,
+    "output": "",
+    "run_status": 0,
+    "run_output": "42\n",
+    "linked_libraries": "\tlinux-vdso.so.1 (0x00007fffbbbfe000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f10c028c000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f10c007a000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f10bff91000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f10c0517000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f10bff63000)\n"
+  },
+  "toolchain": {
+    "clangd": {
+      "name": "clangd",
+      "path": "/usr/bin/clangd",
+      "realpath": "/usr/lib/llvm-18/bin/clangd",
+      "rootfs_owned": true,
+      "version": "Ubuntu clangd version 18.1.3 (1ubuntu1)"
+    },
+    "clang++": {
+      "name": "clang++",
+      "path": "/usr/bin/clang++",
+      "realpath": "/usr/lib/llvm-18/bin/clang",
+      "rootfs_owned": true,
+      "version": "Ubuntu clang version 18.1.3 (1ubuntu1)"
+    },
+    "gcc": {
+      "name": "gcc",
+      "path": "/usr/bin/gcc",
+      "realpath": "/usr/bin/x86_64-linux-gnu-gcc-13",
+      "rootfs_owned": true,
+      "version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "g++": {
+      "name": "g++",
+      "path": "/usr/bin/g++",
+      "realpath": "/usr/bin/x86_64-linux-gnu-g++-13",
+      "rootfs_owned": true,
+      "version": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+    },
+    "compile_database": "/project/tmp/soma-lsp-cpp-cpp-9Oxt0u/compile_commands.json",
+    "compile_database_inside_insula": true,
+    "build_result": {
+      "program": "g++",
+      "args": [
+        "-std=c++20",
+        "-Iinclude",
+        "src/main.cpp",
+        "-o",
+        "soma_cpp_app"
+      ],
+      "status": 0,
+      "output": "",
+      "run_status": 0,
+      "run_output": "42\n",
+      "linked_libraries": "\tlinux-vdso.so.1 (0x00007fffbbbfe000)\n\tlibstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f10c028c000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f10c007a000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f10bff91000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f10c0517000)\n\tlibgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f10bff63000)\n"
+    }
+  },
+  "requests": [
+    {
+      "method": "initialize",
+      "id": 5,
+      "buffer": "main.cpp",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/hover",
+      "id": 6,
+      "buffer": "main.cpp",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/references",
+      "id": 7,
+      "buffer": "main.cpp",
+      "document_version": 0
+    },
+    {
+      "method": "textDocument/definition",
+      "id": 8,
+      "buffer": "main.cpp",
+      "document_version": 0
+    }
+  ],
+  "incoming_messages": [
+    {
+      "message_type": "response",
+      "id": 5,
+      "method": "",
+      "workspace_status_before": "starting",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 5,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "request",
+      "id": 0,
+      "method": "window/workDoneProgress/create",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": 0,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "textDocument/publishDiagnostics",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "notification",
+      "id": false,
+      "method": "$/progress",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "post-parser-state",
+      "id": false,
+      "workspace_status_after": "initialized"
+    },
+    {
+      "message_type": "response",
+      "id": 6,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "response",
+      "id": 7,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    },
+    {
+      "message_type": "response",
+      "id": 8,
+      "method": "",
+      "workspace_status_before": "initialized",
+      "server_id": "clangd"
+    }
+  ],
+  "request_ids": [
+    5,
+    6,
+    7,
+    8
+  ]
+}

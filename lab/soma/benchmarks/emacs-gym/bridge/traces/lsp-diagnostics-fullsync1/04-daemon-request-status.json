@@ -1,0 +1,218 @@
+{
+  "as_expected": true,
+  "checks": [
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "request.status",
+        "request_id": "daemon-status-1",
+        "result": {
+          "operation": "request.status",
+          "state": "succeeded",
+          "status": {
+            "error": false,
+            "error_code": false,
+            "operation": "emacs.observe_buffer",
+            "request_id": "daemon-observe-1",
+            "result": {
+              "buffer_file_name": false,
+              "buffer_name": "soma-bridge-daemon-target",
+              "chars_tick": 6,
+              "major_mode": "fundamental-mode",
+              "mark_active": false,
+              "minibuffer_active": false,
+              "modified": false,
+              "narrowed": false,
+              "operation": "emacs.observe_buffer",
+              "point": 1,
+              "point_max": 22,
+              "point_min": 1,
+              "read_only": false,
+              "selected_window_buffer": "*scratch*",
+              "state": "succeeded",
+              "text_owner_name": "soma-bridge-daemon-target"
+            },
+            "state": "succeeded",
+            "state_sequence": [
+              "accepted",
+              "running",
+              "succeeded"
+            ]
+          }
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "status request succeeded",
+      "passed": true
+    },
+    {
+      "detail": {
+        "operation": "request.status",
+        "state": "succeeded",
+        "status": {
+          "error": false,
+          "error_code": false,
+          "operation": "emacs.observe_buffer",
+          "request_id": "daemon-observe-1",
+          "result": {
+            "buffer_file_name": false,
+            "buffer_name": "soma-bridge-daemon-target",
+            "chars_tick": 6,
+            "major_mode": "fundamental-mode",
+            "mark_active": false,
+            "minibuffer_active": false,
+            "modified": false,
+            "narrowed": false,
+            "operation": "emacs.observe_buffer",
+            "point": 1,
+            "point_max": 22,
+            "point_min": 1,
+            "read_only": false,
+            "selected_window_buffer": "*scratch*",
+            "state": "succeeded",
+            "text_owner_name": "soma-bridge-daemon-target"
+          },
+          "state": "succeeded",
+          "state_sequence": [
+            "accepted",
+            "running",
+            "succeeded"
+          ]
+        }
+      },
+      "name": "status result identifies status operation",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-bridge-daemon-target",
+          "chars_tick": 6,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 1,
+          "point_max": 22,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*scratch*",
+          "state": "succeeded",
+          "text_owner_name": "soma-bridge-daemon-target"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "stored request id matches observed request",
+      "passed": true
+    },
+    {
+      "detail": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-bridge-daemon-target",
+          "chars_tick": 6,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 1,
+          "point_max": 22,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*scratch*",
+          "state": "succeeded",
+          "text_owner_name": "soma-bridge-daemon-target"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      },
+      "name": "stored request is terminal succeeded",
+      "passed": true
+    }
+  ],
+  "expected_policy_pass": true,
+  "id": "daemon-request-status",
+  "policy_passed_grader": true,
+  "request": {
+    "operation": "request.status",
+    "params": {
+      "request_id": "daemon-observe-1"
+    },
+    "request_id": "daemon-status-1"
+  },
+  "response": {
+    "error": false,
+    "error_code": false,
+    "operation": "request.status",
+    "request_id": "daemon-status-1",
+    "result": {
+      "operation": "request.status",
+      "state": "succeeded",
+      "status": {
+        "error": false,
+        "error_code": false,
+        "operation": "emacs.observe_buffer",
+        "request_id": "daemon-observe-1",
+        "result": {
+          "buffer_file_name": false,
+          "buffer_name": "soma-bridge-daemon-target",
+          "chars_tick": 6,
+          "major_mode": "fundamental-mode",
+          "mark_active": false,
+          "minibuffer_active": false,
+          "modified": false,
+          "narrowed": false,
+          "operation": "emacs.observe_buffer",
+          "point": 1,
+          "point_max": 22,
+          "point_min": 1,
+          "read_only": false,
+          "selected_window_buffer": "*scratch*",
+          "state": "succeeded",
+          "text_owner_name": "soma-bridge-daemon-target"
+        },
+        "state": "succeeded",
+        "state_sequence": [
+          "accepted",
+          "running",
+          "succeeded"
+        ]
+      }
+    },
+    "state": "succeeded",
+    "state_sequence": [
+      "accepted",
+      "running",
+      "succeeded"
+    ]
+  },
+  "title": "A process outside Emacs can retrieve stored terminal request status from the live daemon"
+}

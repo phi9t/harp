@@ -1,0 +1,55 @@
+{
+  "id": "marker-movement",
+  "title": "Marker movement under edits",
+  "status": "pass",
+  "execution_mode": "emacs --quick --batch",
+  "environment": {
+    "emacs_version": "30.2",
+    "system_configuration": "x86_64-pc-linux-gnu",
+    "system_features": "ACL GMP GNUTLS LIBSELINUX LIBXML2 MODULES NATIVE_COMP NOTIFY INOTIFY PDUMPER SECCOMP SQLITE3 THREADS TREE_SITTER ZLIB",
+    "executable": "emacs",
+    "exec_directory": "/opt/soma/emacs/libexec/emacs/30.2/x86_64-pc-linux-gnu/",
+    "source_directory_reported": "/opt/soma/build/emacs-30.2/",
+    "source_directory_exists": true,
+    "home": "/project/home",
+    "tmpdir": "/project/tmp",
+    "xdg_runtime_dir": "/project/run",
+    "xdg_cache_home": "/project/cache",
+    "xdg_data_home": "/project/home/.local/share",
+    "user_emacs_directory": "~/.emacs.d/",
+    "doom_core": "/project/home/.emacs.d",
+    "doom_user": "/project/home/.doom.d",
+    "straight_build": "/project/home/.emacs.d/.local/straight/build-30.2",
+    "straight_repos": "/project/home/.emacs.d/.local/straight/repos",
+    "insula_active": true,
+    "insula_mode": "selected-container-rootfs",
+    "insula_plan": "/workspace/soma/probes/emacs-internals/traces/latest/insula-plan.json"
+  },
+  "mechanism": "Markers preserve a moving position, not a semantic target.",
+  "hypothesis": "A marker should move when text is inserted before it, while text around the marker may no longer match the original target context.",
+  "sources": [
+    {
+      "name": "marker runtime",
+      "path": "Emacs primitive introspection",
+      "lines": "make-marker, set-marker, marker-position",
+      "note": ""
+    }
+  ],
+  "minimal_fixture": "One temporary buffer, one marker before a target character, and two edits before/around it.",
+  "predicted_behavior": "The marker remains live and moves, but the original semantic context is stale.",
+  "observed_behavior": "before-pos=4 before-context=\"cDE\" after-pos=7 after-context=\"cZE\" text=\"xxxabcZEF\"",
+  "independent_checks": [
+    {
+      "name": "marker moved after insertion before it",
+      "passed": true,
+      "detail": "4 -> 7"
+    },
+    {
+      "name": "original context changed",
+      "passed": true,
+      "detail": "\"cDE\" -> \"cZE\""
+    }
+  ],
+  "counterexample": "Accepting a delayed edit because its marker is live can apply it to the wrong text.",
+  "derived_gym_requirement": "Delayed edits and FIM suggestions must validate prefix, suffix, buffer incarnation, and target range text before mutation."
+}
