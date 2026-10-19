@@ -551,6 +551,34 @@ class RouteValidationTests(unittest.TestCase):
         self.assertIsInstance(loaded.nodes[0], route_validation.RouteNode)
         self.assertIsInstance(loaded, route_validation.RouteManifest)
 
+    def test_inspected_repository_cannot_supply_the_relocation_reader(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            math = root / "lab/math"
+            math.mkdir(parents=True)
+            (root / "lab/__init__.py").write_text("")
+            (math / "__init__.py").write_text("")
+            (math / "relocation.json").write_text("{}")
+            (math / "relocation.py").write_text(
+                "from pathlib import Path\n"
+                "def resolve(root, relative):\n"
+                "    Path(root, 'executed').write_text('untrusted code ran')\n"
+                "    return relative\n"
+            )
+            program = (
+                "import sys; from pathlib import Path; "
+                "sys.path.insert(0, sys.argv[1]); import route_validation; "
+                "root=Path(sys.argv[2]); "
+                "\ntry: route_validation.current_artifact_path(root, 'subject')"
+                "\nexcept route_validation.RouteValidationError: pass"
+                "\nassert not (root/'executed').exists(), 'inspected repository code was executed'"
+            )
+            result = subprocess.run(
+                [sys.executable, "-I", "-c", program, str(Path(__file__).parent), str(root)],
+                capture_output=True, text=True, check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_duplicate_json_keys_and_unknown_fields_fail_closed(self) -> None:
         fixture = self.fixture()
         path = fixture.repo / fixture.manifest_path

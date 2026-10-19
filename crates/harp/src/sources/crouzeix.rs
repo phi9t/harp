@@ -421,7 +421,7 @@ pub(super) struct Report {
 pub(super) fn verify(repo_root: &Path) -> Result<Report, AppError> {
     if repo_root.join("lab/math/relocation.json").is_file() {
         let output = Command::new("python3")
-            .arg(repo_root.join("lab/math/relocation.py"))
+            .args(["-I", "-c", include_str!("../../../../lab/math/relocation.py")])
             .args([
                 "--root",
                 repo_root.to_str().ok_or_else(|| {
@@ -4667,6 +4667,28 @@ mod tests {
         } else {
             super::verify(repo_root)
         }
+    }
+
+    #[test]
+    fn inspected_repository_cannot_execute_relocation_checker() {
+        let root = tempfile::tempdir().unwrap();
+        let math = root.path().join("lab/math");
+        fs::create_dir_all(&math).unwrap();
+        fs::write(math.join("relocation.json"), "{}\n").unwrap();
+        fs::write(
+            math.join("relocation.py"),
+            concat!(
+                "from pathlib import Path\n",
+                "Path(__file__).with_name('executed').write_text('untrusted code ran')\n",
+                "print('{\"status\":\"preserved\"}')\n",
+            ),
+        )
+        .unwrap();
+        assert!(super::verify(root.path()).is_err());
+        assert!(
+            !math.join("executed").exists(),
+            "inspected repository code was executed"
+        );
     }
 
     fn verify_without_required_local_bundle(repo_root: &Path) -> Result<Report, AppError> {

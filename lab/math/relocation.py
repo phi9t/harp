@@ -16,6 +16,28 @@ import subprocess
 
 QUALIFIED_SOURCE = "883132bd0249e26f1bf37453796d1dfae1c425f8"
 
+MIGRATION_PREFIXES = [
+    {'source': 'formalization/tests/', 'destination': 'lab/math/audit_fixtures/'},
+    {'source': 'formalization/', 'destination': 'lab/math/'},
+    {'source': 'labs/crouzeix_proof_reproduction/tests/', 'destination': 'lab/math/proof_reproduction/'},
+    {'source': 'labs/crouzeix_proof_reproduction/', 'destination': 'lab/math/proof_reproduction/'},
+    {'source': 'labs/lean_trae_benchmark/tests/', 'destination': 'lab/math/lean_trae_benchmark/'},
+    {'source': 'labs/lean_trae_benchmark/', 'destination': 'lab/math/lean_trae_benchmark/'},
+    {'source': 'labs/sicp-evaluator/', 'destination': 'lab/sicp/'},
+]
+
+
+def _destination(source: str) -> str:
+    for prefix in MIGRATION_PREFIXES:
+        if source.startswith(prefix['source']):
+            return prefix['destination'] + source[len(prefix['source']):]
+    return source
+
+
+def _check_mapping(record: dict) -> None:
+    if record['prefixes'] != MIGRATION_PREFIXES:
+        raise RelocationError('relocation prefixes differ from the approved migration')
+
 
 class RelocationError(ValueError):
     pass
@@ -58,13 +80,14 @@ def verify(root: Path, *, qualified_revision: str = QUALIFIED_SOURCE) -> dict:
         raise RelocationError('source is not the qualified migration revision')
     if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
         raise RelocationError('source revision must be an exact Git commit')
-    subprocess.run(['git', '-C', str(root), 'merge-base', '--is-ancestor', revision, 'HEAD'], check=True, capture_output=True)
+    subprocess.run(['git', '--no-replace-objects', '-C', str(root), 'merge-base', '--is-ancestor', revision, 'HEAD'], check=True, capture_output=True)
     tree = {}
-    for line in subprocess.check_output(['git', '-C', str(root), 'ls-tree', '-r', revision], text=True).splitlines():
+    for line in subprocess.check_output(['git', '--no-replace-objects', '-C', str(root), 'ls-tree', '-r', revision], text=True).splitlines():
         header, path = line.split('\t', 1)
         mode, kind, blob = header.split()
         tree[path] = (mode, kind, blob)
-    prefixes = record['prefixes']
+    _check_mapping(record)
+    prefixes = MIGRATION_PREFIXES
     expected = {p for p in tree if any(p.startswith(v['source']) for v in prefixes) or p.startswith('evidence/crouzeix_conjecture/')}
     rows = record['entries']
     if len(rows) != len(expected) or {r['source'] for r in rows} != expected:
@@ -72,7 +95,7 @@ def verify(root: Path, *, qualified_revision: str = QUALIFIED_SOURCE) -> dict:
     destinations = set()
     retained = adapted = retired = 0
     # One batch reads original blobs, avoiding hundreds of Git subprocesses.
-    batch = subprocess.check_output(['git', '-C', str(root), 'cat-file', '--batch'], input=''.join(r['source_blob']+'\n' for r in rows).encode())
+    batch = subprocess.check_output(['git', '--no-replace-objects', '-C', str(root), 'cat-file', '--batch'], input=''.join(r['source_blob']+'\n' for r in rows).encode())
     offset = 0
     for row in rows:
         source = row['source']
@@ -86,11 +109,7 @@ def verify(root: Path, *, qualified_revision: str = QUALIFIED_SOURCE) -> dict:
         offset += int(size)+1
         if blob_kind != b'blob' or hashlib.sha256(original).hexdigest() != row['source_sha256']:
             raise RelocationError(f'original byte identity mismatch: {source}')
-        expected_destination = source
-        for prefix in prefixes:
-            if source.startswith(prefix['source']):
-                expected_destination = prefix['destination']+source[len(prefix['source']):]
-                break
+        expected_destination = _destination(source)
         destination = row['destination']
         if destination != expected_destination or destination in destinations:
             raise RelocationError(f'destination mapping mismatch: {source}')
@@ -147,9 +166,12 @@ def resolve(root: Path, relative: str) -> str:
     if not record_path.is_file():
         return relative
     record = _record(root)
+    _check_mapping(record)
     for row in record['entries']:
         if row['source'] == relative and row['disposition'] != 'retired':
             destination = row['destination']
+            if destination != _destination(relative):
+                raise RelocationError(f'destination mapping mismatch: {relative}')
             data = _regular(root, destination).read_bytes()
             if hashlib.sha256(data).hexdigest() != row['destination_sha256']:
                 raise RelocationError(f'destination byte identity mismatch: {destination}')
@@ -170,8 +192,10 @@ def project_locations(root: Path, value):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2])
+    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2] if '__file__' in globals() else None)
     args = parser.parse_args()
+    if args.root is None:
+        parser.error("--root is required for the embedded verifier")
     try:
         print(json.dumps(verify(args.root), sort_keys=True))
     except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:

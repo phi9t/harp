@@ -29,7 +29,7 @@ class RelocationTests(unittest.TestCase):
         source.rename(self.destination)
         digest = hashlib.sha256(self.destination.read_bytes()).hexdigest()
         self.record = {'schema_version':'harp-math-relocation/v1', 'source_commit':revision,
-            'qualification':'historical', 'prefixes':[{'source':'formalization/', 'destination':'lab/math/'}],
+            'qualification':'historical', 'prefixes':[dict(prefix) for prefix in relocation.MIGRATION_PREFIXES],
             'entries':[{'source':'formalization/lean/Proof.lean', 'destination':'lab/math/lean/Proof.lean',
                 'source_blob':blob, 'mode':'100644', 'source_sha256':digest,
                 'destination_sha256':digest, 'disposition':'retained'}]}
@@ -80,3 +80,30 @@ class RelocationTests(unittest.TestCase):
         os.link(self.destination, self.root / 'external.lean')
         with self.assertRaisesRegex(relocation.RelocationError, 'hardlinked relocation file'):
             relocation.verify(self.root, qualified_revision=self.record["source_commit"])
+
+    def test_git_replace_cannot_redefine_original_proof_bytes(self):
+        bad = b'axiom identity : False\n'
+        blob = subprocess.check_output(['git', '-C', str(self.root), 'hash-object', '-w', '--stdin'], input=bad).decode().strip()
+        def tree(entry):
+            return subprocess.check_output(['git', '-C', str(self.root), 'mktree'], input=entry.encode()).decode().strip()
+        lean = tree(f'100644 blob {blob}\tProof.lean\n')
+        formalization = tree(f'040000 tree {lean}\tlean\n')
+        root_tree = tree(f'040000 tree {formalization}\tformalization\n')
+        replacement = self.git('commit-tree', root_tree, '-m', 'forged historical tree')
+        self.git('replace', self.record['source_commit'], replacement)
+        self.destination.write_bytes(bad)
+        row = self.record['entries'][0]
+        row['source_blob'] = blob
+        row['source_sha256'] = hashlib.sha256(bad).hexdigest()
+        row['destination_sha256'] = row['source_sha256']
+        self.save()
+        with self.assertRaisesRegex(relocation.RelocationError, 'original Git identity mismatch'):
+            relocation.verify(self.root, qualified_revision=self.record['source_commit'])
+
+    def test_record_cannot_redefine_the_approved_destination_layout(self):
+        self.record['prefixes'][1]['destination'] = 'archive/'
+        self.save()
+        with self.assertRaisesRegex(relocation.RelocationError, 'approved migration'):
+            relocation.verify(self.root, qualified_revision=self.record['source_commit'])
+        with self.assertRaisesRegex(relocation.RelocationError, 'approved migration'):
+            relocation.resolve(self.root, 'formalization/lean/Proof.lean')

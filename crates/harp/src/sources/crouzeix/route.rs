@@ -4391,8 +4391,11 @@ mod tests {
             &harp_rule["properties"]["route_dependencies"]["items"]["allOf"][1]["properties"];
         assert_eq!(exact_dependency["route_id"]["const"], "lorist-schwenninger");
         assert_eq!(
-            exact_dependency["manifest_path"]["const"],
-            LS_ROUTE_MANIFEST_PATH
+            exact_dependency["manifest_path"]["enum"],
+            json!([
+                LS_ROUTE_MANIFEST_PATH,
+                "labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/route-manifest.json"
+            ])
         );
         assert_eq!(
             exact_dependency["manifest_sha256"]["const"],

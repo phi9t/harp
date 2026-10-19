@@ -786,12 +786,22 @@ def _checked_file(repo_root: Path, value: object, label: str, *, locator: bool =
     return candidate
 
 
+def _relocation_reader():
+    # The inspected root supplies data, never executable verifier code.
+    import importlib.util
+    source = Path(__file__).resolve().parent.parent / "relocation.py"
+    spec = importlib.util.spec_from_file_location("_harp_math_relocation", source)
+    if spec is None or spec.loader is None:
+        raise RouteValidationError("trusted historical relocation reader is unavailable")
+    reader = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(reader)
+    return reader
+
+
 def current_artifact_path(repo_root: Path, relative: str) -> str:
     if not (repo_root / "lab/math/relocation.json").is_file():
         return relative
-    import sys
-    sys.path.insert(0, str(repo_root))
-    from lab.math import relocation
+    relocation = _relocation_reader()
     try:
         return relocation.resolve(repo_root, relative)
     except (OSError, ValueError, KeyError) as error:
@@ -1861,9 +1871,7 @@ def validate_route_bundle(
     root = Path(repo_root).resolve(strict=True)
     relocation_record = root / "lab/math/relocation.json"
     if relocation_record.is_file():
-        import sys
-        sys.path.insert(0, str(root))
-        from lab.math import relocation
+        relocation = _relocation_reader()
         try:
             historical = relocation.verify(root)
         except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
