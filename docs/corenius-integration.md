@@ -52,8 +52,12 @@ The [integration tickets](../.scratch/harp-runtime-integration/tickets.md) disti
 completed milestones from pending qualification. Real Codex and Trae one-worker
 runs passed independent checks and explicitly approved physical landings. A real
 mixed pair also overlapped; its same-base proposals and fresh integration candidate
-exercise serialized landing and stale-base refusal. Four-worker qualification and
-the final composed repository gate remain the final acceptance work.
+exercise serialized landing and stale-base refusal. Four actual Harp workers
+(two Codex and two Trae) subsequently overlapped, passed independent checks and
+review, and completed explicitly approved physical landings. The complete
+integration gate and all 102 native lifecycle tests passed. Exact sources,
+provider identities, limitations and evidence are recorded in
+[ticket 14](../.scratch/harp-runtime-integration/issues/14-qualify-four-workers.md).
 
 Math, proof work, Crouzeix, SICP, educational material and PDF publication remain
 in Harp. Atlas and RSI-specific article reproduction are retired; a brief article

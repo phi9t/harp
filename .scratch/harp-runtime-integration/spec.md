@@ -1,6 +1,6 @@
 # Harp durable coding-worker integration
 
-Status: ready-for-agent
+Status: implemented; qualification recorded in tickets.md
 Owner: project owner
 Branch: codex/harp-runtime-integration-spec
 Baseline: 1418455d

@@ -5,8 +5,9 @@ runtime owns admission, capacity, attempts, cancellation, recovery and accepted
 results. Insula and per-attempt delegated cgroups contain each worker. Select
 Codex or Trae explicitly; provider sessions are not resumed automatically.
 
-This interface is being qualified in
-[the integration tickets](../.scratch/harp-runtime-integration/tickets.md).
+The [integration tickets](../.scratch/harp-runtime-integration/tickets.md) retain
+qualification evidence for one worker, a mixed pair and four mixed-provider
+workers on Linux.
 A successful coding activity produces a proposal. Independent verification,
 a separate human approval and checked-out local landing are subsequent steps.
 

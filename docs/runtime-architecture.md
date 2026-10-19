@@ -122,7 +122,11 @@ promised.
 The [integration guide](corenius-integration.md) records real single-worker
 Codex and Trae runs through independent checks and approved physical landings,
 and a real overlapping mixed pair with stale-base refusal and fresh integration.
-Four-worker qualification and the final composed repository gate remain pending.
+The [four-worker milestone](../.scratch/harp-runtime-integration/issues/14-qualify-four-workers.md)
+qualified two real Codex and two real Trae workers on Harp changes, including
+independent verification, reviewed exact approvals and physical landings. The
+composed gate and 102 native lifecycle tests passed. These results qualify the
+recorded Linux environment and pinned provider profiles.
 Configuring capacity four, passing deterministic structural tests or skipping
 unavailable cgroup tests does not qualify four real provider workers.
 

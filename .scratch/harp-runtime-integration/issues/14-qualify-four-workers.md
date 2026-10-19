@@ -1,6 +1,6 @@
 # 14: Qualify four workers and complete supersession
 
-Status: in-progress
+Status: done
 Owner: Codex on `codex/harp-durable-runtime`
 Parent: [Harp durable coding-worker integration](../spec.md)
 
@@ -15,13 +15,13 @@ then four. This ticket does not authorize implementation or live setup by itself
 
 ## Acceptance criteria
 
-- [ ] Demonstrate four actually overlapping real coding workers using both Codex and Trae, with separate admitted identities and isolated workspaces. Four queued tasks or a configured limit alone is insufficient.
-- [ ] Exercise limits one, two and four, queued admission, cancellation/failure, retained cleanup blocks and safe recovery without exceeding actual admitted capacity.
-- [ ] Independently verify candidates, serialize their owner-approved landings and handle stale bases through new checked candidates and approvals, preserving actual primary state.
-- [ ] Audit supported entry points together: every retained execution path reaches the selected authority; retired controllers have no hidden launcher, scheduler or recovery fallback.
-- [ ] Normal builds/gates and the qualified path require neither Temporal nor PostgreSQL. No other checkout, source archive or private captured session is a dependency.
-- [ ] Run required changed-surface and relevant consumer checks for the complete integration candidate. Preserve affected math/proof/SICP/educational/PDF contracts without imposing unrelated cache hydration.
-- [ ] Retain exact live/fault-test source, provider/backend/environment and concurrency/landing evidence, including limitations; mark the overall implementation complete only after all approved milestone behavior passes.
+- [x] Demonstrate four actually overlapping real coding workers using both Codex and Trae, with separate admitted identities and isolated workspaces. Four queued tasks or a configured limit alone is insufficient.
+- [x] Exercise limits one, two and four, queued admission, cancellation/failure, retained cleanup blocks and safe recovery without exceeding actual admitted capacity.
+- [x] Independently verify candidates, serialize their owner-approved landings and handle stale bases through new checked candidates and approvals, preserving actual primary state.
+- [x] Audit supported entry points together: every retained execution path reaches the selected authority; retired controllers have no hidden launcher, scheduler or recovery fallback.
+- [x] Normal builds/gates and the qualified path require neither Temporal nor PostgreSQL. No other checkout, source archive or private captured session is a dependency.
+- [x] Run required changed-surface and relevant consumer checks for the complete integration candidate. Preserve affected math/proof/SICP/educational/PDF contracts without imposing unrelated cache hydration.
+- [x] Retain exact live/fault-test source, provider/backend/environment and concurrency/landing evidence, including limitations; mark the overall implementation complete only after all approved milestone behavior passes.
 
 ## Blocked by
 
@@ -117,3 +117,33 @@ The real provider observer retained 6,167 samples; 775 samples confirmed all
 four active provider identities over a span of 40.412 seconds. The initial
 common two-pass kernel observation also records all four exact PID/start-tick
 identities. These are actual coding workers, not configured or queued capacity.
+
+### Completed acceptance
+
+The owner explicitly approved all four exact candidate identities listed above.
+The public durable CLI then approved and physically landed them serially in
+the four named task-owned Harp repositories. `landings.json` and
+`landing-commands.jsonl` retain the exact approval IDs and outcomes. Each
+destination's branch, HEAD, index, tree, executable bits and all raw tracked
+blob bytes match its captured candidate; each checkout is clean. No candidate
+was approved by a worker. The old two-worker stale-base refusal/integration
+sequence remains the explicit competing-base qualification.
+
+The complete integration plan against `1418455d` selects immutable-input schema,
+Corenius provenance, controller retirement, durable lifecycle, repository/LFS,
+selector, Rust libraries/CLI/consumer targets including retained SICP, and docs.
+The whole composed gate passed, with the fresh zero-skip native suite supplying
+all 40 host Linux-only skips. Independent review found no remaining required
+issue. No proof/PDF source changed in this runtime integration; their retained
+publication and cache contracts remain intact without unrelated hydration.
+All fourteen approved implementation tickets are complete. The authorized final
+publication target is the primary checkout's `main` branch and `origin/main`;
+the previous `master` branch is preserved.
+
+- selector: `approval-84f182be99072dc7be55bd4b3f05458103b24880083239d77fea6f87c4cb7709`, landed `386e6f4effc6d99f896cf2d26bd4d2caa7db3155`.
+
+- lean: `approval-ec816686b9b799bb7481a30d22f1e91f3871b3f489367a2368fcfbe9be94b17d`, landed `a2e4e82264abd43d77ca381ca010e9e3fb1113ee`.
+
+- runtime: `approval-bcbd9fd6635b96890a34376573f8b5d85599709d6885708954b2cf8ed4dc76d6`, landed `69c17f3aaee312bb48b65b35eb83995c64ef2eaa`.
+
+- structure: `approval-074c7ad02b5528320be6f8a97d16ef99e11d3daaa489ff90c8a8ae2b7423faf7`, landed `d6d7cf73a5acf376ad56a17819f880487aa5975b`.
