@@ -52,3 +52,24 @@ class OwnershipTests(unittest.TestCase):
                 '[dev-dependencies]\nold = { path = "../lab/benchmarks/legacy_runtime/harp-engine" }\n')
             with self.assertRaisesRegex(ValueError, 'retired runtime workload'):
                 check(root)
+
+    def test_estate_and_intent_cannot_depend_on_job_implementation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for owner in ('estate', 'intent'):
+                package = root / 'durable' / owner
+                package.mkdir(parents=True, exist_ok=True)
+                source = package / 'policy.py'
+                source.write_text('from durable.jobs.coding.admission import git\n')
+                with self.assertRaisesRegex(ValueError, 'job-owned'):
+                    check(root)
+                source.write_text('from durable.estate.git import git\n')
+            check(root)
+
+    def test_production_registry_cannot_import_demo_jobs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'durable/jobs').mkdir(parents=True)
+            (root / 'durable/jobs/registry.py').write_text('from durable.fixtures.workflows import REGISTRY\n')
+            with self.assertRaisesRegex(ValueError, 'qualification fixtures'):
+                check(root)

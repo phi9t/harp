@@ -30,6 +30,9 @@ def check(root=ROOT):
             remaining = True
         if remaining:
             raise ValueError('retired top-level directory remains: knowledge')
+    for retired in ('agents', 'collaboration', 'context', 'git', 'state', 'workflows'):
+        if (root / 'durable' / retired).exists():
+            raise ValueError('retired durable package remains: ' + retired)
     legacy = (root / 'lab/benchmarks/legacy_runtime').resolve()
     for name in ('cli/Cargo.toml', 'sessions/Cargo.toml',
                  'insula/supervisor/Cargo.toml', 'lab/sicp/Cargo.toml'):
@@ -52,6 +55,11 @@ def check(root=ROOT):
                 names = [alias.name for alias in node.names] if isinstance(node, ast.Import) else (
                     [node.module] if isinstance(node, ast.ImportFrom) and not node.level and node.module else [])
                 for name in names:
+                    relative = path.relative_to(root).as_posix()
+                    if relative.startswith(('durable/estate/', 'durable/intent/')) and name.startswith('durable.jobs'):
+                        raise ValueError(f'{relative} imports job-owned policy from {name}')
+                    if relative.startswith('durable/jobs/') and name.startswith('durable.fixtures'):
+                        raise ValueError(f'{relative} imports qualification fixtures in a production job')
                     dependency = name.split('.')[0]
                     if dependency in PACKAGES and dependency not in allowed:
                         raise ValueError(f'{path.relative_to(root)} imports forbidden layer {dependency}')

@@ -107,7 +107,7 @@ complete; final owner integration acceptance remains coordinated with tickets04,
 ### Durable SSH qualification
 
 Implemented the generic committed workload admission/worker path in
-`durable/workloads/`, reusing the single journal, Activity, Insula profile,
+`durable/jobs/command/`, reusing the single journal, Activity, Insula profile,
 guardian and manual recovery policy. Soma owns its adapter, manifest and frozen
 acceptance checker under `lab/soma/`; there is no framework Soma registry.
 `runner/qualification.json` records the native contract, source/profile digests,

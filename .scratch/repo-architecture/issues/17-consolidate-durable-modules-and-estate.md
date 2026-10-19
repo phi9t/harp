@@ -1,6 +1,8 @@
 # 17: Consolidate durable modules and dedicate workspace estate ownership
 
-Status: open
+Status: in-progress
+Owner: Codex on codex/durable-estate
+Worktree: managed lab-knowledge checkout
 Parent: [Repository architecture](../spec.md)
 
 ## What to build
@@ -33,10 +35,33 @@ Estate uses the existing SQLite journal and creates no scheduler or daemon.
 
 ## Blocked by
 
-None. This records the design accepted during ticket 16; it does not claim implementation.
+None. Implementation is in progress in the isolated candidate.
 
 ## Verification
 
-Pending implementation and source-bound native qualification. Add real Git lifecycle
-checks covering crash recovery, stale leases, dirty preservation, destination identity
-and refusal to reclaim active or unowned workspaces.
+Candidate base: `9ac32326e8c43b9d90bbbca3f4755f51841f06d2`.
+
+Implemented the runtime/intent/estate/jobs layout with one public CLI and
+source-adjacent tests. Estate uses the existing SQLite connection and records
+repository identity, attempt/run/base/host/epoch bindings and managed directory
+inodes. Workspaces remain independent bundle clones. Allocation records the
+staging inode before atomic publication. Cleanup records intent before rename,
+rechecks archive integrity during recovery, and leaves logs/results/captured
+inputs untouched. Timeouts never expire ownership by themselves.
+
+Focused real-Git estate checks pass: 12 cases cover archive restoration,
+forged/path-only handles, replaced directories, live/stale leases, unproven
+cleanup, dirty/ignored/untracked work, interrupted allocation and deletion, release-before-start recovery,
+archive corruption, post-retention changes, hidden dirty bytes behind Git index
+flags and controller-lock exclusion.
+Jobs declare workspace bindings on Activity specifications; the engine delegates
+allocation to estate without parsing job-specific request files.
+The public lifecycle suite also covers retention/reclamation followed by
+candidate capture from the surviving result bundle.
+
+The portable suite passed before the final cleanup recovery repair; Linux-only
+cases are intentionally unavailable on macOS. A fresh source-bound Linux run and
+the complete-candidate changed-surface gate are required before completion.
+Native runs use the existing qualified rootfs, patched SQLite and unchanged Rust
+CLI bridge; no service is installed. Current Rust consumer checks compile the
+migrated context bundle paths separately.

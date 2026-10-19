@@ -22,7 +22,7 @@ from insula.cgroup import Cgroup
 from durable.runtime.engine import Store
 
 ROOT = Path(__file__).resolve().parents[1]
-MODULES = ('durable.runtime.test_engine', 'durable.test_execution',
+MODULES = ('durable.runtime.test_engine', 'durable.runtime.test_execution',
            'insula.test_cgroup')
 
 
@@ -74,7 +74,7 @@ def source_identity():
     for name in ('tasks', 'harness', 'insula', 'tmuxh', 'readiness'):
         paths.extend(p for p in ROOT.joinpath('lab/benchmarks', name).rglob('*')
                      if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc')
-    paths.extend(p for p in ROOT.joinpath('durable/context').rglob('*')
+    paths.extend(p for p in ROOT.joinpath('durable/intent/bundles').rglob('*')
                  if p.is_file() and p.suffix in {'.json', '.jsonl'})
     paths.extend(ROOT.joinpath('lab/soma').glob('*.py'))
     paths.append(ROOT / 'lab/soma/workload.json')
@@ -245,7 +245,7 @@ def main(argv=None):
             raise RuntimeError('qualification modules are missing or contain no tests')
         # These groups exercise real kernel containment and runtime integration.
         for name in ('insula.test_cgroup.DelegatedKernelTests',
-                     'durable.test_execution.DelegatedRuntimeTests'):
+                     'durable.runtime.test_execution.DelegatedRuntimeTests'):
             if loader.loadTestsFromName(name).countTestCases() < 2 or loader.errors:
                 raise RuntimeError(f'required qualification cases missing: {name}')
         test_report = run_suite(unittest.TestSuite(suites))

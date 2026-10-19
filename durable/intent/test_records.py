@@ -4,9 +4,9 @@ import tempfile
 from pathlib import Path
 import unittest
 
-from durable.agents.admission import blob, commit
+from durable.estate.git import blob, commit
 from durable.intent.records import freeze_records, linked_records
-from durable.collaboration.assignment import bind
+from durable.intent.assignment import bind
 
 
 class RecordTests(unittest.TestCase):

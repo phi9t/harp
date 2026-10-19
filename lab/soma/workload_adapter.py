@@ -64,7 +64,7 @@ def main():
             command = ['/opt/soma/emacs/bin/emacs','--quick','--batch','-l',
                        '/workspace/soma/benchmarks/emacs-gym/'+name+'/elisp/run-benchmark.el','--',sandbox_out]
         invocation = adapter.PreparedInvocation(selected,network,paths,plan,mounts,environment,command)
-        result = subprocess.run([sys.executable,'/workspace/durable/workloads/execute.py'],
+        result = subprocess.run([sys.executable,'/workspace/durable/jobs/command/execute.py'],
                                 input=json.dumps(invocation.argv('/usr/bin/bwrap')),text=True)
         if result.returncode:
             raise ValueError('Soma suite failed: '+name)

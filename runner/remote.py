@@ -37,7 +37,7 @@ def preflight(request, identity):
 
 
 def fetch_artifact(request, status, relative):
-    from durable.agents.admission import relative_path
+    from durable.estate.git import relative_path
     relative_path(relative)
     if status.get('workflow') != 'workload' or status.get('status') != 'SUCCEEDED':
         raise ValueError('artifacts require a completed accepted workload')
@@ -84,7 +84,7 @@ def main():
             manager = subprocess.run(['systemctl','--user','show-environment'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
             if manager.returncode:
                 raise ValueError('remote user manager unavailable; no workload admitted')
-            from durable.execution import InsulaExecution
+            from durable.runtime.execution import InsulaExecution
             InsulaExecution(json.loads(Path(request['execution']).read_text())).verify()
             data = {'source':identity,'contract':contract,'cgroup_delegation':True,'platform':sys.platform}
             code = 0

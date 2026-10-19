@@ -75,7 +75,7 @@ class VerificationTests(unittest.TestCase):
         self.assertFalse(any(j["surface"].startswith("native-") for j in jobs))
 
     def test_context_contracts_select_their_rust_consumer(self):
-        self.write("durable/context/workflows/general_coding/manifest.json", "{}\n")
+        self.write("durable/intent/bundles/general_coding/manifest.json", "{}\n")
         commands = [job["command"] for job in self.selected()["checks"]]
         self.assertTrue(any("context_control::" in cmd and "--lib" in cmd for cmd in commands))
         self.assertTrue(any("context_control_cli" in cmd and "--test" in cmd for cmd in commands))

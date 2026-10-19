@@ -103,7 +103,7 @@ cli/tests/support/context_control.rs
 Track source packages here and embed them with `include_bytes!`:
 
 ```text
-durable/context/workflows/
+durable/intent/bundles/
 ├── ci_repair/
 ├── code_review/
 ├── dependency_update/
@@ -319,10 +319,10 @@ git commit -m "feat: define context control contracts" \
 **Files:**
 
 - Create: `cli/src/context_control/workflow.rs`
-- Create: `durable/context/workflows/ci_repair/*`
-- Create: `durable/context/workflows/code_review/*`
-- Create: `durable/context/workflows/dependency_update/*`
-- Create: `durable/context/workflows/general_coding/*`
+- Create: `durable/intent/bundles/ci_repair/*`
+- Create: `durable/intent/bundles/code_review/*`
+- Create: `durable/intent/bundles/dependency_update/*`
+- Create: `durable/intent/bundles/general_coding/*`
 - Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write strict package-loader tests**
@@ -422,7 +422,7 @@ from the target repository at runtime.
 After writing the five non-manifest members, compute their hashes:
 
 ```sh
-for workflow_dir in durable/context/workflows/*; do
+for workflow_dir in durable/intent/bundles/*; do
   for member in routing.json context_schema.json verification.json \
     outcome_rules.json playbook.jsonl; do
     shasum -a 256 "$workflow_dir/$member"
@@ -448,7 +448,7 @@ the strict-parser negative tests pass.
 - [ ] **Step 5: Commit workflow packages**
 
 ```sh
-git add durable/context/workflows \
+git add durable/intent/bundles \
   cli/src/context_control/workflow.rs \
   cli/src/context_control/mod.rs
 git commit -m "feat: add built-in context workflows" \

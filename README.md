@@ -65,7 +65,7 @@ require the full contributor verification gate.
   rollout indexing and session analysis.
 - `durable/` owns the sole agent execution framework, SQLite journal,
   Git-managed intent, verification and landing. Embedded workflow context
-  contracts live under `durable/context/`.
+  contracts live under `durable/intent/bundles/`.
 - `insula/` owns containment and service supervision; `runner/` transports
   admitted work to a privately configured SSH host.
 - `lab/math/`, `lab/sicp/`, `lab/soma/` and `lab/benchmarks/` hold workloads,

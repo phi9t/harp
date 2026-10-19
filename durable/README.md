@@ -8,20 +8,22 @@ for architectural context.
 
 Ownership follows the package boundaries:
 
-- [intent/](intent/) reads committed tasks, dependencies and acceptance policy,
-  then freezes their bytes and hashes. The journal is not an editable backlog.
-- [collaboration/](collaboration/) binds frozen records to owner-authorized
-  `allowed_paths`; worker output cannot redefine its assignment.
-- [agents/](agents/) admits coding work and adapts providers to isolated workers.
-  Start with Codex; Trae is an optional retained adapter, and deterministic
-  fixtures support qualification. Provider sessions are not automatically resumed.
-- [workflows/](workflows/) defines the admitted coding and verification graph.
-- [runtime/](runtime/) owns capacity, attempts, cancellation and recovery;
-  [state/](state/) owns the SQLite journal. Insula supplies containment and
-  delegated cgroup supervision; runner supplies SSH transport where used.
-- [git/](git/) captures proposals, runs independent verification and implements
-  exact-candidate approval and landing. A successful worker produces a proposal,
-  not merge authority.
+- [runtime/](runtime/) owns the SQLite journal, replay, capacity, attempts,
+  cancellation, recovery and guardian cleanup gating.
+- [intent/](intent/) freezes committed records, scope, dependencies and acceptance
+  policy. Context/playbook data lives in `intent/bundles/`; actual authored intent
+  lives in `.scratch/`.
+- [estate/](estate/) owns repository identities, isolated workspace allocation,
+  attempt-bound leases, inspection, retention and safe reclamation.
+- [jobs/coding/](jobs/coding/) owns admission, Codex execution, candidate capture,
+  verification and exact human-authorized landing. Trae remains a retained adapter.
+- [jobs/command/](jobs/command/) owns declared workload execution and artifacts.
+- `jobs/registry.py` lists production jobs. `fixtures/` contains qualification
+  demonstrations and their internal driver; it is not an operator interface.
+
+Insula owns containment and service supervision; runner supplies SSH transport.
+Tests live beside their source. `python3 -m durable` is the operator interface;
+`__main__.py` delegates to `cli.py`.
 
 Commands below follow `python3 -m durable --help` and subcommand help. Global
 `--state` and `--execution` options precede the subcommand. Run from this
@@ -127,3 +129,30 @@ and effect resolution are separate decisions; neither command launches work.
 Missing cleanup proof blocks capacity reuse. Explicitly `start` only after
 reconciliation. Interrupted landing likewise reconciles durable intent and exact
 Git identities before another mutation; never force or blindly repeat effects.
+
+
+Workspace management uses that same interface and journal:
+
+```sh
+python3 -m durable --state "$state" --execution "$execution" estate list
+python3 -m durable --state "$state" --execution "$execution" estate inspect WORKSPACE_ID
+python3 -m durable --state "$state" --execution "$execution" estate retain WORKSPACE_ID
+python3 -m durable --state "$state" --execution "$execution" estate reclaim WORKSPACE_ID
+python3 -m durable --state "$state" --execution "$execution" estate reconcile
+```
+
+Retention writes and verifies an independent Git bundle before granting cleanup
+permission. Reclamation takes the controller lock and requires accepted cleanup
+proof, unchanged directory identity, a clean workspace and a retained candidate.
+Dirty, ignored and untracked work is preserved. Elapsed time or a newer runtime
+epoch cannot revoke a live lease. Reconciliation resumes registered allocation
+and cleanup intents; an arbitrary path never grants deletion authority.
+Workspace reclamation leaves attempt logs, result bundles and captured
+verification inputs in place. Retention neither verifies a candidate nor approves
+landing. Allocation remains an isolated bundle clone, with no shared Git admin
+state between workers.
+
+The migrated definitions are `coding-v3`, `verification-v3` and `workload-v2`.
+Prepare a fresh execution profile for these source bytes. Old immutable execution
+profiles retain their original source and journal contracts; this change does not
+rewrite active runs or relabel old qualification receipts.

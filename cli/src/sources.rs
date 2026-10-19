@@ -1079,7 +1079,7 @@ fn verify_content_locators(repo_root: &Path) -> Result<usize, AppError> {
     let roots = [
         "lab/math/textbook",
         "lab/sicp/contracts",
-        "durable/context",
+        "durable/intent/bundles",
         "evidence/sources",
         "evidence/implementations/harness_deep_dive_manifest.tsv",
     ].map(|path| repo_root.join(path));
@@ -1494,7 +1494,7 @@ mod tests {
         for manifest in [
             "lab/math/textbook/manifest.tsv",
             "lab/sicp/contracts/sources/manifest.tsv",
-            "durable/context/workflows/manifest.json",
+            "durable/intent/bundles/manifest.json",
             "evidence/sources/manifest.tsv",
             "evidence/implementations/harness_deep_dive_manifest.tsv",
         ] {

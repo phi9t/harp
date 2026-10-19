@@ -271,82 +271,82 @@ impl EmbeddedWorkflow {
         match workflow {
             WorkflowId::CiRepair => Self {
                 manifest: include_bytes!(
-                    "../../../durable/context/workflows/ci_repair/manifest.json"
+                    "../../../durable/intent/bundles/ci_repair/manifest.json"
                 ),
                 routing: include_bytes!(
-                    "../../../durable/context/workflows/ci_repair/routing.json"
+                    "../../../durable/intent/bundles/ci_repair/routing.json"
                 ),
                 context_schema: include_bytes!(
-                    "../../../durable/context/workflows/ci_repair/context_schema.json"
+                    "../../../durable/intent/bundles/ci_repair/context_schema.json"
                 ),
                 verification: include_bytes!(
-                    "../../../durable/context/workflows/ci_repair/verification.json"
+                    "../../../durable/intent/bundles/ci_repair/verification.json"
                 ),
                 outcome_rules: include_bytes!(
-                    "../../../durable/context/workflows/ci_repair/outcome_rules.json"
+                    "../../../durable/intent/bundles/ci_repair/outcome_rules.json"
                 ),
                 playbook: include_bytes!(
-                    "../../../durable/context/workflows/ci_repair/playbook.jsonl"
+                    "../../../durable/intent/bundles/ci_repair/playbook.jsonl"
                 ),
             },
             WorkflowId::CodeReview => Self {
                 manifest: include_bytes!(
-                    "../../../durable/context/workflows/code_review/manifest.json"
+                    "../../../durable/intent/bundles/code_review/manifest.json"
                 ),
                 routing: include_bytes!(
-                    "../../../durable/context/workflows/code_review/routing.json"
+                    "../../../durable/intent/bundles/code_review/routing.json"
                 ),
                 context_schema: include_bytes!(
-                    "../../../durable/context/workflows/code_review/context_schema.json"
+                    "../../../durable/intent/bundles/code_review/context_schema.json"
                 ),
                 verification: include_bytes!(
-                    "../../../durable/context/workflows/code_review/verification.json"
+                    "../../../durable/intent/bundles/code_review/verification.json"
                 ),
                 outcome_rules: include_bytes!(
-                    "../../../durable/context/workflows/code_review/outcome_rules.json"
+                    "../../../durable/intent/bundles/code_review/outcome_rules.json"
                 ),
                 playbook: include_bytes!(
-                    "../../../durable/context/workflows/code_review/playbook.jsonl"
+                    "../../../durable/intent/bundles/code_review/playbook.jsonl"
                 ),
             },
             WorkflowId::DependencyUpdate => Self {
                 manifest: include_bytes!(
-                    "../../../durable/context/workflows/dependency_update/manifest.json"
+                    "../../../durable/intent/bundles/dependency_update/manifest.json"
                 ),
                 routing: include_bytes!(
-                    "../../../durable/context/workflows/dependency_update/routing.json"
+                    "../../../durable/intent/bundles/dependency_update/routing.json"
                 ),
                 context_schema: include_bytes!(
-                    "../../../durable/context/workflows/dependency_update/context_schema.json"
+                    "../../../durable/intent/bundles/dependency_update/context_schema.json"
                 ),
                 verification: include_bytes!(
-                    "../../../durable/context/workflows/dependency_update/verification.json"
+                    "../../../durable/intent/bundles/dependency_update/verification.json"
                 ),
                 outcome_rules: include_bytes!(
-                    "../../../durable/context/workflows/dependency_update/outcome_rules.json"
+                    "../../../durable/intent/bundles/dependency_update/outcome_rules.json"
                 ),
                 playbook: include_bytes!(
-                    "../../../durable/context/workflows/dependency_update/playbook.jsonl"
+                    "../../../durable/intent/bundles/dependency_update/playbook.jsonl"
                 ),
             },
             WorkflowId::GeneralCoding => Self {
                 manifest: include_bytes!(
-                    "../../../durable/context/workflows/general_coding/manifest.json"
+                    "../../../durable/intent/bundles/general_coding/manifest.json"
                 ),
                 routing: include_bytes!(
-                    "../../../durable/context/workflows/general_coding/routing.json"
+                    "../../../durable/intent/bundles/general_coding/routing.json"
                 ),
                 context_schema: include_bytes!(
-                    "../../../durable/context/workflows/general_coding/context_schema.json"
+                    "../../../durable/intent/bundles/general_coding/context_schema.json"
                 ),
                 verification: include_bytes!(
-                    "../../../durable/context/workflows/general_coding/verification.json"
+                    "../../../durable/intent/bundles/general_coding/verification.json"
                 ),
                 outcome_rules: include_bytes!(
-                    "../../../durable/context/workflows/general_coding/outcome_rules.json"
+                    "../../../durable/intent/bundles/general_coding/outcome_rules.json"
                 ),
                 playbook: include_bytes!(
-                    "../../../durable/context/workflows/general_coding/playbook.jsonl"
+                    "../../../durable/intent/bundles/general_coding/playbook.jsonl"
                 ),
             },
         }

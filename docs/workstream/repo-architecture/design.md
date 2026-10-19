@@ -74,37 +74,38 @@ The root Cargo workspace remains the product build. Bazel initially belongs to
 | Component | Owns | Must not own |
 | --- | --- | --- |
 | `durable/runtime` | Dispatch, replay, attempts, capacity, cancellation, cleanup gating and receipt acceptance | Git intent, proof truth, host discovery |
-| `durable/state` | One project workflow SQLite database and its transactions, including approval and landing records | A second scheduler, editable task intent |
-| `durable/agents` and `durable/workflows` | Freeze inputs; orchestrate provider, verification and workload activities | Provider-specific approval or recovery policy |
+| `durable/runtime/store.py` | One project workflow SQLite database and its transactions, including approval and landing records | A second scheduler, editable task intent |
+| `durable/jobs/registry.py` | Explicit supported job definitions | Qualification demonstrations |
 | `durable/intent` | Parse and validate Git-managed specs/issues/tickets, dependencies and acceptance inputs | A second editable backlog in SQLite, implicit intent changes to admitted work |
-| `durable/collaboration` | Bounded assignments, isolated worktree ownership and integration policy | Another dispatch/recovery loop, widened worker authority |
-| `durable/git` | Exact Git subjects, change-policy validation, verifier inputs, approval binding and physical landing rules | A separate scheduler, database or acceptance authority |
+| `durable/intent/assignment.py` | Bind frozen records, scope and dependencies | Workspace lifecycle or worker authority |
+| `durable/estate` | Repository identities, isolated workspace leases, retention and reclamation | Attempt scheduling, candidate verification or approval |
+| `durable/jobs/coding` | Exact Git subjects, change-policy validation, verifier inputs, approval binding and physical landing rules | A separate scheduler, database or acceptance authority |
 | `insula` | Rootfs/layer identity, mounts, namespaces, network policy and confinement mechanisms | Workflow replay, task status, approval, provider scheduling |
 | `insula/supervisor` | Declared service lifecycle, health/readiness, generations and bounded service recovery | Agent jobs, workflow retries, approval, direct service launching/reaping |
 | `runner` | Resolve a local host alias; transport pinned requests and artifacts; invoke/query remote execution | Retry an ambiguous effect, infer cleanup from SSH loss, approve or land code |
 | `lab` | Workload source, inputs, expected outputs and independent oracles | Credentials, host configuration, controller state or duplicate orchestration |
 
-The Rust CLI invokes the one Python control plane. Durable workflows call
-`durable/intent`, `durable/collaboration`, `durable/git` and Insula mechanisms.
+The Rust CLI invokes the one Python control plane. Job workflows compose intent, estate and Insula through the one runtime.
 Runner submits to that same control plane on the selected host and reconnects by admitted run identity.
 Insula does not import durable. Internal Git and intent rules do not call back
 into workflow dispatch; workflows compose them through the one runtime/store.
 Workloads cannot import controller internals to create or alter accepted state.
 
-Workflow SQLite state stays inside `durable/state/`. Extract the existing store and schema with
+Workflow SQLite state stays inside `durable/runtime/store.py`. Extract the existing store and schema with
 their transaction boundaries, rather than introducing a generic database service.
 Git approvals and landing intents remain in that same operational database.
-Expose the required state transitions through the durable store; relocating
-`landing.py` must not leave arbitrary SQL writers scattered across packages.
-The engine's own transactional queries are implementation details of this owner.
+The runtime, estate and coding landing modules own their respective operational
+rows and use the same Store transaction boundary. There is no second connection
+owner or database service.
 
 Guardian launch/release, lock inheritance and acceptance policy stay with durable
 execution. Insula may supply cgroup operations, but the controller decides when
 an attempt owns capacity and when proven cleanup permits reuse. The execution
-binding is `durable/execution.py`; Insula has no durable registry or second CLI
+binding is `durable/runtime/execution.py`; Insula has no durable registry or second CLI
 that can submit agent work independently.
 
-The internal `durable/git` boundary represents domain rules and Git operations.
+The internal `durable/jobs/coding` boundary represents coding lifecycle rules.
+Shared Git primitives and physical workspace management belong to estate.
 Durable orchestration owns when they run and records their outcome. Verification
 remains an independent activity. A passing workload or provider command is not
 an approval, and the destination only changes through the owner-approved path.
@@ -150,16 +151,17 @@ input snapshots and source references; it is not a second editable backlog.
 Updating a ticket is a deliberate Git change bound to its evidence, rather than
 an implicit consequence of provider exit or a database status update.
 
-`durable/collaboration/` composes bounded assignments, issue dependencies,
-non-overlapping worktree ownership, handoff and integration decisions using the
-same intent records and runtime. It computes policy and submits admitted work;
+`durable/intent/assignment.py` binds frozen records, dependencies and allowed
+change scope. It neither allocates workspaces nor submits work. Job admission
+freezes the assignment; estate reserves the isolated workspace;
 `durable/runtime/` alone dispatches, accounts capacity, cancels and recovers it.
 Conflicting changes require a fresh integration candidate and verification;
 collaboration never grants workers approval or landing authority. Keep the
 existing one/two/four-worker scope and explicit reconciliation rules.
 
-`durable/git/` supplies source snapshots, worktree and candidate identities,
+`durable/jobs/coding/` supplies source snapshots and candidate identities,
 change-policy enforcement, independent verification and exact approved landing.
+Estate supplies repository/workspace identities and resource retention.
 Intent, collaboration, Git operations and execution are internal parts of one
 framework with distinct responsibilities. There is no top-level Git-workflow
 product or compatibility package to maintain.
@@ -169,7 +171,7 @@ product or compatibility package to maintain.
 The [inspected supervisor archive](supervisor-integration.md) adds an existing
 Rust component under insula/supervisor/, not another agent controller. Reuse its
 service lifecycle implementation. Its private SQLite store owns service intent
-and outcomes only; durable/state/ continues to own the one workflow journal,
+and outcomes only; durable/runtime/store.py continues to own the one workflow journal,
 including candidate acceptance and landing. Neither component writes the
 other's database. Service replacement cannot resubmit workflow effects.
 
@@ -186,11 +188,11 @@ Ticket 13 covers acquisition, dependency reconciliation and actual owner tests.
 
 | Current source | Target or disposition |
 | --- | --- |
-| Imported `controller/durable/engine.py` | Replay/runtime in `durable/runtime/`; store/schema in `durable/state/` |
+| Imported `controller/durable/engine.py` | Replay/runtime in `durable/runtime/`; store/schema in `durable/runtime/store.py` |
 | Imported guardian and receipt helpers | `durable/runtime/`, with the existing launch/cleanup protocol |
-| Imported durable Insula binding | `durable/execution.py` |
-| `harp_durable/` admission, activities, providers and public CLI | `durable/agents/`, `durable/workflows/`, `durable/__main__.py` |
-| Candidate, verifier and landing domain code | `durable/git/`, orchestrated by durable workflows |
+| Imported durable Insula binding | `durable/runtime/execution.py` |
+| `harp_durable/` admission, activities, providers and public CLI | `durable/jobs/coding/`, `durable/jobs/`, `durable/cli.py` |
+| Candidate, verifier and landing domain code | `durable/jobs/coding/`, orchestrated by durable workflows |
 | Imported capsule/rootfs/temp-root mechanisms | `insula/`, with all callers and sealed-code manifests migrated |
 | Imported benchmark tasks and useful pure validators | `lab/benchmarks/`, using the selected execution path |
 | `formalization/` and proof companion programs in `labs/` | `lab/math/`, preserving Lean module names and proof authorities |
@@ -369,7 +371,7 @@ for schema checks.
 
 The generic content directory is removed. Textbook JSON lives under
 lab/math/textbook, SICP records under lab/sicp/contracts, embedded workflow context
-under durable/context, and shared source records under evidence/sources. The
+under durable/intent/bundles, and shared source records under evidence/sources. The
 compiled corpus is lab/generated/corpus.json. Original evidence and
 historical qualification source identities remain distinct from current checks.
 
@@ -382,14 +384,14 @@ headless corpus is generated at `lab/generated/corpus.json`. Registered document
 IDs and the `harp-knowledge/v1` schema remain unchanged. Captured upstream sources
 stay in `evidence/`. See [ticket 16](../../../.scratch/repo-architecture/issues/16-merge-knowledge-into-lab.md).
 
-## Next durable module consolidation
+## Durable module consolidation
 
-The agreed follow-up groups durable internals into `runtime/`, `intent/` and
+The implementation groups durable internals into `runtime/`, `intent/` and
 `jobs/`, with coding and declared-command workflows beside their implementations.
 A dedicated `estate/` module owns repository identities, managed workspaces,
 attempt-bound leases, retention and safe reclamation through the existing SQLite
 journal. The runtime owns attempt lifetime; estate owns workspace lifetime;
 coding verification and explicit human approval continue to govern landing.
-Workers currently use isolated bundle clones; introducing estate must preserve
+Workers currently use isolated bundle clones; estate preserves
 that isolation. Runner supplies SSH transport and Insula supplies containment.
-This is a planned change, tracked in [ticket 17](../../../.scratch/repo-architecture/issues/17-consolidate-durable-modules-and-estate.md).
+Implementation and qualification are tracked in [ticket 17](../../../.scratch/repo-architecture/issues/17-consolidate-durable-modules-and-estate.md).

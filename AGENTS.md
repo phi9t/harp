@@ -20,7 +20,7 @@ documentation dependencies on another local checkout.
 
 - Managed Markdown in registered topic packets under `lab/` is the
   authority for technical prose. Structured contracts live beside their owners: `lab/math/textbook/`,
-  `lab/sicp/contracts/` and `durable/context/`. Do not add Markdown beneath the
+  `lab/sicp/contracts/` and `durable/intent/bundles/`. Do not add Markdown beneath the
   textbook JSON contract directory.
 - `lab/generated/corpus.json` is derived and must be regenerated with
   its canonical inputs. The Atlas browser reader and HTML export are retired.

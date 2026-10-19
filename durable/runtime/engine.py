@@ -20,7 +20,7 @@ from typing import Any, Callable, Iterator, Mapping
 import uuid
 
 from durable.common import MANAGED_TEMP_ENV, atomic_json, digest, durable_mkdir, encode, input_digest, read_json, temporary_environment
-from durable.execution import InsulaExecution
+from durable.runtime.execution import InsulaExecution
 
 
 from durable.errors import Park, ReplayMismatch, ActivityFailed, ControllerBusy, CleanupUnproven
@@ -43,6 +43,7 @@ class Activity:
     gpus: int = 0
     inputs: str | None = None
     offline: bool = False
+    workspace: Mapping[str, str] | None = None
 
     def spec(self) -> dict[str, Any]:
         if not self.argv or not os.path.isabs(self.argv[0]):
@@ -78,11 +79,21 @@ class Activity:
             raise ValueError("offline must be a boolean")
         if self.offline:
             result["offline"] = True
+        if self.workspace is not None:
+            import re
+            binding = dict(self.workspace)
+            if (set(binding) != {"repository", "base"} or
+                    not isinstance(binding["repository"], str) or
+                    not re.fullmatch(r"[0-9a-f]{64}", binding["repository"]) or
+                    not isinstance(binding["base"], str) or
+                    not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", binding["base"])):
+                raise ValueError("workspace requires exact repository and Git base identities")
+            result["workspace"] = binding
         encode(result)
         return result
 
 
-from durable.state.store import Store
+from durable.runtime.store import Store
 
 
 class Context:
@@ -381,6 +392,10 @@ class Runtime:
             self.store.event("ATTEMPT_CLAIMED", op["run_id"], op["id"], aid, number=number, devices=devices)
         ctx = dict(attempt_id=aid, operation_id=op["id"], run_id=op["run_id"])
         self.failpoint("after_claim", ctx)
+        if "workspace" in spec:
+            from durable.estate.workspaces import Estate
+            binding = spec["workspace"]
+            Estate(self.store).reserve(aid, binding["repository"], binding["base"], op["key"])
         effective = {**spec, "env": {**spec["env"], **temporary_environment(),
                                    "CUDA_VISIBLE_DEVICES": ",".join(devices)}}
         req = dict(protocol=1, workflow_id=op["run_id"], operation_id=op["id"],
@@ -400,7 +415,7 @@ class Runtime:
         read_fd, write_fd = os.pipe()
         try:
             guard = subprocess.Popen(
-                [sys.executable, "-m", "durable.runtime.guard", str(directory / "request.json"),
+                [sys.executable, "-m", "durable.runtime.guardian", str(directory / "request.json"),
                  "--control-fd", str(read_fd), "--lock-fd", str(self.lock_fd)],
                 pass_fds=(read_fd, self.lock_fd), stdin=subprocess.DEVNULL,
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True,

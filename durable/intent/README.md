@@ -31,8 +31,8 @@ distinct when preparing a task for admission.
 
 ## Frozen assignment
 
-The [admission implementation](../agents/admission.py) and
-[CLI](../__main__.py) expose two independent revision choices. `admit
+The [admission implementation](../jobs/coding/admission.py) and
+[CLI](../cli.py) expose two independent revision choices. `admit
 --task-revision` selects the committed task, parent, dependency, acceptance and
 owner-check bytes. `--base` selects the implementation checkout. An updated parent
 at the task revision can legitimately be newer than the implementation base.

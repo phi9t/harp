@@ -87,7 +87,7 @@ def plan(root, paths):
                          ("benchmarks/codex-architecture/schemas/", "lab/benchmarks/legacy_runtime/schemas/"),
                          ("content/crouzeix_textbook/", "lab/math/textbook/"),
                          ("content/sicp/", "lab/sicp/contracts/"),
-                         ("content/context_control/", "durable/context/"),
+                         ("content/context_control/", "durable/intent/bundles/"),
                          ("content/generated/", "lab/generated/"),
                          ("content/sources/", "evidence/sources/")):
             if path.startswith(old):
@@ -115,7 +115,7 @@ def plan(root, paths):
             add("absorption", "python3", "scripts/verify_absorption.py")
             add("architecture", "python3", "scripts/check_architecture.py")
             add("durable-runtime", "env", "PYTHONDONTWRITEBYTECODE=1", "python3", "-m", "unittest", "discover", "-s", "durable", "-t", ".", "-p", "test_*.py")
-        elif path.startswith("durable/context/"):
+        elif path.startswith("durable/intent/bundles/"):
             add("rust", "cargo", "test", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--lib", "context_control::", "--", "--test-threads=1")
             add("rust-contract", "cargo", "test", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--test", "context_control_cli")
         elif path.startswith(("durable/", "insula/", "runner/")):

@@ -130,7 +130,7 @@ tests were run in this inspection.
 
 The owner folded the proposed top-level Git-workflow package into durable. The
 framework includes durable/intent/ for the existing Git-managed spec/issue/ticket
-contract, durable/collaboration/ for bounded multi-agent policy, and durable/git/
+contract, durable/collaboration/ for bounded multi-agent policy, and durable/jobs/coding/
 for source/candidate/verification/landing rules. Authored intent remains in Git;
 SQLite records execution state and immutable input references. Keep .scratch/
 and the existing tracker format. Ticket 01 includes these responsibilities in
@@ -179,3 +179,20 @@ owner for Git worktrees and the managed estate. Ticket
 including durable/estate/ for repository identity, workspace allocation, leases,
 retention and safe cleanup using the existing SQLite journal. This is design
 intent, not a claim that the runtime reorganization or estate is implemented.
+
+
+## Ticket 17 implementation
+
+Durable internals now group into `runtime/`, `intent/`, `estate/` and `jobs/`.
+SQLite lives in `runtime/store.py`; assignment binding and context bundles live
+in `intent/`. Coding and command jobs colocate orchestration with their workers.
+Shared Git primitives belong to estate. The sole operator interface is
+`python3 -m durable`, delegated by the Harp CLI. Demonstrations and their generic
+qualification driver are separate from the production job registry.
+
+Estate records attempt-bound workspace handles in the same SQLite journal.
+Allocation preserves independent bundle clones. Runtime cleanup proof, retained
+Git objects, clean source and unchanged directory identities gate reclamation;
+interrupted allocation and cleanup are reconciled through their recorded intents.
+Tests stay with source. See [ticket 17](issues/17-consolidate-durable-modules-and-estate.md)
+for the exact candidate qualification and local landing record.

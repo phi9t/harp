@@ -8,8 +8,10 @@ prior evidence are retained for later integration. There is no Temporal or
 PostgreSQL execution dependency.
 
 `durable/intent/` binds committed Markdown records and acceptance inputs;
-`durable/collaboration/` binds assignments without dispatching them.
-`durable/git/` owns candidate identity, independent checks, exact approval and
+`durable/intent/assignment.py` binds assignments without dispatching them.
+`durable/estate/` owns repository identities, workspace leases, retention and
+safe reclamation; the runtime owns attempt lifetime.
+`durable/jobs/coding/` owns candidate identity, independent checks, exact approval and
 physical landing. The public command is `harp durable`.
 
 `insula/` owns capsules, native rootfs identity and cgroup containment.

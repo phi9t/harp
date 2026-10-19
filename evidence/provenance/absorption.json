@@ -7562,10 +7562,8 @@
       "source_sha256": "ccd9b337c1a0953089f13ff120a5ce983bf35f788d07db57f3a0e74c0b02a0d8"
     },
     "corenius/controller/durable/__main__.py": {
-      "destination": "durable/runtime/__main__.py",
-      "destination_mode": "100644",
-      "destination_sha256": "5941110471bfc7c25314e9b17f240d063ab9b4df202336c9918cdee947f93a3c",
-      "disposition": "adapted",
+      "disposition": "retired",
+      "reason": "The duplicate runtime operator entrypoint is removed. The sole operator entrypoint is durable/__main__.py; the generic qualification driver lives in durable/fixtures/cli.py. Exact original bytes remain in absorbed Git ancestry.",
       "source_blob": "13be635566e79adccc98892cc67a44e636908b35",
       "source_mode": "100644",
       "source_sha256": "79ee6f134c5c5193377cf9b189cbdcc3e2095e49ba9cec310114441c15a917c4"
@@ -7589,9 +7587,9 @@
       "source_sha256": "e146c509ab7c9d4d13294e1260bf0476e758cf348fd217111122e87d5bdb8d2f"
     },
     "corenius/controller/durable/cli.py": {
-      "destination": "durable/runtime/cli.py",
+      "destination": "durable/fixtures/cli.py",
       "destination_mode": "100644",
-      "destination_sha256": "f3ff0146c1c0e2fdf8506af840b72b5030c7fcea690709374540794df9fcc778",
+      "destination_sha256": "556d1d48eeb3b50b67fffcd3d7afe6f1bd4b546f4496f22643b450927a528c45",
       "disposition": "adapted",
       "source_blob": "892970f5b8dab579671df1eb8c3859bd31287782",
       "source_mode": "100644",
@@ -7607,7 +7605,7 @@
       "source_sha256": "3722cf0c32881a81602da4c8de19f55ca36576dddd62a6d3bdf3344eb4589130"
     },
     "corenius/controller/durable/demo_activity.py": {
-      "destination": "durable/runtime/demo_activity.py",
+      "destination": "durable/fixtures/activity.py",
       "destination_mode": "100644",
       "destination_sha256": "9d5450ed6ee938da22479588e2c8e0291d0e6c50bf0bc41f0edabdb1f81f7a56",
       "disposition": "adapted",
@@ -7618,34 +7616,34 @@
     "corenius/controller/durable/engine.py": {
       "destination": "durable/runtime/engine.py",
       "destination_mode": "100644",
-      "destination_sha256": "384d82a87e20b3a461eed15a0968572e08b31980877b1651d29c099a4d7cf665",
+      "destination_sha256": "793a16af2de02ae1505acdfd80448c851f6d928f2387cef5f6dc2a90a3671649",
       "disposition": "adapted",
       "source_blob": "61e9caa102b749dc159ffdc927afd9842afe7149",
       "source_mode": "100644",
       "source_sha256": "912ff9186f8f0dfe22a6c1ca6f1f7a47327f9e7a1672544d163fc8b292fb7898"
     },
     "corenius/controller/durable/guard.py": {
-      "destination": "durable/runtime/guard.py",
+      "destination": "durable/runtime/guardian.py",
       "destination_mode": "100644",
-      "destination_sha256": "4ba9f71f65aa4b95265112d3cb963aea877a86d81a845480c1f11eba995c01ea",
+      "destination_sha256": "8284ff2abbe33d981bc932a6a868c212a0326505ac2ee2d9b36ba5b39637fff4",
       "disposition": "adapted",
       "source_blob": "3722b114fd5d0b04108825c0219127cc6a9eaa3d",
       "source_mode": "100644",
       "source_sha256": "bb7b22dc392a26afa2a8e2b8e6afbf014ec3c7a7385e815c15094277c5607d9c"
     },
     "corenius/controller/durable/insula.py": {
-      "destination": "durable/execution.py",
+      "destination": "durable/runtime/execution.py",
       "destination_mode": "100644",
-      "destination_sha256": "b9bb05954fdc60f22199063a033b4fcee4dbcbd8499821ba02924b80264f4ecd",
+      "destination_sha256": "ac45b6547ae946214a35a3402cce69d533151182242e4ea009bad6ec04b66dd9",
       "disposition": "adapted",
       "source_blob": "f3f34f0071b8ee59d93c7f2cf99f44014229a4ae",
       "source_mode": "100644",
       "source_sha256": "72d3ba1febee0e0758b1b547da71093c972c02e0c95f2ee38355df9beb0a620a"
     },
     "corenius/controller/durable/insula_test.py": {
-      "destination": "durable/test_execution.py",
+      "destination": "durable/runtime/test_execution.py",
       "destination_mode": "100644",
-      "destination_sha256": "eb1230a548f6bb699b05d861a29b200b27453bcdfac3e317d176fcbb3318b0cf",
+      "destination_sha256": "56880500dbb9b2e170416d9a37a39cd02d9f9a136740d99b447d4197cf8d3cf8",
       "disposition": "adapted",
       "source_blob": "981188cbf8e244d5cbd1e8050d6375f89fe926d6",
       "source_mode": "100644",
@@ -7654,7 +7652,7 @@
     "corenius/controller/durable/qualify.py": {
       "destination": "durable/qualification.py",
       "destination_mode": "100644",
-      "destination_sha256": "03857a08efb471696133ec89194176287847e9963e7b5eb6c4030e24fe6594fe",
+      "destination_sha256": "cb2abdee00ab5e309fa9a1ed905b16e79308bfddee14f1f93825e692a64c20a5",
       "disposition": "adapted",
       "source_blob": "3122200a20751703414a4db39855470955d4fa58",
       "source_mode": "100644",
@@ -7672,16 +7670,16 @@
     "corenius/controller/durable/runtime_test.py": {
       "destination": "durable/runtime/test_engine.py",
       "destination_mode": "100644",
-      "destination_sha256": "fb5949f2411e5c9182f1a78f3793d9336a8e4b48c801800f09bab9b289962b53",
+      "destination_sha256": "6a1fb81b04852afadcf428bb9ddb912a5aad41524635be5cbd471e8795a981f3",
       "disposition": "adapted",
       "source_blob": "5f7b91f4a8b215f5bb3fed5900032c530c3eb4ba",
       "source_mode": "100644",
       "source_sha256": "ccac6156daf0bcc5e1387fbf8ff3514f6fd16938dda2ebc979704a26933932d0"
     },
     "corenius/controller/durable/workflows.py": {
-      "destination": "durable/runtime/demo_workflows.py",
+      "destination": "durable/fixtures/workflows.py",
       "destination_mode": "100644",
-      "destination_sha256": "a2568976831a9cb55aff10af2fb0c40f54060f2c84db70c2bbeca8c16b7c2b71",
+      "destination_sha256": "3394caa64cec6a334a7932ddbcc980fa4818c05cd330d6449d842324799771bb",
       "disposition": "adapted",
       "source_blob": "9e7f47466e5e9eab6a2f61b894bd9ca62fbc336a",
       "source_mode": "100644",
@@ -72319,9 +72317,9 @@
       "source_sha256": "e4947b23acbdb2ccf697dfddc6dff7be4e84a2a511876d4efb7d20e3f5b42454"
     },
     "corenius/tools/insula/durable.py": {
-      "destination": "durable/runtime/admit.py",
+      "destination": "durable/fixtures/admit.py",
       "destination_mode": "100644",
-      "destination_sha256": "4cf53afc114037afb132c5dc25966e4dee142383e1a47e081ae4130343f33bbd",
+      "destination_sha256": "e902f9100ee3ec3b27cd0dd821be5f4f3e6d7712e0e5b0916ccd5766435642a7",
       "disposition": "adapted",
       "source_blob": "c6a8373a8b5c9e126ace6e5cd0a454727c3f4955",
       "source_mode": "100644",

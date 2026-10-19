@@ -14,7 +14,7 @@ from unittest.mock import patch
 from durable.runtime import Activity, Context, Runtime, Store
 from durable.common import atomic_json, digest, read_json, verify_input_bundle, verify_inputs_root
 from durable.runtime.engine import CleanupUnproven, ControllerBusy
-from durable.runtime.demo_workflows import DEMO_CONTRACT, DEMO_VERSION, REGISTRY, command
+from durable.fixtures.workflows import DEMO_CONTRACT, DEMO_VERSION, REGISTRY, command
 from insula.temp_root import temporary_root
 ROOT = next(p for p in Path(__file__).resolve().parents if (p / "Cargo.toml").is_file() and (p / "durable").is_dir())
 
@@ -72,7 +72,7 @@ class RuntimeTests(unittest.TestCase):
         return self.store.status("r")
 
     def cli(self, *args, wait=True):
-        p = subprocess.Popen([sys.executable, "-m", "durable.runtime", "--state", str(self.store.root), "--allow-unpatched-sqlite", *args],
+        p = subprocess.Popen([sys.executable, "-m", "durable.fixtures.cli", "--state", str(self.store.root), "--allow-unpatched-sqlite", *args],
                              cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.children.append(p)
         if wait:
@@ -358,7 +358,7 @@ class RuntimeTests(unittest.TestCase):
             for path in Path("/proc").glob("[0-9]*/cmdline"):
                 try:
                     text = path.read_bytes()
-                    if b"durable.runtime.guard" in text and aid.encode() in text:
+                    if b"durable.runtime.guardian" in text and aid.encode() in text:
                         return int(path.parent.name)
                 except (FileNotFoundError, ProcessLookupError):
                     pass
@@ -435,7 +435,7 @@ class RuntimeTests(unittest.TestCase):
                 try:
                     store.submit("r", "one", DEMO_VERSION, {}, DEMO_CONTRACT)
                     process = subprocess.Popen([
-                        sys.executable, "-m", "durable.runtime", "--state", str(store.root),
+                        sys.executable, "-m", "durable.fixtures.cli", "--state", str(store.root),
                         "--allow-unpatched-sqlite", "run", "--test-crash-at", "after_receipt",
                     ], cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                     self.children.append(process)

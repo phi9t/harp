@@ -1,7 +1,7 @@
 """Oracle command forms cannot resolve candidate code implicitly or explicitly."""
 import json
 import unittest
-from durable.agents.admission import acceptance
+from durable.intent.policy import acceptance
 
 
 class OracleAdmission(unittest.TestCase):
