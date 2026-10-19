@@ -418,7 +418,7 @@ def land(store, approval_id, capability_path, failpoint=None):
             inputs = verify_input_bundle(store.root / "inputs", captured["inputs"])
             git(path, "-c", "gc.auto=0", "-c", "maintenance.auto=false", "fetch", "--no-tags", "--no-write-fetch-head",
                 str(inputs / "candidate.bundle"), "HEAD")
-            git(path, "merge", "--ff-only", "--no-edit", "--no-autostash", "--no-overwrite-ignore", candidate)
+            git(path, "merge", "--ff-only", "--no-squash", "--no-edit", "--no-autostash", "--no-overwrite-ignore", candidate)
             point("after_git", {"approval_id": approval_id})
             _clean(path, candidate, captured["subject"]["tree"])
             result = {"approval_id": approval_id, "status": "LANDED", "commit": candidate,

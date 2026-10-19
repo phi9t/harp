@@ -95,6 +95,19 @@ class LandingTests(unittest.TestCase):
         self.assertEqual(git(self.destination, "status", "--porcelain"), b"")
         self.assertTrue(land(self.store, approval_id, self.capability)["reconciled"])
 
+    def test_branch_squash_default_cannot_replace_exact_fast_forward_landing(self):
+        self.prepare_owner_and_verification()
+        git(self.destination, "config", "branch.operator.mergeOptions", "--squash")
+        approval_id = self.approval()
+        result = land(self.store, approval_id, self.capability)
+        self.assertEqual(result["status"], "LANDED")
+        self.assertEqual(git(self.destination, "rev-parse", "HEAD").decode().strip(), self.commit)
+        self.assertEqual(git(self.destination, "write-tree").decode().strip(), self.tree)
+        self.assertEqual((self.destination / "answer.txt").read_text(), "42\n")
+        self.assertEqual(git(self.destination, "status", "--porcelain"), b"")
+        self.assertEqual(git(self.destination, "config", "branch.operator.mergeOptions").decode().strip(),
+                         "--squash")
+
     def test_role_credentials_and_replaced_or_public_owner_file_are_refused(self):
         self.prepare_owner_and_verification()
         bad = self.capability.with_name("worker.json")
