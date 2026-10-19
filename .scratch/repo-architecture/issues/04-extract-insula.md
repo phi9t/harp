@@ -8,6 +8,11 @@ Parent: [Repository architecture](../spec.md)
 
 Move capsule, rootfs, temporary storage and confinement mechanisms into top-level insula/. Move runtime-specific admission/binding into durable/execution.py. Migrate every caller and frozen-code manifest; remove imported tools package dependencies.
 
+Keep a concrete owner integration seam for the [supplied Rust supervisor](13-integrate-insula-supervisor.md).
+Its service lifecycle implementation is already available; the real ExecutionOwner
+adapter and native namespace/lifetime qualification are separate work. The
+per-activity guardian must not be mislabeled a complete long-lived service owner.
+
 ## Acceptance criteria
 
 - [ ] Insula rootfs/capsule construction and execution work without importing durable, git_workflow, runner or a workload package.

@@ -62,6 +62,7 @@ is a prerequisite for that first operation.
 - [10: Add a checkpointable small transformer training job](issues/10-transformer-training-workload.md)
 - [11: Qualify the migrated architecture end to end](issues/11-qualify-migrated-architecture.md)
 - [12: Preserve the complete Emacs benchmark work under lab](issues/12-preserve-emacs-benchmarks.md)
+- [13: Integrate the supplied Insula service supervisor](issues/13-integrate-insula-supervisor.md)
 
 Runtime consolidation and the two bounded trust repairs can begin independently;
 compose them before final qualification. Extract Insula before adding remote
@@ -104,3 +105,21 @@ tracked source, changed local links valid, and no private host token in changed
 records. `mise run verify -- --base 31e3a076154ef7ec18f176f2628b0c8050195f68`
 passed its selected documentation checks. These checks qualify the migration
 coverage records, not benchmark execution or import completeness after relocation.
+
+## Existing service supervisor input
+
+The owner supplied an implemented Rust service supervisor. Its [inspection and
+integration record](../../docs/workstream/repo-architecture/supervisor-integration.md)
+places it under insula/supervisor/ and preserves its reported verification limits.
+Reuse it rather than designing another service supervisor. Ticket 13 implements
+and qualifies the missing real ExecutionOwner adapter through the authoritative
+Insula process/namespace boundary. It blocks final integration and the Emacs
+service scenarios. Service state does not become another workflow/approval
+journal, and terminal recovery cannot replay expensive workload effects.
+The archive has only been inspected; no crate or daemon has been installed.
+
+Supervisor-record checks passed: archive digest and standalone-document matches,
+thirteen-ticket acyclic dependency graph, required supervisor blockers, changed
+local links and host-token scan. `mise run verify -- --base ae894136` passed its
+selected documentation checks. No supplied Rust tests or real-owner integration
+tests were run in this inspection.

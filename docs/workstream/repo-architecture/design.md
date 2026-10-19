@@ -34,6 +34,7 @@ durable/                    one Python execution control plane
   execution.py              bind runtime identity to an Insula execution
 git_workflow/               source/candidate/verification/landing domain
 insula/                     capsule, rootfs, projection and isolation mechanisms
+  supervisor/               supplied Rust service lifecycle library and owner client
 runner/                     SSH transport, preflight, request/result transfer
   hosts.example.toml        fictional example only
 lab/
@@ -68,10 +69,11 @@ The root Cargo workspace remains the product build. Bazel initially belongs to
 | Component | Owns | Must not own |
 | --- | --- | --- |
 | `durable/runtime` | Dispatch, replay, attempts, capacity, cancellation, cleanup gating and receipt acceptance | Git intent, proof truth, host discovery |
-| `durable/state` | One project SQLite database and its transactions, including approval and landing records | A second scheduler, editable task intent |
+| `durable/state` | One project workflow SQLite database and its transactions, including approval and landing records | A second scheduler, editable task intent |
 | `durable/agents` and `durable/workflows` | Freeze inputs; orchestrate provider, verification and workload activities | Provider-specific approval or recovery policy |
 | `git_workflow` | Exact Git subjects, change-policy validation, verifier inputs, approval binding and physical landing rules | Dispatch loops, a database of its own, alternate acceptance authority |
 | `insula` | Rootfs/layer identity, mounts, namespaces, network policy and confinement mechanisms | Workflow replay, task status, approval, provider scheduling |
+| `insula/supervisor` | Declared service lifecycle, health/readiness, generations and bounded service recovery | Agent jobs, workflow retries, approval, direct service launching/reaping |
 | `runner` | Resolve a local host alias; transport pinned requests and artifacts; invoke/query remote execution | Retry an ambiguous effect, infer cleanup from SSH loss, approve or land code |
 | `lab` | Workload source, inputs, expected outputs and independent oracles | Credentials, host configuration, controller state or duplicate orchestration |
 
@@ -81,7 +83,7 @@ same control plane on the selected host and reconnects by admitted run identity.
 Neither `git_workflow` nor `insula` imports `durable`. Workloads cannot import
 controller internals to create or alter accepted state.
 
-SQLite stays inside `durable/state/`. Extract the existing store and schema with
+Workflow SQLite state stays inside `durable/state/`. Extract the existing store and schema with
 their transaction boundaries, rather than introducing a generic database service.
 Git approvals and landing intents remain in that same operational database.
 Expose the required state transitions through the durable store; relocating
@@ -98,6 +100,24 @@ The shared `git_workflow` boundary represents domain rules and Git operations.
 Durable orchestration owns when they run and records their outcome. Verification
 remains an independent activity. A passing workload or provider command is not
 an approval, and the destination only changes through the owner-approved path.
+
+## Supplied service supervisor
+
+The [inspected supervisor archive](supervisor-integration.md) adds an existing
+Rust component under insula/supervisor/, not another agent controller. Reuse its
+service lifecycle implementation. Its private SQLite store owns service intent
+and outcomes only; durable/state/ continues to own the one workflow journal,
+including candidate acceptance and landing. Neither component writes the
+other's database. Service replacement cannot resubmit workflow effects.
+
+The real ExecutionOwner adapter is not supplied. Qualify it against the actual
+Insula namespace, launch and cleanup path, including effect-time epoch/generation
+fences and root ownership shared with activity admission. The current guardian
+and capsule code are ingredients, not demonstrated implementations of that
+long-lived-owner protocol. The fixture's direct-process results do not establish
+service containment or survival under the current bwrap lifetime. Keep unsupported
+capabilities refused and do not create a second launcher/reaper to fill the gap.
+Ticket 13 covers acquisition, dependency reconciliation and actual owner tests.
 
 ## Migration from current code
 

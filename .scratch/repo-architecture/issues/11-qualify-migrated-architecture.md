@@ -27,6 +27,8 @@ Review and qualify the complete existing-code migration against the new source i
 - [07-relocate-benchmarks-and-provenance](07-relocate-benchmarks-and-provenance.md)
 - [12-preserve-emacs-benchmarks](12-preserve-emacs-benchmarks.md)
 
+- [13-integrate-insula-supervisor](13-integrate-insula-supervisor.md)
+
 ## Verification
 
 Freeze the complete candidate, inspect the selected plan with an explicit baseline, run required native/consumer checks and review the resulting diff. Record exact hashes, selected tests, provider overlap and approval/landing evidence. Local landing and any push follow existing human authority; this ticket grants none by itself.

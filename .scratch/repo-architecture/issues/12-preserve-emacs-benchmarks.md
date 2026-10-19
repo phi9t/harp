@@ -29,6 +29,7 @@ old evidence and uncommitted work without altering either source checkout.
 
 - [04-extract-insula](04-extract-insula.md)
 - [05-ssh-runner](05-ssh-runner.md)
+- [13-integrate-insula-supervisor](13-integrate-insula-supervisor.md)
 
 Read-only source inventory and nonmutating snapshot capture can precede these
 execution dependencies. This ticket is part of existing-benchmark preservation,
