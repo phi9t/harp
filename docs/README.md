@@ -18,6 +18,12 @@ contribute to the software.
 
 ## Contribute and understand the design
 
+- [Runtime architecture](runtime-architecture.md): controller ownership, replay,
+  isolation, verification and owner-approved landing.
+- [Lean workflow](lean-workflow.md): pinned tools, shared cache, proof routes and
+  publication evidence.
+- [Repository structure review](repository-structure-review.md): the current
+  layout and proposals for later organization.
 - [Contributor guide](contributing.md): setup, focused tests, content and
   evidence changes, and the full landing gate.
 - [Product contract](product-contract.md): ownership, schemas, and implemented

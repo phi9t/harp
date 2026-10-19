@@ -15,8 +15,7 @@ a separate human approval and checked-out local landing are subsequent steps.
 Use Python 3.11 or newer on the Linux host and for `/usr/bin/python3` in the
 native rootfs. Use private, owned local storage, a supported SQLite version
 (at least 3.51.3), and a writable delegated cgroup v2 subtree. Preparation pins
-the runtime code,
-native rootfs contents and provider executable bytes. A changed profile requires
+the runtime code, native rootfs contents and provider executable bytes. A changed profile requires
 a new execution record; it never silently upgrades an existing admission.
 
 The native rootfs must contain executable `/usr/bin/python3`, `/usr/bin/git`,

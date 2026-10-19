@@ -41,7 +41,7 @@ CLI and supporting libraries:
 There is no single `src/` directory at the repository root. The maintained Rust
 surface is intentionally crate-based.
 
-### 3. The selected Python runtime is real, but its ownership is split across Harp and Corenius
+### 3. Runtime source spans the integration package and imported tree
 
 The current supported coding runtime is the Python + SQLite path described in
 [docs/durable-runtime.md](durable-runtime.md) and
@@ -55,8 +55,8 @@ that surface is split:
   documents the underlying replay runtime and Insula/cgroup machinery.
 
 So the repository does not have one isolated "Python runtime" directory. The
-selected runtime spans Harp-owned wrapper code and imported Corenius-owned
-runtime code.
+selected runtime spans Harp integration code and the retained imported engine.
+Both follow Harp governance and serve the same durable authority.
 
 ### 4. Imported Corenius source, history, and provenance are intentionally retained in place
 
@@ -278,15 +278,7 @@ working:
 
 Those separations reduce accidental damage to provenance.
 
-## Bottom line
-
-The repository is already more coherent than its size first suggests. The core
-structure is not "messy because everything is mixed together"; it is "broad
-because several maintained programs share one checkout". The main current issue
-is navigation, not a proven need for migration.
-
-The smallest coherent future layout is therefore conservative: keep the existing
-authority boundaries, document the runtime split more plainly, and only test any
-`experimental/` move on a bounded companion surface after checking its effects on
-links, Lean routes, cache discipline, corpus generation, and textbook PDF
-publication.
+Keep the current authority boundaries and make the runtime split easier to
+navigate. Consider an `experimental/` move only for a bounded companion surface,
+with coordinated checks for links, Lean routes, cache discipline, corpus
+generation and PDF publication.
