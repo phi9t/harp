@@ -74,3 +74,9 @@ class RelocationTests(unittest.TestCase):
     def test_record_cannot_nominate_an_unqualified_history_revision(self):
         with self.assertRaisesRegex(relocation.RelocationError, 'qualified migration revision'):
             relocation.verify(self.root)
+
+    def test_destination_cannot_alias_an_external_file_through_a_hardlink(self):
+        import os
+        os.link(self.destination, self.root / 'external.lean')
+        with self.assertRaisesRegex(relocation.RelocationError, 'hardlinked relocation file'):
+            relocation.verify(self.root, qualified_revision=self.record["source_commit"])

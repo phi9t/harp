@@ -43,6 +43,8 @@ def _regular(root: Path, relative: str) -> Path:
             raise RelocationError(f'symlinked relocation path: {relative}')
     if not cursor.is_file():
         raise RelocationError(f'missing relocation file: {relative}')
+    if cursor.stat().st_nlink != 1:
+        raise RelocationError(f'hardlinked relocation file: {relative}')
     return cursor
 
 
