@@ -1,0 +1,87 @@
+# Harp repository architecture
+
+Status: architecture recorded; implementation open
+Owner: project owner
+Branch: codex/repo-architecture
+Baseline: 5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3
+
+## Outcome
+
+Make the selected durable runtime first-party Harp code with one execution control
+plane, one SQLite operational owner and explicit Git workflow rules. Remove the
+imported product directory and harp_durable package after migrating callers.
+Expose top-level Insula and SSH runner packages and put executable workloads in
+lab/. Preserve math, novel Crouzeix proofs, SICP, education and PDF publication.
+
+The [target architecture](../../docs/workstream/repo-architecture/design.md) owns
+the tree, dependency graph, migration mapping, trust boundaries and workload
+contracts. It supersedes earlier recommendations to retain the imported directory.
+Current source still has the old layout; this record does not claim migration.
+
+## Scope and authority
+
+The owner prioritized codebase structure and executable checks ahead of TLA+.
+They requested a single durable control plane, top-level Insula/runner and a
+workload home, with private host configuration kept out of commits and reports.
+Use lab/ as the chosen workload name and correct the education name to SICP.
+No Temporal, PostgreSQL, second controller, private source-checkout dependency,
+registry publication, persistent remote service or Git history rewrite is part
+of this design. Preserve absorbed ancestry and source-specific licensing.
+
+The owner selected architecture and follow-up tickets for the new mixed Bazel,
+Triton compilation and transformer-training workloads. Their runnable
+implementations are deferred. Existing-code migration is required work with
+open tickets, not completed by this design record. Architecture work does not
+itself grant new publication, service or resource-allocation authority.
+
+## First useful operation
+
+Run the public Harp CLI on a small deterministic coding task through migrated
+durable packages, independently verify its exact candidate and exercise the
+existing explicitly approved local landing boundary in a disposable repository.
+Use real Git, SQLite state and a native Insula profile. Prove both audit
+reproducers are refused safely before calling the integrated result trustworthy.
+
+The package relocation is required to establish the sole code owner. Explicit
+state and Git boundaries prevent duplicated transition/approval logic. Native
+qualification is required because the portable suite can pass with Linux cases
+skipped. No new workload implementation, GPU fleet, model training or TLA+ tool
+is a prerequisite for that first operation.
+
+## Delivery slices
+
+- [01: Unify durable runtime, SQLite state and Git workflow ownership](issues/01-unify-durable-control-plane.md)
+- [02: Protect owner acceptance inputs and admitted change scope](issues/02-protect-acceptance-oracle.md)
+- [03: Qualify Git checkout before physical landing](issues/03-qualify-physical-checkout.md)
+- [04: Make Insula a first-party isolation package](issues/04-extract-insula.md)
+- [05: Run admitted workloads over SSH under Insula](issues/05-ssh-runner.md)
+- [06: Put retained executable mathematics and SICP under lab](issues/06-relocate-math-and-sicp.md)
+- [07: Relocate benchmarks and finish imported-tree removal](issues/07-relocate-benchmarks-and-provenance.md)
+- [08: Build a compact C++/Rust/Python Bazel workload](issues/08-mixed-bazel-workload.md)
+- [09: Add a bounded Triton compilation workload](issues/09-triton-compilation-workload.md)
+- [10: Add a checkpointable small transformer training job](issues/10-transformer-training-workload.md)
+- [11: Qualify the migrated architecture end to end](issues/11-qualify-migrated-architecture.md)
+
+Runtime consolidation and the two bounded trust repairs can begin independently;
+compose them before final qualification. Extract Insula before adding remote
+transport. Migrate executable math/SICP and existing benchmarks with their
+consumers and provenance checks. Final qualification covers the complete
+existing-code architecture. The three new workload tickets are independent
+architecture follow-ups, not blockers for removing the imported wrapper.
+
+## Completion evidence
+
+Every ticket names its behavioral acceptance and required evidence. Inspect
+`mise run verify -- --plan --base <baseline>` for the whole candidate, update
+selectors alongside moved code, run selected checks and affected consumers, and
+record the source identity and native qualification limits. A docs-only gate
+qualifies this design record, not the target runtime or remote runner.
+
+## Architecture record verification
+
+Passed `mise run verify -- --base 5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3`
+for the fourteen changed/new Markdown files. The selected checks were diff
+whitespace and changed local links. An additional inspection validated eleven
+ticket structures, an acyclic blocker graph and absence of the private host token
+from the new design/tracker files. No runtime, Lean, GPU or remote-runner
+qualification was performed for this architecture-only change.

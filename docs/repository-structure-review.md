@@ -1,5 +1,10 @@
 # Repository structure review
 
+The [new ownership and layout design](workstream/repo-architecture/design.md)
+supersedes this review's recommendations to retain the imported directory and
+avoid workload relocation. The facts below describe the pre-migration baseline;
+the new design and its open tickets do not mean those moves have happened.
+
 This note reviews the repository as it exists today. It separates current facts
 from recommendations, and it treats any future move as optional follow-up rather
 than a required migration. The goal is to give a realistic recap of where Harp's
