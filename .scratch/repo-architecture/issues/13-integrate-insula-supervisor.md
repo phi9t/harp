@@ -1,7 +1,7 @@
 # 13: Integrate the supplied Insula service supervisor
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: supervisor-migration
 Parent: [Repository architecture](../spec.md)
 Source and boundaries: [supervisor integration](../../../docs/workstream/repo-architecture/supervisor-integration.md)
 
@@ -16,16 +16,16 @@ Keep service policy separate from the single agent/workload control plane.
 
 ## Acceptance criteria
 
-- [ ] Imported tests are colocated with owning source modules, with native integration targets configured explicitly; preserve original archive provenance and test behavior.
-- [ ] Source/archive and adaptations have exact provenance. Reconcile workspace SQLite linkage/toolchain constraints and rerun tests against the chosen lock without silently changing pins.
+- [x] Imported tests are colocated with owning source modules, with native integration targets configured explicitly; preserve original archive provenance and test behavior.
+- [x] Source/archive and adaptations have exact provenance. Reconcile workspace SQLite linkage/toolchain constraints and rerun tests against the chosen lock without silently changing pins.
 - [ ] The real owner implements all eight interface methods, exclusive root claims, effect-time epoch/generation fencing, durable launch and endpoint reservations, and complete observation semantics. A test fixture never supplies production authority.
 - [ ] Durable activity admission and service claims share the authoritative execution boundary without state-directory or socket aliases bypassing exclusivity. No competing namespace keeper or reaping loop is introduced.
-- [ ] Private service-state SQLite records remain service-owned; workflow attempts, candidate results and approvals remain durable-owned. Neither database writes or mirrors the other's authority.
+- [x] Private service-state SQLite records remain service-owned; workflow attempts, candidate results and approvals remain durable-owned. Neither database writes or mirrors the other's authority.
 - [ ] Verify actual target namespace entry, service/probe descendant cleanup, secret resolution, bounded log sinks and workload/controller access isolation. Unsupported stronger capabilities refuse admission.
-- [ ] Reconnect, terminal replacement and workflow recovery remain separate. A completed tmux-pane counter stays at one after controller recovery and explicit empty-server replacement. Agent turns, benchmarks and training are never implicit bootstrap replays.
+- [x] Reconnect, terminal replacement and workflow recovery remain separate. A completed tmux-pane counter stays at one after controller recovery and explicit empty-server replacement. Agent turns, benchmarks and training are never implicit bootstrap replays.
 - [ ] Reproduce duplicate-start, stale-generation, claim-loss, delayed-effect, interrupted-stop/restart, unknown-outcome, probe/budget and competing-controller cases through the real owner.
 - [ ] Qualify actual bwrap/PID-namespace lifetime and both controller-crash and owner-crash cases. Advertise keep-services survival only when that specific boundary is demonstrated.
-- [ ] No daemon, hook or persistent service is installed as an integration side effect. Preserve explicit operator lifecycle controls and sanitized public evidence.
+- [x] No daemon, hook or persistent service is installed as an integration side effect. Preserve explicit operator lifecycle controls and sanitized public evidence.
 
 ## Blocked by
 
@@ -43,3 +43,60 @@ Rerun the library/transport/daemon tests, then the owner contract plus real
 namespace/cgroup cleanup and tmux/Emacs service scenarios. Record exact source,
 lock, owner and rootfs identities. No production owner integration, crate import
 or native qualification has been performed yet.
+
+## Acquisition and supported owner delivery
+
+Imported the exact 24-member supplied archive under `insula/supervisor/`, with
+original ZIP, original lock and a member-to-import hash manifest retained under
+`provenance/`. The library/CLI remain the supplied implementation. Integration
+tests now colocate beside their source modules with explicit Cargo targets and
+no automatic test-binary discovery. Updated rusqlite to exactly 0.39.0, using
+libsqlite3-sys 0.37.0. The archive's dual-license declaration remains; separate
+license texts were absent and are not invented.
+
+Added the actual Linux `insula.owner.service` owner protocol and shared
+`insula.owner.process.launch` gate. The owner uses the same identity-checked
+cgroup and capsule mechanisms as durable activity execution. It reserves service
+launches durably, fences controller epochs and generations at effects, takes a
+root-inode lock against simultaneous owner aliases, bounds log sinks, and proves
+whole-service cgroup emptiness. Retained state is required after owner crash;
+restart cleans retained groups without PID adoption or bootstrap replay. The
+service journal never writes workflow state.
+
+Supported admission is deliberately narrower than the full owner protocol:
+foreground/empty tmux services, default bench identity, process probes, terminate
+stop, service cgroup cleanup and stop_services lifetime. Secrets, other probe
+kinds, privileged identities, Insula destruction and keep_services lifetime are
+Unsupported. These refusal boundaries are explicit in `INTEGRATION.md` and
+`insula/owner/README.md`. The supplied fixture owner remains test-only.
+
+### Fresh evidence
+
+- Linux Rust suite: 54 executions passed, zero skipped; clippy with warnings
+  denied and cargo fmt passed. Rust 1.95.0, rusqlite 0.39.0 and private tmux 3.4.
+- Native real-owner suite: eight tests passed, zero skipped, through actual
+  cgroup v2 and capsule PID/mount/network namespaces. Includes namespace access
+  limits, fork/setsid descendant cleanup, duplicate launch, stale generation,
+  claim EOF fencing, lost reply reconciliation, root alias exclusion, owner
+  SIGKILL recovery without bootstrap replay, bounded logs and capability refusals.
+- The Rust supervisor binary successfully served a real request through OwnerRpc
+  to this owner. An actual namespace tmux server ran one pane counter; reconnect
+  and explicit empty replacement left that counter at one.
+- Private qualification rootfs was copied from an existing admitted closure and
+  completed with tmux 3.4/library/UTF-8 locale dependencies. Shared rootfs bytes
+  were not changed. No persistent service was installed.
+- `provenance/qualification/record.json` records exact source, standalone lock,
+  rootfs manifest and release hashes; adjacent logs retain passing output.
+- Python black/ruff and diff whitespace checks passed. The baseline changed-path
+  verifier refuses new `insula/owner/` paths until the migration's selector update;
+  parent integration must run the combined root-workspace gate.
+
+### Remaining qualification boundary
+
+The unchecked criteria above include richer owner capabilities and their full
+real-adapter adversarial matrix. The imported fixture suite covers rich supervisor
+policy and probe cases; it does not qualify those capabilities for this owner.
+Non-process probes, secret resolution and controller-independent survival remain
+explicitly unsupported. Shared durable guardian integration and root-workspace
+linkage/verification are parent integration responsibilities. Do not represent
+the eight native cases as proof of the unimplemented stronger capabilities.

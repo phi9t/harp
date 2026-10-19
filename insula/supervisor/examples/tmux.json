@@ -1,0 +1,37 @@
+{
+  "key": {"insula_id": "root", "service_id": "tmux"},
+  "revision": "tmux-v1",
+  "command": {
+    "executable": "/usr/bin/tmux",
+    "args": [],
+    "cwd": "/workspace",
+    "env_refs": {},
+    "identity": {"uid": 1000, "gid": 1000}
+  },
+  "adapter": {"kind": "tmux", "socket": "/run/insula-services/tmux/server.sock"},
+  "readiness": {
+    "probe": {"kind": "tmux", "executable": "/usr/bin/tmux", "socket": "/run/insula-services/tmux/server.sock", "expected_sessions": [], "expected_panes": []},
+    "interval_ms": 1000,
+    "timeout_ms": 500,
+    "failure_threshold": 1,
+    "max_output_bytes": 8192
+  },
+  "health": {
+    "probe": {"kind": "tmux", "executable": "/usr/bin/tmux", "socket": "/run/insula-services/tmux/server.sock", "expected_sessions": [], "expected_panes": []},
+    "interval_ms": 2000,
+    "timeout_ms": 1000,
+    "failure_threshold": 3,
+    "max_output_bytes": 16384
+  },
+  "startup_grace_ms": 3000,
+  "restart": {"kind": "never"},
+  "replay_safe": true,
+  "stop": {
+    "graceful": {"kind": "tmux", "executable": "/usr/bin/tmux", "socket": "/run/insula-services/tmux/server.sock"},
+    "deadline_ms": 3000,
+    "force": true
+  },
+  "logs": {"max_bytes": 1048576, "retained_files": 2},
+  "cleanup_boundary": "service",
+  "controller_exit": "keep_services"
+}

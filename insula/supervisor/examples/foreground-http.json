@@ -1,0 +1,33 @@
+{
+  "key": {"insula_id": "workload-1", "service_id": "local-api"},
+  "revision": "local-api-v1",
+  "command": {
+    "executable": "/usr/bin/python3",
+    "args": ["-m", "http.server", "8000", "--bind", "127.0.0.1"],
+    "cwd": "/workspace/public",
+    "env_refs": {},
+    "identity": {"uid": 1000, "gid": 1000}
+  },
+  "adapter": {"kind": "foreground"},
+  "readiness": {
+    "probe": {"kind": "http", "address": "127.0.0.1", "port": 8000, "path": "/", "expected_status": 200},
+    "interval_ms": 1000,
+    "timeout_ms": 500,
+    "failure_threshold": 1,
+    "max_output_bytes": 1024
+  },
+  "health": {
+    "probe": {"kind": "process"},
+    "interval_ms": 2000,
+    "timeout_ms": 500,
+    "failure_threshold": 3,
+    "max_output_bytes": 1024
+  },
+  "startup_grace_ms": 2000,
+  "restart": {"kind": "never"},
+  "replay_safe": false,
+  "stop": {"graceful": {"kind": "terminate"}, "deadline_ms": 5000, "force": true},
+  "logs": {"max_bytes": 1048576, "retained_files": 2},
+  "cleanup_boundary": "service",
+  "controller_exit": "stop_services"
+}

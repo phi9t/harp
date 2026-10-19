@@ -1,0 +1,45 @@
+[package]
+name = "insula-supervisor"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+autotests = false
+autobins = false
+description = "Generation-fenced service supervision through the authoritative Insula execution owner"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+async-trait = "0.1"
+clap = { version = "4.5", features = ["derive"] }
+rusqlite = { version = "=0.39.0", features = ["bundled"] }
+rustix = { version = "1.1", features = ["fs", "process", "event", "net", "system"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2"
+tokio = { version = "1.48", features = ["rt-multi-thread", "macros", "process", "time", "sync", "net", "io-util", "signal", "fs"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[[bin]]
+name = "insula-supervisor"
+path = "src/bin/insula-supervisor.rs"
+
+
+[[test]]
+name = "daemon"
+path = "src/bin/daemon_tests.rs"
+
+[[test]]
+name = "owner_rpc"
+path = "src/owner_rpc_tests.rs"
+
+[[test]]
+name = "probes"
+path = "src/probes_tests.rs"
+
+[[test]]
+name = "supervisor"
+path = "src/supervisor_tests.rs"

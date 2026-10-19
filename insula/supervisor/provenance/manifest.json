@@ -1,0 +1,156 @@
+{
+  "archive_sha256": "eda2fd4e5e7e6b3c5e015389297629affc51cf84e492c4250d41899d1fbc012e",
+  "files": [
+    {
+      "archive_path": "insula-supervisor/.gitignore",
+      "sha256": "dbba028ae42e69af033a3f7359e5daf851ce04bc60b5a563c53f98915b53c826",
+      "import_path": ".gitignore",
+      "import_sha256": "dbba028ae42e69af033a3f7359e5daf851ce04bc60b5a563c53f98915b53c826"
+    },
+    {
+      "archive_path": "insula-supervisor/Cargo.lock",
+      "sha256": "1362fe9684a273edf3a0199f0d6c7dbc75e215f2754271b86042deea90d3318b",
+      "import_path": "provenance/Cargo.lock.supplied",
+      "import_sha256": "1362fe9684a273edf3a0199f0d6c7dbc75e215f2754271b86042deea90d3318b"
+    },
+    {
+      "archive_path": "insula-supervisor/Cargo.toml",
+      "sha256": "c4902d57dc3e0a344da9c4ff35b28e2e3eb50511e80f593688ff0e1b8c8da390",
+      "import_path": "Cargo.toml",
+      "import_sha256": "ed2944e5c79915339c7c1abbc0ad07d9b3bf75cdcd1b9fa1c061bd9b141f8ab2"
+    },
+    {
+      "archive_path": "insula-supervisor/README.md",
+      "sha256": "f65acdd7e7af01c49fca728b9115f18a44974f8cb9b62a1b529415929406e5a3",
+      "import_path": "README.md",
+      "import_sha256": "f65acdd7e7af01c49fca728b9115f18a44974f8cb9b62a1b529415929406e5a3"
+    },
+    {
+      "archive_path": "insula-supervisor/docs/OWNER_PROTOCOL.md",
+      "sha256": "4343ff46018c0169b744598aeee3c63f9aaca93af6623663edecf0e8a05a5fab",
+      "import_path": "docs/OWNER_PROTOCOL.md",
+      "import_sha256": "4343ff46018c0169b744598aeee3c63f9aaca93af6623663edecf0e8a05a5fab"
+    },
+    {
+      "archive_path": "insula-supervisor/docs/TEST_OUTPUT.txt",
+      "sha256": "7c1eb5ef57f4a3c3d60295e82fac5a8ffdacc916a7be9b327b09170c651b5cbc",
+      "import_path": "docs/TEST_OUTPUT.txt",
+      "import_sha256": "7c1eb5ef57f4a3c3d60295e82fac5a8ffdacc916a7be9b327b09170c651b5cbc"
+    },
+    {
+      "archive_path": "insula-supervisor/docs/VERIFICATION.md",
+      "sha256": "96b361985add1aec863cd935170f5e99a70c5e5083c8ef82a9ef32739ef58b53",
+      "import_path": "docs/VERIFICATION.md",
+      "import_sha256": "96b361985add1aec863cd935170f5e99a70c5e5083c8ef82a9ef32739ef58b53"
+    },
+    {
+      "archive_path": "insula-supervisor/examples/foreground-http.json",
+      "sha256": "fb2bf5088f443f44351bcca3b4bd2f23a7d806b5a89c8d56f48173d95eb35d55",
+      "import_path": "examples/foreground-http.json",
+      "import_sha256": "fb2bf5088f443f44351bcca3b4bd2f23a7d806b5a89c8d56f48173d95eb35d55"
+    },
+    {
+      "archive_path": "insula-supervisor/examples/tmux.json",
+      "sha256": "80c341cf4483b41fafde2cc175062ea46b37496b35f36642152d50918401a6e2",
+      "import_path": "examples/tmux.json",
+      "import_sha256": "80c341cf4483b41fafde2cc175062ea46b37496b35f36642152d50918401a6e2"
+    },
+    {
+      "archive_path": "insula-supervisor/src/bin/insula-supervisor.rs",
+      "sha256": "3c1711b7e3afc20567eb617be5bd977f7cca6bed921782938cee7aa9ece1dc41",
+      "import_path": "src/bin/insula-supervisor.rs",
+      "import_sha256": "3c1711b7e3afc20567eb617be5bd977f7cca6bed921782938cee7aa9ece1dc41"
+    },
+    {
+      "archive_path": "insula-supervisor/src/error.rs",
+      "sha256": "4f312289842d65e80671905fe2f0e09070859eb8b0407e15e650e0cf74789e54",
+      "import_path": "src/error.rs",
+      "import_sha256": "4f312289842d65e80671905fe2f0e09070859eb8b0407e15e650e0cf74789e54"
+    },
+    {
+      "archive_path": "insula-supervisor/src/lib.rs",
+      "sha256": "d372e91c589a607482bda6f99ab2b0c818f76fcc266aa8ab0dccf75b00256e1f",
+      "import_path": "src/lib.rs",
+      "import_sha256": "d372e91c589a607482bda6f99ab2b0c818f76fcc266aa8ab0dccf75b00256e1f"
+    },
+    {
+      "archive_path": "insula-supervisor/src/model.rs",
+      "sha256": "db15d00dcea4d2cd1051cc8250664c9d33d38617da4e3f35b95bfe08ef12cc21",
+      "import_path": "src/model.rs",
+      "import_sha256": "db15d00dcea4d2cd1051cc8250664c9d33d38617da4e3f35b95bfe08ef12cc21"
+    },
+    {
+      "archive_path": "insula-supervisor/src/owner.rs",
+      "sha256": "ddd95b5b75a8a6d1ea3e3fdd932d936ee9c4b569393a3b8aad493122f4e3de3a",
+      "import_path": "src/owner.rs",
+      "import_sha256": "ddd95b5b75a8a6d1ea3e3fdd932d936ee9c4b569393a3b8aad493122f4e3de3a"
+    },
+    {
+      "archive_path": "insula-supervisor/src/owner_rpc.rs",
+      "sha256": "df9e3950ad2c51d45306c1c3577f07f82effc6d3b16fd8bda646ad268dc0cd40",
+      "import_path": "src/owner_rpc.rs",
+      "import_sha256": "df9e3950ad2c51d45306c1c3577f07f82effc6d3b16fd8bda646ad268dc0cd40"
+    },
+    {
+      "archive_path": "insula-supervisor/src/probes.rs",
+      "sha256": "2c80ae06b11b2e14524b1f11281175b17d2c2f3654844055be34156d39f93fbf",
+      "import_path": "src/probes.rs",
+      "import_sha256": "2c80ae06b11b2e14524b1f11281175b17d2c2f3654844055be34156d39f93fbf"
+    },
+    {
+      "archive_path": "insula-supervisor/src/store.rs",
+      "sha256": "aa3be987f2c4d0150c3b365280e1cc0135698d89b5b5f9ff002474ca549eff00",
+      "import_path": "src/store.rs",
+      "import_sha256": "aa3be987f2c4d0150c3b365280e1cc0135698d89b5b5f9ff002474ca549eff00"
+    },
+    {
+      "archive_path": "insula-supervisor/src/supervisor.rs",
+      "sha256": "0e5546d09005ed0b5dc3bb5ce1f12983e9b670b59851a7cc95fd495cf20fadb7",
+      "import_path": "src/supervisor.rs",
+      "import_sha256": "0e5546d09005ed0b5dc3bb5ce1f12983e9b670b59851a7cc95fd495cf20fadb7"
+    },
+    {
+      "archive_path": "insula-supervisor/src/transport.rs",
+      "sha256": "7fecc846c812b1bae780cb9526ab18b7593aaa9d6d50dc3319e5dc2b52a4f660",
+      "import_path": "src/transport.rs",
+      "import_sha256": "7fecc846c812b1bae780cb9526ab18b7593aaa9d6d50dc3319e5dc2b52a4f660"
+    },
+    {
+      "archive_path": "insula-supervisor/tests/daemon.rs",
+      "sha256": "5d64e9f15c7a0db026bde25d492c89744d109e6e2827c27d8cb5f57ec70b7171",
+      "import_path": "src/bin/daemon_tests.rs",
+      "import_sha256": "dfc12b270bc2d6c22d15997711e9b18797ac0d4eb2c28defde35538cac781771"
+    },
+    {
+      "archive_path": "insula-supervisor/tests/owner_rpc.rs",
+      "sha256": "b49e83aaa6b3575d88ef9ba26703301c00ad1352ca40e337fdd63896f2257862",
+      "import_path": "src/owner_rpc_tests.rs",
+      "import_sha256": "ddab168006406360413aa8e0acfa23d28ece6cf941c94993cb77a7ef1c41f204"
+    },
+    {
+      "archive_path": "insula-supervisor/tests/probes.rs",
+      "sha256": "287f0848a312be8ffcfb27ecc9c09e502b4ac62ae2d54b12501edb0a962737d6",
+      "import_path": "src/probes_tests.rs",
+      "import_sha256": "b213bc2f65da4c903d9607df36f2bfa936bf5f3d8a95e34ed4746d1193a03f4e"
+    },
+    {
+      "archive_path": "insula-supervisor/tests/supervisor.rs",
+      "sha256": "da36894eb93d7eaf9519b91cee6fa8420b30399df052360e9cccbc5f18931284",
+      "import_path": "src/supervisor_tests.rs",
+      "import_sha256": "da36894eb93d7eaf9519b91cee6fa8420b30399df052360e9cccbc5f18931284"
+    },
+    {
+      "archive_path": "insula-supervisor/tests/support/fixture_owner.rs",
+      "sha256": "bee731fd19abec8918d7eb9fff24ae322d22f9a01fa302b2d532af025920af1f",
+      "import_path": "src/fixture_owner.rs",
+      "import_sha256": "bee731fd19abec8918d7eb9fff24ae322d22f9a01fa302b2d532af025920af1f"
+    }
+  ],
+  "adaptations": [
+    "rusqlite pinned to 0.39.0 for workspace SQLite native linkage; supplied Cargo.lock preserved as provenance",
+    "integration test files moved adjacent to source; explicit Cargo targets and autobins=false",
+    "test-only fixture import paths adjusted",
+    "owner reload fixture test waits for actual asynchronous owner lock release",
+    "tmux probe test waits for both dead marker and available exit code"
+  ]
+}

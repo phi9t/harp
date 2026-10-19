@@ -1,0 +1,92 @@
+   Compiling insula-supervisor v0.1.0 (/workspace/scratch/37f6577f8984/insula-supervisor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.94s
+     Running unittests src/lib.rs (target/debug/deps/insula_supervisor-11af41408b6eb400)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/insula-supervisor.rs (target/debug/deps/insula_supervisor-46a972eef319a93c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/daemon.rs (target/debug/deps/daemon-77ba63d15039073d)
+
+running 4 tests
+test fixture_owner::endpoint_cleanup_tests::cleanup_requires_a_recorded_stale_socket_and_preserves_foreign_paths ... ok
+test graceful_deadline_forces_only_the_requested_real_process_and_reaps_it ... ok
+test sigkill_during_launch_fences_delayed_old_request_and_requires_new_explicit_operation ... ok
+test real_daemon_excludes_competing_controller_adopts_tmux_and_never_replays_pane_work ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.70s
+
+     Running tests/owner_rpc.rs (target/debug/deps/owner_rpc-47649a7d9fc6338d)
+
+running 11 tests
+test bounded_frame_rejects_oversize_before_payload_allocation ... ok
+test fixture_owner::endpoint_cleanup_tests::cleanup_requires_a_recorded_stale_socket_and_preserves_foreign_paths ... ok
+test mutation_response_with_wrong_id_is_unknown_and_cannot_be_accepted ... ok
+test rpc_authenticates_peer_uid_and_claim_is_exclusive ... ok
+test owner_reload_never_turns_a_persisted_alive_receipt_into_a_live_handle ... ok
+test duplicate_launch_and_stale_stop_never_touch_replacement ... ok
+test stop_cancellation_does_not_release_a_graceful_helper_before_it_finishes ... ok
+test timeout_is_unknown_then_reconciles_one_actual_process ... ok
+test claim_disconnect_fences_a_delayed_launch_at_the_effect ... ok
+test a_hung_probe_uses_an_independent_connection_from_stop ... ok
+test a_forced_stop_deadline_from_a_fenced_epoch_cannot_kill_the_survivor ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests/probes.rs (target/debug/deps/probes-dd48f35430e37cd9)
+
+running 10 tests
+test command_arguments_are_literal_and_output_is_not_exposed ... ok
+test combined_stdout_stderr_limit_stops_flood_and_redacts_output ... ok
+test unix_socket_probe_checks_peer_process_identity ... ok
+test process_identity_and_generation_are_checked_without_signalling ... ok
+test command_environment_is_resolved_explicitly_and_never_returned ... ok
+test cancellation_kills_and_reaps_child_without_dropping_its_waiter ... ok
+test http_status_is_bounded_and_an_unresponsive_endpoint_times_out ... ok
+test capacity_deadline_prevents_a_second_probe_spawn ... ok
+test real_tmux_identity_detach_reconnect_and_failed_pane_stays_server_healthy ... ok
+test hung_command_times_out_is_reaped_and_releases_capacity ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests/supervisor.rs (target/debug/deps/supervisor-08fbad522c939a17)
+
+running 29 tests
+test a_full_existing_control_socket_backlog_does_not_hang_daemon_binding ... ok
+test a_cancelled_client_does_not_cancel_or_duplicate_the_durable_operation ... ok
+test a_changed_kernel_process_identity_cannot_reuse_an_existing_generation ... ok
+test a_crash_after_stop_preserves_stopped_intent_and_never_relaunches ... ok
+test a_crash_during_explicit_restart_does_not_invent_a_replacement_launch ... ok
+test a_lost_launch_reply_is_reconciled_without_a_second_launch ... ok
+test an_alive_process_does_not_resolve_an_unknown_stop_in_the_same_controller_epoch ... ok
+test a_failed_tmux_pane_does_not_make_its_server_unhealthy_or_replay_work ... ok
+test an_inflight_probe_does_not_block_restart_and_its_late_result_is_discarded ... ok
+test different_service_ids_cannot_claim_the_same_live_tmux_endpoint ... ok
+test different_state_directories_do_not_bypass_single_controller_ownership ... ok
+test an_unresolved_owner_reservation_blocks_replacement_and_destructive_recovery ... ok
+test default_recovery_does_not_replay_a_completed_command ... ok
+test events_have_stable_cursors_generation_identity_and_no_command_descriptions ... ok
+test operation_id_retry_returns_recorded_outcome_and_changed_payload_conflicts ... ok
+test observations_with_a_foreign_owner_identity_cannot_authorize_adoption_or_stop ... ok
+test concurrent_duplicate_and_distinct_start_requests_converge_on_one_instance ... ok
+test recovery_adopts_a_surviving_generation_and_keeps_operation_identity ... ok
+test automatic_restart_budget_survives_controller_recovery_and_manual_restart ... ok
+test launch_persistence_crash_windows_reconcile_or_remain_unknown_without_replay ... ok
+test shutdown_keep_services_rejects_mutations_and_allows_later_adoption ... ok
+test replacement_requires_the_owner_to_certify_an_empty_cleanup_boundary ... ok
+test mechanism_and_target_failures_are_unknown_health_without_automatic_restart ... ok
+test the_canonical_file_lock_also_blocks_independently_claimed_owner_handles ... ok
+test shutdown_only_stops_services_that_declare_it_and_targets_their_generations ... ok
+test uncertain_controller_ownership_blocks_stop_and_restart_before_effects ... ok
+test stale_stop_restart_and_probe_results_cannot_affect_a_replacement ... ok
+test manual_replacement_invalidates_the_previous_generations_recovery_timer ... ok
+test stop_cancels_a_pending_backoff_without_late_replay ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
