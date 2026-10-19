@@ -12,7 +12,7 @@ from pathlib import Path
 import stat
 import subprocess
 
-EXECUTABLE = "/opt/harp/providers/codex"
+EXECUTABLE = "/cap/providers/codex"
 AUTH = Path("/home/bench/credentials/codex-auth.json")
 MAX_AUTH = 1 << 20
 MAX_FINAL = 256 << 10
@@ -79,7 +79,7 @@ def run(workspace: Path, task: str, admission: dict, attempt: Path) -> dict:
              "TMPDIR": attempt / "codex-tmp"}
     for path in paths.values():
         _directory(path, create=True)
-    environment = {"PATH": "/opt/harp/providers:/usr/bin:/bin", "HOME": str(home),
+    environment = {"PATH": "/cap/providers:/usr/bin:/bin", "HOME": str(home),
                    "CODEX_HOME": str(codex_home), "LANG": "C.UTF-8", "LC_ALL": "C.UTF-8",
                    "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null",
                    "GIT_TERMINAL_PROMPT": "0", **{key: str(path) for key, path in paths.items()}}
@@ -92,7 +92,8 @@ def run(workspace: Path, task: str, admission: dict, attempt: Path) -> dict:
     final = attempt / "codex-final.txt"
     if final.exists() or final.is_symlink():
         raise ValueError("Codex final artifact already exists; a fresh attempt is required")
-    argv = [EXECUTABLE, "--no-daemon", "exec", "--ignore-user-config", "--ignore-rules",
+    argv = [EXECUTABLE, "--no-daemon", "--enable", "code_mode_host", "--disable", "apps",
+            "--disable", "plugins", "exec", "--ignore-user-config", "--ignore-rules",
             "--ephemeral", "--dangerously-bypass-approvals-and-sandbox", "--json", "--color", "never",
             "--cd", str(workspace), "--output-last-message", str(final)]
     if model is not None:

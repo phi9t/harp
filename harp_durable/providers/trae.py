@@ -10,7 +10,7 @@ from typing import Any
 
 from controller.durable.common import atomic_json, read_json
 
-EXECUTABLE = Path("/opt/harp/providers/trae")
+EXECUTABLE = Path("/cap/providers/trae")
 AUTH = Path("/home/bench/credentials/trae-auth.json")
 MAX_FINAL_BYTES = 256 * 1024
 

@@ -9,7 +9,7 @@ import stat
 import tempfile
 import unittest
 
-from harp_durable.setup import native_manifest, prepare, verify_native_manifest, verify_required_executables
+from harp_durable.setup import native_manifest, prepare, verify_native_manifest, verify_required_executables, verify_network_inputs
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -47,6 +47,22 @@ class NativeAdmission(unittest.TestCase):
         path.write_bytes(data)
         return {"path": str(path), "rootfs": str(self.rootfs),
                 "sha256": hashlib.sha256(data).hexdigest()}
+
+    def test_network_profile_refuses_empty_invalid_or_symlinked_resolver_before_admission(self):
+        (self.rootfs / "etc").mkdir()
+        resolver = self.rootfs / "etc/resolv.conf"
+        execution = self.root / "network-execution.json"
+        for content in ("", "nameserver not-an-address\n", "nameserver\n"):
+            resolver.write_text(content)
+            with self.subTest(content=content), self.assertRaisesRegex(ValueError, "DNS"):
+                prepare(self.root / "state", self.rootfs, self.root / "not-delegated", execution, network="host")
+            self.assertFalse(execution.exists())
+        resolver.write_text("# Pinned resolver\nnameserver 127.0.0.1\nnameserver ::1\n")
+        verify_network_inputs(self.rootfs)
+        resolver.unlink()
+        resolver.symlink_to(self.root / "outside-resolver")
+        with self.assertRaisesRegex(ValueError, "ordinary"):
+            verify_network_inputs(self.rootfs)
 
     def test_file_bytes_are_pinned_even_when_size_mode_and_mtime_are_unchanged(self):
         binding = self.bind()

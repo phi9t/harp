@@ -26,9 +26,9 @@ def relative_path(value):
 
 def git(repo, *args, output=None):
     environment = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
-    environment.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL="/dev/null", GIT_TERMINAL_PROMPT="0")
+    environment.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL="/dev/null", GIT_TERMINAL_PROMPT="0", GIT_ATTR_NOSYSTEM="1")
     result = subprocess.run(["git", "--no-optional-locks", "-c", "core.hooksPath=/dev/null",
-                           "-c", "core.fsmonitor=false", "-C", str(repo), *args],
+                           "-c", "core.fsmonitor=false", "-c", "core.attributesFile=/dev/null", "-C", str(repo), *args],
                           env=environment, stdout=output or subprocess.PIPE,
                           stderr=subprocess.PIPE)
     if result.returncode:
@@ -95,10 +95,28 @@ def submit(store, execution, *, run_id, repository, task, acceptance_path,
         raise ValueError("coding inputs must belong to this project state")
     if provider not in {"deterministic", "codex", "trae"}:
         raise ValueError("unsupported provider")
+    provider_binding = None
+    if provider != "deterministic":
+        from .provider_preflight import verify_providers
+        if "providers" not in execution.config:
+            raise ValueError("provider versions and capabilities must be qualified during preparation")
+        verify_providers(execution.config["capsule"], execution.config["providers"])
+        provider_binding = execution.config["providers"][provider]
+        layers = execution.config["capsule"]["layers"]
+        if (execution.config["capsule"]["policy"]["net"] != "host" or
+                not any(binding["dest"] == "/cap/providers/" + provider
+                        for layer in layers for binding in layer.get("file_binds", [])) or
+                not any(binding["dest"] == f"/home/bench/credentials/{provider}-auth.json"
+                        for layer in layers for binding in layer.get("binds", []))):
+            raise ValueError("provider binary, credential and networking must be explicitly admitted")
+    if model is not None and (not isinstance(model, str) or not model.strip() or "\x00" in model):
+        raise ValueError("model must be a nonempty configured string")
     repo = Path(repository).resolve(strict=True)
     top = Path(git(repo, "rev-parse", "--show-toplevel").decode().strip()).resolve()
     if top != repo:
         raise ValueError("repository must name its Git working-tree root")
+    from .authority import protect_owner
+    protect_owner(store.root, [repo], db=store.db)
     base_id, task_id = commit(repo, base), commit(repo, task_revision)
     task_bytes = blob(repo, task_id, task)
     task_bytes.decode("utf-8")
@@ -119,6 +137,8 @@ def submit(store, execution, *, run_id, repository, task, acceptance_path,
                "acceptance_sha256": hashlib.sha256(acceptance_bytes).hexdigest(),
                "provider": provider, "model": model, "fixture": fixture,
                "workflow_version": WORKFLOW_VERSION, "execution_contract": execution.contract}
+    if provider_binding is not None:
+        request["provider_binding"] = provider_binding
     identity = digest(request)
     old = store.db.execute("SELECT args FROM runs WHERE id=?", (run_id,)).fetchone()
     if old:
@@ -158,5 +178,7 @@ def submit(store, execution, *, run_id, repository, task, acceptance_path,
         fsync_dir(inputs_root)
         verify_input_bundle(inputs_root, bundle_id)
     args = {"identity": identity, "inputs": bundle_id, "provider": provider}
+    if provider_binding is not None:
+        args["provider_binding"] = provider_binding
     store.submit(run_id, "coding", WORKFLOW_VERSION, args, execution.contract)
     return {"run_id": run_id, **args, "reused": False}

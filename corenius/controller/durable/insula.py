@@ -62,7 +62,8 @@ class InsulaExecution:
     def create(cls, record: dict[str, Any], code: Path, state: Path, *,
                backend: str = "process-group", cgroup_root: Path | None = None,
                inputs_root: Path | None = None,
-               native_manifest: dict[str, Any] | None = None) -> InsulaExecution:
+               native_manifest: dict[str, Any] | None = None,
+               providers: dict[str, Any] | None = None) -> InsulaExecution:
         if backend not in {"process-group", "cgroup"}:
             raise ValueError("unknown activity backend")
         if backend == "cgroup" and cgroup_root is None:
@@ -79,6 +80,8 @@ class InsulaExecution:
             config["inputs_root"] = str(verify_inputs_root(inputs_root))
         if native_manifest is not None:
             config["native_manifest"] = copy.deepcopy(native_manifest)
+        if providers is not None:
+            config["providers"] = copy.deepcopy(providers)
         if cgroup_root is not None:
             from .cgroup import Cgroup
             config["cgroup_identity"] = Cgroup.validate_root(cgroup_root)
@@ -93,7 +96,7 @@ class InsulaExecution:
             "state": config["state"], "backend": config["backend"],
             "cgroup_root": config["cgroup_root"], "cgroup_identity": config["cgroup_identity"],
         }
-        for optional in ("inputs_root", "native_manifest"):
+        for optional in ("inputs_root", "native_manifest", "providers"):
             if optional in config:
                 binding[optional] = config[optional]
         return "insula-durable-v1:" + capsule.sha(capsule.canonical(binding))
@@ -119,6 +122,14 @@ class InsulaExecution:
         if capsule.tree_digest(Path(config["code"])) != config["code_digest"]:
             raise ValueError("admitted code changed")
         capsule.verify_host_layers(config["capsule"])
+        for layer in config["capsule"]["layers"]:
+            if layer["kind"] == "tree":
+                tree = capsule.store_root() / "layers" / layer["digest"] / "tree"
+                if capsule.tree_digest(tree) != layer["digest"]:
+                    raise ValueError("admitted dependency tree changed")
+        if "providers" in config:
+            from harp_durable.provider_preflight import verify_providers
+            verify_providers(config["capsule"], config["providers"])
         if "inputs_root" in config:
             verify_inputs_root(Path(config["inputs_root"]))
         if "native_manifest" in config:
@@ -151,9 +162,17 @@ class InsulaExecution:
                        "TMUX_TMPDIR": "/run/corenius-tmp", "TMPPREFIX": "/run/corenius-tmp/zsh",
                        "PYTHONDONTWRITEBYTECODE": "1", "CORENIUS_DURABLE_CONTRACT": self.contract}
         inputs = self.input_bundle(spec["inputs"]) if "inputs" in spec else None
-        argv = capsule.run_argv(self.config["capsule"], str(code),
+        record = copy.deepcopy(self.config["capsule"])
+        provider = request.get("input", {}).get("provider") if isinstance(request.get("input"), dict) else None
+        for layer in record["layers"]:
+            if layer.get("name") == "provider-credentials":
+                layer["binds"] = [binding for binding in layer.get("binds", [])
+                                  if provider in {"codex", "trae"} and
+                                  binding["dest"] == f"/home/bench/credentials/{provider}-auth.json"]
+        argv = capsule.run_argv(record, str(code),
                                [(str(directory), PAYLOAD_ATTEMPT)], environment,
                                ro_workspace=True, cwd=cwd,
+                               net="none" if spec.get("offline") is True else None,
                                ro=[(str(inputs), "/home/bench/input")] if inputs else None)
         # GPU admission projects readonly sysfs. Hide cgroup controls even
         # there; only the host guardian may manage attempt membership.

@@ -97,7 +97,7 @@ def run_check(command, logs, index):
     """
     paths = {stream: logs / f"{index:03d}.{stream}.log" for stream in ("stdout", "stderr")}
     sizes = {stream: 0 for stream in paths}
-    with paths["stdout"].open("xb") as out, paths["stderr"].open("xb") as err:
+    with paths["stdout"].open("xb", buffering=0) as out, paths["stderr"].open("xb", buffering=0) as err:
         handles = {"stdout": out, "stderr": err}
         with subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE, close_fds=True, env={"PATH": "/usr/bin:/bin"}) as process:

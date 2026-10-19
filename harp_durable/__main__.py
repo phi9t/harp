@@ -29,6 +29,10 @@ def parser():
     prepare = sub.add_parser("prepare", help="admit a rootfs, frozen runtime code and delegated cgroup")
     prepare.add_argument("--rootfs", type=Path, required=True)
     prepare.add_argument("--cgroup-root", type=Path, required=True)
+    prepare.add_argument("--network", choices=("none", "host"), default="none")
+    prepare.add_argument("--providers-bin", type=Path)
+    prepare.add_argument("--codex-auth", type=Path)
+    prepare.add_argument("--trae-auth", type=Path)
     admit = sub.add_parser("admit", help="freeze committed task inputs and submit isolated coding work")
     admit.add_argument("run_id")
     admit.add_argument("--repository", type=Path, required=True)
@@ -49,6 +53,8 @@ def parser():
     start.add_argument("--capacity", type=int, choices=range(1, 5), default=1)
     start.add_argument("--timeout", type=float, default=3600)
     start.add_argument("--until-idle", action="store_true")
+    start.add_argument("--test-crash-at", choices=("after_claim", "before_release", "after_release_started",
+                      "after_receipt", "after_commit"), help="explicit disposable crash qualification only")
     status = sub.add_parser("status")
     status.add_argument("run_id", nargs="?")
     sub.add_parser("stop", help="request a specific current instance to stop and clean up")
@@ -56,6 +62,31 @@ def parser():
     sub.add_parser("check")
     cancel = sub.add_parser("cancel")
     cancel.add_argument("run_id")
+    ack = sub.add_parser("ack-cleanup", help="record explicit cleanup evidence; launch no work")
+    ack.add_argument("attempt_id")
+    ack.add_argument("--evidence", required=True)
+    resolve = sub.add_parser("resolve", help="reconcile an uncertain effect; launch no work")
+    resolve.add_argument("run_id")
+    resolve.add_argument("key")
+    resolve.add_argument("decision", choices=("retry", "fail", "succeed"))
+    resolve.add_argument("--evidence", required=True)
+    resolve.add_argument("--result", default="null")
+    capture = sub.add_parser("capture", help="retain the exact guardian-accepted coding proposal")
+    capture.add_argument("run_id")
+    verify = sub.add_parser("verify", help="submit independent exact-candidate checks")
+    verify.add_argument("run_id")
+    owner = sub.add_parser("owner-init", help="register a private owner capability outside all worker projections")
+    owner.add_argument("--capability", type=Path, required=True)
+    approve = sub.add_parser("approve", help="record an explicit human decision for one exact verified candidate")
+    approve.add_argument("run_id")
+    approve.add_argument("--verification", required=True)
+    approve.add_argument("--destination", type=Path, required=True)
+    approve.add_argument("--capability", type=Path, required=True)
+    land = sub.add_parser("land", help="physically land an approved exact candidate, reconciling a lost acknowledgment")
+    land.add_argument("approval_id")
+    land.add_argument("--capability", type=Path, required=True)
+    land.add_argument("--test-crash-at", choices=("after_intent", "after_git"),
+                      help="explicit disposable landing crash qualification only")
     return p
 
 
@@ -91,9 +122,22 @@ def start(store, args, execution, contract):
     old = {s: signal.signal(s, stop_signal) for s in (signal.SIGINT, signal.SIGTERM)}
     token = uuid.uuid4().hex
     record = {"token": token, "pid": os.getpid(), "state": str(store.root), "status": "running"}
+    def failpoint(point, detail):
+        selected = args.test_crash_at
+        if selected == "after_release_started" and point == "after_release":
+            deadline = time.monotonic() + 10
+            marker = store.root / "attempts" / detail["attempt_id"] / "process.json"
+            while not marker.exists():
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("test activity did not start")
+                time.sleep(0.01)
+        elif point != selected:
+            return
+        atomic_json(store.root / "test-crash.json", {"point": selected, **detail})
+        os._exit(86)
     try:
         with Runtime(store, REGISTRY, contract, max_active=args.capacity,
-                     cpu_slots=args.capacity, lock_timeout=0, execution=execution) as runtime:
+                     cpu_slots=args.capacity, lock_timeout=0, execution=execution, failpoint=failpoint) as runtime:
             atomic_json(store.root / "instance.json", record)
             deadline = time.monotonic() + args.timeout
             try:
@@ -133,6 +177,13 @@ def run_status(store, run_id):
     for attempt in data["attempts"]:
         attempt["logs"] = {stream: str(Path(attempt["directory"]) / (stream + ".log"))
                            for stream in ("stdout", "stderr")}
+    if data["status"] == "BLOCKED":
+        data["reconciliation"] = {
+            "cleanup": [dict(row) for row in store.db.execute(
+                "SELECT c.attempt_id,c.reason FROM cleanup_blocks c JOIN attempts a ON a.id=c.attempt_id "
+                "JOIN operations o ON o.id=a.operation_id WHERE o.run_id=? AND c.acknowledged IS NULL", (run_id,))],
+            "effects": [{"key": op["key"], "reason": op["error"]} for op in data["operations"] if op["status"] == "UNCERTAIN"],
+            "required_action": "Prove and acknowledge unproven cleanup, then explicitly resolve each uncertain effect with evidence. Neither decision launches work."}
     return data
 
 
@@ -168,35 +219,60 @@ def execute(args):
         if args.execution is None:
             raise ValueError("prepare requires --execution for its immutable admission record")
         from .setup import prepare
-        return prepare(args.state, args.rootfs, args.cgroup_root, args.execution)
+        credentials = {name: path for name, path in (("codex", args.codex_auth), ("trae", args.trae_auth)) if path}
+        return prepare(args.state, args.rootfs, args.cgroup_root, args.execution,
+                       network=args.network, providers_bin=args.providers_bin, credentials=credentials)
+    execution = None
     if args.execution:
         config = read_json(args.execution)
         os.environ["CORENIUS_CAPSULES"] = config["capsule_store"]
         execution = InsulaExecution(config)
-        execution.verify(require_backend=args.command not in {"status", "events", "check", "stop", "cancel"})
+        execution.verify(require_backend=args.command not in {"status", "events", "check", "stop", "cancel", "ack-cleanup", "resolve", "capture", "owner-init", "approve", "land"})
+        if execution.config["state"] != str(args.state.resolve()):
+            raise ValueError("state disagrees with admitted execution")
         code = Path(config["code"])
         if Path(__file__).resolve().parent != (code / "harp_durable").resolve():
             # Execute the admitted orchestrator and registry, rather than checking
             # a frozen snapshot while importing mutable checkout code.
             argv = list(sys.argv[1:])
-            for option in ("--execution", "--repository"):
+            for option in ("--execution", "--repository", "--destination", "--capability"):
                 for index, value in enumerate(argv):
+                    normalize = Path.absolute if option in {"--destination", "--capability"} else Path.resolve
                     if value == option and index + 1 < len(argv):
-                        argv[index + 1] = str(Path(argv[index + 1]).resolve())
+                        argv[index + 1] = str(normalize(Path(argv[index + 1])))
                     elif value.startswith(option + "="):
-                        argv[index] = option + "=" + str(Path(value.split("=", 1)[1]).resolve())
+                        argv[index] = option + "=" + str(normalize(Path(value.split("=", 1)[1])))
             env = {**os.environ, "PYTHONPATH": str(code), "PYTHONNOUSERSITE": "1",
                    "PYTHONDONTWRITEBYTECODE": "1"}
             os.chdir(code)
             os.execve(sys.executable, [sys.executable, "-B", "-m", "harp_durable", *argv], env)
-    execution = InsulaExecution(read_json(args.execution)) if args.execution else None
     contract = execution.contract if execution else DEMO_CONTRACT
-    if execution:
-        execution.verify(require_backend=args.command not in {"status", "events", "check", "stop", "cancel"})
-        if execution.config["state"] != str(args.state.resolve()):
-            raise ValueError("state disagrees with admitted execution")
     store = Store(args.state)
     try:
+        if execution is not None and args.command in {"start", "admit", "verify"}:
+            from .authority import execution_roots, protect_owner
+            protect_owner(store.root, execution_roots(execution), db=store.db)
+        if args.command in {"owner-init", "approve", "land"}:
+            if execution is None or execution.backend != "cgroup":
+                raise ValueError("owner decisions require an admitted project execution")
+            from .landing import owner_init, approve, land
+            if args.command == "owner-init":
+                return owner_init(store, args.capability, execution=execution)
+            if args.command == "approve":
+                return approve(store, args.run_id, args.verification, args.destination, args.capability)
+            def landing_failpoint(point, detail=None):
+                if point == args.test_crash_at:
+                    atomic_json(store.root / "test-landing-crash.json", {"point": point, "detail": detail})
+                    os._exit(86)
+            return land(store, args.approval_id, args.capability, failpoint=landing_failpoint)
+        if args.command == "capture":
+            from .candidates import capture
+            return capture(store, args.run_id)
+        if args.command == "verify":
+            if execution is None or execution.backend != "cgroup":
+                raise ValueError("verification requires an admitted Insula cgroup execution")
+            from .candidates import request_verification
+            return request_verification(store, execution, args.run_id)
         if args.command == "admit":
             from .admission import submit
             fixture = ({"path": args.fixture_path, "content": args.fixture_content,
@@ -226,6 +302,12 @@ def execute(args):
         if args.command == "cancel":
             store.cancel(args.run_id)
             return {"cancel_requested": True}
+        if args.command == "ack-cleanup":
+            store.acknowledge_cleanup(args.attempt_id, args.evidence)
+            return {"cleanup_acknowledged": True, "work_launched": False}
+        if args.command == "resolve":
+            store.resolve(args.run_id, args.key, args.decision, args.evidence, json.loads(args.result))
+            return {"effect_resolved": True, "work_launched": False}
         if args.command == "events":
             return [dict(row) for row in store.db.execute("SELECT * FROM events ORDER BY id")]
         return {"integrity_check": store.db.execute("PRAGMA integrity_check").fetchone()[0],

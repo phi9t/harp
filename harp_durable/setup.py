@@ -1,4 +1,4 @@
-"""Prepare a code-pinned, network-free execution on a delegated cgroup.
+"""Prepare a code-pinned execution on a delegated cgroup.
 
 Preparation records inputs and uses the imported runtime's capsule builder. It
 never starts an activity or installs a service.
@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import fcntl
 import hashlib
+import ipaddress
 import json
 import os
 from pathlib import Path
@@ -17,7 +18,7 @@ from typing import Any
 
 from controller.durable.cgroup import Cgroup
 from controller.durable.common import atomic_json, durable_mkdir, encode, fsync_dir, read_json
-from controller.durable.insula import InsulaExecution, snapshot_code
+from controller.durable.insula import InsulaExecution, snapshot_code, REPOSITORY as DURABLE_SOURCE
 from tools.insula import capsule
 
 
@@ -58,6 +59,32 @@ def verify_required_executables(rootfs: Path) -> None:
                 raise ValueError("required executable is not an executable regular file")
         except (OSError, ValueError) as exc:
             raise ValueError(f"invalid rootfs executable {executable}: {exc}") from exc
+
+
+def verify_network_inputs(rootfs: Path) -> None:
+    """Networked profiles require a pinned resolver, not the host's fallback."""
+    root = rootfs.resolve(strict=True)
+    resolver = root / "etc/resolv.conf"
+    if (root / "etc").is_symlink() or resolver.is_symlink():
+        raise ValueError("network rootfs needs an ordinary etc/resolv.conf snapshot")
+    try:
+        fd = os.open(resolver, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(fd, "rb") as stream:
+            info = os.fstat(stream.fileno())
+            if not stat.S_ISREG(info.st_mode) or info.st_size > 65536:
+                raise ValueError("resolver must be a bounded ordinary file")
+            text = stream.read(65537).decode("utf-8")
+        servers = []
+        for line in text.splitlines():
+            fields = line.split("#", 1)[0].split(";", 1)[0].split()
+            if fields and fields[0] == "nameserver":
+                if len(fields) != 2:
+                    raise ValueError("invalid nameserver directive")
+                servers.append(ipaddress.ip_address(fields[1]))
+        if not servers:
+            raise ValueError("no nameserver is configured")
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise ValueError(f"network rootfs DNS is unavailable: {exc}") from exc
 
 
 def native_manifest(rootfs: Path) -> dict[str, Any]:
@@ -167,7 +194,9 @@ def _private_state(state: Path) -> Path:
     return state.resolve(strict=True)
 
 
-def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) -> dict[str, Any]:
+def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path, *,
+            network: str = "none", providers_bin: Path | None = None,
+            credentials: dict[str, Path] | None = None) -> dict[str, Any]:
     """Pin an existing native closure and code; require real cgroup delegation.
 
     Repeating preparation is safe only while the admitted inputs remain exact.
@@ -175,9 +204,51 @@ def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) 
     separate execution file; existing records are never replaced.
     """
     state = _private_state(state)
+    if network not in {"none", "host"}:
+        raise ValueError("network must be none or host")
+    credentials = credentials or {}
+    from .authority import protect_owner
+    projected = [rootfs, Path(__file__).resolve().parent, DURABLE_SOURCE / "controller/durable",
+                 DURABLE_SOURCE / "tools/temp_root.py", DURABLE_SOURCE / "tools/insula/capsule.py",
+                 *credentials.values()]
+    if providers_bin is not None:
+        projected.append(providers_bin)
+    protect_owner(state, projected)
+    if set(credentials) - {"codex", "trae"}:
+        raise ValueError("unsupported provider credential selection")
+    if (credentials or providers_bin is not None) and network != "host":
+        raise ValueError("provider preparation requires explicit host networking")
+    if credentials and providers_bin is None:
+        raise ValueError("provider credentials require admitted provider binaries")
+    provider_layers = []
+    binaries = []
+    if providers_bin is not None:
+        for name in ("codex", "codex-code-mode-host", "trae"):
+            source = providers_bin / name
+            if name == "trae" and not source.exists():
+                source = providers_bin / "traex"
+            if source.is_symlink() or not source.is_file() or not os.access(source, os.X_OK):
+                raise ValueError("provider executable must be an ordinary executable file: " + name)
+            binaries.append({"from": str(source.resolve()), "to": name})
+        provider_layers.append({"kind": "tree", "name": "providers", "copy": binaries,
+            "file_binds": [{"src": name, "dest": "/cap/providers/" + name} for name in ("codex", "codex-code-mode-host", "trae")]})
+    if credentials:
+        binds = []
+        for name, path in sorted(credentials.items()):
+            if path.is_symlink() or not path.is_file():
+                raise ValueError("provider credential must be an ordinary file")
+            info = path.stat()
+            if info.st_uid != os.getuid() or info.st_mode & 0o077:
+                raise ValueError("provider credential must be owned and private")
+            binds.append({"src": str(path.resolve()), "dest": f"/home/bench/credentials/{name}-auth.json"})
+        provider_layers.append({"kind": "host-ro", "name": "provider-credentials", "paths": [], "binds": binds})
     inputs_root = _private_state(state / "inputs")
     os.environ["CORENIUS_CAPSULES"] = str(state / "capsules")
     verify_required_executables(rootfs)
+    if (rootfs / "etc").is_symlink():
+        raise ValueError("rootfs etc must be an ordinary directory")
+    if network == "host":
+        verify_network_inputs(rootfs)
     Cgroup.validate_root(cgroup_root)
     manifest = native_manifest(rootfs)
     rootfs = Path(manifest["rootfs"])
@@ -202,15 +273,35 @@ def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) 
                         config["native_manifest"]["rootfs"] != str(rootfs) or
                         config.get("inputs_root") != str(state / "inputs") or
                         config["code_digest"] != capsule.tree_digest(source) or
-                        config["capsule"]["policy"]["net"] != "none"):
+                        config["capsule"]["policy"]["net"] != network or
+                        [{key: layer[key] for key in ("kind", "name", "copy", "file_binds", "paths", "binds") if key in layer}
+                         for layer in config["capsule"]["layers"][1:]] != provider_layers):
                     raise ValueError("execution file already binds different inputs")
+                for layer in config["capsule"]["layers"]:
+                    if layer.get("name") == "providers":
+                        admitted = capsule.store_root() / "layers" / layer["digest"] / "tree"
+                        for entry in binaries:
+                            source_file = Path(entry["from"])
+                            pinned_file = admitted / entry["to"]
+                            with source_file.open("rb") as current, pinned_file.open("rb") as pinned:
+                                if (hashlib.file_digest(current, "sha256").digest() !=
+                                        hashlib.file_digest(pinned, "sha256").digest() or
+                                        stat.S_IMODE(source_file.stat().st_mode) != stat.S_IMODE(pinned_file.stat().st_mode)):
+                                    raise ValueError("requested provider executable changed")
                 return config
             request = {"name": "harp-durable", "layers": [
-                {"kind": "rootfs", "name": "native", "source": str(rootfs)}],
-                "policy": {"net": "none", "gpu": False, "proxy": False}}
+                {"kind": "rootfs", "name": "native", "source": str(rootfs)}, *provider_layers],
+                "policy": {"net": network, "gpu": False, "proxy": False}}
             request_path = staging / "capsule.json"
             atomic_json(request_path, request)
             record = capsule.build(str(request_path))
+            providers = None
+            if providers_bin is not None:
+                from .provider_preflight import probe_providers
+                probe_workspace, probe_scratch = staging / "probe-workspace", staging / "probe-scratch"
+                probe_workspace.mkdir(mode=0o700)
+                probe_scratch.mkdir(mode=0o700)
+                providers = probe_providers(record, probe_workspace, probe_scratch)
             digest = capsule.build_tree_layer({"kind": "tree", "name": "harp-durable-code",
                                                "source": str(source)}, capsule.store_root())
             code = capsule.store_root() / "layers" / digest / "tree"
@@ -225,7 +316,7 @@ def prepare(state: Path, rootfs: Path, cgroup_root: Path, execution_file: Path) 
             else:
                 _publish_new(manifest_path, manifest_bytes)
             execution = InsulaExecution.create(record, code, state, backend="cgroup",
-                cgroup_root=cgroup_root, inputs_root=inputs_root, native_manifest=binding)
+                cgroup_root=cgroup_root, inputs_root=inputs_root, native_manifest=binding, providers=providers)
             execution.verify()
             _publish_new(execution_file, encode(execution.config).encode())
             return execution.config

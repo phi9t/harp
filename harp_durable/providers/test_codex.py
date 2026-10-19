@@ -94,7 +94,8 @@ print('ADAPTER_RESULT:' + json.dumps(result))
         self.assertEqual(invocation["input"], task)
         self.assertEqual(invocation["cwd"], str(self.workspace))
         self.assertEqual(invocation["argv"], [
-            "--no-daemon", "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral",
+            "--no-daemon", "--enable", "code_mode_host", "--disable", "apps", "--disable", "plugins",
+            "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral",
             "--dangerously-bypass-approvals-and-sandbox", "--json", "--color", "never",
             "--cd", str(self.workspace), "--output-last-message", str(self.attempt / "codex-final.txt"), "-",
         ])

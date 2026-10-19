@@ -16,6 +16,7 @@ import uuid
 
 from controller.durable.common import digest, encode, fsync_dir, read_json, verify_input_bundle
 from .admission import acceptance, git
+from .authority import execution_roots
 from .candidates import capture, check_git_subject, ordinary
 from .verifier import tracked_tree, unchanged
 
@@ -55,16 +56,7 @@ def _exclusions(store, execution):
         config = execution.config
         if config["state"] != str(store.root):
             raise LandingRefused("owner capability requires this project's execution")
-        for key in ("code", "state", "inputs_root", "capsule_store"):
-            if key in config:
-                roots.add(config[key])
-        if "native_manifest" in config:
-            roots.add(config["native_manifest"]["rootfs"])
-        for layer in config["capsule"]["layers"]:
-            if "source" in layer:
-                roots.add(layer["source"])
-            roots.update(layer.get("paths", []))
-            roots.update(binding["src"] for binding in layer.get("binds", []))
+        roots.update(execution_roots(execution))
     for row in store.db.execute("SELECT args FROM runs WHERE workflow='coding'"):
         args = json.loads(row[0])
         bundle = verify_input_bundle(store.root / "inputs", args["inputs"])

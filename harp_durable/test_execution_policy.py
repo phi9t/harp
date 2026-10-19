@@ -20,6 +20,19 @@ from tools.insula import capsule
 from .setup import prepare
 
 
+def metadata_fixture(name):
+    """A metadata-only executable; never represents a real provider result."""
+    if name == "codex-code-mode-host":
+        version, help_text = "host fixture", "Usage: codex-code-mode-host --listen"
+    else:
+        version = "codex-cli 0.162.1" if name == "codex" else "traecli 0.210.1"
+        help_text = ("--ignore-user-config --ignore-rules --ephemeral "
+                     "--dangerously-bypass-approvals-and-sandbox --json --output-last-message "
+                     "--cd --model --color --disable --enable --no-daemon -c")
+    return ("#!/bin/sh\ncase \" $* \" in *' --version '*) printf '%s\\n' '" + version +
+            "';; *) printf '%s\\n' '" + help_text + "';; esac\nexit 0\n").encode()
+
+
 class PolicyFixture(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -32,11 +45,13 @@ class PolicyFixture(unittest.TestCase):
             path = self.rootfs / "usr/bin" / name
             path.write_bytes(b"inert preparation fixture; never executed")
             path.chmod(0o755)
+        (self.rootfs / "etc").mkdir()
+        (self.rootfs / "etc/resolv.conf").write_text("nameserver 127.0.0.1\n")
         self.providers = self.root / "providers"
         self.providers.mkdir(mode=0o700)
-        for name in ("codex", "trae"):
+        for name in ("codex", "codex-code-mode-host", "trae"):
             path = self.providers / name
-            path.write_bytes(b"provider fixture\n" + b"x" * (1 << 20) + b"tail")
+            path.write_bytes(metadata_fixture(name) + b"#" + b"x" * (1 << 20) + b"tail")
             path.chmod(0o755)
         self.credentials = {}
         for name in ("codex", "trae"):
@@ -57,7 +72,7 @@ class PolicyFixture(unittest.TestCase):
             {"kind": "rootfs", "name": "native", "source": str(self.rootfs)},
             {"kind": "tree", "name": "providers", "copy": [
                 {"from": str(self.providers / name), "to": name} for name in ("codex", "trae")],
-             "file_binds": [{"src": name, "dest": "/opt/harp/providers/" + name}
+             "file_binds": [{"src": name, "dest": "/cap/providers/" + name}
                             for name in ("codex", "trae")]},
             {"kind": "host-ro", "name": "provider-credentials", "paths": [], "binds": [
                 {"src": str(path), "dest": f"/home/bench/credentials/{name}-auth.json"}
@@ -146,6 +161,12 @@ class ExecutionPolicy(PolicyFixture):
 @unittest.skipUnless(sys.platform == "linux" and os.environ.get("HARP_TEST_CGROUP_ROOT"),
                      "requires an explicit disposable delegated Linux cgroup for prepare")
 class PreparedProviderPolicy(PolicyFixture):
+    def setUp(self):
+        super().setUp()
+        if not os.environ.get("HARP_TEST_ROOTFS"):
+            self.skipTest("metadata probes require an admitted executable native rootfs")
+        self.rootfs = Path(os.environ["HARP_TEST_ROOTFS"])
+
     def test_exact_prepare_reuses_record_but_changed_source_binary_or_mode_does_not(self):
         options = {"network": "host", "providers_bin": self.providers, "credentials": self.credentials}
         args = (self.state, self.rootfs, Path(os.environ["HARP_TEST_CGROUP_ROOT"]), self.execution_file)

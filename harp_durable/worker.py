@@ -9,7 +9,7 @@ import subprocess
 import sys
 import time
 
-from controller.durable.common import publish_result, read_json
+from controller.durable.common import atomic_json, publish_result, read_json
 from .admission import relative_path
 
 
@@ -35,17 +35,35 @@ def main():
     run(["/usr/bin/git", "-c", "core.hooksPath=/dev/null", "clone", "--no-checkout",
          "/home/bench/input/source.bundle", str(workspace)], attempt)
     run(["/usr/bin/git", "-c", "core.hooksPath=/dev/null", "checkout", "--detach", admitted["base"]], workspace)
-    if admitted["provider"] != "deterministic":
-        raise ValueError("provider adapter is not yet qualified")
-    fixture = admitted["fixture"] or {"path": "harp-worker.txt", "content": "Harp managed worker\n", "sleep": 0}
-    destination = workspace / relative_path(fixture["path"])
-    if any(p.is_symlink() for p in (destination, *destination.parents)):
-        raise ValueError("fixture edit must not follow a source symlink")
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    time.sleep(fixture["sleep"])
-    destination.write_text(fixture["content"])
-    run(["/usr/bin/git", "-c", "core.hooksPath=/dev/null", "add", "--", fixture["path"]], workspace)
-    run(["/usr/bin/git", "-c", "core.hooksPath=/dev/null", "commit", "-m", "Apply admitted coding task"], workspace)
+    atomic_json(attempt / "progress.json", {"phase": "coding", "attempt_id": envelope["attempt_id"],
+                "provider": admitted["provider"], "started_at": time.time()})
+    provider_report = None
+    if admitted["provider"] == "deterministic":
+        fixture = admitted["fixture"] or {"path": "harp-worker.txt", "content": "Harp managed worker\n", "sleep": 0}
+        destination = workspace / relative_path(fixture["path"])
+        if any(p.is_symlink() for p in (destination, *destination.parents)):
+            raise ValueError("fixture edit must not follow a source symlink")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        time.sleep(fixture["sleep"])
+        destination.write_text(fixture["content"])
+    else:
+        from .providers import codex, trae
+        adapter = {"codex": codex, "trae": trae}[admitted["provider"]]
+        task = Path("/home/bench/input/task.md").read_text()
+        checks = Path("/home/bench/input/acceptance.json").read_text()
+        prompt = ("Implement this admitted task in the current Git repository. Work only in this "
+                  "repository. Do not approve, verify on behalf of the independent verifier, or land "
+                  "changes into another checkout. The controller will capture your candidate and "
+                  "run independent checks. Leave source changes ready for capture.\n\nTask:\n" + task +
+                  "\n\nFrozen acceptance inputs:\n" + checks)
+        provider_report = adapter.run(workspace, prompt, admitted, attempt)
+    run(["/usr/bin/git", "-c", "core.hooksPath=/dev/null", "add", "-A"], workspace)
+    changed = subprocess.run(["/usr/bin/git", "diff", "--cached", "--quiet"], cwd=workspace).returncode
+    if changed not in {0, 1}:
+        raise ValueError("cannot inspect candidate index")
+    if changed:
+        run(["/usr/bin/git", "-c", "core.hooksPath=/dev/null", "commit", "-m", "Apply admitted coding task"], workspace)
+    run(["/usr/bin/git", "merge-base", "--is-ancestor", admitted["base"], "HEAD"], workspace)
     candidate = run(["/usr/bin/git", "rev-parse", "HEAD"], workspace)
     tree = run(["/usr/bin/git", "rev-parse", "HEAD^{tree}"], workspace)
     output = attempt / "candidate.bundle"
@@ -55,7 +73,8 @@ def main():
     publish_result(envelope, {"schema": 1, "identity": envelope["input"]["identity"],
                    "attempt_id": envelope["attempt_id"], "base": admitted["base"],
                    "provider": admitted["provider"], "commit": candidate, "tree": tree,
-                   "bundle": "candidate.bundle", "bundle_sha256": sha})
+                   "bundle": "candidate.bundle", "bundle_sha256": sha,
+                   "provider_report": provider_report})
 
 
 if __name__ == "__main__":

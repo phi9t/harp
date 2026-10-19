@@ -1863,12 +1863,12 @@
       "sha256": "3722cf0c32881a81602da4c8de19f55ca36576dddd62a6d3bdf3344eb4589130"
     },
     "controller/durable/engine.py": {
-      "reason": "Bind optional immutable input identities into activity specifications without changing legacy replay digests; refuse unsupported or invalid input projection before claiming work.",
-      "sha256": "30f4de70ed17edf598b67f97e5f0338298ecb1fd72a362c2b169d79565b30c5e"
+      "reason": "Harp activity inputs and explicit offline narrowing; legacy default specs retained.",
+      "sha256": "912ff9186f8f0dfe22a6c1ca6f1f7a47327f9e7a1672544d163fc8b292fb7898"
     },
     "controller/durable/insula.py": {
-      "reason": "Bind optional private input stores and full native manifests into execution contracts, project only the selected verified bundle readonly, and permit retained inspection without weakening dispatch backend checks.",
-      "sha256": "b6d3a5711bdcb263b7fc862d915a07c3da295e5f330e8779a2ff325dd926402d"
+      "reason": "Harp immutable inputs, native/dependency identities, qualified provider and companion bindings, selected credentials, and offline verification projections; absent extensions preserve legacy contracts.",
+      "sha256": "72d3ba1febee0e0758b1b547da71093c972c02e0c95f2ee38355df9beb0a620a"
     },
     "controller/durable/runtime_test.py": {
       "reason": "Protect immutable input bytes and traversal/type/digest refusal, legacy specification compatibility, and refusal before claiming attempts without admitted isolation.",

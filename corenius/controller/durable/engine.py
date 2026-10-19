@@ -59,6 +59,7 @@ class Activity:
     cpus: int = 1
     gpus: int = 0
     inputs: str | None = None
+    offline: bool = False
 
     def spec(self) -> dict[str, Any]:
         if not self.argv or not os.path.isabs(self.argv[0]):
@@ -90,6 +91,10 @@ class Activity:
                       cpus=self.cpus, gpus=self.gpus)
         if self.inputs is not None:
             result["inputs"] = input_digest(self.inputs)
+        if type(self.offline) is not bool:
+            raise ValueError("offline must be a boolean")
+        if self.offline:
+            result["offline"] = True
         encode(result)
         return result
 
