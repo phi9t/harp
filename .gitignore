@@ -33,3 +33,5 @@
 
 # Private execution host inventory; never included in source or evidence exports.
 /runner/hosts.local.*
+
+/lab/benchmarks/legacy_runtime/target/

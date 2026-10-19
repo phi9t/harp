@@ -5,6 +5,9 @@ documentation dependencies on another local checkout.
 
 ## Canonical ownership
 
+- `cli/` is the operator interface; `sessions/` indexes rollouts for observability.
+  Neither owns worker admission or landing.
+
 - `durable/` owns agent execution, its SQLite journal, Git-managed intent
   bindings, independent verification and landing. `insula/` owns containment and
   service supervision; `runner/` is SSH transport. Do not add a competing
