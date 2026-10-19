@@ -66,6 +66,64 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual({j["surface"] for j in jobs}, {"diff", "durable-runtime"})
         self.assertIn(["env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1", "python3", "-m", "unittest", "discover", "-s", "harp_durable", "-t", ".", "-p", "test_*.py"], [j["command"] for j in jobs])
 
+    def test_imported_controller_plan_dispatches_each_surface(self):
+        durable = ["env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
+                   "python3", "-m", "unittest", "discover", "-s", "harp_durable",
+                   "-t", ".", "-p", "test_*.py"]
+        retirement = ["python3", "corenius/tools/temp_root.py", "--",
+                      "python3", "corenius/tools/agents/test_wt.py"]
+        cases = {
+            "durable-runtime": (
+                "controller/durable/runtime.py", "controller/durable/nested/engine.py",
+                "tools/insula/capsule.py", "tools/temp_root.py",
+            ),
+            "controller-retirement": (
+                "Cargo.toml", "Cargo.lock", "controller/Cargo.toml", "controller/Cargo.lock",
+                "terminal_agent/Cargo.toml", "terminal_agent/Cargo.lock",
+                "controller/src/main.rs", "controller/src/bin/corenius-attempt-gate.rs",
+                "controller/src/bin/corenius-attempt-supervisor.rs", "terminal_agent/src/main.rs",
+                "tools/agents/worker.py", "tools/agents/wt.py", "tools/collab/run.py",
+                "controller/launch/sqlite_baseline.py", "controller/operator/cli.py",
+                "controller/support/codex_insula.py", "bench/harness/run.py",
+                "bench/harness/controller_mode.py", "bench/harness/fleet.py",
+                "bench/harness/lead_driven.py", "bench/tmuxh/cli.py", "bench/tmuxh/bench-tmux",
+                "tools/agents/checks.d/10-wt.sh",
+            ),
+            None: (
+                "controller/src/lib.rs", "terminal_agent/src/lib.rs", "docs/old.md",
+                "tools/agents/VALIDATION.md", "tools/collab/README.md",
+                "controller/README.md", "bench/harness/tasklib.py",
+                "controller/support/historical.py", "tools/insula/other.py",
+                "tools/temp_root.py.old", "controller/durable_old/runtime.py",
+            ),
+        }
+        for surface, paths in cases.items():
+            for relative in paths:
+                with self.subTest(path=relative):
+                    changed = self.write("corenius/" + relative, "# changed source\n")
+                    jobs = self.selected()["checks"]
+                    expected = {"diff", "corenius-import"}
+                    if surface:
+                        expected.add(surface)
+                        self.assertIn({"surface": surface, "command":
+                                       durable if surface == "durable-runtime" else retirement}, jobs)
+                    self.assertEqual({job["surface"] for job in jobs}, expected)
+                    self.assertIn({"surface": "corenius-import", "command":
+                                   ["python3", "scripts/verify_corenius_import.py"]}, jobs)
+                    changed.unlink()
+
+    def test_deleted_imported_launcher_and_shared_runtime_select_both_suites_once(self):
+        launcher = self.write("corenius/controller/src/main.rs", "// launcher\n")
+        self.git("add", "corenius/controller/src/main.rs")
+        self.git("commit", "-qm", "launcher")
+        launcher.unlink()
+        self.write("corenius/tools/temp_root.py", "# shared runtime\n")
+        self.write("harp_durable/runtime.py", "# runtime\n")
+        jobs = self.selected()["checks"]
+        self.assertEqual([job["surface"] for job in jobs].count("durable-runtime"), 1)
+        self.assertEqual({job["surface"] for job in jobs},
+                         {"diff", "corenius-import", "controller-retirement", "durable-runtime"})
+
     def test_staged_untracked_and_both_rename_surfaces_are_selected(self):
         (self.root / "docs").mkdir()
         self.git("mv", "AGENTS.md", "docs/renamed.md")

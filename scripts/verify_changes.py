@@ -75,13 +75,35 @@ def plan(root, paths):
         elif path.startswith(".scratch/harp-runtime-integration/qualification/") and path.endswith("-acceptance.json"):
             add("durable-input", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
                 "python3", "-c", "import sys; from pathlib import Path; from harp_durable.admission import acceptance; acceptance(Path(sys.argv[1]).read_bytes())", path)
-        elif path.startswith("harp_durable/"):
+        elif path.startswith(("harp_durable/", "corenius/controller/durable/")) or path in (
+            "corenius/tools/insula/capsule.py", "corenius/tools/temp_root.py",
+        ):
+            if path.startswith("corenius/"):
+                add("corenius-import", "python3", "scripts/verify_corenius_import.py")
             add("durable-runtime", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
                 "python3", "-m", "unittest", "discover", "-s", "harp_durable", "-t", ".", "-p", "test_*.py")
         elif path.startswith("corenius/"):
             # Imported historical prose and artifacts retain their original bytes.
             # Check their pinned source instead of rewriting old links or formatting.
             add("corenius-import", "python3", "scripts/verify_corenius_import.py")
+            if path in (
+                "corenius/Cargo.toml", "corenius/Cargo.lock",
+                "corenius/controller/Cargo.toml", "corenius/controller/Cargo.lock",
+                "corenius/terminal_agent/Cargo.toml", "corenius/terminal_agent/Cargo.lock",
+                "corenius/controller/src/main.rs", "corenius/terminal_agent/src/main.rs",
+                "corenius/controller/support/codex_insula.py",
+                "corenius/bench/harness/run.py", "corenius/bench/harness/controller_mode.py",
+                "corenius/bench/harness/fleet.py", "corenius/bench/harness/lead_driven.py",
+                "corenius/bench/tmuxh/cli.py", "corenius/bench/tmuxh/bench-tmux",
+                "corenius/tools/agents/checks.d/10-wt.sh",
+            ) or path.startswith("corenius/controller/src/bin/") or (
+                path.endswith(".py") and path.startswith((
+                    "corenius/tools/agents/", "corenius/tools/collab/",
+                    "corenius/controller/launch/", "corenius/controller/operator/",
+                ))
+            ):
+                add("controller-retirement", "python3", "corenius/tools/temp_root.py", "--",
+                    "python3", "corenius/tools/agents/test_wt.py")
         elif path in ("docs/import-receipt.md", "docs/import-map.tsv") or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith("tools/obsidian/") or path in ("scripts/validate_obsidian_assets.py", "scripts/tests/test_obsidian_assets.py") or (path.startswith("knowledge/obsidian/") and not path.endswith(".md")):
