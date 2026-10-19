@@ -1,7 +1,7 @@
 # 09: Qualify the complete one-worker milestone
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on `codex/harp-durable-runtime`
 Parent: [Harp durable coding-worker integration](../spec.md)
 
 ## What to build
@@ -16,11 +16,11 @@ then four. This ticket does not authorize implementation or live setup by itself
 ## Acceptance criteria
 
 - [ ] Run each provider on Linux at devx_b200_dbg using the same admitted lifecycle. Each task produces a useful inspectable code change, passing exact verification and an explicitly approved landing.
-- [ ] Observe that actual active worker count never exceeds one and a queued second task is admitted only after the old execution is cleaned up.
-- [ ] Exercise integrated cancellation and runtime-restart recovery with the real provider adapters; completed results are preserved and ambiguous active effects require explicit reconciliation.
+- [x] Observe that actual active worker count never exceeds one and a queued second task is admitted only after the old execution is cleaned up.
+- [x] Exercise integrated cancellation and runtime-restart recovery with the real provider adapters; completed results are preserved and ambiguous active effects require explicit reconciliation.
 - [ ] Retain exact source/provider/runtime/SQLite versions, execution contract, isolation/backend evidence, commands, attempt/candidate identities, check results, approval and landing outcomes.
-- [ ] All required deterministic fault, isolation, stale-result and Git-boundary checks pass. Missing credentials, delegated capability or prerequisites remain explicit blockers.
-- [ ] Normal operation and verification need neither PostgreSQL nor Temporal. A retained old scheduler, historical test record or fixture-only provider result cannot satisfy acceptance.
+- [x] All required deterministic fault, isolation, stale-result and Git-boundary checks pass. Missing credentials, delegated capability or prerequisites remain explicit blockers.
+- [x] Normal operation and verification need neither PostgreSQL nor Temporal. A retained old scheduler, historical test record or fixture-only provider result cannot satisfy acceptance.
 
 ## Blocked by
 
@@ -40,3 +40,45 @@ existing contract coverage where sufficient. Run the changed-surface gate agains
 the complete candidate and supplement it for affected consumers. Record exact
 source, selected checks, outcomes and limitations here. Historical qualification,
 missing prerequisites or unavailable required capabilities are not fresh passes.
+
+2026-10-18: both real providers completed independently checked useful coding
+tasks under capacity one in `/data03/harp-runtime-integration-philip-yang/runs/live-one-04`.
+Source was frozen under `runs/provider-complete-03`; its 38 provider/native cases
+passed with zero skips. The local changed-surface gate against `43b55351` passed
+96 cases (35 explicit Linux-only skips, supplemented by delegated Linux evidence).
+Runtime replay preserved each completed coding attempt/result. Captured bundle
+hashes were rechecked before reviewing the exact diffs locally.
+
+| Provider | Base | Candidate | Tree |
+| --- | --- | --- | --- |
+| codex | `f732a5678cb553403a385ac4fa4fe5c549db6731` | `330797ab90b8e1b3b5b7054914a7b46754c1b492` | `07d839f241e62194e3506cb302ae72798b7f270d` |
+| trae | `e2902792cd0d696d9de860895f26d1e108e5ce1a` | `a0a5e25aa12150aecb17488c6249df4923d9b59f` | `1c581cc2afd0ebe8c1c8f0b621227807d15e288c` |
+
+Both destinations are separate task-owned repositories under `runs/live-one-04`.
+The public owner capability was registered outside projected inputs, without
+printing its contents. The exact two candidates were presented for human approval;
+no approval or landing is recorded yet. Deterministic integrated adapter
+cancellation/queued-capacity/restart qualification passed in
+`runs/provider-recovery-03`: three tests covering both actual adapters per case,
+zero skips, 60.969 seconds, 47 frozen source files unchanged. Fixture executables
+are explicitly distinguished from the separately qualified paid providers.
+The cancellation case holds a live guardian with a provider and descendant in
+a populated kernel cgroup, proves the queued task has no attempt, then checks
+the next launch timestamp follows the prior cleanup receipt. Runtime death
+requires explicit reconciliation without duplicate dispatch; a crash after the
+completed receipt preserves the receipt, bundle, result and single attempt
+through two restarts. The integrated all-module Linux suite at `runs/integrated-one-01` passed all
+99 tests with zero skips in 411.586 seconds; all 47 source files remained
+unchanged. The exact public Harp binary was
+`d8fa70ef769f6bcb5cb064f19401beab64c96b3354454d553c52b48891e94163`.
+
+The complete-branch changed-surface gate, `mise run verify -- --base 1418455d`,
+passed after the production/recovery test payload and import receipt settled:
+repository/LFS/import checks; 99 host runtime cases (38 explicitly Linux-only
+skips, all supplied by the fresh zero-skip Linux run above); 14 selector cases;
+12 import-verifier cases; 467 Rust library cases; five public durable CLI bridge
+cases; 16 general CLI cases; and document validation. Independent acceptance
+review confirmed that separate real provider runs plus controlled adapter fault
+tests match the specification. No further live model probe is needed for this
+milestone. Exact human approval and physical local landing remain outstanding;
+tickets 10–14 have not been claimed as delivered.

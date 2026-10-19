@@ -1,6 +1,6 @@
 # 04: Execute a managed Codex worker
 
-Status: in-progress
+Status: done
 Owner: Codex
 Branch: codex/harp-durable-runtime
 Parent: [Harp durable coding-worker integration](../spec.md)
@@ -16,11 +16,11 @@ then four. This ticket does not authorize implementation or live setup by itself
 
 ## Acceptance criteria
 
-- [ ] The public Harp CLI selects Codex explicitly and records executable/version, supported capabilities and the relevant provider execution binding.
-- [ ] The worker receives the admitted brief and workspace through the common contract. The selected durable runtime remains the only lifecycle owner.
-- [ ] Provider startup failure, malformed output, timeout and ordinary completion produce truthful bounded evidence and outcomes. Missing/incompatible capabilities refuse dispatch.
-- [ ] Provider credentials and owner approval/landing capabilities remain outside worker-writable state; the adapter does not broaden native permissions or silently switch providers.
-- [ ] The worker result and logs bind to the admitted attempt. A deterministic Codex protocol fixture exercises the actual adapter/process boundary without substituting another scheduler.
+- [x] The public Harp CLI selects Codex explicitly and records executable/version, supported capabilities and the relevant provider execution binding.
+- [x] The worker receives the admitted brief and workspace through the common contract. The selected durable runtime remains the only lifecycle owner.
+- [x] Provider startup failure, malformed output, timeout and ordinary completion produce truthful bounded evidence and outcomes. Missing/incompatible capabilities refuse dispatch.
+- [x] Provider credentials and owner approval/landing capabilities remain outside worker-writable state; the adapter does not broaden native permissions or silently switch providers.
+- [x] The worker result and logs bind to the admitted attempt. A deterministic Codex protocol fixture exercises the actual adapter/process boundary without substituting another scheduler.
 
 ## Blocked by
 
@@ -67,3 +67,16 @@ the profile, and admission retains the resulting version/capability/hash binding
 The integrated Linux suite at `runs/provider-complete-03` passed 38 cases with zero
 skips (16.414 seconds). The fresh live qualification is `runs/live-one-04`; its
 results and exact-candidate approval remain pending.
+
+Live qualification completed in `runs/live-one-04` using the frozen source at
+`runs/provider-complete-03` (the Python payload committed in `45997f25`).
+Provider codex produced a useful code change, captured as commit
+`330797ab90b8e1b3b5b7054914a7b46754c1b492`, tree
+`07d839f241e62194e3506cb302ae72798b7f270d`. Independent verification run
+`verification-ca1aed2df85b415f6fced0e5b7178ecf9a1a2f37ca81bbf5134ec086b2b4b0da` passed all frozen checks
+without modifying tracked candidate bytes. A fresh runtime invocation retained
+the same coding attempt and result. Exact provider versions, sealed binary/helper
+hashes, SQLite/Python versions, contract and receipts are retained in the private
+run artifacts. The original source checkout remains unchanged. This completes
+the adapter ticket; human approval/physical landing and integrated fault evidence
+remain the ticket 09 milestone gate. No live approval has been inferred.
