@@ -4964,7 +4964,7 @@ fn run_structural_closure(lean_root: &Path, route: &str) -> Output {
 import sys
 from pathlib import Path
 repo = Path(sys.argv[1])
-sys.path.insert(0, str(repo / 'labs' / 'crouzeix_proof_reproduction'))
+sys.path.insert(0, str(repo / 'lab' / 'math' / 'proof_reproduction'))
 import proof_evidence
 try:
     closure = proof_evidence.gather_route_closure(

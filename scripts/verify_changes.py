@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run verification for changed surfaces without installing prerequisites."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -66,44 +67,59 @@ def plan(root, paths):
 
     docs = []
     rust_paths = []
+    relocation = root / "lab/math/relocation.json"
+    unchanged_math = {}
+    if relocation.is_file():
+        record = json.loads(relocation.read_text())
+        unchanged_math = {entry["destination"]: entry["source_sha256"]
+                          for entry in record["entries"]
+                          if entry["disposition"] == "retained"}
     for path in paths:
+        for old, new in (("formalization/", "lab/math/"),
+                         ("labs/crouzeix_proof_reproduction/", "lab/math/proof_reproduction/"),
+                         ("labs/lean_trae_benchmark/", "lab/math/lean_trae_benchmark/"),
+                         ("labs/sicp-evaluator/", "lab/sicp/")):
+            if path.startswith(old):
+                path = new + path[len(old):]
+                break
         parts = Path(path).parts
         if path.startswith(("reference/", "labs/meta_harness_trae/")) or path == "scripts/build_weng_course.py":
             # Article-only projections and reproduction tooling were retired.
             # Repository provenance checks cover their explicit disposition.
             add("repository", "mise", "run", "verify-repository")
-        elif path.startswith(".scratch/harp-runtime-integration/qualification/") and path.endswith("-acceptance.json"):
-            add("durable-input", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
-                "python3", "-c", "import sys; from pathlib import Path; from harp_durable.admission import acceptance; acceptance(Path(sys.argv[1]).read_bytes())", path)
-        elif path.startswith(("harp_durable/", "corenius/controller/durable/")) or path in (
-            "corenius/tools/insula/capsule.py", "corenius/tools/temp_root.py",
-        ):
-            if path.startswith("corenius/"):
-                add("corenius-import", "python3", "scripts/verify_corenius_import.py")
-            add("durable-runtime", "env", "PYTHONPATH=corenius:.", "PYTHONDONTWRITEBYTECODE=1",
-                "python3", "-m", "unittest", "discover", "-s", "harp_durable", "-t", ".", "-p", "test_*.py")
-        elif path.startswith("corenius/"):
-            # Imported historical prose and artifacts retain their original bytes.
-            # Check their pinned source instead of rewriting old links or formatting.
-            add("corenius-import", "python3", "scripts/verify_corenius_import.py")
-            if path in (
-                "corenius/Cargo.toml", "corenius/Cargo.lock",
-                "corenius/controller/Cargo.toml", "corenius/controller/Cargo.lock",
-                "corenius/terminal_agent/Cargo.toml", "corenius/terminal_agent/Cargo.lock",
-                "corenius/controller/src/main.rs", "corenius/terminal_agent/src/main.rs",
-                "corenius/controller/support/codex_insula.py",
-                "corenius/bench/harness/run.py", "corenius/bench/harness/controller_mode.py",
-                "corenius/bench/harness/fleet.py", "corenius/bench/harness/lead_driven.py",
-                "corenius/bench/tmuxh/cli.py", "corenius/bench/tmuxh/bench-tmux",
-                "corenius/tools/agents/checks.d/10-wt.sh",
-            ) or path.startswith("corenius/controller/src/bin/") or (
-                path.endswith(".py") and path.startswith((
-                    "corenius/tools/agents/", "corenius/tools/collab/",
-                    "corenius/controller/launch/", "corenius/controller/operator/",
-                ))
-            ):
-                add("controller-retirement", "python3", "corenius/tools/temp_root.py", "--",
-                    "python3", "corenius/tools/agents/test_wt.py")
+        elif path.startswith(("corenius/", "harp_durable/")):
+            add("absorption", "python3", "scripts/verify_absorption.py")
+            add("architecture", "python3", "scripts/check_architecture.py")
+            add("durable-runtime", "env", "PYTHONDONTWRITEBYTECODE=1", "python3", "-m", "unittest", "discover", "-s", "durable", "-t", ".", "-p", "test_*.py")
+        elif path.startswith(("durable/", "insula/", "runner/")):
+            if path.endswith(".md") and "/provenance/" not in path:
+                docs.append(path)
+            add("absorption", "python3", "scripts/verify_absorption.py")
+            add("architecture", "python3", "scripts/check_architecture.py")
+            add("durable-runtime", "env", "PYTHONDONTWRITEBYTECODE=1", "python3", "-m", "unittest", "discover", "-s", "durable", "-t", ".", "-p", "test_*.py")
+            add("insula", "python3", "-m", "unittest", "discover", "-s", "insula", "-t", ".", "-p", "test_*.py")
+            add("runner", "python3", "-m", "unittest", "discover", "-s", "runner", "-t", ".", "-p", "test_*.py")
+            add("runner", "python3", "runner/privacy.py")
+            add("native-lifecycle", "python3", "scripts/verify_native_receipt.py", "--suite", "integrated")
+            if path.startswith("insula/supervisor/") and "/provenance/" not in path:
+                rust_paths.append(path)
+        elif path.startswith(("evidence/engineering_history/", "evidence/provenance/", "lab/benchmarks/")):
+            add("absorption", "python3", "scripts/verify_absorption.py")
+            if path.startswith("lab/benchmarks/") and not path.startswith("lab/benchmarks/studies/"):
+                add("native-benchmarks", "python3", "scripts/verify_native_receipt.py", "--suite", "benchmarks")
+        elif path.startswith("lab/soma/"):
+            add("soma", "python3", "lab/soma/verify_preservation.py")
+            add("soma", "python3", "-m", "unittest", "discover", "-s", "lab/soma", "-p", "test_verify_preservation.py")
+            for test in sorted((root / "lab/soma/scripts/insula").glob("test*.py")):
+                add("soma", "env", "PYTHONPATH=lab/soma", "python3", str(test.relative_to(root)))
+        elif path.startswith("lab/math/proof_reproduction/") or path in ("lab/math/relocation.py", "lab/math/relocation.json", "lab/math/test_relocation.py"):
+            add("math-relocation", "python3", "-m", "unittest", "discover", "-s", "lab/math", "-p", "test_relocation.py")
+            add("proof", "python3", "-m", "unittest", "discover", "-s", "lab/math/proof_reproduction")
+            add("math-relocation", "python3", "lab/math/relocation.py")
+        elif path.startswith("lab/math/lean_trae_benchmark/"):
+            add("lean-benchmark", "python3", "-m", "unittest", "discover", "-s", "lab/math/lean_trae_benchmark")
+        elif path.startswith("lab/sicp/"):
+            rust_paths.append(path)
         elif path in ("docs/import-receipt.md", "docs/import-map.tsv") or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith("tools/obsidian/") or path in ("scripts/validate_obsidian_assets.py", "scripts/tests/test_obsidian_assets.py") or (path.startswith("knowledge/obsidian/") and not path.endswith(".md")):
@@ -113,7 +129,15 @@ def plan(root, paths):
             for command in ("check", "build"):
                 args = ("--check",) if command == "build" else ()
                 add("corpus", "cargo", "run", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--", command, *args)
-        elif path.startswith("formalization/") and not path.endswith(".md"):
+        elif path.startswith(("formalization/", "lab/math/")) and not path.endswith(".md"):
+            add("math-relocation", "python3", "lab/math/relocation.py")
+            add("math-relocation", "python3", "-m", "unittest", "discover", "-s", "lab/math", "-p", "test_relocation.py")
+            if not (root / path).exists() or not path.endswith((".lean", "lean-toolchain", "lakefile.toml", "lake-manifest.json")):
+                continue
+            if path in unchanged_math and hashlib.sha256((root / path).read_bytes()).hexdigest() == unchanged_math[path]:
+                # Relocation validates source identities and original bytes. The
+                # fresh exporter/publication checks cover its changed path seam.
+                continue
             routes = {
                 "TrainingDynamics": "lean-training", "training_dynamics": "lean-training",
                 "MathematicalFoundations": "lean-foundations", "mathematical_foundations": "lean-foundations",
@@ -127,7 +151,7 @@ def plan(root, paths):
                     target = task
             add("lean", "mise", "run", target)
         elif path == ".github/workflows/pages.yml" and not (root / path).exists():
-            add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_verify_changes.py")
+            add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_verify_changes.py")
         elif path.endswith(".md") and not path.startswith(("crates/", "labs/", "tools/textbook_pdf/")):
             docs.append(path)
         elif path.startswith("atlas/") and not (root / path).exists():
@@ -151,8 +175,16 @@ def plan(root, paths):
         elif path == "mise.toml" or path.startswith("scripts/"):
             if not (root / path).exists():
                 continue
-            if path == "mise.toml" or path in ("scripts/verify_changes.py", "scripts/tests/test_verify_changes.py"):
-                add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_verify_changes.py")
+            if path == "mise.toml" or path in ("scripts/verify_changes.py", "scripts/test_verify_changes.py"):
+                add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_verify_changes.py")
+            elif path in ("scripts/check_architecture.py", "scripts/test_check_architecture.py"):
+                add("architecture", "python3", "scripts/check_architecture.py")
+                add("architecture", "python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_check_architecture.py")
+            elif path in ("scripts/verify_native_receipt.py", "scripts/test_verify_native_receipt.py"):
+                add("native-receipt", "python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_verify_native_receipt.py")
+            elif path in ("scripts/verify_absorption.py", "scripts/git_objects.py", "scripts/test_verify_absorption.py"):
+                add("absorption", "python3", "scripts/verify_absorption.py")
+                add("absorption", "python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_verify_absorption.py")
             elif path.endswith(".sh"):
                 if (root / path).exists():
                     add("shell", "bash", "-n", path)
@@ -182,14 +214,14 @@ def plan(root, paths):
         affected = {name for name, package in packages.items() if any(
             path.startswith(str(Path(package["manifest_path"]).parent.relative_to(root)) + "/") for path in rust_paths
         )}
-        if any(not p.startswith(("crates/", "labs/")) for p in rust_paths):
+        if any(not p.startswith(("crates/", "labs/", "lab/", "insula/supervisor/")) for p in rust_paths):
             affected = set(packages)
         # Changing a test alone does not change a package's public contract.
         runtime = {name for name in affected if any(
             path.startswith(str(Path(packages[name]["manifest_path"]).parent.relative_to(root)) + "/")
             and "/tests/" not in path for path in rust_paths
         )}
-        if any(not p.startswith(("crates/", "labs/")) for p in rust_paths):
+        if any(not p.startswith(("crates/", "labs/", "lab/", "insula/supervisor/")) for p in rust_paths):
             runtime = set(packages)
         while True:
             consumers = {name for name, package in packages.items() if any(d["name"] in runtime for d in package["dependencies"])}
@@ -204,6 +236,9 @@ def plan(root, paths):
             if name not in runtime and owned and all(Path(p).parent == Path(directory) / "tests" and (root / p).exists() for p in owned):
                 for p in owned:
                     add("rust-contract", *prefix, "--test", Path(p).stem)
+                continue
+            if name == "insula-supervisor":
+                add("native-supervisor", "python3", "scripts/verify_native_receipt.py", "--suite", "supervisor")
                 continue
             if name != "harp":
                 add("rust", *prefix)
@@ -220,7 +255,7 @@ def plan(root, paths):
                     continue
                 if p.endswith("/src/main.rs"):
                     add("cli", *prefix, "--test", "cli")
-                    if (root / "crates/harp/tests/durable_cli.rs").exists():
+                    if (root / "crates/harp/src/durable_cli_test.rs").exists():
                         add("rust-contract", *prefix, "--test", "durable_cli")
                 elif p.endswith("/src/durable.rs"):
                     add("rust-contract", *prefix, "--test", "durable_cli")
@@ -245,7 +280,7 @@ def main():
     base, paths = changed_paths(root, args.base)
     # Imported Corenius bytes are checked against retained Git objects by their
     # own gate. Existing whitespace in those source captures is not an edit.
-    jobs = [{"surface": "diff", "command": ["git", "diff", "--check", base, "--", ".", ":(exclude)corenius"]}] + plan(root, paths)
+    jobs = [{"surface": "diff", "command": ["git", "diff", "--check", base, "--", ".", ":(exclude)corenius", ":(exclude)evidence/engineering_history", ":(exclude)lab/benchmarks/studies", ":(exclude)lab/benchmarks/inventories", ":(exclude)lab/benchmarks/tasks/t05-git-conflict-marker-cleanup/environment/generated.conf", ":(exclude)insula/supervisor/provenance", ":(exclude)insula/supervisor/docs/TEST_OUTPUT.txt"]}] + plan(root, paths)
     if args.plan:
         print(json.dumps({"base": base, "paths": paths, "checks": jobs}, indent=2))
         return

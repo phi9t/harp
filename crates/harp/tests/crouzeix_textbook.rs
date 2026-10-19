@@ -758,7 +758,9 @@ fn scan_retired_references_at(root: &Path, paths: &[PathBuf]) -> Result<Vec<Stri
 }
 
 fn deletion_guard_excludes(path: &Path) -> bool {
-    path.starts_with("docs") || path == Path::new("content/generated/corpus.json")
+    path.starts_with("docs")
+        || path == Path::new("content/generated/corpus.json")
+        || path == Path::new("evidence/provenance/absorption.json")
 }
 
 fn retired_reference_in(text: &str) -> Option<String> {
@@ -813,7 +815,9 @@ fn retired_reference_in(text: &str) -> Option<String> {
 
 fn non_documentation_source_paths() -> Result<Vec<PathBuf>, String> {
     let mut child = Command::new("git")
-        .args(["ls-files", "-z", "--", ".", ":(exclude)corenius"])
+        .args(["ls-files", "-z", "--", ".", ":(exclude)corenius",
+               ":(exclude)evidence/engineering_history", ":(exclude)lab/benchmarks",
+               ":(exclude)lab/soma/benchmarks"])
         .current_dir(workspace_root())
         .stdout(Stdio::piped())
         .spawn()
@@ -1034,7 +1038,7 @@ fn deletion_guard_matches_retired_spellings_including_knowledge() {
 }
 
 #[test]
-fn deletion_guard_excludes_only_docs_and_exact_task8_artifacts() {
+fn deletion_guard_excludes_docs_and_exact_generated_or_provenance_artifacts() {
     let fixture = tempfile::tempdir().expect("deletion guard exclusions fixture");
     let retired = retired_dependency_manifest()
         .file_name()
@@ -1045,6 +1049,8 @@ fn deletion_guard_excludes_only_docs_and_exact_task8_artifacts() {
         PathBuf::from("docs/retired-reference.md"),
         PathBuf::from("content/generated/corpus.json"),
         PathBuf::from("content/generated/not-corpus.json"),
+        PathBuf::from("evidence/provenance/absorption.json"),
+        PathBuf::from("evidence/provenance/not-absorption.json"),
     ];
     for relative in &paths {
         let path = fixture.path().join(relative);
@@ -1056,8 +1062,11 @@ fn deletion_guard_excludes_only_docs_and_exact_task8_artifacts() {
     let violations = scan_retired_references_at(fixture.path(), &paths).expect("bounded scan");
     assert_eq!(
         violations,
-        vec![format!("{} names {retired}", paths[2].display())],
-        "the exclusion boundary must not widen beyond docs and exact Task8 artifacts"
+        vec![
+            format!("{} names {retired}", paths[2].display()),
+            format!("{} names {retired}", paths[4].display()),
+        ],
+        "the exclusion boundary must not widen beyond docs and exact registered artifacts"
     );
 }
 
@@ -7571,7 +7580,7 @@ fn run_jin_closure(lean_root: &Path) -> std::process::Output {
 import sys
 from pathlib import Path
 repo = Path(sys.argv[1])
-sys.path.insert(0, str(repo / 'labs' / 'crouzeix_proof_reproduction'))
+sys.path.insert(0, str(repo / 'lab' / 'math' / 'proof_reproduction'))
 import proof_evidence
 try:
     closure = proof_evidence.gather_route_closure(
@@ -7651,6 +7660,12 @@ fn fresh_provider_receipt_rows(phase: JinPhase) -> Vec<Value> {
 }
 
 fn fresh_textbook_receipt() -> Value {
+    // One fresh compiler export per frozen test process; callers mutate clones.
+    static RECEIPT: OnceLock<Value> = OnceLock::new();
+    RECEIPT.get_or_init(build_fresh_textbook_receipt).clone()
+}
+
+fn build_fresh_textbook_receipt() -> Value {
     let temp = tempfile::tempdir().expect("fresh textbook receipt directory");
     fs::set_permissions(temp.path(), fs::Permissions::from_mode(0o700))
         .expect("private receipt directory permissions");

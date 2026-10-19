@@ -18,12 +18,12 @@ Keep service policy separate from the single agent/workload control plane.
 
 - [x] Imported tests are colocated with owning source modules, with native integration targets configured explicitly; preserve original archive provenance and test behavior.
 - [x] Source/archive and adaptations have exact provenance. Reconcile workspace SQLite linkage/toolchain constraints and rerun tests against the chosen lock without silently changing pins.
-- [ ] The real owner implements all eight interface methods, exclusive root claims, effect-time epoch/generation fencing, durable launch and endpoint reservations, and complete observation semantics. A test fixture never supplies production authority.
+- [ ] The real owner implements all eight interface methods for its advertised capability subset, exclusive root claims, effect-time epoch/generation fencing, durable launch and endpoint reservations, and reconciliation observations. Unsupported operations refuse admission; a test fixture never supplies production authority.
 - [ ] Durable activity admission and service claims share the authoritative execution boundary without state-directory or socket aliases bypassing exclusivity. No competing namespace keeper or reaping loop is introduced.
 - [x] Private service-state SQLite records remain service-owned; workflow attempts, candidate results and approvals remain durable-owned. Neither database writes or mirrors the other's authority.
 - [ ] Verify actual target namespace entry, service/probe descendant cleanup, secret resolution, bounded log sinks and workload/controller access isolation. Unsupported stronger capabilities refuse admission.
 - [x] Reconnect, terminal replacement and workflow recovery remain separate. A completed tmux-pane counter stays at one after controller recovery and explicit empty-server replacement. Agent turns, benchmarks and training are never implicit bootstrap replays.
-- [ ] Reproduce duplicate-start, stale-generation, claim-loss, delayed-effect, interrupted-stop/restart, unknown-outcome, probe/budget and competing-controller cases through the real owner.
+- [ ] Reproduce supported duplicate-start, stale-generation, claim-loss, lost-reply/unknown-outcome, owner-crash recovery, bounded logs and competing-owner cases through the real owner. Preserve richer policy/probe/budget fixture tests without claiming they qualify unsupported owner capabilities.
 - [ ] Qualify actual bwrap/PID-namespace lifetime and both controller-crash and owner-crash cases. Advertise keep-services survival only when that specific boundary is demonstrated.
 - [x] No daemon, hook or persistent service is installed as an integration side effect. Preserve explicit operator lifecycle controls and sanitized public evidence.
 
@@ -41,8 +41,8 @@ The supplied report records 54 test executions, clippy and fmt; these have not
 been rerun here. Preserve that evidence with its direct-process fixture limits.
 Rerun the library/transport/daemon tests, then the owner contract plus real
 namespace/cgroup cleanup and tmux/Emacs service scenarios. Record exact source,
-lock, owner and rootfs identities. No production owner integration, crate import
-or native qualification has been performed yet.
+lock, owner and rootfs identities. The initial acquisition did not include production owner integration; the fresh
+evidence below and final root-workspace qualification supersede that state.
 
 ## Acquisition and supported owner delivery
 
@@ -93,8 +93,9 @@ Unsupported. These refusal boundaries are explicit in `INTEGRATION.md` and
 
 ### Remaining qualification boundary
 
-The unchecked criteria above include richer owner capabilities and their full
-real-adapter adversarial matrix. The imported fixture suite covers rich supervisor
+The advertised owner subset is the existing-code migration contract. Richer owner
+capabilities and their full real-adapter matrix are tracked in
+[the service-owner follow-up](14-extend-service-owner-capabilities.md). The imported fixture suite covers rich supervisor
 policy and probe cases; it does not qualify those capabilities for this owner.
 Non-process probes, secret resolution and controller-independent survival remain
 explicitly unsupported. Shared durable guardian integration and root-workspace

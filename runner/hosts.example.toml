@@ -1,0 +1,7 @@
+# Fictional example. Real inventories must be private and ignored.
+[hosts.example]
+ssh_alias = "example.invalid"
+repository = "/srv/harp"
+state = "/srv/harp-state"
+execution = "/srv/harp-state/execution.json"
+execution_contract = "insula-durable-v1:REPLACE_WITH_PREPARE_RESULT"

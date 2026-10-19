@@ -12,7 +12,7 @@ fn repository_root(start: &Path) -> Result<PathBuf, AppError> {
         if !root.join("Cargo.toml").is_file() {
             continue;
         }
-        let package = root.join("harp_durable");
+        let package = root.join("durable");
         let files = [
             package.clone(),
             package.join("__init__.py"),
@@ -31,7 +31,7 @@ fn repository_root(start: &Path) -> Result<PathBuf, AppError> {
     }
     Err(AppError::invalid_input(
         "durable.root",
-        "run durable from a Harp checkout containing the harp_durable package",
+        "run durable from a Harp checkout containing the durable package",
     ))
 }
 
@@ -45,12 +45,12 @@ pub fn exec(format: &str, args: &[OsString]) -> AppError {
         Ok(root) => root,
         Err(error) => return error,
     };
-    let python_path = match env::join_paths([root.join("corenius"), root.clone()]) {
+    let python_path = match env::join_paths([root.clone()]) {
         Ok(value) => value,
         Err(error) => return AppError::invalid_input("durable.root", error.to_string()),
     };
     let error = Command::new("python3")
-        .args(["-m", "harp_durable", "--format", format])
+        .args(["-m", "durable", "--format", format])
         .args(args)
         .current_dir(&root)
         .env("PYTHONPATH", python_path)

@@ -1,6 +1,6 @@
 # Harp repository architecture
 
-Status: architecture recorded; implementation open
+Status: implementation and final qualification in progress
 Owner: project owner
 Branch: codex/repo-architecture
 Baseline: 5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3
@@ -17,7 +17,7 @@ lab/. Preserve math, novel Crouzeix proofs, SICP, education and PDF publication.
 The [target architecture](../../docs/workstream/repo-architecture/design.md) owns
 the tree, dependency graph, migration mapping, trust boundaries and workload
 contracts. It supersedes earlier recommendations to retain the imported directory.
-Current source still has the old layout; this record does not claim migration.
+The integration candidate implements this ownership graph; completion requires the recorded composed-source checks and local landing.
 
 ## Scope and authority
 
@@ -98,7 +98,7 @@ fixtures, catalogs, tmux work and result records. Read-only inspection also foun
 Soma's Emacs/Doom gym and DevX's AI/LSP workload in separate dirty source
 checkouts. Ticket 12 acquires those workloads into lab/soma/ and blocks final
 migration acceptance. New Bazel/Triton/training implementations remain deferred.
-The newly inspected Emacs sources have not yet been snapshotted or imported.
+The Emacs sources are now preserved under lab/soma/ with byte-level source maps; the historical inspection evidence below predates that import.
 
 Benchmark clarification checks passed: twelve acyclic tickets, final acceptance
 blocked on Emacs acquisition, current 42-task/18-scenario counts checked against
@@ -117,7 +117,7 @@ and qualifies the missing real ExecutionOwner adapter through the authoritative
 Insula process/namespace boundary. It blocks final integration and the Emacs
 service scenarios. Service state does not become another workflow/approval
 journal, and terminal recovery cannot replay expensive workload effects.
-The archive has only been inspected; no crate or daemon has been installed.
+The archive is now imported with a real Insula execution owner. The owner exposes only its qualified capabilities; stronger service capabilities refuse admission. No persistent daemon is installed.
 
 Supervisor-record checks passed: archive digest and standalone-document matches,
 thirteen-ticket acyclic dependency graph, required supervisor blockers, changed

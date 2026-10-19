@@ -1,0 +1,4 @@
+#!/bin/sh
+# Refuse before uv, dependency installation, state access or tmux startup.
+printf '%s\n' 'Retired imported tmux harness. Use harp durable --help for coding lifecycle and human-approved landing; pure offline reference/noop replay remains in lab/benchmarks/harness/run.py.' >&2
+exit 2

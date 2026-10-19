@@ -1,7 +1,7 @@
 # 04: Make Insula a first-party isolation package
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
 ## What to build
@@ -17,7 +17,7 @@ per-activity guardian must not be mislabeled a complete long-lived service owner
 
 - [ ] Insula rootfs/capsule construction and execution work without importing durable, runner or a workload package.
 - [ ] Durable attempt admission, guardian ownership and receipt acceptance stay outside Insula.
-- [ ] Projected inputs remain immutable; state, credentials, capability files and authoritative receipts stay outside worker namespaces.
+- [ ] Projected inputs remain immutable; controller state, owner credentials/capabilities and authoritative receipts stay outside worker namespaces. A provider activity receives only its explicitly admitted provider credential; independent verifiers receive none.
 - [ ] Missing cgroup delegation refuses execution without fallback. Namespace, network and descendant-cleanup tests pass on the moved code.
 
 ## Blocked by
@@ -28,4 +28,8 @@ per-activity guardian must not be mislabeled a complete long-lived service owner
 
 Run real capsule/rootfs tests, public prepare/start/cancel/recovery tests and required Linux cgroup/namespace tests. Verify new sealed profiles use the moved source and old profiles remain unchanged.
 
-No implementation or qualification result is recorded yet.
+See the implementation progress below.
+
+## Implementation progress
+
+Capsule/rootfs/cgroup/storage mechanisms now live under insula/. Durable binds fresh sealed source snapshots and owns attempt receipts; both guardian and service owner use insula.owner.process.launch. Current native owner matrix passes nine tests with no skips. Missing cgroup delegation still refuses; non-GPU execution uses private sysfs. Final composed runtime qualification remains pending.

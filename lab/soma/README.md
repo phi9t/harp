@@ -49,3 +49,24 @@ No upstream repository license was present in either acquired source tree; this
 import does not infer permission or add a repository-wide license. Existing
 third-party package pins/attribution are retained. Original agent guidance and
 historical skill documents are source history, not Harp workflow instructions.
+
+## Durable workload entrypoint
+
+`workload.json` is the first-party admitted workload declaration. Its lab-owned
+`workload_adapter.py` projects the already admitted native rootfs for the eight
+scenario suites. The outer durable guardian remains their cgroup owner. The
+lab-owned `check_workload.py` runs from frozen owner oracle bytes outside mutable
+workload source. These additions are recorded separately from captured source
+in the preservation map; they do not rewrite the acquisition provenance.
+
+Prepare a native rootfs containing Soma's declared capabilities, then admit the
+committed manifest with `harp durable workload <run> --repository <repo>
+--manifest lab/soma/workload.json --base <commit> --task-revision <commit>`.
+Remote transport uses the same command through `python3 -m runner`; its private
+inventory pins the exact execution contract. No second scheduler is involved.
+
+The migrated workload also passed the shared durable/SSH owner path: all 139
+scenarios, bounded hashed artifacts, disconnect reconciliation, explicit
+cancellation with kernel emptiness evidence, and subsequent capacity reuse.
+See `../../runner/qualification.json` for the exact source/profile-bound scope.
+The earlier foreground `qualification.json` remains a separate historical result.

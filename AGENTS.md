@@ -5,6 +5,16 @@ documentation dependencies on another local checkout.
 
 ## Canonical ownership
 
+- `durable/` owns agent execution, its SQLite journal, Git-managed intent
+  bindings, independent verification and landing. `insula/` owns containment and
+  service supervision; `runner/` is SSH transport. Do not add a competing
+  controller or dispatcher.
+- Actual SSH inventories and credentials are private, ignored inputs. Public
+  examples use fictional hosts and paths.
+- `.scratch/` owns Git-managed specs and issues; `lab/` holds workloads and their
+  documentation. Imported benchmark fixture tests retain their external format.
+
+
 - Managed Markdown in registered topic packets under `knowledge/` is the
   authority for technical prose. `content/` is reserved for structured
   machine-readable contracts and generated output; do not
@@ -77,7 +87,7 @@ handling.
 
 ### Lean cache discipline
 
-- Treat the primary checkout's `formalization/lean/.lake` as the canonical
+- Treat the primary checkout's `lab/math/lean/.lake` as the canonical
   machine-local dependency cache. A Lean feature worktree should use a
   symlink to that cache after verifying its target and ancestry.
 - Never hydrate or update common Lean dependencies during proof iteration. Do

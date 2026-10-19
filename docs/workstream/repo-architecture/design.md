@@ -1,6 +1,6 @@
 # Harp ownership and repository layout
 
-Status: target architecture; migration not implemented.
+Status: implemented in the integration candidate; final qualification and landing pending.
 Baseline: `5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3`.
 Intent and delivery slices: [local specification](../../../.scratch/repo-architecture/spec.md).
 
@@ -20,7 +20,7 @@ executable checks are established.
 
 The new Bazel, Triton and training workloads are architecture and follow-up
 tickets in this pass. Their implementation and qualification are future work.
-The current code does not yet have the layout below.
+The existing-code candidate uses the layout below. The three new workload directories are planned follow-ups.
 
 ## Target tree
 
@@ -34,8 +34,10 @@ durable/                    one Python execution control plane
   collaboration/            bounded assignments, worktree ownership, integration policy
   git/                      source/candidate/verification/landing domain
   workflows/                coding, verification and workload orchestration
+  workloads/                frozen workload manifests, execution and artifacts
   execution.py              bind runtime identity to an Insula execution
 insula/                     capsule, rootfs, projection and isolation mechanisms
+  owner/                    shared launch gate and capability-limited service owner
   supervisor/               supplied Rust service lifecycle library and owner client
 runner/                     SSH transport, preflight, request/result transfer
   hosts.example.toml        fictional example only

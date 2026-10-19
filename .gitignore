@@ -30,3 +30,6 @@
 !/.scratch/**/*.md
 
 /publications/crouzeix_textbook/
+
+# Private execution host inventory; never included in source or evidence exports.
+/runner/hosts.local.*

@@ -13,9 +13,9 @@ Harp owns the agent runtime and maintained education library:
 - local SQLite full-text search, immutable context releases and provider diagnostics;
 - project-scoped durable coding work through `harp durable`;
 - selected imported durable/Insula mechanisms and retained reference source,
-  benchmark evidence and provenance under `corenius/`.
+  benchmark evidence and provenance under `lab/benchmarks/` and `evidence/engineering_history/`.
 
-See [Corenius integration](corenius-integration.md) for its separate pinned Cargo
+See [Corenius integration](corenius-integration.md) for its retained source and pinned
 workspace, retained branch/worktree provenance and qualification limits.
 PostgreSQL/Temporal active source and dependencies are retired; original source
 remains recoverable through the import ledger and retained Git history.

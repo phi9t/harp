@@ -88,7 +88,7 @@ mise run no-dwarf
 "$HARP_TARGET_DIR/size/harp" search refresh
 "$HARP_TARGET_DIR/size/harp" search status
 "$HARP_TARGET_DIR/size/harp" search query "SICP" --limit 5 >/dev/null
-python3 -m unittest discover -s labs/crouzeix_proof_reproduction/tests -v
+python3 -m unittest discover -s lab/math/proof_reproduction -v
 """
 
 [tasks.lean-env]
@@ -96,7 +96,7 @@ description = "Prepare task-scoped Lean environment variables for shared-root pr
 run = """
 set -euo pipefail
 . scripts/harp_xdg_env.sh
-test "$(tr -d '\r\n' < formalization/lean/lean-toolchain)" = "$HARP_LEAN_TOOLCHAIN"
+test "$(tr -d '\r\n' < lab/math/lean/lean-toolchain)" = "$HARP_LEAN_TOOLCHAIN"
 test -d "$HARP_LEAN_CACHE_ROOT" && test ! -L "$HARP_LEAN_CACHE_ROOT"
 test -d "$HARP_ELAN_HOME" && test ! -L "$HARP_ELAN_HOME"
 test -d "$HARP_LEAN_TOOLCHAIN_ROOT" && test ! -L "$HARP_LEAN_TOOLCHAIN_ROOT"
@@ -107,14 +107,14 @@ git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir)
 case "$git_common_dir" in */.git) primary=${git_common_dir%/.git} ;; *) exit 1 ;; esac
 config_root="{{config_root}}"
 if [ "$config_root" = "$primary" ]; then
-  test -d formalization/lean/.lake
-  test ! -L formalization/lean/.lake
+  test -d lab/math/lean/.lake
+  test ! -L lab/math/lean/.lake
 else
-  test -L formalization/lean/.lake
-  test "$(readlink formalization/lean/.lake)" = "$primary/formalization/lean/.lake"
+  test -L lab/math/lean/.lake
+  test "$(readlink lab/math/lean/.lake)" = "$primary/lab/math/lean/.lake"
 fi
-test -L "$primary/formalization/lean/.lake/packages"
-test "$(readlink "$primary/formalization/lean/.lake/packages")" = "$HARP_LEAN_CACHE_ROOT/packages"
+test -L "$primary/lab/math/lean/.lake/packages"
+test "$(readlink "$primary/lab/math/lean/.lake/packages")" = "$HARP_LEAN_CACHE_ROOT/packages"
 test -d "$HARP_LEAN_CACHE_ROOT/packages/mathlib"
 test ! -L "$HARP_LEAN_CACHE_ROOT/packages/mathlib"
 """
@@ -127,7 +127,7 @@ set -euo pipefail
 . scripts/harp_xdg_env.sh
 export ELAN_HOME="$HARP_ELAN_HOME"
 export PATH="$HARP_LEAN_TOOLCHAIN_BIN:$PATH"
-cd formalization/lean
+cd lab/math/lean
 lake --try-cache exe cache get Mathlib
 """
 

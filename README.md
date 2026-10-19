@@ -27,7 +27,7 @@ local reading and evidence setup.
 | Review the articles previously read | [Brief article survey](knowledge/article_survey.md) |
 | Study interpreters and agent engineering | [SICP](knowledge/sicp/sicp_index.md) and [agentic engineering](knowledge/agentic_engineering/agentic_engineering_index.md) |
 | Search and validate the local corpus | [CLI setup and first commands](docs/getting-started.md#build-the-cli) |
-| Run Codex or Trae in isolated, restartable coding attempts | [Durable coding work](docs/durable-runtime.md) |
+| Run Codex in isolated, restartable coding attempts | [Durable coding work](docs/durable-runtime.md) |
 | Inspect context tools and old command dispositions | [Agent workflows](docs/agent-workflows.md) |
 
 The library also covers harness benchmarks, agentic engineering,
@@ -35,10 +35,10 @@ SICP, mathematical foundations, and proof-reproduction studies. Workstream recor
 
 ## Build the CLI
 
-The selected Python + SQLite runtime and imported reference source live in
-[`corenius/`](corenius/README.md). Its former controller, terminal-agent and
-Collab launch commands are retired. See [integration ownership and provenance](docs/corenius-integration.md)
-and the [durable operator guide](docs/durable-runtime.md).
+The Python + SQLite control plane lives in [`durable/`](durable/).
+It owns admission, isolated attempts, recovery, verification and approved Git
+landing. [`insula/`](insula/) isolates workload and service processes; [`runner/`](runner/)
+transports commands over SSH. See the [operator guide](docs/durable-runtime.md).
 
 The ordinary CLI build supports Python 3.9 or newer. Durable coding work
 requires Python 3.11 or newer on both the Linux host and in its native rootfs;
@@ -67,8 +67,11 @@ require the full contributor verification gate.
 - `content/` holds machine-readable contracts.
 - `content/generated/` holds the compiled headless corpus and local publication outputs.
 - `crates/` holds the CLI, reusable contracts and retained Rust libraries.
-- `harp_durable/` exposes the selected coding lifecycle over the imported lightweight runtime.
-- `labs/` and `formalization/` hold experiments and Lean companions.
+- `durable/` holds the sole execution framework, SQLite journal, intent and Git workflow.
+- `insula/` holds containment and the service supervisor.
+- `runner/` dispatches to a privately configured SSH host.
+- `lab/math/`, `lab/sicp/`, `lab/soma/` and `lab/benchmarks/` hold workloads,
+  Lean proofs, educational exercises and preserved benchmark studies.
 
 Markdown is the authority for technical prose. The compiled headless corpus is generated from it. The
 [product contract](docs/product-contract.md) records the detailed boundaries;
@@ -80,10 +83,10 @@ Harp works locally. Reading, search, and normal validation do not fetch
 research sources. Live agent runs are opt-in and need separately installed,
 configured provider CLIs; they may use the provider's network and paid services.
 
-The durable task-graph runtime supports Codex. Its Trae adapter is not yet
-implemented, although the separate provider workflow supports both Codex and
-Trae CLI. Research notes and proposer experiments do not establish a benchmark
-score or an autonomous self-improvement result.
+Codex is the first qualified provider for the consolidated framework. The Trae
+adapter and its prior evidence are retained; further integration is deferred.
+Historical research and benchmark captures retain their original claims and do
+not establish current runtime qualification.
 
 Native packaging is available through
 [`mise run release-candidate`](docs/releasing.md). It builds and checks an

@@ -1,7 +1,7 @@
 # 01: Unify durable runtime, SQLite state and Git workflow ownership
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
 ## What to build
@@ -30,4 +30,8 @@ None. Independent work may start without unrelated workload implementations.
 
 Reuse the public CLI lifecycle and runtime recovery tests. Add boundary checks only for the new dependency and ownership contracts. Run the portable suite and required native suite on the migrated profile; capture source hashes and distinguish skips from passes.
 
-No implementation or qualification result is recorded yet.
+See the implementation progress below.
+
+## Implementation progress
+
+Merged replay/guardian and coding integration into durable/, with state/store.py preserving the original Store/schema. Git replacement refs are ignored; committed Parent/dependency context and admitted allowed_paths reach the provider from frozen inputs. The focused real Git/context/policy/provider matrix passes 17 tests. Complete composed native qualification and landing remain pending.

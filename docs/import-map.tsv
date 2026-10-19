@@ -182,11 +182,11 @@ knowledge%2Frsi%2Fweng%2F06-self-improving-harnesses.md	retired	-	RSI article pr
 knowledge%2Frsi%2Fweng%2F07-evolutionary-search.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fweng%2F08-joint-harness-weight-optimization.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fweng%2F09-future-challenges.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-learning%2Fsicp_evaluator%2FCargo.lock	ported	labs/sicp-evaluator/Cargo.lock	standalone workspace member
-learning%2Fsicp_evaluator%2FCargo.toml	ported	labs/sicp-evaluator/Cargo.toml	standalone workspace member
-learning%2Fsicp_evaluator%2FREADME.md	rewritten	labs/sicp-evaluator/README.md	standalone workspace member
-learning%2Fsicp_evaluator%2Fsrc%2Flib.rs	ported	labs/sicp-evaluator/src/lib.rs	standalone workspace member
-learning%2Fsicp_evaluator%2Fsrc%2Fmain.rs	ported	labs/sicp-evaluator/src/main.rs	standalone workspace member
+learning%2Fsicp_evaluator%2FCargo.lock	ported	lab/sicp/Cargo.lock	standalone workspace member
+learning%2Fsicp_evaluator%2FCargo.toml	ported	lab/sicp/Cargo.toml	standalone workspace member
+learning%2Fsicp_evaluator%2FREADME.md	rewritten	lab/sicp/README.md	standalone workspace member
+learning%2Fsicp_evaluator%2Fsrc%2Flib.rs	ported	lab/sicp/src/lib.rs	standalone workspace member
+learning%2Fsicp_evaluator%2Fsrc%2Fmain.rs	ported	lab/sicp/src/main.rs	standalone workspace member
 %73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64-collections%2Fgenerated%2F.gitkeep	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
 %73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64-collections%2Frebuild_%73%6F%75%72%63%65%5F%67%72%61%70%68_index.sh	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
 %73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64_collections%2FREADME.md	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search

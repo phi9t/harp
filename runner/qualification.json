@@ -1,0 +1,198 @@
+{
+  "schema": 1,
+  "host": "ephemeral-linux-qualification",
+  "execution_contract": "insula-durable-v1:5b176df0e268d81bc37b2c9d2b05fe47d2c358256437d8d2fde17c6a566710e2",
+  "runtime_code_digest": "da0068f41f6370cc1c2ccc6e2cfb0119cfa236a51e2ae7288162eac0afcf5a35",
+  "native_manifest_sha256": "632f26d214e1d11068f987950659fe219d947d774128c9a2a9d010345608f305",
+  "source_commit": "3c98217093b5e8ea4f2133dc7b37ffa5d9d9d2e8",
+  "manifest_sha256": "0be92a93df9878c6613c508787d6e1b5cd9941e8f226370f3c1fbf09778bc5ed",
+  "soma": {
+    "status": "SUCCEEDED",
+    "suites": 8,
+    "cases": 139,
+    "artifacts": [
+      {
+        "path": "summary.json",
+        "sha256": "719cf1c42641a69934bd89ed324ec97b3ff563f44b6c5924dec67670d02174d1",
+        "size": 232
+      },
+      {
+        "path": "magit.json.gz",
+        "sha256": "cdaa84d881dfd12ae3db1cdaac9b89775a1a6f395a188c81d596fa86faf1eec4",
+        "size": 11056
+      },
+      {
+        "path": "comint.json.gz",
+        "sha256": "d87f1cbd1c0aa16dfaf332d3e414a9fee4c5f84764be65e6df60ea9b48af3008",
+        "size": 9043
+      },
+      {
+        "path": "jupyter.json.gz",
+        "sha256": "0ef9a96e0f6563eaba9868f1e8ae8e90898e5c8071ce544a88fdb0a4b3c853e9",
+        "size": 13871
+      },
+      {
+        "path": "lsp.json.gz",
+        "sha256": "3f0c329c587a2d4f33c43a6f67dfe6910b607544ada08a6013db2407ddba46e6",
+        "size": 589
+      },
+      {
+        "path": "org.json.gz",
+        "sha256": "a5e0932283f388c5d33a22166d0b616b804d111b8e7026df91ede834e5343d68",
+        "size": 7424
+      },
+      {
+        "path": "dired.json.gz",
+        "sha256": "854682aa2e9c9266198e17cbfb9c410f78ee35209aa4c83ee62253341cdccf61",
+        "size": 8250
+      },
+      {
+        "path": "bridge.json.gz",
+        "sha256": "c5724e065757eb62c1178ff706b41cc2adc7f65f76bdca698575203ef8237d20",
+        "size": 172472
+      },
+      {
+        "path": "bridge-daemon.json.gz",
+        "sha256": "2fa337dad7d0cc87eeef5f1501348b8e8a652b9c6fa2ec6046e83d2546559039",
+        "size": 1384051
+      }
+    ],
+    "cleanup": true,
+    "populated": 0,
+    "artifact_retrieval": "bridge-daemon.json.gz decoded and size/SHA-256 verified"
+  },
+  "disconnect": {
+    "same_run_reconciled": true,
+    "attempts": 1,
+    "transport_outcome": "unknown",
+    "retry": false,
+    "proxy_pipe_regression": "owned SSH session kills proxy descendants; real SSH main-only loss returned unknown"
+  },
+  "cancellation": {
+    "run_status": "BLOCKED",
+    "recovery": "manual",
+    "initial_processes": 5,
+    "initial_process_groups": 3,
+    "cleanup": true,
+    "kill_written": true,
+    "populated": 0,
+    "original_process_identities_gone": true
+  },
+  "capacity_reuse": {
+    "status": "SUCCEEDED",
+    "started_after_cleanup_seconds": 0.034672,
+    "artifact": {
+      "path": "answer.txt",
+      "sha256": "084c799cd551dd1d8d5c5f9a5d593b2e931f5e36122ee5c793c1d08a19839cc0",
+      "size": 3
+    }
+  },
+  "frozen_oracle": {
+    "status": "FAILED",
+    "mutable_checker_replaced_with_success": true,
+    "frozen_check_exit_code": 1,
+    "passed": false,
+    "cleanup": true
+  },
+  "refusals": [
+    "source mismatch before state creation",
+    "execution profile mismatch before state creation",
+    "missing cgroup delegation after ephemeral unit collection",
+    "unavailable SSH host returns unknown without retry",
+    "mutable source checker and shell acceptance check rejected"
+  ],
+  "bounds": {
+    "artifact_bytes": 16777216,
+    "total_artifact_bytes": 67108864,
+    "command_tail_bytes": 65536
+  },
+  "limits": [
+    "Authenticated external AI/LSP service calls remain unqualified.",
+    "The delegated rootfs contains installed native tools; this is not a hermetic image claim.",
+    "Runtime and native manifest digests bind this qualification; a composed source revision requires its own final gate."
+  ],
+  "phase_isolation_requalification": {
+    "execution_contract": "insula-durable-v1:b13563b768809cf01c5d9cc68b5fc58807e2ae720325400bd11a4d0dcfe4c024",
+    "runtime_code_digest": "0dafef48b095b97f259576c5d7d81f9c49049df1ed77bce6407d1ba1ed4d5729",
+    "source_commit": "62efdc32b11fb7f7f106f584ef5575ec25c869a2",
+    "soma": {
+      "status": "SUCCEEDED",
+      "passed": true,
+      "suites": 8,
+      "cases": 139,
+      "artifacts": [
+        {
+          "path": "summary.json",
+          "sha256": "5f9b398a64aefe7beeeddaec5614670df94d6cbb0aef5c4f1b4ad6c098ddf0a4",
+          "size": 232
+        },
+        {
+          "path": "magit.json.gz",
+          "sha256": "81cc3836bc347c495fca02aef9c2376df91f99d3de5bba8a24896aafbf5e2f1c",
+          "size": 11058
+        },
+        {
+          "path": "comint.json.gz",
+          "sha256": "cb16e4053a3cc0c4688ba3fb418a45a7cdf5454a575ee0862ce0ed3567ac04f3",
+          "size": 9042
+        },
+        {
+          "path": "jupyter.json.gz",
+          "sha256": "b54563993bc0fb2921a56c49e496cfc89be76b783bdb5a45dc4d7a2c08a3ee8d",
+          "size": 13877
+        },
+        {
+          "path": "lsp.json.gz",
+          "sha256": "562e510417b0507a7c96b711af9bffa9c9794197498f0c26af5233682737c03c",
+          "size": 588
+        },
+        {
+          "path": "org.json.gz",
+          "sha256": "542aba376727eae7c708877555378b2dba5fcb987d3b1b02d3c36e52a53a1d9e",
+          "size": 7425
+        },
+        {
+          "path": "dired.json.gz",
+          "sha256": "b81a732ee7b99ec5f580190223c93f4b7aee8e998e825abc069b0d868f48a51f",
+          "size": 8251
+        },
+        {
+          "path": "bridge.json.gz",
+          "sha256": "85a3a27a85e795d0b99f04ce4b8bcf91900a820f84f19dd1df2051db5abff8b8",
+          "size": 172342
+        },
+        {
+          "path": "bridge-daemon.json.gz",
+          "sha256": "e5a5b372a9ef273a8a24c445f65780d1356c350451599d0ebd6297a5af2b382a",
+          "size": 1386022
+        }
+      ],
+      "attempts": 1
+    },
+    "phase_probe": {
+      "status": "SUCCEEDED",
+      "checks_passed": true,
+      "cases": 1,
+      "skipped": 0,
+      "parent_inputs_hidden": true,
+      "check_projections_readonly": true
+    },
+    "writer_regression": {
+      "previous_result": "false acceptance reproduced before repair; original failure retained",
+      "status": "SUCCEEDED",
+      "accepted_artifact": {
+        "path": "answer.txt",
+        "sha256": "73475cb40a568e8da8a045ced110137e159f890ac4da883b6b17dc651b3a8049",
+        "size": 2
+      },
+      "retrieved_bytes": "42",
+      "detached_writer_does_not_survive_command": true
+    },
+    "artifact_transport": "summary, phase probe and daemon artifact retrieved via SSH; declared hashes and sizes verified; daemon decompressed and parsed",
+    "limits": [
+      "External authenticated AI/LSP calls remain outside qualification.",
+      "Earlier disconnect/cancellation controls retain their original source identities.",
+      "Final combined source-bound native lifecycle receipt is recorded separately."
+    ]
+  }
+}

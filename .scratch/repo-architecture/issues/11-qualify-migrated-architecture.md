@@ -1,7 +1,7 @@
 # 11: Qualify the migrated architecture end to end
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
 ## What to build
@@ -33,4 +33,18 @@ Review and qualify the complete existing-code migration against the new source i
 
 Freeze the complete candidate, inspect the selected plan with an explicit baseline, run required native/consumer checks and review the resulting diff. Record exact hashes, selected tests, provider overlap and approval/landing evidence. Local landing and any push follow existing human authority; this ticket grants none by itself.
 
-No implementation or qualification result is recorded yet.
+See the implementation progress below.
+
+## Implementation progress
+
+Migration review found and repaired guardian launch shadowing, frozen-oracle mount isolation, Git replacement-ref identity, missing frozen prompt context, proof-checker execution from inspected repositories, and primary-cache/source coupling. Native runtime matrix: 201/202 initially passed; the exact oracle failure was repaired and all three oracle regressions passed. Native owner: nine passed. Codex one and two workers passed on retained sealed sources; four-way coding overlap is proved, with independent verification rerun after a full-filesystem failure. No failed or old execution has been rebound or relabeled. Final composed source receipts, current candidate review, and local landing remain pending.
+
+Final Codex qualification proved one, two and four actual concurrent workers on
+recorded fresh sealed sources. A subsequent real task consumed a newer frozen
+Parent while its implementation base retained the older text. All eight exact
+candidates passed independent checks, received explicit human approval and landed
+serially in their separate repositories; Git heads/trees and journal rows match,
+and all destinations are clean. Neutral evidence is in
+`evidence/provenance/codex-qualification.json`. Native benchmark84 and supervisor
+54Rust+9owner cases pass on the frozen910-file composed source identity. The
+full integrated lifecycle receipt and complete-candidate gate remain pending.

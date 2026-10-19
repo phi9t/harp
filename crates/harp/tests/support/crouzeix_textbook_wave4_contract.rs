@@ -1945,7 +1945,7 @@ fn run_common_closure(lean_root: &Path, roots: &[&str]) -> Output {
 import json, sys
 from pathlib import Path
 repo = Path(sys.argv[1])
-sys.path.insert(0, str(repo / 'labs' / 'crouzeix_proof_reproduction'))
+sys.path.insert(0, str(repo / 'lab' / 'math' / 'proof_reproduction'))
 import proof_evidence
 proof_evidence.MANAGED_LOCAL_PREFIXES = (*proof_evidence.MANAGED_LOCAL_PREFIXES, 'CrouzeixTextbook')
 modules = set()

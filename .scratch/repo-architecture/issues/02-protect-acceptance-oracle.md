@@ -1,7 +1,7 @@
 # 02: Protect owner acceptance inputs and admitted change scope
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
 ## What to build
@@ -23,4 +23,8 @@ None. Independent work may start without unrelated workload implementations.
 
 Convert the audit public-CLI/namespace reproducer into a durable integration regression. Check the original bad candidate and a correct candidate against an externally controlled oracle, plus an allowed test-change task and a forbidden-path change. Do not mock the same checker logic under test.
 
-No implementation or qualification result is recorded yet.
+See the implementation progress below.
+
+## Implementation progress
+
+Owner oracle bytes freeze separately from worker inputs; checks require isolated pinned Python or qualified system tools. Capture and independent verification enforce allowed_paths. The Linux positive frozen-oracle case and both checker-replacement/scope counterexamples pass after the private mount repair. The preceding full native matrix passed 201 of 202, with that exact positive case subsequently repaired and rerun. Final source-bound integrated receipt remains pending.

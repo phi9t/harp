@@ -1,8 +1,29 @@
 # Supplied Insula service supervisor
 
-Status: inspected source input; not imported, built or integrated in Harp.
+Status: imported and integrated with the qualified Insula owner subset; final workspace qualification pending.
 Parent: [target architecture](design.md).
 Delivery: [service supervisor integration](../../../.scratch/repo-architecture/issues/13-integrate-insula-supervisor.md).
+
+## Current integration
+
+The source now lives under `insula/supervisor/`, with original archive bytes,
+member hashes and license status under its `provenance/` directory. The root
+Cargo workspace pins rusqlite 0.39.0 consistently with Harp. Tests are adjacent
+to source and explicit Cargo targets preserve supplied integration behavior.
+
+`insula/owner/` implements the service owner protocol through the same capsule
+and cgroup launch boundary used by durable activities. Service claims and
+journals own service policy; they cannot dispatch agent jobs or approve Git
+candidates. Supported services use the bench identity, foreground or empty tmux
+processes, process probes, terminate stop and stop-services lifetime. Secrets,
+other probes and controller-independent survival refuse admission. See
+[owner capabilities](../../../insula/owner/README.md) and
+[integration limits](../../../insula/supervisor/INTEGRATION.md).
+
+The imported Rust suite and nine real-owner Linux cases have passed. Final
+qualification reruns the suite against the root workspace lock and exact composed
+source. The original inspection below records the earlier source-acquisition
+state and must not be read as current integration status.
 
 ## Source identity and inspected evidence
 

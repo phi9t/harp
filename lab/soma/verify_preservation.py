@@ -39,6 +39,12 @@ def verify(root: Path) -> list[str]:
                      'ai_lsp/doom/ai-lsp-verifier.el'):
         if (root / expected).relative_to(repo).as_posix() not in destinations:
             errors.append(f'omitted supporting workload: {expected}')
+    for name, description in manifest.get('first_party',{}).items():
+        target = root/name
+        if target.is_symlink() or not target.resolve().is_relative_to(root.resolve()) or not target.is_file():
+            errors.append(f'missing or unsafe first-party workload integration: {name}')
+        elif hashlib.sha256(target.read_bytes()).hexdigest() != description['sha256']:
+            errors.append(f'changed first-party workload integration requires reviewed mapping: {name}')
     return errors
 
 

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "profile": "native",
+  "timeout": 900,
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "{source}/lab/soma/workload_adapter.py"
+  ],
+  "checks": [
+    [
+      "/usr/bin/python3",
+      "-I",
+      "/oracle/lab/soma/check_workload.py"
+    ]
+  ],
+  "artifacts": [
+    "summary.json",
+    "magit.json.gz",
+    "comint.json.gz",
+    "jupyter.json.gz",
+    "lsp.json.gz",
+    "org.json.gz",
+    "dired.json.gz",
+    "bridge.json.gz",
+    "bridge-daemon.json.gz"
+  ],
+  "oracle_files": [
+    "lab/soma/check_workload.py"
+  ],
+  "requires": {
+    "files": [
+      "/etc/soma-insula-rootfs-contract.json"
+    ],
+    "executables": [
+      "/usr/bin/bwrap",
+      "/opt/soma/emacs/bin/emacs",
+      "/opt/soma/emacs/bin/emacsclient"
+    ]
+  }
+}

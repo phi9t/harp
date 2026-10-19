@@ -2,8 +2,8 @@
 
 Harp's integrated coding path is `harp durable` on Linux. Its Python + SQLite
 runtime owns admission, capacity, attempts, cancellation, recovery and accepted
-results. Insula and per-attempt delegated cgroups contain each worker. Select
-Codex or Trae explicitly; provider sessions are not resumed automatically.
+results. Insula and per-attempt delegated cgroups contain each worker. Use
+Codex for the consolidated path; provider sessions are not resumed automatically.
 
 The [integration tickets](../.scratch/harp-runtime-integration/tickets.md) retain
 qualification evidence for one worker, a mixed pair and four mixed-provider
@@ -24,7 +24,7 @@ The native rootfs must contain executable `/usr/bin/python3`, `/usr/bin/git`,
 Networked providers also need their normal CA/DNS closure. Preparation refuses
 an empty, missing or symlinked resolver snapshot; populate a separate native
 closure with valid resolver and TLS trust paths before admitting networked work. The provider
-binaries must be named `codex` and `trae` (or `traex`) in the selected directory.
+binary must be named `codex` in the selected directory. A retained Trae adapter is optional.
 Codex also requires its matching packaged `codex-code-mode-host` alongside it.
 Supply only each provider's private authentication JSON file. Whole host homes,
 configuration directories and owner capabilities are not worker inputs.
@@ -46,8 +46,7 @@ cgroup=/sys/fs/cgroup$(awk -F: '$1 == "0" {print $3}' /proc/self/cgroup)
 harp durable --state "$state" --execution "$execution" prepare \
   --rootfs "$rootfs" --cgroup-root "$cgroup" --network host \
   --providers-bin "$providers" \
-  --codex-auth /absolute/private/codex-auth.json \
-  --trae-auth /absolute/private/trae-auth.json
+  --codex-auth /absolute/private/codex-auth.json
 ```
 
 Codex uses its packaged code-mode host for coding tools, with apps and plugins
@@ -75,7 +74,13 @@ old results with their old execution record, and admit fresh work with the new o
 ## Admit and execute
 
 Commit a task Markdown file and an acceptance JSON file in the source repository.
-Acceptance is a nonempty list of command argument arrays, for example:
+Acceptance binds an explicit `allowed_paths` list and one through 32 checks.
+Checks use isolated Python (`/usr/bin/python3 -I -c ...`) or a committed oracle
+script declared in `oracle_files` and named as `/oracle/<path>` in the check
+arguments. The verifier resolves these logical names into its private readonly
+oracle mount; inline checks can receive the resolved path as an argument. The owner
+freezes oracle bytes separately from worker inputs. Candidate files cannot
+replace the verifier. For example:
 
 ```json
 {"checks":[["/usr/bin/python3","-m","unittest","discover","-s","tests"]]}
@@ -164,3 +169,22 @@ an operator decision; the example text alone is not cleanup proof.
 Use `events` for operational history and `check` for SQLite integrity and admitted
 version. Task intent remains Git-managed Markdown. No Temporal, PostgreSQL,
 tracker daemon or installed always-on Harp service is required.
+
+## Source migration and retained history
+
+The current package is `durable`; old package paths and competing controllers
+are retired. Prepare a fresh execution for these source bytes. Completed records
+retain their original execution contract. Never replace their sealed code to make
+old state run under the new package. Inspect historical receipts as evidence and
+reconcile ambiguous effects explicitly before starting another attempt.
+
+Git-managed `.scratch/<feature>/spec.md` and `issues/*.md` remain the authoring
+interface. Admission reads exact committed task and dependency bytes, rejects
+unfinished dependencies and freezes their hashes with the allowed change scope.
+The SQLite journal records execution; it is not an editable intent backlog.
+
+Archiving an existing execution must preserve the full identity of every sealed
+layer, including nanosecond timestamps where its fingerprint binds them. A
+byte-for-byte copy with rounded timestamps may fail admission. Keep the original
+layer records and verify the restored fingerprint before inspecting or landing
+an old candidate; never regenerate its profile against a new source or layer.

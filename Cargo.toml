@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "crates/harp",
+    "insula/supervisor",
     "crates/harp-cli-process",
     "crates/harp-cli-test-support",
     "crates/harp-artifacts",

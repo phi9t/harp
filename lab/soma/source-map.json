@@ -6263,5 +6263,23 @@
       "source_sha256": "466295d6b5d9c2e8874ef3dd802be620f2f3fd8cd777b26246e0bc5da226a636",
       "disposition": "excluded-transient-host-shadow-executable-copy"
     }
-  ]
+  ],
+  "first_party": {
+    "workload.json": {
+      "sha256": "0be92a93df9878c6613c508787d6e1b5cd9941e8f226370f3c1fbf09778bc5ed",
+      "origin": "Harp workload integration"
+    },
+    "workload_adapter.py": {
+      "sha256": "65efbafbc50b406e4bc4ec6ffb5843e2b3f93e3cd1ef5b9223bc7c0da09ea8d5",
+      "origin": "Harp workload integration"
+    },
+    "check_workload.py": {
+      "sha256": "af7659f6ff94d84b3d2d5c9ad676346a26f42111d84efaabc62750fe51613690",
+      "origin": "Harp workload integration"
+    },
+    "test_workload.py": {
+      "sha256": "d021cda14a99a3322d1f9d80ff474b921420700def14ad325b7796426d8bcc53",
+      "origin": "Harp workload integration"
+    }
+  }
 }

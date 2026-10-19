@@ -140,9 +140,9 @@ reexports with theorem-kind providers, making the receipt boundary exact:
 
 | Item | Wave-2 theorem provider | Provider file |
 |---|---|---|
-| CFT-32-002 | `CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound` | `formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean` |
-| CFT-32-003 | `CrouzeixTextbook.Part06.jin_rational_spectral_set_provider` | `formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean` |
-| CFT-32-004 | `CrouzeixConjecture.holomorphicCrouzeixRationalBound` | `formalization/lean/CrouzeixConjecture/HolomorphicConsequences.lean` |
+| CFT-32-002 | `CrouzeixConjecture.polynomialCrouzeixBound_of_holomorphicCrouzeixBound` | `lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean` |
+| CFT-32-003 | `CrouzeixTextbook.Part06.jin_rational_spectral_set_provider` | `lab/math/lean/CrouzeixTextbook/Part06/Chapter32.lean` |
+| CFT-32-004 | `CrouzeixConjecture.holomorphicCrouzeixRationalBound` | `lab/math/lean/CrouzeixConjecture/HolomorphicConsequences.lean` |
 
 For completed CFT-32-003, `CrouzeixConjecture.holomorphicCrouzeixRationalBound`
 is a proof dependency of the local theorem-kind provider, not the direct
@@ -301,7 +301,7 @@ Source identity: commit `565b6a3e0659b6e0785f783b016c3f6d9f171fa5`,
 - `git:565b6a3e0659b6e0785f783b016c3f6d9f171fa5:Lean/CrouzeixConjecture/FinalTheorems.lean#L15-L23`
 
 Authorities: `evidence/crouzeix_conjecture/source_manifest.tsv#L11` and
-`labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/source-map.json#L1`.
+`lab/math/proof_reproduction/formal_targets/jin-565b6a3/source-map.json#L1`.
 
 ## Dependency and route independence
 

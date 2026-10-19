@@ -1,7 +1,7 @@
 # 07: Relocate benchmarks and finish imported-tree removal
 
-Status: ready-for-agent
-Owner: unassigned
+Status: in-progress
+Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
 ## What to build
@@ -33,4 +33,8 @@ without retiring its benchmark payload. Emacs source acquisition is covered by
 
 Run provenance byte/mode/ancestry and ledger-completeness tests, representative real task materialization/grading, supported-entrypoint checks and changed-path dispatch tests. Review each retirement class, not just file counts.
 
-No implementation or qualification result is recorded yet.
+See the implementation progress below.
+
+## Implementation progress
+
+All 42 task fixtures and all 18 study trees are relocated under lab/benchmarks/. The executable absorption record verifies 8,088 original paths and 30 retained branch/worktree tips; benchmark/study retirement is prohibited. All 6,960 study files and four archived results remain byte-identical. Linux materialization (54), grader validation (20), and three red/green/repeated real-capsule reference tasks passed. Final source-bound benchmark receipt remains pending.

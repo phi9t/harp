@@ -31,6 +31,9 @@ request to add a focused mapping rather than running every prerequisite.
 | Agent guidance, skills, ordinary Markdown | Diff whitespace; changed local links and skill frontmatter; no Rust, Lean or React dependency |
 | Corpus contracts and canonical knowledge/lessons | Rust corpus validation and generated corpus freshness, without proof builds or React |
 | Rust | Affected workspace packages and transitive consumers; Harp corpus/context modules where isolated; changed integration targets and CLI entry point checks |
+| Durable/Insula/runner | Composed portable lifecycle and boundary suites; required Linux qualification is recorded separately against exact source bytes |
+| Imported benchmark studies | Byte, mode, complete inventory and ancestry preservation; historical links are retained |
+| Math relocation | Source relocation record plus affected proof/publication consumers |
 | Python labs/scripts | Corresponding test module or existing family discovery when shared inputs have no narrower module |
 | Shell helpers | Syntax and matching behavior test, or the shell policy suite |
 | Gate configuration/selector | Changed-surface dispatch regression tests |
@@ -58,3 +61,15 @@ The full gate includes textbook publication, Rust, all Lean libraries,
 Cauchy audit, and repository verification. It can require all their prerequisites.
 Local readiness does not claim release readiness. Historical instructions calling
 `mise run verify` a universal release gate are superseded by this contract.
+
+## Native migration qualification
+
+The consolidated runtime and retained benchmark changes require Linux receipts
+in addition to portable checks. Prepare fresh source and capability profiles;
+run `python3 -m durable.qualification --integrated --output <fresh-path>` or
+`--benchmarks` or `--supervisor` inside a bounded delegated session with the documented native
+prerequisites. Required skips, incomplete runs and changed source bytes fail.
+Set `HARP_NATIVE_INTEGRATED_RECEIPT`, `HARP_NATIVE_BENCHMARKS_RECEIPT` and
+`HARP_NATIVE_SUPERVISOR_RECEIPT` to the respective local receipt files before the complete-candidate gate. The verifier compares
+their exact source-file hashes; old green evidence cannot qualify new bytes.
+Keep host paths and private inventories out of committed evidence.

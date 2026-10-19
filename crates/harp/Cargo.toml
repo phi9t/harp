@@ -34,3 +34,7 @@ assert_cmd.workspace = true
 predicates.workspace = true
 tempfile.workspace = true
 toml.workspace = true
+
+[[test]]
+name = "durable_cli"
+path = "src/durable_cli_test.rs"

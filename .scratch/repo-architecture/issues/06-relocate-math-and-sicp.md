@@ -13,7 +13,7 @@ Move formalization and proof companion programs into lab/math/ and the evaluator
 - [x] Existing Crouzeix theorem and route identities remain authoritative, with fresh relevant Lean build/receipt evidence.
 - [x] SICP evaluator behavior and existing educational consumers continue to work after Cargo/path migration.
 - [x] The PDF publication mechanism builds retained source through the new proof/program paths.
-- [ ] Move canonical cache ownership deliberately; verify the existing warm-cache target and serialize shared Harp outputs. Never hydrate dependencies incidentally.
+- [x] Move canonical cache ownership deliberately; verify the existing warm-cache target and serialize shared Harp outputs. Never hydrate dependencies incidentally.
 - [x] No duplicate proof/source authorities or stale managed links; regenerated corpus agrees with canonical inputs.
 
 ## Blocked by
@@ -41,3 +41,13 @@ Integration still owns the selected gate and canonical cache transition. `mise r
 Detailed local evidence: `/tmp/harp-math-new-lean-receipt.log`, `/tmp/harp-math-new-receipt.b9YNew/receipt.json`, `/tmp/harp-math-textbook-{publish,check}.log`, `/tmp/harp-math-rust-{crouzeix,corpus}.log`, `/tmp/harp-math-pdf-{build,check}.log`, and `/tmp/harp-math-relocation-test.log`.
 
 Final trust checks: the continuous 855-case proof suite passed (two existing expected skips) in `/tmp/harp-math-855-frozen-final.log`. Added counterexamples ensure inspected repositories cannot execute their own relocation checker through either the Rust source verifier or Python route reader. The verifier ignores Git replacement refs, pins the approved path map, and rejects hardlink aliases; nine relocation checks pass. Historical route identities remain historical; no proof bytes or original receipts were rewritten.
+
+Integration moved the existing ignored warm cache to the primary checkout's
+`lab/math/lean/.lake` without hydration. The old ignored path is a compatibility
+symlink for existing worktrees, not another cache owner. Candidate pin and cache
+ownership checks pass for all three route preflights (Jin66, LS56, Harp59), with
+zero missing artifacts. A fresh textbook receipt built3726 jobs, published six
+ledgers and retained174 exact /174 solved /513 exported counts. The parent full
+Rust textbook target passed294 cases; its sole stale structural-check Python
+path was then repaired and that exact positive/negative route test passed.
+Final complete-candidate gate remains pending.

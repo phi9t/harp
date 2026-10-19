@@ -1,6 +1,0 @@
-# These packages expose only retirement messages. Historical libraries and
-# implicit executables are excluded by each package's explicit target list.
-[workspace]
-members = ["terminal_agent", "controller"]
-default-members = ["terminal_agent", "controller"]
-resolver = "3"
