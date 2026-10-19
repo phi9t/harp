@@ -1044,6 +1044,13 @@ def _normalize_publish_ls_partial(
 
 
 def resolve_primary_checkout_cache(repository_root: Path) -> tuple[Path, Path]:
+    """Discover cache ownership, independently of the primary's source revision.
+
+    evaluate_route validates the current candidate's pinned toolchain, manifest,
+    library contract and module closure before checking its warm-cache link.
+    A primary checkout may still have an earlier layout while this worktree is
+    being qualified; its source files are never authority for the candidate.
+    """
     result = subprocess.run(
         [
             "git",
@@ -1069,15 +1076,6 @@ def resolve_primary_checkout_cache(repository_root: Path) -> tuple[Path, Path]:
     if not common_dir.is_dir():
         raise RuntimeError(f"git common-dir is missing or not a directory: {common_dir}")
     primary_root = common_dir.parent.resolve()
-    expected_paths = (
-        primary_root / "lab/math/lean/lake-manifest.json",
-        primary_root / "lab/math/lean/lakefile.toml",
-        primary_root / "scripts/check_lean_library.sh",
-        primary_root / "crates/harp",
-    )
-    for expected in expected_paths:
-        if not expected.exists():
-            raise RuntimeError(f"git primary checkout is malformed: missing {expected}")
     return primary_root, primary_root / "lab/math/lean/.lake"
 
 
