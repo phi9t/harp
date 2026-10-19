@@ -323,7 +323,7 @@ remaining formalization work.
 ## 5. Canonical artifact architecture
 
 The book is a registered Harp knowledge packet. Canonical technical prose
-lives under `knowledge/`; structured coverage data lives under `content/`;
+lives under `knowledge/`; structured coverage data lives under `lab/math/textbook/`;
 Lean source lives under the shared formalization root.
 
 ```text
@@ -346,7 +346,7 @@ knowledge/crouzeix_textbook/
 ├── part_05_crouzeix_machinery/
 └── part_06_constant_two_routes/
 
-content/crouzeix_textbook/
+lab/math/textbook/
 ├── coverage.json
 ├── exercises.json
 └── theorem_dependencies.json
@@ -368,7 +368,7 @@ index, and any referenced canonical Crouzeix packet documents.
 
 The existing Atlas corpus is the presentation layer. Implementation adds the
 book to the corpus and regenerates
-`atlas/src/content/generated/corpus.json` and `atlas/dist/harp-atlas.html`
+`atlas/src/knowledge/generated/corpus.json` and `atlas/dist/harp-atlas.html`
 together. No second prose authority or bespoke runtime renderer is introduced.
 
 ## 6. Stable identifiers and coverage
@@ -388,7 +388,7 @@ Examples:
 Identifiers are never reused after publication. A corrected item retains its
 identifier and records the revision in the claim and coverage ledgers.
 
-`content/crouzeix_textbook/coverage.json` is the machine-readable authority
+`lab/math/textbook/coverage.json` is the machine-readable authority
 for coverage. Each row records:
 
 - item ID;
@@ -554,7 +554,7 @@ Repository tests verify:
 - root-qualified internal wikilinks;
 - previous/next/part/index navigation;
 - glossary terms introduced before required use;
-- no Markdown under `content/`;
+- no Markdown under `lab/math/textbook/`;
 - no source paths that expose local-only book files;
 - exercise and solution pairing; and
 - valid source, claim, and coverage ledgers.

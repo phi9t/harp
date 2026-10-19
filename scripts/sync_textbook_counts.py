@@ -42,8 +42,8 @@ class SurfaceError(RuntimeError):
 
 
 def load(root: Path):
-    coverage = json.loads((root / "content/crouzeix_textbook/coverage.json").read_text())
-    exercises = json.loads((root / "content/crouzeix_textbook/exercises.json").read_text())
+    coverage = json.loads((root / "lab/math/textbook/coverage.json").read_text())
+    exercises = json.loads((root / "lab/math/textbook/exercises.json").read_text())
     return coverage["items"], exercises["exercises"]
 
 

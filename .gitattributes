@@ -8,6 +8,5 @@ evidence/**/*.tar.gz filter=lfs diff=lfs merge=lfs -text
 evidence/implementations/*/snapshot/** -whitespace
 evidence/agentic_engineering/** -whitespace
 evidence/lean_proof_engineering/** -whitespace
-content/coverage-map.tsv whitespace=-trailing-space
 evidence/education_clippings/artifacts/** -whitespace
 evidence/session_notes/artifacts/** -whitespace

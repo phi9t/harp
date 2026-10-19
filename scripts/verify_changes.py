@@ -75,6 +75,24 @@ def plan(root, paths):
                           for entry in record["entries"]
                           if entry["disposition"] == "retained"}
     for path in paths:
+        if path == "content/harness_deep_dive_manifest.tsv":
+            path = "evidence/implementations/harness_deep_dive_manifest.tsv"
+        for old, new in (("crates/harp-session-index/", "sessions/"),
+                         ("crates/harp/", "cli/"),
+                         ("benchmarks/dynamic-workflow/", "lab/benchmarks/dynamic-workflow/"),
+                         ("benchmarks/codex-architecture/schemas/", "lab/benchmarks/legacy_runtime/schemas/"),
+                         ("content/crouzeix_textbook/", "lab/math/textbook/"),
+                         ("content/sicp/", "lab/sicp/contracts/"),
+                         ("content/context_control/", "durable/context/"),
+                         ("content/generated/", "knowledge/generated/"),
+                         ("content/sources/", "evidence/sources/")):
+            if path.startswith(old):
+                path = new + path[len(old):]
+                break
+        legacy = ("harp-artifacts", "harp-cli-process", "harp-cli-test-support",
+                  "harp-contracts", "harp-engine", "harp-runtime", "harp-state")
+        if any(path.startswith("crates/" + name + "/") for name in legacy):
+            path = "lab/benchmarks/legacy_runtime/" + path[len("crates/"):]
         for old, new in (("formalization/", "lab/math/"),
                          ("labs/crouzeix_proof_reproduction/", "lab/math/proof_reproduction/"),
                          ("labs/lean_trae_benchmark/", "lab/math/lean_trae_benchmark/"),
@@ -83,7 +101,9 @@ def plan(root, paths):
                 path = new + path[len(old):]
                 break
         parts = Path(path).parts
-        if path.startswith(("reference/", "labs/meta_harness_trae/")) or path == "scripts/build_weng_course.py":
+        if path.startswith("assets/") and not (root / path).exists():
+            add("repository", "mise", "run", "verify-repository")
+        elif path.startswith(("reference/", "labs/meta_harness_trae/")) or path == "scripts/build_weng_course.py":
             # Article-only projections and reproduction tooling were retired.
             # Repository provenance checks cover their explicit disposition.
             add("repository", "mise", "run", "verify-repository")
@@ -91,6 +111,9 @@ def plan(root, paths):
             add("absorption", "python3", "scripts/verify_absorption.py")
             add("architecture", "python3", "scripts/check_architecture.py")
             add("durable-runtime", "env", "PYTHONDONTWRITEBYTECODE=1", "python3", "-m", "unittest", "discover", "-s", "durable", "-t", ".", "-p", "test_*.py")
+        elif path.startswith("durable/context/"):
+            add("rust", "cargo", "test", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--lib", "context_control::", "--", "--test-threads=1")
+            add("rust-contract", "cargo", "test", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--test", "context_control_cli")
         elif path.startswith(("durable/", "insula/", "runner/")):
             if path.endswith(".md") and "/provenance/" not in path:
                 docs.append(path)
@@ -103,6 +126,12 @@ def plan(root, paths):
             add("native-lifecycle", "python3", "scripts/verify_native_receipt.py", "--suite", "integrated")
             if path.startswith("insula/supervisor/") and "/provenance/" not in path:
                 rust_paths.append(path)
+        elif path.startswith("lab/benchmarks/legacy_runtime/"):
+            add("legacy-runtime", "cargo", "test", "--manifest-path", "lab/benchmarks/legacy_runtime/Cargo.toml", "--offline", "--locked", "--workspace", "--all-features", "--profile", "test-small")
+        elif path.startswith("evidence/sources/") or path == "evidence/implementations/harness_deep_dive_manifest.tsv":
+            for command in ("check", "build"):
+                args = ("--check",) if command == "build" else ()
+                add("corpus", "cargo", "run", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--", command, *args)
         elif path.startswith(("evidence/engineering_history/", "evidence/provenance/", "lab/benchmarks/")):
             add("absorption", "python3", "scripts/verify_absorption.py")
             if path.startswith("lab/benchmarks/") and not path.startswith("lab/benchmarks/studies/"):
@@ -118,14 +147,14 @@ def plan(root, paths):
             add("math-relocation", "python3", "lab/math/relocation.py")
         elif path.startswith("lab/math/lean_trae_benchmark/"):
             add("lean-benchmark", "python3", "-m", "unittest", "discover", "-s", "lab/math/lean_trae_benchmark")
-        elif path.startswith("lab/sicp/"):
+        elif path.startswith("lab/sicp/") and not path.startswith("lab/sicp/contracts/"):
             rust_paths.append(path)
         elif path in ("docs/import-receipt.md", "docs/import-map.tsv") or path.startswith("evidence/") or path == ".gitattributes":
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith("tools/obsidian/") or path in ("scripts/validate_obsidian_assets.py", "scripts/tests/test_obsidian_assets.py") or (path.startswith("knowledge/obsidian/") and not path.endswith(".md")):
             add("obsidian", "python3", "scripts/validate_obsidian_assets.py")
             add("obsidian", "python3", "-m", "unittest", "discover", "-s", "scripts/tests", "-p", "test_obsidian_assets.py")
-        elif path.startswith(("knowledge/", "content/", "lessons/")):
+        elif path.startswith(("knowledge/", "lab/math/textbook/", "lab/sicp/contracts/", "lessons/")):
             for command in ("check", "build"):
                 args = ("--check",) if command == "build" else ()
                 add("corpus", "cargo", "run", "--offline", "--locked", "--profile", "test-small", "-p", "harp", "--", command, *args)
@@ -152,11 +181,11 @@ def plan(root, paths):
             add("lean", "mise", "run", target)
         elif path == ".github/workflows/pages.yml" and not (root / path).exists():
             add("verification", "python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "test_verify_changes.py")
-        elif path.endswith(".md") and not path.startswith(("crates/", "labs/", "tools/textbook_pdf/")):
+        elif path.endswith(".md") and not path.startswith(("cli/", "sessions/", "crates/", "labs/", "tools/textbook_pdf/")):
             docs.append(path)
         elif path.startswith("atlas/") and not (root / path).exists():
             add("repository", "mise", "run", "verify-repository")
-        elif path.startswith("crates/") or path in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml") or path.startswith(".cargo/"):
+        elif path.startswith(("cli/", "sessions/", "crates/")) or path in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml") or path.startswith(".cargo/"):
             rust_paths.append(path)
         elif path.startswith("labs/") and path.endswith(".rs"):
             rust_paths.append(path)
@@ -214,14 +243,14 @@ def plan(root, paths):
         affected = {name for name, package in packages.items() if any(
             path.startswith(str(Path(package["manifest_path"]).parent.relative_to(root)) + "/") for path in rust_paths
         )}
-        if any(not p.startswith(("crates/", "labs/", "lab/", "insula/supervisor/")) for p in rust_paths):
+        if any(not p.startswith(("cli/", "sessions/", "crates/", "labs/", "lab/", "insula/supervisor/")) for p in rust_paths):
             affected = set(packages)
         # Changing a test alone does not change a package's public contract.
         runtime = {name for name in affected if any(
             path.startswith(str(Path(packages[name]["manifest_path"]).parent.relative_to(root)) + "/")
             and "/tests/" not in path for path in rust_paths
         )}
-        if any(not p.startswith(("crates/", "labs/", "lab/", "insula/supervisor/")) for p in rust_paths):
+        if any(not p.startswith(("cli/", "sessions/", "crates/", "labs/", "lab/", "insula/supervisor/")) for p in rust_paths):
             runtime = set(packages)
         while True:
             consumers = {name for name, package in packages.items() if any(d["name"] in runtime for d in package["dependencies"])}
@@ -231,6 +260,8 @@ def plan(root, paths):
         affected |= runtime
         for name in sorted(affected):
             prefix = ("cargo", "test", "--offline", "--locked", "--profile", "test-small", "-p", name)
+            test_targets = {str(Path(t["src_path"]).relative_to(root)): t["name"]
+                            for t in packages[name].get("targets", []) if "test" in t["kind"]}
             directory = str(Path(packages[name]["manifest_path"]).parent.relative_to(root))
             owned = [p for p in rust_paths if p.startswith(directory + "/")]
             if name not in runtime and owned and all(Path(p).parent == Path(directory) / "tests" and (root / p).exists() for p in owned):
@@ -243,7 +274,7 @@ def plan(root, paths):
             if name != "harp":
                 add("rust", *prefix)
                 continue
-            local = [p for p in rust_paths if p.startswith("crates/harp/")]
+            local = [p for p in rust_paths if p.startswith("cli/")]
             modules = {"corpus" if "/src/corpus/" in p else "context_control" if "/src/context_control/" in p else "" for p in local}
             if local and modules <= {"corpus", "context_control"}:
                 for module in sorted(modules):
@@ -255,13 +286,14 @@ def plan(root, paths):
                     continue
                 if p.endswith("/src/main.rs"):
                     add("cli", *prefix, "--test", "cli")
-                    if (root / "crates/harp/src/durable_cli_test.rs").exists():
+                    if (root / "cli/src/durable_cli_test.rs").exists():
                         add("rust-contract", *prefix, "--test", "durable_cli")
                 elif p.endswith("/src/durable.rs"):
                     add("rust-contract", *prefix, "--test", "durable_cli")
-                elif p.startswith("crates/harp/tests/"):
-                    target = Path(p).stem if len(Path(p).parts) == 4 else "crouzeix_textbook"
-                    add("rust-contract", *prefix, "--test", target)
+                elif p in test_targets:
+                    add("rust-contract", *prefix, "--test", test_targets[p])
+                elif p.startswith("cli/src/test_support/"):
+                    add("rust-contract", *prefix, "--test", "crouzeix_textbook")
     if docs:
         add("docs", "python3", "scripts/verify_changes.py", "--check-docs", *docs)
     return jobs

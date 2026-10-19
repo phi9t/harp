@@ -23,13 +23,13 @@ Lean 4 through the existing warm cache, Git worktrees, mise.
 |---|---|
 | `labs/crouzeix_proof_reproduction/graph_kernel.py` | Pure graph topology and closure algorithms |
 | `labs/crouzeix_proof_reproduction/theorem_graph.py` | Crouzeix evidence binding, policy, graph and export interface |
-| `crates/harp-engine/src/execution_plan.rs` | Engine-ready graph and policy validation |
-| `crates/harp-engine/src/dynamic_workflow.rs` | Authored workflow to exact execution semantics |
-| `crates/harp/src/corpus/registration.rs` | Typed knowledge registration authority |
-| `crates/harp-session-index/src/dialect.rs` | Trace dialect record interpretation |
-| `crates/harp-session-index/src/store.rs` | Session identity and publication |
-| `crates/harp-session-index/src/index.rs` | Read-only indexing orchestration |
-| `crates/harp-session-index/src/verify.rs` | Independent Session index invariants |
+| `lab/benchmarks/legacy_runtime/harp-engine/src/execution_plan.rs` | Engine-ready graph and policy validation |
+| `lab/benchmarks/legacy_runtime/harp-engine/src/dynamic_workflow.rs` | Authored workflow to exact execution semantics |
+| `cli/src/corpus/registration.rs` | Typed knowledge registration authority |
+| `sessions/src/dialect.rs` | Trace dialect record interpretation |
+| `sessions/src/store.rs` | Session identity and publication |
+| `sessions/src/index.rs` | Read-only indexing orchestration |
+| `sessions/src/verify.rs` | Independent Session index invariants |
 
 ## Wave 1 — execute now
 
@@ -149,17 +149,17 @@ Expected: tests pass and all `cmp` commands exit 0.
 
 **Files:**
 
-- Create: `crates/harp-engine/src/execution_plan.rs`
-- Modify: `crates/harp-engine/src/dynamic_workflow.rs`
-- Modify: `crates/harp-engine/src/lib.rs`
-- Modify: `crates/harp-engine/tests/dynamic_workflow.rs`
-- Modify: `crates/harp/src/main.rs`
-- Modify: `crates/harp/tests/cli.rs` only if the existing production-path tests
+- Create: `lab/benchmarks/legacy_runtime/harp-engine/src/execution_plan.rs`
+- Modify: `lab/benchmarks/legacy_runtime/harp-engine/src/dynamic_workflow.rs`
+- Modify: `lab/benchmarks/legacy_runtime/harp-engine/src/lib.rs`
+- Modify: `lab/benchmarks/legacy_runtime/harp-engine/src/dynamic_workflow_tests.rs`
+- Modify: `cli/src/main.rs`
+- Modify: `cli/tests/cli.rs` only if the existing production-path tests
   do not expose the policy substitution
 
 - [ ] **Step 1: Write failing execution-plan tests**
 
-Extend `crates/harp-engine/tests/dynamic_workflow.rs`:
+Extend `lab/benchmarks/legacy_runtime/harp-engine/src/dynamic_workflow_tests.rs`:
 
 ```rust
 #[test]
@@ -258,15 +258,15 @@ Expected: all selected tests pass and the workflow run output is unchanged.
 
 **Files:**
 
-- Create: `crates/harp/src/corpus/registration.rs`
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/corpus/contracts.rs`
-- Modify: `crates/harp/src/corpus/render.rs`
-- Modify: `crates/harp/src/corpus/tests.rs`
+- Create: `cli/src/corpus/registration.rs`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/corpus/contracts.rs`
+- Modify: `cli/src/corpus/render.rs`
+- Modify: `cli/src/corpus/tests.rs`
 
 - [ ] **Step 1: Capture generated output before migration**
 
-Run: `cp atlas/src/content/generated/corpus.json "${TMPDIR:-/tmp}/harp-corpus-before.json"`
+Run: `cp atlas/src/knowledge/generated/corpus.json "${TMPDIR:-/tmp}/harp-corpus-before.json"`
 
 - [ ] **Step 2: Write failing typed-registration tests**
 
@@ -313,8 +313,8 @@ Run:
 
 ```sh
 cargo test -p harp corpus::tests --lib -- --test-threads=1
-cargo run -p harp -- build --output atlas/src/content/generated/corpus.json
-cmp "${TMPDIR:-/tmp}/harp-corpus-before.json" atlas/src/content/generated/corpus.json
+cargo run -p harp -- build --output atlas/src/knowledge/generated/corpus.json
+cmp "${TMPDIR:-/tmp}/harp-corpus-before.json" atlas/src/knowledge/generated/corpus.json
 (cd atlas && corepack pnpm run test)
 ```
 
@@ -326,11 +326,11 @@ Expected: tests pass and generated JSON is byte-identical.
 
 **Files:**
 
-- Create: `crates/harp-session-index/src/dialect.rs`
-- Modify: `crates/harp-session-index/src/detect.rs`
-- Modify: `crates/harp-session-index/src/index.rs`
-- Modify: `crates/harp-session-index/src/lib.rs`
-- Modify: `crates/harp-session-index/tests/detect_fixtures.rs`
+- Create: `sessions/src/dialect.rs`
+- Modify: `sessions/src/detect.rs`
+- Modify: `sessions/src/index.rs`
+- Modify: `sessions/src/lib.rs`
+- Modify: `sessions/tests/detect_fixtures.rs`
 
 - [ ] **Step 1: Write failing percentage tests**
 
@@ -380,15 +380,15 @@ Expected: all Session index tests pass.
 
 **Files:**
 
-- Modify: `crates/harp-session-index/src/store.rs`
-- Modify: `crates/harp-session-index/src/index.rs`
-- Modify: `crates/harp-session-index/src/error.rs`
-- Modify: `crates/harp-session-index/src/verify.rs`
-- Modify: `crates/harp-session-index/src/bin/harp-session-index.rs`
-- Modify: `crates/harp-session-index/Cargo.toml`
+- Modify: `sessions/src/store.rs`
+- Modify: `sessions/src/index.rs`
+- Modify: `sessions/src/error.rs`
+- Modify: `sessions/src/verify.rs`
+- Modify: `sessions/src/bin/harp-session-index.rs`
+- Modify: `sessions/Cargo.toml`
 - Modify: `Cargo.lock`
-- Modify: `crates/harp-session-index/tests/index_fixtures.rs`
-- Modify: `crates/harp-session-index/fixtures/*.jsonl` session identities only
+- Modify: `sessions/tests/index_fixtures.rs`
+- Modify: `sessions/fixtures/*.jsonl` session identities only
 
 - [ ] **Step 1: Write failing path-escape tests**
 
@@ -439,7 +439,7 @@ Expected: all Session index tests pass and no unsafe path is created.
 **Files:**
 
 - Modify: `docs/workstream/architecture-deepening/tracker.org`
-- Regenerate: `atlas/src/content/generated/corpus.json` only if canonical input
+- Regenerate: `atlas/src/knowledge/generated/corpus.json` only if canonical input
   produces a change
 - Regenerate: `atlas/dist/harp-atlas.html` whenever corpus JSON changes
 - Modify last: `docs/import-receipt.md`
@@ -492,7 +492,7 @@ deep, transitional, or unchanged and link each score to current source/tests.
 
 **Files:** `src/index.rs`, `src/spill.rs`, `src/store.rs`,
 `tests/index_fixtures.rs`, and new `tests/publication.rs` in
-`crates/harp-session-index/`.
+`sessions/`.
 
 1. Add a generated threshold-plus-one record test that asserts exact spill
    bytes/digest and a fault-injection test whose writer fails before rename.
@@ -520,9 +520,9 @@ deep, transitional, or unchanged and link each score to current source/tests.
 
 ### Task 9: Raw RLM durable-execution migration
 
-**Files:** new `crates/harp/src/durable_execution.rs`,
-`crates/harp/src/main.rs`, `crates/harp-engine/src/execution_plan.rs`, new
-`crates/harp/tests/durable_execution.rs`, and `crates/harp/tests/cli.rs`.
+**Files:** new `cli/src/durable_execution.rs`,
+`cli/src/main.rs`, `lab/benchmarks/legacy_runtime/harp-engine/src/execution_plan.rs`, new
+`cli/tests/durable_execution.rs`, and `cli/tests/cli.rs`.
 
 1. Add fake-runtime tests proving equivalent RLM/workflow plans execute and
    resume without duplicate accepted results; run the focused test RED.
@@ -535,8 +535,8 @@ deep, transitional, or unchanged and link each score to current source/tests.
 
 ### Task 10: Complete knowledge-registration migration
 
-**Files:** `crates/harp/src/corpus/registration.rs`, `mod.rs`, `contracts.rs`,
-`render.rs`, `tests.rs`, `atlas/src/content/contracts.ts`, and generated corpus
+**Files:** `cli/src/corpus/registration.rs`, `mod.rs`, `contracts.rs`,
+`render.rs`, `tests.rs`, `atlas/src/lab/math/textbook/contracts.ts`, and generated corpus
 and Atlas HTML only when bytes change.
 
 1. Add registration-interface tests for optional knowledge home, textbook
@@ -546,7 +546,7 @@ and Atlas HTML only when bytes change.
 3. Delete tuple registries only after `rg` finds no callers; classify each
    TypeScript restriction as boundary validation or duplicated authority.
 4. Run corpus and Atlas suites, rebuild with `cargo run -p harp -- build --output
-   atlas/src/content/generated/corpus.json`, and compare corpus/HTML baselines.
+   atlas/src/knowledge/generated/corpus.json`, and compare corpus/HTML baselines.
 
 ### Task 11: Remove Crouzeix private test surfaces
 
@@ -569,7 +569,7 @@ shape. Implement the adapter without changing the shared indexing loop, run
 
 ### Task 13: Audit TypeScript corpus knowledge
 
-**Files:** `atlas/src/content/types.ts`, `contracts.ts`, their tests, and the Rust
+**Files:** `atlas/src/lab/math/textbook/types.ts`, `contracts.ts`, their tests, and the Rust
 corpus schema emitter. Add a test that introduces a valid registered route absent
 from the old hard-coded TypeScript roster and observe rejection. Retain structural
 JSON validation, replace duplicated registration knowledge with generated or

@@ -132,7 +132,7 @@ not correspondence-complete until every chapter is upgraded.
 ### Canonical ownership
 
 - `knowledge/crouzeix_textbook/` remains the authority for textbook prose.
-- `content/crouzeix_textbook/` remains the authority for structured theorem and
+- `lab/math/textbook/` remains the authority for structured theorem and
   exercise contracts.
 - `formalization/lean/CrouzeixTextbook/` remains the textbook Lean namespace.
 - Generated reader ledgers, Lean correspondence sources, corpus JSON, and Atlas

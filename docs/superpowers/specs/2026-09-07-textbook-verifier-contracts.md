@@ -3,7 +3,7 @@
 Design proposal, 2026-09-07. No verifier described here has been implemented or
 qualified by this planning work. This is an engineering specification, not a
 new authority for mathematical knowledge. Accepted mathematical prose belongs
-in registered `knowledge/` packets; structured contracts belong in `content/`.
+in registered `knowledge/` packets; structured contracts belong in `lab/math/textbook/`.
 
 ## Trust boundary and acceptance
 
@@ -203,7 +203,7 @@ public API or refactor that route wholesale.
 
 Use existing `ExecutionPlan`, `TaskGraph`, runtime activity, and recovery
 contracts when scheduling becomes justified. Keep immutable curriculum data
-in `content/` and human mathematical explanations in registered `knowledge/`
+in `lab/math/textbook/` and human mathematical explanations in registered `knowledge/`
 packets. Repository-wide schema registration and generated atlas changes are
 paired landable slices; regenerate derived corpus and atlas together.
 

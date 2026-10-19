@@ -1,6 +1,6 @@
 source_path_percent_encoded	disposition_percent_encoded	destination	note
-.agents%2Fskills%2F%71%6D%64-index-maintenance%2FSKILL.md	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
-.agents%2Fskills%2F%71%6D%64-index-maintenance%2Fagents%2Fopenai.yaml	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
+.agents%2Fskills%2F%71%6D%64-index-maintenance%2FSKILL.md	replaced	cli/src/search.rs	bundled SQLite FTS5 search
+.agents%2Fskills%2F%71%6D%64-index-maintenance%2Fagents%2Fopenai.yaml	replaced	cli/src/search.rs	bundled SQLite FTS5 search
 .mise.toml	replaced	mise.toml	standalone task runner
 docs%2Fspecs%2Frecursive-self-improvement.md	replaced	docs/product-contract.md	standalone product contract
 docs%2Fsuperpowers%2Fplans%2F2026-08-01-sicp-agent-harness-reader-course.md	omitted-%74arocco-specific	-	obsolete implementation plan or design
@@ -42,7 +42,7 @@ knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fapp%2Froutes.ts	retired	-	Atlas browser an
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcanonical.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fcontracts.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
-knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fgenerated%2Fchapters.json	generated	content/generated/corpus.json	compiled headless corpus
+knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Fgenerated%2Fchapters.json	generated	knowledge/generated/corpus.json	compiled headless corpus
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fcontent%2Ftypes.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fcontracts.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
 knowledge%2Frsi%2Fatlas%2Fapp%2Fsrc%2Fdiagnostics%2Fengine.test.ts	retired	-	Atlas browser and offline export retired; canonical knowledge retained
@@ -102,7 +102,7 @@ knowledge%2Frsi%2Fdiagnostics%2Fworksheet-fields.json	retired	-	RSI article prod
 knowledge%2Frsi%2Fdomain_orientation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fevaluator_integrity_and_promotion.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fevidence_graph.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fharness_deep_dive_manifest.tsv	rewritten	content/harness_deep_dive_manifest.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fharness_deep_dive_manifest.tsv	rewritten	evidence/implementations/harness_deep_dive_manifest.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fhermes_harness_deep_dive.md	rewritten	knowledge/agentic_engineering/hermes_harness_deep_dive.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fimplementation_harnesses.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fimprovement_loop_taxonomy.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
@@ -120,7 +120,7 @@ knowledge%2Frsi%2Fretained-concepts.tsv	retired	-	RSI article product retired; b
 knowledge%2Frsi%2Frsi_harness_by_lil_log_deconstructed.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Frsi_index.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fsicp%2Fcourse%2Fcapstone%2Fharvest_architecture_dossier.md	rewritten	knowledge/sicp/course/capstone/agent_harness_architecture_dossier.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsicp%2Fcourse%2Fcoverage.tsv	rewritten	content/sicp/course/coverage.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fsicp%2Fcourse%2Fcoverage.tsv	rewritten	lab/sicp/contracts/course/coverage.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fsicp%2Fcourse%2Fdialogue_state.md	rewritten	knowledge/sicp/course/dialogue_state.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsicp%2Fcourse%2Fexercise_map.md	rewritten	knowledge/sicp/course/exercise_map.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsicp%2Fcourse%2Fscheme_reading_primer.md	rewritten	knowledge/sicp/course/scheme_reading_primer.md	relocated retained educational or engineering material
@@ -144,15 +144,15 @@ knowledge%2Frsi%2Fsicp%2Fmissing_evidence.md	rewritten	knowledge/sicp/missing_ev
 knowledge%2Frsi%2Fsicp%2Frun_receipt.md	omitted-%74arocco-specific	-	obsolete source-repository run receipt
 knowledge%2Frsi%2Fsicp%2Fsicp_index.md	rewritten	knowledge/sicp/sicp_index.md	relocated retained educational or engineering material
 knowledge%2Frsi%2Fsicp%2Fsources%2Fartifact_digests.tsv	omitted-%74arocco-specific	-	obsolete whole-run digest receipt
-knowledge%2Frsi%2Fsicp%2Fsources%2Fevidence_graph.tsv	rewritten	content/sicp/sources/evidence_graph.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fsicp%2Fsources%2Fharness_revisions.tsv	rewritten	content/sicp/sources/harness_revisions.tsv	canonical path and standalone links
-knowledge%2Frsi%2Fsicp%2Fsources%2Fmaterialize_harness_sources.sh	replaced	crates/harp/src/sources.rs	hardened public-source materializer
-knowledge%2Frsi%2Fsicp%2Fsources%2Fsource_registry.tsv	rewritten	content/sicp/sources/source_registry.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fsicp%2Fsources%2Fevidence_graph.tsv	rewritten	lab/sicp/contracts/sources/evidence_graph.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fsicp%2Fsources%2Fharness_revisions.tsv	rewritten	lab/sicp/contracts/sources/harness_revisions.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fsicp%2Fsources%2Fmaterialize_harness_sources.sh	replaced	cli/src/sources.rs	hardened public-source materializer
+knowledge%2Frsi%2Fsicp%2Fsources%2Fsource_registry.tsv	rewritten	lab/sicp/contracts/sources/source_registry.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fsource_registry.md	rewritten	knowledge/agentic_engineering/source_registry.md	relocated retained educational or engineering material
-knowledge%2Frsi%2Fsources%2Fcodex-state-continuity-claims.tsv	rewritten	content/sources/codex-state-continuity-claims.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fsources%2Fcodex-state-continuity-claims.tsv	rewritten	evidence/sources/codex-state-continuity-claims.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fsources%2Fcodex-state-continuity-provenance.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fsources%2Fevidence_graph.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-knowledge%2Frsi%2Fsources%2Fsource_registry.tsv	rewritten	content/sources/source_registry.tsv	canonical path and standalone links
+knowledge%2Frsi%2Fsources%2Fsource_registry.tsv	rewritten	evidence/sources/source_registry.tsv	canonical path and standalone links
 knowledge%2Frsi%2Fsystem_state_and_notation.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fsystems%2Face.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 knowledge%2Frsi%2Fsystems%2Fadas.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
@@ -187,17 +187,17 @@ learning%2Fsicp_evaluator%2FCargo.toml	ported	lab/sicp/Cargo.toml	standalone wor
 learning%2Fsicp_evaluator%2FREADME.md	rewritten	lab/sicp/README.md	standalone workspace member
 learning%2Fsicp_evaluator%2Fsrc%2Flib.rs	ported	lab/sicp/src/lib.rs	standalone workspace member
 learning%2Fsicp_evaluator%2Fsrc%2Fmain.rs	ported	lab/sicp/src/main.rs	standalone workspace member
-%73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64-collections%2Fgenerated%2F.gitkeep	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
-%73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64-collections%2Frebuild_%73%6F%75%72%63%65%5F%67%72%61%70%68_index.sh	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
-%73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64_collections%2FREADME.md	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
-src%2Fcommands%2Fknowledge%2F%71%6D%64_index.rs	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
-src%2Fcommands%2Fknowledge%2Frsi.rs	rewritten	crates/harp/src/corpus/mod.rs	standalone corpus compiler
-src%2Fcommands%2Fknowledge%2Frsi%2Fcontracts.rs	rewritten	crates/harp/src/corpus/contracts.rs	standalone paths and adapters
+%73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64-collections%2Fgenerated%2F.gitkeep	replaced	cli/src/search.rs	bundled SQLite FTS5 search
+%73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64-collections%2Frebuild_%73%6F%75%72%63%65%5F%67%72%61%70%68_index.sh	replaced	cli/src/search.rs	bundled SQLite FTS5 search
+%73%6F%75%72%63%65%5F%67%72%61%70%68%2F%71%6D%64_collections%2FREADME.md	replaced	cli/src/search.rs	bundled SQLite FTS5 search
+src%2Fcommands%2Fknowledge%2F%71%6D%64_index.rs	replaced	cli/src/search.rs	bundled SQLite FTS5 search
+src%2Fcommands%2Fknowledge%2Frsi.rs	rewritten	cli/src/corpus/mod.rs	standalone corpus compiler
+src%2Fcommands%2Fknowledge%2Frsi%2Fcontracts.rs	rewritten	cli/src/corpus/contracts.rs	standalone paths and adapters
 src%2Fcommands%2Fknowledge%2Frsi%2Flessons.rs	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-src%2Fcommands%2Fknowledge%2Frsi%2Frender.rs	rewritten	crates/harp/src/corpus/render.rs	standalone paths and adapters
+src%2Fcommands%2Fknowledge%2Frsi%2Frender.rs	rewritten	cli/src/corpus/render.rs	standalone paths and adapters
 src%2Fcommands%2Fknowledge%2Frsi%2Frules.rs	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-src%2Fcommands%2Fknowledge%2Frsi%2Ftests.rs	rewritten	crates/harp/src/corpus/tests.rs	standalone paths and adapters
-tests%2F%71%6D%64_index_cli.rs	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
+src%2Fcommands%2Fknowledge%2Frsi%2Ftests.rs	rewritten	cli/src/corpus/tests.rs	standalone paths and adapters
+tests%2F%71%6D%64_index_cli.rs	replaced	cli/src/search.rs	bundled SQLite FTS5 search
 third_party%2Fa1zhang-rlm-harness-generalization%2F.gitattributes	replaced	.gitattributes	root binary LFS policy
 third_party%2Fa1zhang-rlm-harness-generalization%2F%54%41%52%4F%43%43%4F_PROVENANCE.md	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 third_party%2Fa1zhang-rlm-harness-generalization%2Facquire.sh	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
@@ -346,8 +346,8 @@ third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fstop-arxiv.html	retired	-	R
 third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fthetaevolve-arxiv-paper.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 third_party%2Frsi-weng-citation-closure%2Fmetadata%2Fthetaevolve-arxiv.html	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 third_party%2Frsi-weng-citation-closure%2Foutgoing_citations.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
-third_party%2Frsi-weng-citation-closure%2F%71%6D%64-index.sh	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
-third_party%2Frsi-weng-citation-closure%2F%71%6D%64-receipt.tsv	replaced	crates/harp/src/search.rs	bundled SQLite FTS5 search
+third_party%2Frsi-weng-citation-closure%2F%71%6D%64-index.sh	replaced	cli/src/search.rs	bundled SQLite FTS5 search
+third_party%2Frsi-weng-citation-closure%2F%71%6D%64-receipt.tsv	replaced	cli/src/search.rs	bundled SQLite FTS5 search
 third_party%2Frsi-weng-citation-closure%2Freceipts%2Fabsolute-zero.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 third_party%2Frsi-weng-citation-closure%2Freceipts%2Face.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md
 third_party%2Frsi-weng-citation-closure%2Freceipts%2Fadas.tsv	retired	-	RSI article product retired; brief survey retained at knowledge/article_survey.md

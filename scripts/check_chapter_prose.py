@@ -42,8 +42,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "knowledge/crouzeix_textbook/crouzeix_textbook_index.md"
-COVERAGE = ROOT / "content/crouzeix_textbook/coverage.json"
-EXERCISES = ROOT / "content/crouzeix_textbook/exercises.json"
+COVERAGE = ROOT / "lab/math/textbook/coverage.json"
+EXERCISES = ROOT / "lab/math/textbook/exercises.json"
 
 WORD = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,

@@ -401,13 +401,13 @@ Expected source changes:
 - `atlas/src/app/AtlasApp.tsx`
 - `atlas/src/app/routes.ts` and `atlas/src/app/routes.test.ts`
 - new dashboard component and test files under `atlas/src/app/`
-- new typed data module under `atlas/src/content/`
+- new typed data module under `atlas/src/lab/math/textbook/`
 - new scoped stylesheet under `atlas/src/styles/`
 - `atlas/tests/static-export.test.mjs`
 
 After source verification, regenerate both required derived artifacts together:
 
-- `atlas/src/content/generated/corpus.json` when the canonical content build
+- `atlas/src/knowledge/generated/corpus.json` when the canonical content build
   changes it
 - `atlas/dist/harp-atlas.html` and `atlas/dist/harp-atlas.receipt.json` through
   the static export command

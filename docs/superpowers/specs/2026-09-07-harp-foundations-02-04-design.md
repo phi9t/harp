@@ -13,10 +13,10 @@ Modify the three existing canonical chapters:
 Update their matching Lean modules under
 `formalization/lean/CrouzeixTextbook/Part01/Chapter02.lean`, `Chapter03.lean`,
 and `Chapter04.lean`. Extend the existing tests in
-`crates/harp/tests/crouzeix_textbook.rs` and the actual reader-rendering tests
+`cli/tests/crouzeix_textbook.rs` and the actual reader-rendering tests
 in `atlas/src/app/ChapterReader.test.tsx` as needed.
 
-The integration owner updates `content/crouzeix_textbook/coverage.json`,
+The integration owner updates `lab/math/textbook/coverage.json`,
 `exercises.json`, compiler-generated `Correspondence.lean`, current ledgers,
 book navigation, status/claim counts, and generated Atlas artifacts together.
 Keep the 36 chapters and 216 existing coverage and exercise IDs. Do not

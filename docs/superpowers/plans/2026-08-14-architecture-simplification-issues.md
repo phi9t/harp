@@ -24,10 +24,10 @@ without changing the Engine or command output.
 
 **Primary files:**
 
-- `crates/harp/src/main.rs`
-- new internal command module under `crates/harp/src/`
-- `crates/harp/tests/cli.rs`
-- `crates/harp/tests/rlm_process_restart.rs`
+- `cli/src/main.rs`
+- new internal command module under `cli/src/`
+- `cli/tests/cli.rs`
+- `cli/tests/rlm_process_restart.rs`
 
 **Required behavior:**
 
@@ -61,18 +61,18 @@ instead of repeating cross-collection joins.
 
 **Primary files:**
 
-- `atlas/src/content/canonical.ts`
+- `atlas/src/lab/math/textbook/canonical.ts`
 - `atlas/src/app/AtlasApp.tsx`
 - `atlas/src/app/SystemLibrary.tsx`
 - `atlas/src/app/SystemArticle.tsx`
 - `atlas/src/app/WengReader.tsx`
 - `atlas/src/app/LessonRunner.tsx`
-- `atlas/src/content/canonical.test.ts`
+- `atlas/src/lab/math/textbook/canonical.test.ts`
 
 **Required behavior:**
 
 - Generated `corpus.json` remains the data authority.
-- Strict parsing remains in `atlas/src/content/contracts.ts`.
+- Strict parsing remains in `atlas/src/lab/math/textbook/contracts.ts`.
 - Views call projection helpers instead of rejoining arrays.
 - Routes and visible behavior do not change.
 - Offline export remains file-based and serverless.
@@ -99,13 +99,13 @@ mise run verify
 
 **Primary files:**
 
-- `crates/harp-state/src/model.rs`
-- `crates/harp-state/src/store.rs`
-- `crates/harp-state/src/transitions/`
-- `crates/harp-state/migrations/`
-- `crates/harp-contracts/src/`
-- `crates/harp-state/tests/transitions.rs`
-- `crates/harp-state/tests/recovery_reads.rs`
+- `lab/benchmarks/legacy_runtime/harp-state/src/model.rs`
+- `lab/benchmarks/legacy_runtime/harp-state/src/store.rs`
+- `lab/benchmarks/legacy_runtime/harp-state/src/transitions/`
+- `lab/benchmarks/legacy_runtime/harp-state/migrations/`
+- `lab/benchmarks/legacy_runtime/harp-contracts/src/`
+- `lab/benchmarks/legacy_runtime/harp-state/src/transitions_tests.rs`
+- `lab/benchmarks/legacy_runtime/harp-state/src/recovery_reads_tests.rs`
 
 **Required behavior:**
 
@@ -138,11 +138,11 @@ mise run verify
 
 **Primary files:**
 
-- `crates/harp-engine/src/scheduler.rs`
-- new `crates/harp-engine/src/side_effect.rs`
-- `crates/harp-engine/src/projection.rs`
-- `crates/harp-engine/tests/execution.rs`
-- `crates/harp-engine/tests/dynamic_workflow.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/scheduler.rs`
+- new `lab/benchmarks/legacy_runtime/harp-engine/src/side_effect.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/projection.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/execution_tests.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/dynamic_workflow_tests.rs`
 
 **Required behavior:**
 
@@ -174,10 +174,10 @@ mise run verify
 
 **Primary files:**
 
-- `crates/harp-engine/src/recovery.rs`
-- `crates/harp-engine/src/scheduler.rs`
-- `crates/harp-engine/src/side_effect.rs`
-- `crates/harp-engine/tests/recovery.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/recovery.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/scheduler.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/side_effect.rs`
+- `lab/benchmarks/legacy_runtime/harp-engine/src/recovery_tests.rs`
 
 **Required behavior:**
 

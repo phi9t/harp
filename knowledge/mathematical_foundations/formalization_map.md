@@ -413,8 +413,8 @@ gate. Run narrow owned modules during iteration, then `mise run
 lean-foundations`, wrapper regressions, and finally `mise run verify` on the
 frozen candidate before committing or landing. When direct Mathlib imports
 change, update all three existing fake-cache rosters in
-`crates/harp/tests/lean_library.rs` and
-`crates/harp/tests/mathematical_foundations_lean.rs`; retain negative missing-cache
+`cli/tests/lean_library.rs` and
+`cli/tests/mathematical_foundations_lean.rs`; retain negative missing-cache
 tests. Regenerate Atlas outputs with canonical prose, then refresh the import
 receipt using the verifier's reported digest.
 

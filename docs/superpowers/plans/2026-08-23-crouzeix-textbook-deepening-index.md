@@ -15,7 +15,7 @@
 - Read `docs/superpowers/specs/2026-08-23-crouzeix-textbook-deepening-design.md` before executing any wave.
 - Work only in an isolated `codex/` feature worktree. Do not mutate the primary checkout.
 - Preserve all existing CFT theorem IDs, exercise IDs, and public Lean declaration names.
-- Keep canonical prose under `knowledge/crouzeix_textbook/`, contracts under `content/crouzeix_textbook/`, and Lean under `formalization/lean/CrouzeixTextbook/`.
+- Keep canonical prose under `knowledge/crouzeix_textbook/`, contracts under `lab/math/textbook/`, and Lean under `formalization/lean/CrouzeixTextbook/`.
 - Keep the book text-only. Do not add required diagrams, images, notebooks, or interactive assets.
 - Never run `lake update`, `lake --try-cache exe cache get Mathlib`, or `mise run lean-cache`. Missing warm-cache state is a blocked precondition.
 - Do not add `sorry`, `admit`, project axioms, `opaque`, `unsafe`, `native_decide`, or `implemented_by` to the textbook proof surface.

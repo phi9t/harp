@@ -73,7 +73,7 @@ only a successful command transcript.
 Source review found that ordinary process-group cleanup is insufficient: owner
 loss can leave a guest alive, and a descendant can leave the original process
 group. The existing Xena hardening tests explicitly document both cases. The new
-[real process counterexample](../../../crates/harp-cli-process/tests/jobs.rs) also
+[real process counterexample](../../../lab/benchmarks/legacy_runtime/harp-cli-process/src/jobs_tests.rs) also
 passed locally: a bounded detached child survives cleanup of its original
 process group. A
 leader PID disappearing therefore cannot authorize terminal acceptance, refund

@@ -65,7 +65,7 @@ MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-jin
 cargo test -p harp --test crouzeix_textbook chapter_30_ -- --test-threads=1
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-jin
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/30_jin_positive_real_completion.md \
-  formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean content/crouzeix_textbook
+  formalization/lean/CrouzeixTextbook/Part06/Chapter30.lean lab/math/textbook
 git commit -m "docs(crouzeix-textbook): reconstruct Jin completion data"
 ```
 
@@ -98,7 +98,7 @@ git commit -m "docs(crouzeix-textbook): reconstruct Jin completion data"
 cargo test -p harp --test crouzeix_textbook chapter_31_ -- --test-threads=1
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-jin
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/31_jin_correction_cancellation.md \
-  formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean content/crouzeix_textbook
+  formalization/lean/CrouzeixTextbook/Part06/Chapter31.lean lab/math/textbook
 git commit -m "docs(crouzeix-textbook): expand Jin kernel cancellation"
 ```
 
@@ -127,7 +127,7 @@ cargo test -p harp --test crouzeix_textbook chapter_32_ -- --test-threads=1
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-jin
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-textbook
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/32_jin_constant_two_endpoint.md \
-  formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean content/crouzeix_textbook
+  formalization/lean/CrouzeixTextbook/Part06/Chapter32.lean lab/math/textbook
 git commit -m "docs(crouzeix-textbook): complete the Jin endpoint"
 ```
 

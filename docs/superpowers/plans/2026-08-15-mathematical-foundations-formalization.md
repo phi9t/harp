@@ -14,10 +14,10 @@
 
 - Create: `formalization/mathematical_foundations/{lean-toolchain,lakefile.toml,lake-manifest.json,MathematicalFoundations.lean,README.md}`.
 - Create: `formalization/mathematical_foundations/MathematicalFoundations/{Linear,Orthogonality,Probability,BayesInformation,LinearModels,Optimization}.lean`.
-- Create: `scripts/check_mathematical_foundations_lean.sh` and `crates/harp/tests/mathematical_foundations_lean.rs`.
+- Create: `scripts/check_mathematical_foundations_lean.sh` and `cli/tests/mathematical_foundations_lean.rs`.
 - Create: `knowledge/mathematical_foundations/formalization_map.md`.
-- Modify: `.gitignore`, `mise.toml`, `crates/harp/src/corpus/{mod.rs,tests.rs}`, `crates/harp/tests/cli.rs`, `README.md`, `docs/product-contract.md`, `docs/import-receipt.md`.
-- Derived: `atlas/src/content/generated/corpus.json`, `atlas/dist/harp-atlas.html`, `atlas/dist/harp-atlas.receipt.json`.
+- Modify: `.gitignore`, `mise.toml`, `cli/src/corpus/{mod.rs,tests.rs}`, `cli/tests/cli.rs`, `README.md`, `docs/product-contract.md`, `docs/import-receipt.md`.
+- Derived: `atlas/src/knowledge/generated/corpus.json`, `atlas/dist/harp-atlas.html`, `atlas/dist/harp-atlas.receipt.json`.
 
 ### Task 1: Establish the isolated, pinned Lean project
 
@@ -25,7 +25,7 @@
 
 - [ ] **Step 1: Write red wrapper tests**
 
-Create `crates/harp/tests/mathematical_foundations_lean.rs`. Test that the wrapper with a PATH containing no `lake` exits nonzero and writes `Mathematical Foundations Lean toolchain is unavailable`. Add a second test that supplies a temporary project via exact `--project-for-test <directory>` arguments, places a `.lean` source containing `sorry`, and asserts rejection before a fake `lake` executable can run. Add a third test proving an ambient project-root environment variable is ignored by normal invocation.
+Create `cli/tests/mathematical_foundations_lean.rs`. Test that the wrapper with a PATH containing no `lake` exits nonzero and writes `Mathematical Foundations Lean toolchain is unavailable`. Add a second test that supplies a temporary project via exact `--project-for-test <directory>` arguments, places a `.lean` source containing `sorry`, and asserts rejection before a fake `lake` executable can run. Add a third test proving an ambient project-root environment variable is ignored by normal invocation.
 
 - [ ] **Step 2: Run the red test**
 
@@ -50,7 +50,7 @@ Before download, obtain official versioned release metadata and its published di
 - [ ] **Step 6: Commit the green bootstrap slice**
 
 ```sh
-git add .gitignore mise.toml formalization/mathematical_foundations scripts/check_mathematical_foundations_lean.sh crates/harp/tests/mathematical_foundations_lean.rs
+git add .gitignore mise.toml formalization/mathematical_foundations scripts/check_mathematical_foundations_lean.sh cli/tests/mathematical_foundations_lean.rs
 git commit -m "build: add mathematical foundations Lean project"
 ```
 
@@ -142,7 +142,7 @@ git commit -m "feat: formalize linear models and optimization"
 
 ### Task 6: Publish the 48-problem formalization map and enforce it
 
-**Files:** `knowledge/mathematical_foundations/formalization_map.md`, `crates/harp/src/corpus/tests.rs`, `crates/harp/src/corpus/mod.rs`, `crates/harp/tests/cli.rs`.
+**Files:** `knowledge/mathematical_foundations/formalization_map.md`, `cli/src/corpus/tests.rs`, `cli/src/corpus/mod.rs`, `cli/tests/cli.rs`.
 
 - [ ] **Step 1: Write the failing corpus contract**
 
@@ -172,7 +172,7 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add knowledge/mathematical_foundations/formalization_map.md crates/harp/src/corpus/mod.rs crates/harp/src/corpus/tests.rs crates/harp/tests/cli.rs
+git add knowledge/mathematical_foundations/formalization_map.md cli/src/corpus/mod.rs cli/src/corpus/tests.rs cli/tests/cli.rs
 git commit -m "docs: map mathematical foundations formalization"
 ```
 
@@ -218,7 +218,7 @@ Expected: every command exits successfully; record the aggregate exit status and
 - [ ] **Step 5: Commit**
 
 ```sh
-git add README.md docs/product-contract.md docs/import-receipt.md atlas/src/content/generated/corpus.json atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json crates/harp/tests/cli.rs
+git add README.md docs/product-contract.md docs/import-receipt.md atlas/src/knowledge/generated/corpus.json atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json cli/tests/cli.rs
 git commit -m "docs: publish mathematical foundations formalization"
 ```
 

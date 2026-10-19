@@ -16,10 +16,10 @@ documentation dependencies on another local checkout.
 
 
 - Managed Markdown in registered topic packets under `knowledge/` is the
-  authority for technical prose. `content/` is reserved for structured
-  machine-readable contracts and generated output; do not
-  add Markdown beneath it.
-- `content/generated/corpus.json` is derived and must be regenerated with
+  authority for technical prose. Structured contracts live beside their owners: `lab/math/textbook/`,
+  `lab/sicp/contracts/` and `durable/context/`. Do not add Markdown beneath the
+  textbook JSON contract directory.
+- `knowledge/generated/corpus.json` is derived and must be regenerated with
   its canonical inputs. The Atlas browser reader and HTML export are retired.
 - Crouzeix publication outputs live under
   `publications/crouzeix_textbook/` and remain ignored.

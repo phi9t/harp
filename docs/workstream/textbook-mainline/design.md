@@ -28,7 +28,7 @@ Recheck these refs before execution and before push. They are observations, not 
 
 Use `0424501af92bc799e766650ee8c13d6ed09b4b48` as the committed mathematical/publication baseline. It follows Wave 4 publication `60fbb5a3` and its formatting/receipt closeout. Add the seven-file PDF change from `afe523a2`, with the integration repairs below. Use an explicit, reviewed delta from the common ancestor, not a wholesale copy of the source tree and not a replay of 210 historical commits.
 
-`source-inventory.tsv` records the candidate baseline delta plus the PDF commit paths. It is an input inventory, not permission to overwrite every listed mainline file. LP-01 must classify each row as take, adapt, regenerate, or exclude, with a reason. In particular, independently inspect `crates/harp/src/context_control/episode.rs` and omit it unless a textbook dependency is demonstrated.
+`source-inventory.tsv` records the candidate baseline delta plus the PDF commit paths. It is an input inventory, not permission to overwrite every listed mainline file. LP-01 must classify each row as take, adapt, regenerate, or exclude, with a reason. In particular, independently inspect `cli/src/context_control/episode.rs` and omit it unless a textbook dependency is demonstrated.
 
 Keep these source commits deferred together:
 
@@ -43,8 +43,8 @@ The baseline status records 35 chapters, 210 coverage rows, 66 exact corresponde
 
 Do not restore, stash, copy, stage, or delete source-worktree edits. Preserve:
 
-- `content/crouzeix_textbook/coverage.json` and `exercises.json`.
-- `crates/harp/tests/support/crouzeix_textbook_wave5_contract.rs`.
+- `lab/math/textbook/coverage.json` and `exercises.json`.
+- `cli/tests/support/crouzeix_textbook_wave5_contract.rs`.
 - `docs/superpowers/specs/2026-08-29-crouzeix-textbook-analysis-operator-contract.md`.
 - `formalization/lean/CrouzeixTextbook/ExportReceipt.lean`, `Part01/Chapter01.lean`, and `Part03/Chapter13.lean`.
 - `knowledge/crouzeix_textbook/notation_and_glossary.md` and `part_01_linear_structure/01_objects_and_representations.md`.
@@ -69,7 +69,7 @@ Implementation workers need isolated worktrees and explicit owned paths. Shared 
 
 ### Mathematical and publication closure
 
-Keep `knowledge/crouzeix_textbook/`, `content/crouzeix_textbook/`, `formalization/lean/CrouzeixTextbook*`, Rust publication validation, tests, and receipt generation coherent. Resolve all imported and linked providers. Chapter 35 also requires changes outside the textbook directory in `Crouzeix/Harp/Consequences.lean`, `FiniteAtomicDilation.lean`, `FiniteAtomicL2Dilation.lean`, and `MainTheorem.lean`. Review `CrouzeixConjecture/Sharpness.lean` too.
+Keep `knowledge/crouzeix_textbook/`, `lab/math/textbook/`, `formalization/lean/CrouzeixTextbook*`, Rust publication validation, tests, and receipt generation coherent. Resolve all imported and linked providers. Chapter 35 also requires changes outside the textbook directory in `Crouzeix/Harp/Consequences.lean`, `FiniteAtomicDilation.lean`, `FiniteAtomicL2Dilation.lean`, and `MainTheorem.lean`. Review `CrouzeixConjecture/Sharpness.lean` too.
 
 Retain the exact/reexport/checkpoint distinctions and incomplete coverage. A source name or local PDF build is not a fresh compiler receipt. Preserve the separation between bounded receipt evidence, local Lean compilation, hermetic execution, and independent mathematical review.
 
@@ -77,7 +77,7 @@ Retain the exact/reexport/checkpoint distinctions and incomplete coverage. A sou
 
 Preserve mainline XDG/cache setup and wrapper hardening. The source adds obsolete `/private/tmp/harp-mathematical-foundations-elan` task environments; adapt textbook tasks to `scripts/harp_xdg_env.sh`. Do not copy the old wrapper or `labs/` wholesale. Preserve current route manifests, historical LS evidence checks, six-route validation, Atlas reading-path redesign, accessibility, Pages, releases, and onboarding.
 
-A read-only three-way merge inspection found 28 conflict hunks across 12 paths: the three generated Atlas files, `atlas/src/app/routes.test.ts`, `crates/harp/tests/cli.rs`, `crates/harp/tests/lean_library.rs`, `docs/import-receipt.md`, `labs/crouzeix_proof_reproduction/ls_receipts.py`, its two relevant test files, `mise.toml`, and `scripts/check_lean_library.sh`. Clean textual merges still require semantic review. Generated files must be rebuilt, not resolved by choosing a side.
+A read-only three-way merge inspection found 28 conflict hunks across 12 paths: the three generated Atlas files, `atlas/src/app/routes.test.ts`, `cli/tests/cli.rs`, `cli/tests/lean_library.rs`, `docs/import-receipt.md`, `labs/crouzeix_proof_reproduction/ls_receipts.py`, its two relevant test files, `mise.toml`, and `scripts/check_lean_library.sh`. Clean textual merges still require semantic review. Generated files must be rebuilt, not resolved by choosing a side.
 
 ### PDF repairs before landing
 

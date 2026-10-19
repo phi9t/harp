@@ -3,7 +3,7 @@
 This is the executable development contract for Chapters 30--32. It does not
 claim that the chapter work already exists. Canonical mathematics remains in
 `knowledge/crouzeix_textbook/`; canonical correspondence metadata remains in
-`content/crouzeix_textbook/`.
+`lab/math/textbook/`.
 
 - Active phase: `wave-2-complete`.
 - Target phase: `wave-2-complete`.
@@ -230,7 +230,7 @@ Each completed chapter has exactly six theorem declarations named
 The short descriptions above are mathematical reading aids, not type-hash
 inputs. The durable executable signature source is the raw Lean declaration
 block `JIN_CONTRACT_PROBE_DECLARATIONS` in
-`crates/harp/tests/crouzeix_textbook.rs`. During the test, that block is written
+`cli/tests/crouzeix_textbook.rs`. During the test, that block is written
 to a private temporary `JinContractProbe.lean`, imports only
 `CrouzeixTextbook.ExportReceipt`, and declares nineteen canonical targets plus
 one negative mutation axiom (twenty total): one target for each exercise, the

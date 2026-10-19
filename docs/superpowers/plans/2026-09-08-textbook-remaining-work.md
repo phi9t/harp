@@ -163,7 +163,7 @@ Reviewers must be barred from Lean builds — the shared Lake cache corrupts und
 These are correct behaviors of the verification machinery, not defects. Each has cost a build cycle when discovered late; check for them before writing a card.
 
 - **Unmaintained namespaces.** The receipt exporter treats only the `CrouzeixTextbook.`, `CrouzeixConjecture.`, `Crouzeix.Jin.`, `CrouzeixJin.`, `Crouzeix.LoristSchwenninger.`, `CrouzeixLoristSchwenninger.`, `Crouzeix.Harp.` and `CrouzeixHarp.` prefixes as maintained. A card aliasing into any other namespace — `MathematicalFoundations.` in particular — cannot name its provider as an underlying declaration, so the validator cannot check the alias target and the row can only ever be a checkpoint. Such cards must be proved locally. Hit in Chapters 7, 8 and 9.
-- **Wrapper fixtures track the imports.** The shared-wrapper tests in `crates/harp/tests/lean_library.rs` write a fake Mathlib artifact tree, and the cache preflight refuses to build a target whose scanned imports are missing from it. A chapter that adds a Mathlib import must add it to `write_fake_all_mathlib_artifacts` in the same change, or three wrapper tests fail closed. Hit at Chapter 5 and again at Chapter 10.
+- **Wrapper fixtures track the imports.** The shared-wrapper tests in `cli/tests/lean_library.rs` write a fake Mathlib artifact tree, and the cache preflight refuses to build a target whose scanned imports are missing from it. A chapter that adds a Mathlib import must add it to `write_fake_all_mathlib_artifacts` in the same change, or three wrapper tests fail closed. Hit at Chapter 5 and again at Chapter 10.
 - **Eta-alias rejection.** A `proved-here` card whose body elaborates to an exact eta alias of another constant is classified `direct-alias` by the receipt and rejected. This is the protection that stops a renamed import from claiming to be a local proof. Give the declaration a genuine derivation — a named intermediate step, or the argument the prose displays. Hit twice while reproving cards that had been aliases.
 - **The payload digest is the last commit before the gate.** `repository verify` recomputes the standalone payload digest over tracked repository content, so *any* commit that adds or changes a tracked file re-stales the pin — including a commit that has nothing to do with the textbook. Refreshing the receipt and then committing anything else puts the tree straight back into the state the refresh just fixed. Refresh it once, as the final commit, and run the gate without committing again. Use `scripts/refresh_import_receipt.py`: it refuses to edit unless the verifier really reports a stale digest, which is the check whose absence let a refresh run against an unrelated failure and write an empty pin into the receipt.
 - **Frozen duplicate providers.** Two indexed cards may rest on the same provider and therefore index one theorem twice. Card identities are frozen, so the roster is not adjusted; the later card's boundary paragraph must disclose the duplication and give the reason the identity is indexed again. The roster currently indexes 216 cards resting on 208 distinct proofs; `mise run textbook-counts` with `--audit` lists the eight that restate another.
@@ -174,7 +174,7 @@ These are correct behaviors of the verification machinery, not defects. Each has
 
 ## Package 0: reconcile inventory and ownership
 
-**Owners:** `knowledge/crouzeix_textbook/status_and_scope.md`, `content/crouzeix_textbook/coverage.json`, `content/crouzeix_textbook/exercises.json`, existing correspondence/publication generator, Kata issues.
+**Owners:** `knowledge/crouzeix_textbook/status_and_scope.md`, `lab/math/textbook/coverage.json`, `lab/math/textbook/exercises.json`, existing correspondence/publication generator, Kata issues.
 
 - [ ] Recompute current counts from the actual records; compare with the status document and accepted receipt.
 - [ ] List every remaining card and exercise by stable ID, chapter, missing obligation, provider, prerequisite, and disposition.
@@ -289,7 +289,7 @@ Reuse `2026-09-07-textbook-verifier-contracts.md` and the existing formalization
 
 ## Package 8: integrated editions and release
 
-**Owners:** `atlas/src/content/generated/corpus.json`, `atlas/dist/harp-atlas.html` and receipt, existing reader tests, `tools/textbook_pdf/`, status/claim ledgers, import receipt.
+**Owners:** `atlas/src/knowledge/generated/corpus.json`, `atlas/dist/harp-atlas.html` and receipt, existing reader tests, `tools/textbook_pdf/`, status/claim ledgers, import receipt.
 
 - [ ] Freeze a candidate and generate compiler metadata through the maintained exporter/publisher. Never hand-edit type hashes or line positions.
 - [ ] Regenerate corpus and offline reader together; validate the exact bound inputs before deciding whether terminal evidence needs an immutable refresh.

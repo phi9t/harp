@@ -14,7 +14,7 @@ canonical: exercise_index.md
 
 This page is the stable reader route for the generated exercise report. It
 does not duplicate the exercise roster. The structured authority is
-`content/crouzeix_textbook/exercises.json`, cross-validated against the
+`lab/math/textbook/exercises.json`, cross-validated against the
 coverage contract and the chapter anchors.
 
 ## Reading the generated ledger

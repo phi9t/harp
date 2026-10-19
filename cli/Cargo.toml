@@ -1,0 +1,99 @@
+[package]
+name = "harp"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+default-run = "harp"
+
+[[bin]]
+name = "harp"
+path = "src/main.rs"
+
+[dependencies]
+clap.workspace = true
+libc.workspace = true
+pulldown-cmark.workspace = true
+rusqlite.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+serde_path_to_error.workspace = true
+sha2.workspace = true
+signal-hook.workspace = true
+flate2.workspace = true
+tar.workspace = true
+tempfile.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+url.workspace = true
+walkdir.workspace = true
+
+[dev-dependencies]
+jsonschema = { version = "=0.49.9", default-features = false }
+assert_cmd.workspace = true
+predicates.workspace = true
+tempfile.workspace = true
+toml.workspace = true
+
+[[test]]
+name = "durable_cli"
+path = "src/durable_cli_test.rs"
+
+[[test]]
+name = "autodiff_geometry_lean"
+path = "src/autodiff_geometry_lean_test.rs"
+
+[[test]]
+name = "cli"
+path = "src/cli_test.rs"
+
+[[test]]
+name = "context_control_cli"
+path = "src/context_control_cli_test.rs"
+
+[[test]]
+name = "context_control_run"
+path = "src/context_control_run_test.rs"
+
+[[test]]
+name = "credible_docs_style"
+path = "src/credible_docs_style_test.rs"
+
+[[test]]
+name = "crouzeix_conjecture_knowledge_packet"
+path = "src/crouzeix_conjecture_knowledge_packet_test.rs"
+
+[[test]]
+name = "crouzeix_textbook"
+path = "src/crouzeix_textbook_test.rs"
+
+[[test]]
+name = "foundations_contract"
+path = "src/foundations_contract_test.rs"
+
+[[test]]
+name = "foundations_narrative"
+path = "src/foundations_narrative_test.rs"
+
+[[test]]
+name = "lean_library"
+path = "src/lean_library_test.rs"
+
+[[test]]
+name = "mathematical_foundations_lean"
+path = "src/mathematical_foundations_lean_test.rs"
+
+[[test]]
+name = "nng4_intro_lean"
+path = "src/nng4_intro_lean_test.rs"
+
+[[test]]
+name = "obsidian_knowledge_packet"
+path = "src/obsidian_knowledge_packet_test.rs"
+
+[[test]]
+name = "rlm_process_restart"
+path = "src/rlm_process_restart_test.rs"
+
+[[test]]
+name = "training_dynamics_lean"
+path = "src/training_dynamics_lean_test.rs"

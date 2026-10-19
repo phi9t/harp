@@ -20,3 +20,22 @@ class OwnershipTests(unittest.TestCase):
             root=Path(directory);(root/'harp_durable').mkdir()
             with self.assertRaisesRegex(ValueError,'retired framework'):
                 check(root)
+
+    def test_retired_container_roots_cannot_return(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ('benchmarks', 'assets', 'content', 'crates'):
+                with self.subTest(name=name):
+                    (root/name).mkdir()
+                    with self.assertRaisesRegex(ValueError, 'retired top-level'):
+                        check(root)
+                    (root/name).rmdir()
+
+    def test_product_cannot_depend_on_the_retired_workload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'cli').mkdir()
+            (root/'cli/Cargo.toml').write_text(
+                '[dev-dependencies]\nold = { path = "../lab/benchmarks/legacy_runtime/harp-engine" }\n')
+            with self.assertRaisesRegex(ValueError, 'retired runtime workload'):
+                check(root)

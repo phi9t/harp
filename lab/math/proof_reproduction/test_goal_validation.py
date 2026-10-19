@@ -949,7 +949,7 @@ class GoalValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             for content in ("invalid", "[]", '{"schema_version":"unsupported"}'):
-                self.write_text(root, "content/generated/corpus.json", content)
+                self.write_text(root, "knowledge/generated/corpus.json", content)
                 with self.assertRaisesRegex(ValueError, "generated corpus is invalid"):
                     goal_validation._validate_reader_surfaces(root)
 
@@ -959,7 +959,7 @@ class GoalValidationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             corpus = self.write_bytes(
-                root, "content/generated/corpus.json",
+                root, "knowledge/generated/corpus.json",
                 b'{"schema_version":"harp-knowledge/v1"}' + b" " * goal_validation.ARTIFACT_BYTES_CAP,
             )
             self.assertEqual(goal_validation._validate_reader_surfaces(root), goal_validation.READER_EVIDENCE_PATHS)
@@ -1191,7 +1191,7 @@ class GoalValidationTests(unittest.TestCase):
             root = Path(directory)
             self.write_bytes(
                 root,
-                "content/generated/corpus.json",
+                "knowledge/generated/corpus.json",
                 b"a" * (goal_validation.READER_ARTIFACT_BYTES_CAP + 1),
             )
             with self.assertRaisesRegex(ValueError, "corpus artifact exceeds cap"):

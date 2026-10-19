@@ -226,13 +226,13 @@ git commit -m "fix(crouzeix): run proof slices in shared Lean environment" -m "C
 - Modify: `formalization/lean/lakefile.toml`
 - Modify: `scripts/check_lean_library.sh`
 - Modify: `mise.toml`
-- Modify: `crates/harp/tests/lean_library.rs`
+- Modify: `cli/tests/lean_library.rs`
 - Create: `formalization/lean/Crouzeix.lean`
 - Create: `formalization/lean/Crouzeix/Jin/MaxPolynomialModulus.lean`
 
 - [ ] **Step 1: Write the failing shared-wrapper test**
 
-In `crates/harp/tests/lean_library.rs`, add:
+In `cli/tests/lean_library.rs`, add:
 
 ```rust
 #[test]
@@ -374,7 +374,7 @@ Expected:
 Stage explicitly:
 
 ```sh
-git add formalization/lean/lakefile.toml formalization/lean/Crouzeix.lean formalization/lean/Crouzeix/Jin/MaxPolynomialModulus.lean scripts/check_lean_library.sh mise.toml crates/harp/tests/lean_library.rs
+git add formalization/lean/lakefile.toml formalization/lean/Crouzeix.lean formalization/lean/Crouzeix/Jin/MaxPolynomialModulus.lean scripts/check_lean_library.sh mise.toml cli/tests/lean_library.rs
 git commit -m "feat(crouzeix): add shared Lean target" -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
 

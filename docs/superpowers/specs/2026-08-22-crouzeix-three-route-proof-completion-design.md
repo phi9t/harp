@@ -244,7 +244,7 @@ changes risky: the principal Rust module is over six thousand lines and the
 five Python proof-evidence modules plus tests exceed eighteen thousand lines.
 Do not perform a broad rewrite before publication. Add the Python route
 contract and CLI through narrow modules, add Rust route validation under
-`crates/harp/src/sources/crouzeix/route.rs`, reuse current hardened filesystem
+`cli/src/sources/crouzeix/route.rs`, reuse current hardened filesystem
 primitives, and extract other shared code only when a characterization test
 proves byte-for-byte behavioral parity.
 

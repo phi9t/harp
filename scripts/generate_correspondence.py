@@ -7,7 +7,7 @@ Registering a chapter's cards or exercise solutions changes it, and the file has
 be regenerated before a receipt will contain the new declarations at all.
 
 The authority is the Rust `generate_correspondence` in
-`crates/harp/src/crouzeix_textbook/lean.rs`, which is reachable only from the test
+`cli/src/crouzeix_textbook/lean.rs`, which is reachable only from the test
 `deletion_generated_lean_surface_is_the_contract_correspondence`. That test asserts
 the committed file equals what the Rust renderer produces, so this script cannot
 drift undetected: if the two disagree, the gate fails on that test. What it saves
@@ -39,8 +39,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-COVERAGE = ROOT / "content/crouzeix_textbook/coverage.json"
-EXERCISES = ROOT / "content/crouzeix_textbook/exercises.json"
+COVERAGE = ROOT / "lab/math/textbook/coverage.json"
+EXERCISES = ROOT / "lab/math/textbook/exercises.json"
 OUTPUT = ROOT / "lab/math/lean/CrouzeixTextbook/Correspondence.lean"
 TARGET = "CrouzeixTextbook"
 PREFIX = ("lab", "math", "lean")

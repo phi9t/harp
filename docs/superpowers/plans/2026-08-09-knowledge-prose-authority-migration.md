@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make `knowledge/` the sole authority for Harp technical Markdown while retaining `content/` solely for structured contracts and diagnostics.
+**Goal:** Make `knowledge/` the sole authority for Harp technical Markdown while retaining `lab/math/textbook/` solely for structured contracts and diagnostics.
 
-**Architecture:** Move the 135 tracked `content/**/*.md` files to the path-preserving managed tree `knowledge/rsi/`, plus move the Weng field note into that tree. Keep path-bearing JSON and TSV inputs under `content/`, but rewrite their canonical Markdown values to `knowledge/rsi/...`. The Rust corpus compiler and FTS search use explicit managed knowledge roots, reject Markdown below `content/`, and continue to emit the existing Atlas generated paths.
+**Architecture:** Move the 135 tracked `lab/math/textbook/**/*.md` files to the path-preserving managed tree `knowledge/rsi/`, plus move the Weng field note into that tree. Keep path-bearing JSON and TSV inputs under `lab/math/textbook/`, but rewrite their canonical Markdown values to `knowledge/rsi/...`. The Rust corpus compiler and FTS search use explicit managed knowledge roots, reject Markdown below `lab/math/textbook/`, and continue to emit the existing Atlas generated paths.
 
 **Tech Stack:** Rust 1.92 (`harp` corpus/search/repository verifier), Python 3 standard library (Weng projector and one-shot link rewrite), TypeScript/React 19 Atlas, Vite/Vitest, Git LFS, mise.
 
@@ -17,10 +17,10 @@
 Move every tracked Markdown file selected by:
 
 ```sh
-git ls-files -z -- 'content/*.md' 'content/**/*.md'
+git ls-files -z -- 'lab/math/textbook/*.md' 'lab/math/textbook/**/*.md'
 ```
 
-from `content/<relative>.md` to `knowledge/rsi/<relative>.md`. At the time of
+from `lab/math/textbook/<relative>.md` to `knowledge/rsi/<relative>.md`. At the time of
 planning this is 135 files, covering root RSI material, `chapters/`,
 `concepts/`, `systems/`, `weng/`, `weng-sources/`, `lessons/`, `sicp/`, and
 `sources/`.
@@ -42,23 +42,23 @@ knowledge/harness_benchmarks/
 
 Do not add the AHE packet in this migration.
 
-### Structured inputs that stay in `content/`
+### Structured inputs that stay in `lab/math/textbook/`
 
 Do not move these files or the diagnostics subtree:
 
 ```text
-content/coverage-map.tsv
-content/harness_deep_dive_manifest.tsv
-content/lessons.json
-content/retained-concepts.tsv
-content/systems/system_readings.json
-content/weng-claim-ladder.json
-content/weng-comparison-matrix.tsv
-content/weng-course-status.json
-content/weng-reading-map.json
-content/weng-source-cards.tsv
-content/sources/*.tsv
-content/diagnostics/**/*.json
+lab/math/textbook/coverage-map.tsv
+evidence/implementations/harness_deep_dive_manifest.tsv
+lab/math/textbook/lessons.json
+lab/math/textbook/retained-concepts.tsv
+lab/math/textbook/systems/system_readings.json
+lab/math/textbook/weng-claim-ladder.json
+lab/math/textbook/weng-comparison-matrix.tsv
+lab/math/textbook/weng-course-status.json
+lab/math/textbook/weng-reading-map.json
+lab/math/textbook/weng-source-cards.tsv
+evidence/sources/*.tsv
+lab/math/textbook/diagnostics/**/*.json
 ```
 
 Rewrite only their values that designate canonical Markdown or source-card
@@ -68,13 +68,13 @@ paths. Preserve paths for JSON/TSV contracts, diagnostics, and evidence.
 
 | Surface | Files | Required result |
 | --- | --- | --- |
-| Filesystem boundary | `crates/harp/src/fs.rs` | A symlink-rejecting recursive regular-file extension listing API used by corpus validation. |
-| Corpus contract | `crates/harp/src/corpus/{mod.rs,contracts.rs,lessons.rs,render.rs}` | `knowledge/rsi/` is the RSI Markdown root; `content/**/*.md` fails corpus validation. |
-| Search | `crates/harp/src/search.rs` | Index `knowledge/rsi/` plus the three registered packet roots, never the entire `knowledge/` tree. |
-| Repository verifier | `crates/harp/src/repository.rs`, `docs/import-map.tsv` | Permit the legitimate current `knowledge/rsi/` tree and update imported Markdown destinations. |
-| Tests | `crates/harp/src/corpus/tests.rs`, `crates/harp/tests/{cli.rs,dgm_knowledge_packet.rs,weng_teaching_curriculum.rs,credible_docs_style.rs}`, `atlas/src/content/canonical.test.ts` | New paths compile, old Markdown placement fails, packets link correctly, loose knowledge files are excluded from search. |
-| Weng projection | `scripts/build_weng_course.py`, `reference/*.html`, `lessons/*.html` only if regenerated output changes | Use `knowledge/rsi/` only for canonical Markdown/card route values while retaining structured inputs under `content/`. |
-| Derived Atlas | `atlas/src/content/generated/corpus.json`, `atlas/dist/harp-atlas.html`, `atlas/dist/harp-atlas.receipt.json` | Regenerated from new canonical paths; TypeScript module paths remain unchanged. |
+| Filesystem boundary | `cli/src/fs.rs` | A symlink-rejecting recursive regular-file extension listing API used by corpus validation. |
+| Corpus contract | `cli/src/corpus/{mod.rs,contracts.rs,lessons.rs,render.rs}` | `knowledge/rsi/` is the RSI Markdown root; `lab/math/textbook/**/*.md` fails corpus validation. |
+| Search | `cli/src/search.rs` | Index `knowledge/rsi/` plus the three registered packet roots, never the entire `knowledge/` tree. |
+| Repository verifier | `cli/src/repository.rs`, `docs/import-map.tsv` | Permit the legitimate current `knowledge/rsi/` tree and update imported Markdown destinations. |
+| Tests | `cli/src/corpus/tests.rs`, `cli/tests/{cli.rs,dgm_knowledge_packet.rs,weng_teaching_curriculum.rs,credible_docs_style.rs}`, `atlas/src/lab/math/textbook/canonical.test.ts` | New paths compile, old Markdown placement fails, packets link correctly, loose knowledge files are excluded from search. |
+| Weng projection | `scripts/build_weng_course.py`, `reference/*.html`, `lessons/*.html` only if regenerated output changes | Use `knowledge/rsi/` only for canonical Markdown/card route values while retaining structured inputs under `lab/math/textbook/`. |
+| Derived Atlas | `atlas/src/knowledge/generated/corpus.json`, `atlas/dist/harp-atlas.html`, `atlas/dist/harp-atlas.receipt.json` | Regenerated from new canonical paths; TypeScript module paths remain unchanged. |
 | Contributor docs | `AGENTS.md`, `README.md`, `docs/product-contract.md`, `atlas/README.md`, `RESOURCES.md` | State the new authority model and correct reader links. |
 
 Historical design and plan documents remain historical records. Do not rewrite
@@ -85,28 +85,28 @@ describe the previous layout.
 
 | Boundary | Structural invariant | Enforcement |
 | --- | --- | --- |
-| Technical prose | All canonical Markdown is below explicit `knowledge/` roots; `content/` contains no `.md` file at any depth. | Corpus `load()` calls a symlink-safe `validate_no_content_markdown()` before reading registries. |
+| Technical prose | All canonical Markdown is below explicit `knowledge/` roots; `lab/math/textbook/` contains no `.md` file at any depth. | Corpus `load()` calls a symlink-safe `validate_no_content_markdown()` before reading registries. |
 | Controlled corpus membership | A loose Markdown file under `knowledge/` is not automatically canonical or searchable. | Corpus uses registered routes/registries; search uses a fixed root list. |
-| Structured contracts | Registry JSON/TSV and diagnostics remain beneath `content/`. | Keep contract constants and diagnostic paths unchanged; rewrite only Markdown-valued fields. |
+| Structured contracts | Registry JSON/TSV and diagnostics remain beneath `lab/math/textbook/`. | Keep contract constants and diagnostic paths unchanged; rewrite only Markdown-valued fields. |
 | Evidence | Captured files remain untouched. | No `evidence/` move or text rewrite; only existing source locators continue to resolve. |
-| Generated output | Atlas artifacts remain generated under `atlas/src/content/generated/` and `atlas/dist/`. | Existing safe output validation, static export receipt, and repository verification remain enabled. |
+| Generated output | Atlas artifacts remain generated under `atlas/src/knowledge/generated/` and `atlas/dist/`. | Existing safe output validation, static export receipt, and repository verification remain enabled. |
 | Symlinks | Neither the no-Markdown check nor search may traverse a symlink. | Reuse `HeldDirectory` path protections and add a recursive extension listing that rejects every symlink encountered. |
 
 ### Task 1: Add the managed-root and no-Markdown contract
 
 **Files:**
-- Modify: `crates/harp/src/fs.rs`
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/corpus/contracts.rs`
-- Modify: `crates/harp/src/corpus/lessons.rs`
-- Modify: `crates/harp/src/corpus/render.rs`
-- Modify: `crates/harp/src/corpus/tests.rs`
-- Modify: `crates/harp/tests/cli.rs`
-- Modify: `atlas/src/content/canonical.test.ts`
+- Modify: `cli/src/fs.rs`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/corpus/contracts.rs`
+- Modify: `cli/src/corpus/lessons.rs`
+- Modify: `cli/src/corpus/render.rs`
+- Modify: `cli/src/corpus/tests.rs`
+- Modify: `cli/tests/cli.rs`
+- Modify: `atlas/src/lab/math/textbook/canonical.test.ts`
 
 - [ ] **Step 1: Change corpus test fixtures to the target canonical root and add failing ownership tests**
 
-In `crates/harp/src/corpus/tests.rs`, make `fixture()` create:
+In `cli/src/corpus/tests.rs`, make `fixture()` create:
 
 ```rust
 let root = repo.path().join("knowledge/rsi");
@@ -115,9 +115,9 @@ fs::create_dir_all(root.join("concepts")).unwrap();
 ```
 
 Replace every fixture-only canonical Markdown path with its
-`knowledge/rsi/...` equivalent while leaving `content/retained-concepts.tsv`,
-`content/lessons.json`, `content/systems/system_readings.json`, and
-`content/diagnostics/**/*.json` unchanged.
+`knowledge/rsi/...` equivalent while leaving `lab/math/textbook/retained-concepts.tsv`,
+`lab/math/textbook/lessons.json`, `lab/math/textbook/systems/system_readings.json`, and
+`lab/math/textbook/diagnostics/**/*.json` unchanged.
 
 Add these tests:
 
@@ -126,12 +126,12 @@ Add these tests:
 fn rejects_markdown_beneath_the_structured_content_root() {
     let repo = fixture();
     write_complete_fixture(repo.path());
-    fs::write(repo.path().join("content/forbidden.md"), "# Forbidden\n").unwrap();
+    fs::write(repo.path().join("lab/math/textbook/forbidden.md"), "# Forbidden\n").unwrap();
 
     let error = compile(repo.path()).unwrap_err();
 
     assert_eq!(error.code(), "knowledge.rsi.content_markdown");
-    assert!(error.message.contains("content/forbidden.md"));
+    assert!(error.message.contains("lab/math/textbook/forbidden.md"));
 }
 
 #[cfg(unix)]
@@ -143,7 +143,7 @@ fn rejects_symlinks_while_scanning_the_structured_content_root() {
     write_complete_fixture(repo.path());
     let outside = tempfile::tempdir().unwrap();
     fs::write(outside.path().join("forbidden.md"), "# Forbidden\n").unwrap();
-    symlink(outside.path(), repo.path().join("content/linked")).unwrap();
+    symlink(outside.path(), repo.path().join("lab/math/textbook/linked")).unwrap();
 
     let error = compile(repo.path()).unwrap_err();
 
@@ -159,7 +159,7 @@ let row =
 assert_eq!(entry.canonical_markdown_path, "knowledge/rsi/systems/aflow.md");
 ```
 
-In `crates/harp/tests/cli.rs`, rewrite the temporary search fixture to create:
+In `cli/tests/cli.rs`, rewrite the temporary search fixture to create:
 
 ```rust
 fs::create_dir_all(repo.path().join("knowledge/rsi")).expect("RSI knowledge");
@@ -190,14 +190,14 @@ Make the existing query assertion expect
 `"path":"knowledge/rsi/intro.md"`, query `"private draft"`, and assert that
 the serialized result does not contain `knowledge/private/draft.md`.
 
-In `atlas/src/content/canonical.test.ts`, replace the helper and fixture paths:
+In `atlas/src/lab/math/textbook/canonical.test.ts`, replace the helper and fixture paths:
 
 ```ts
 const chapterPath = (id: string): string =>
   `knowledge/rsi/chapters/${id}.md`;
 ```
 
-and replace every `content/weng/` and `content/systems/` expected path with
+and replace every `lab/math/textbook/weng/` and `lab/math/textbook/systems/` expected path with
 `knowledge/rsi/weng/` and `knowledge/rsi/systems/`, respectively.
 
 - [ ] **Step 2: Run the focused tests to prove the old implementation fails**
@@ -211,12 +211,12 @@ cd atlas && corepack pnpm run test -- canonical.test.ts
 ```
 
 Expected: failures because production constants and path guards still accept
-`content/.../*.md`, no recursive Markdown ownership check exists, and search
-still indexes `content/`.
+`lab/math/textbook/.../*.md`, no recursive Markdown ownership check exists, and search
+still indexes `lab/math/textbook/`.
 
 - [ ] **Step 3: Add a symlink-safe regular-file extension traversal**
 
-In `crates/harp/src/fs.rs`, add this public method inside `impl HeldDirectory`:
+In `cli/src/fs.rs`, add this public method inside `impl HeldDirectory`:
 
 ```rust
 pub fn regular_files_with_extension(
@@ -281,9 +281,9 @@ fn collect_regular_files_with_extension(
 This method deliberately starts from `resolve_read_target`, recursively uses
 normal relative paths, and rejects a symlink rather than following it.
 
-- [ ] **Step 4: Make the corpus use `knowledge/rsi/` and reject Markdown in `content/`**
+- [ ] **Step 4: Make the corpus use `knowledge/rsi/` and reject Markdown in `lab/math/textbook/`**
 
-In `crates/harp/src/corpus/mod.rs`, add:
+In `cli/src/corpus/mod.rs`, add:
 
 ```rust
 pub(super) const RSI_MARKDOWN_ROOT: &str = "knowledge/rsi";
@@ -291,7 +291,7 @@ pub(super) const CONTENT_ROOT: &str = "content";
 ```
 
 Keep the existing `COVERAGE_PATH`, registry paths, and diagnostics paths under
-`content/`. Rewrite every Markdown path in `READER_ROUTES`,
+`lab/math/textbook/`. Rewrite every Markdown path in `READER_ROUTES`,
 `AUXILIARY_DOCUMENTS`, and `REQUIRED_CHAPTERS` to start with
 `knowledge/rsi/`.
 
@@ -301,7 +301,7 @@ At the top of `contracts::load`, before `load_retained_concepts`, call:
 validate_no_content_markdown(repository)?;
 ```
 
-Add the helper in `crates/harp/src/corpus/contracts.rs`:
+Add the helper in `cli/src/corpus/contracts.rs`:
 
 ```rust
 fn validate_no_content_markdown(repository: &HeldDirectory) -> Result<(), AppError> {
@@ -341,7 +341,7 @@ value.starts_with("knowledge/rsi/chapters/")
     || value.starts_with("knowledge/rsi/systems/")
 ```
 
-In `crates/harp/src/corpus/render.rs`, replace the system-reading branch with:
+In `cli/src/corpus/render.rs`, replace the system-reading branch with:
 
 ```rust
 if path.starts_with("knowledge/rsi/systems/") {
@@ -350,7 +350,7 @@ if path.starts_with("knowledge/rsi/systems/") {
 ```
 
 Preserve `normalize_link_path` support for both `content` and `knowledge`:
-Markdown needs to link to structured JSON/TSV contracts in `content/`, even
+Markdown needs to link to structured JSON/TSV contracts in `lab/math/textbook/`, even
 though no Markdown may reside there.
 
 - [ ] **Step 5: Run focused unit and integration tests**
@@ -366,30 +366,30 @@ cargo test -p harp corpus::tests::rejects_symlinks_while_scanning_the_structured
 ```
 
 Expected: the new fixture-level ownership tests pass: an actual
-`content/*.md` fixture fails with `knowledge.rsi.content_markdown`, and a
-`content/` symlink fails with `fs.symlink`.
+`lab/math/textbook/*.md` fixture fails with `knowledge.rsi.content_markdown`, and a
+`lab/math/textbook/` symlink fails with `fs.symlink`.
 
 Do **not** run the workspace-wide corpus, CLI, or Atlas tests yet, and do not
 commit this intermediate state. The new guard correctly rejects the still
-unmoved production `content/**/*.md` corpus. Task 2 must move that corpus in
+unmoved production `lab/math/textbook/**/*.md` corpus. Task 2 must move that corpus in
 the same atomic staged change; it then runs the whole suite.
 
 ### Task 2: Move canonical Markdown and rebase all path-bearing contracts
 
 **Files:**
-- Move: all tracked `content/**/*.md` → `knowledge/rsi/**`
+- Move: all tracked `lab/math/textbook/**/*.md` → `knowledge/rsi/**`
 - Move: `knowledge/lw_rsi_harness.md` → `knowledge/rsi/lw_rsi_harness.md`
-- Modify: `content/coverage-map.tsv`
-- Modify: `content/harness_deep_dive_manifest.tsv`
-- Modify: `content/lessons.json`
-- Modify: `content/systems/system_readings.json`
-- Modify: `content/weng-claim-ladder.json`
-- Modify: `content/weng-reading-map.json`
-- Modify: `content/weng-source-cards.tsv`
+- Modify: `lab/math/textbook/coverage-map.tsv`
+- Modify: `evidence/implementations/harness_deep_dive_manifest.tsv`
+- Modify: `lab/math/textbook/lessons.json`
+- Modify: `lab/math/textbook/systems/system_readings.json`
+- Modify: `lab/math/textbook/weng-claim-ladder.json`
+- Modify: `lab/math/textbook/weng-reading-map.json`
+- Modify: `lab/math/textbook/weng-source-cards.tsv`
 - Modify: `docs/import-map.tsv`
-- Modify: `crates/harp/src/repository.rs`
-- Modify: `crates/harp/src/corpus/tests.rs`
-- Modify: `crates/harp/tests/{cli.rs,credible_docs_style.rs,dgm_knowledge_packet.rs,weng_teaching_curriculum.rs}`
+- Modify: `cli/src/repository.rs`
+- Modify: `cli/src/corpus/tests.rs`
+- Modify: `cli/tests/{cli.rs,credible_docs_style.rs,dgm_knowledge_packet.rs,weng_teaching_curriculum.rs}`
 - Modify: `atlas/src/app/ReaderApp.test.tsx`
 
 - [ ] **Step 1: Move only tracked canonical Markdown with Git-aware renames**
@@ -398,70 +398,70 @@ Run this from the repository root:
 
 ```sh
 set -euo pipefail
-git ls-files -z -- 'content/*.md' 'content/**/*.md' |
+git ls-files -z -- 'lab/math/textbook/*.md' 'lab/math/textbook/**/*.md' |
   while IFS= read -r -d '' source; do
-    destination="knowledge/rsi/${source#content/}"
+    destination="knowledge/rsi/${source#lab/math/textbook/}"
     mkdir -p "$(dirname "$destination")"
     git mv "$source" "$destination"
   done
 git mv knowledge/lw_rsi_harness.md knowledge/rsi/lw_rsi_harness.md
 
-test "$(git ls-files 'content/*.md' 'content/**/*.md' | wc -l | tr -d ' ')" = 0
+test "$(git ls-files 'lab/math/textbook/*.md' 'lab/math/textbook/**/*.md' | wc -l | tr -d ' ')" = 0
 test "$(git ls-files 'knowledge/rsi/**/*.md' 'knowledge/rsi/*.md' | wc -l | tr -d ' ')" = 136
 ```
 
-Do not move any non-Markdown `content/` file. Do not touch untracked
+Do not move any non-Markdown `lab/math/textbook/` file. Do not touch untracked
 `knowledge/Untitled.md`, `.obsidian/`, pasted images, `CONTEXT.md`, or the
 untracked prior essay plan/spec.
 
 - [ ] **Step 2: Rewrite only registry fields whose values designate canonical Markdown**
 
-Use field-aware transformations; do not globally replace `content/`, because
+Use field-aware transformations; do not globally replace `lab/math/textbook/`, because
 diagnostic JSON, source registries, and Weng machine inputs remain there.
 
 Apply these exact replacements:
 
 ```text
-content/coverage-map.tsv:
+lab/math/textbook/coverage-map.tsv:
   canonical_markdown_path values
-  content/{chapters,concepts,systems}/*.md
+  lab/math/textbook/{chapters,concepts,systems}/*.md
   -> knowledge/rsi/{chapters,concepts,systems}/*.md
 
-content/harness_deep_dive_manifest.tsv:
-  any *.md canonical route value under content/
+evidence/implementations/harness_deep_dive_manifest.tsv:
+  any *.md canonical route value under lab/math/textbook/
   -> the equivalent knowledge/rsi/ route
 
-content/lessons.json:
+lab/math/textbook/lessons.json:
   every canonical_markdown_path value
-  content/lessons/*.md -> knowledge/rsi/lessons/*.md
+  lab/math/textbook/lessons/*.md -> knowledge/rsi/lessons/*.md
 
-content/systems/system_readings.json:
+lab/math/textbook/systems/system_readings.json:
   every canonical_markdown_path value
-  content/systems/*.md -> knowledge/rsi/systems/*.md
-  leave diagnostic_case_path values under content/diagnostics/ unchanged
+  lab/math/textbook/systems/*.md -> knowledge/rsi/systems/*.md
+  leave diagnostic_case_path values under lab/math/textbook/diagnostics/ unchanged
 
-content/weng-reading-map.json:
+lab/math/textbook/weng-reading-map.json:
   every companion_path value
-  content/weng/*.md -> knowledge/rsi/weng/*.md
+  lab/math/textbook/weng/*.md -> knowledge/rsi/weng/*.md
 
-content/weng-claim-ladder.json:
+lab/math/textbook/weng-claim-ladder.json:
   example_route and canonical_concept_links[].route values ending in .md
-  content/... -> knowledge/rsi/...
+  lab/math/textbook/... -> knowledge/rsi/...
 
-content/weng-source-cards.tsv:
+lab/math/textbook/weng-source-cards.tsv:
   card_path and canonical_route fields ending in .md
-  content/... -> knowledge/rsi/...
+  lab/math/textbook/... -> knowledge/rsi/...
 ```
 
 Use a JSON round-trip for the three JSON structures so only the named fields
 change and a trailing newline remains. For example, use this exact
-`content/lessons.json` rewrite pattern:
+`lab/math/textbook/lessons.json` rewrite pattern:
 
 ```sh
 node --input-type=module <<'NODE'
 import { readFile, writeFile } from "node:fs/promises";
 
-const path = "content/lessons.json";
+const path = "lab/math/textbook/lessons.json";
 const document = JSON.parse(await readFile(path, "utf8"));
 for (const lesson of document.lessons) {
   lesson.canonical_markdown_path =
@@ -472,19 +472,19 @@ NODE
 ```
 
 For TSVs, parse the header to find named columns, update only values ending in
-`.md` whose value begins `content/`, and preserve tab order and row order.
+`.md` whose value begins `lab/math/textbook/`, and preserve tab order and row order.
 
 Update `docs/import-map.tsv` destinations for each row whose current
-destination is a Markdown path below `content/`:
+destination is a Markdown path below `lab/math/textbook/`:
 
 ```text
-content/<relative>.md -> knowledge/rsi/<relative>.md
+lab/math/textbook/<relative>.md -> knowledge/rsi/<relative>.md
 ```
 
 Leave original percent-encoded `source_path_percent_encoded` values unchanged:
 they record the imported source history, not the current canonical layout.
 
-In `crates/harp/src/repository.rs`, remove this old forbidden-reference
+In `cli/src/repository.rs`, remove this old forbidden-reference
 pattern:
 
 ```rust
@@ -512,9 +512,9 @@ run it once, inspect the diff, then delete it before staging. The helper must:
 1. enumerate only `knowledge/rsi/**/*.md` and the three registered packet
    roots;
 2. calculate each local target against the **pre-move** source path;
-3. map a resolved `content/<relative>.md` target to
+3. map a resolved `lab/math/textbook/<relative>.md` target to
    `knowledge/rsi/<relative>.md`;
-4. retain resolved targets in `content/`, `evidence/`, `labs/`, `crates/`, and
+4. retain resolved targets in `lab/math/textbook/`, `evidence/`, `labs/`, `crates/`, and
    registered `knowledge/` packets;
 5. recompute a relative destination from the **post-move** source directory;
 6. preserve query strings, anchors, external URLs, mailto links, and link
@@ -634,7 +634,7 @@ rewrites:
 - In every DGM packet document, replace the old authority notice:
 
   ```markdown
-  > This file is a learning projection. Canonical claims live under `content/`;
+  > This file is a learning projection. Canonical claims live under `lab/math/textbook/`;
   > primary-source captures and pinned implementation files live under
   > `evidence/`.
   ```
@@ -648,15 +648,15 @@ rewrites:
   ```
 
 - Update `AUTHORITY_NOTICE` in
-  `crates/harp/tests/dgm_knowledge_packet.rs` to the same exact text.
+  `cli/tests/dgm_knowledge_packet.rs` to the same exact text.
 - In DGM maintenance material, describe `knowledge/rsi/` as the managed RSI
   canonical corpus and keep references to machine-readable source registries
-  under `content/sources/`.
+  under `evidence/sources/`.
 - In `knowledge/rsi/lw_rsi_harness.md`, preserve the existing field-note
   content but make all moved Markdown links resolve within `knowledge/rsi/`;
-  retain the Weng reading-map JSON link under `content/`.
+  retain the Weng reading-map JSON link under `lab/math/textbook/`.
 - In the Meta-Harness and benchmark packets, rewrite canonical article links
-  to `../rsi/...` but retain links to `content/sources/*.tsv` and other
+  to `../rsi/...` but retain links to `evidence/sources/*.tsv` and other
   structured inputs.
 
 - [ ] **Step 4: Update test fixtures and assertions that encode old physical paths**
@@ -664,11 +664,11 @@ rewrites:
 Apply the same target-root conversion to:
 
 ```text
-crates/harp/src/corpus/tests.rs
-crates/harp/tests/cli.rs
-crates/harp/tests/credible_docs_style.rs
-crates/harp/tests/dgm_knowledge_packet.rs
-crates/harp/tests/weng_teaching_curriculum.rs
+cli/src/corpus/tests.rs
+cli/tests/cli.rs
+cli/tests/credible_docs_style.rs
+cli/tests/dgm_knowledge_packet.rs
+cli/tests/weng_teaching_curriculum.rs
 atlas/src/app/ReaderApp.test.tsx
 ```
 
@@ -699,7 +699,7 @@ assert_resolved_file_beneath(
 ```
 
 Do not replace assertions for diagnostic JSON or source registries that
-correctly remain under `content/`.
+correctly remain under `lab/math/textbook/`.
 
 - [ ] **Step 5: Verify the moved corpus before derived output regeneration**
 
@@ -718,26 +718,26 @@ cargo run -p harp -- check
 ```
 
 Expected: all canonical Markdown references resolve beneath `knowledge/rsi/`;
-`content/` still supplies the structured registries and diagnostics; corpus
+`lab/math/textbook/` still supplies the structured registries and diagnostics; corpus
 counts remain unchanged; and no local link points to a removed file.
 
 ### Task 3: Repoint search and regenerate teaching and Atlas projections
 
 **Files:**
-- Modify: `crates/harp/src/search.rs`
-- Modify: `crates/harp/tests/cli.rs`
+- Modify: `cli/src/search.rs`
+- Modify: `cli/tests/cli.rs`
 - Modify: `scripts/build_weng_course.py`
 - Modify: `reference/weng-source-cards.html`
 - Modify: `reference/weng-harness-map.html`
 - Modify: `reference/rsi-claim-ladder.html`
 - Modify: `reference/harness-comparison-matrix.html`
-- Modify: `atlas/src/content/generated/corpus.json`
+- Modify: `atlas/src/knowledge/generated/corpus.json`
 - Modify: `atlas/dist/harp-atlas.html`
 - Modify: `atlas/dist/harp-atlas.receipt.json`
 
 - [ ] **Step 1: Replace search roots with the explicit managed knowledge roots**
 
-In `crates/harp/src/search.rs`, replace:
+In `cli/src/search.rs`, replace:
 
 ```rust
 let roots = [
@@ -778,10 +778,10 @@ unregistered drafts.
 In `scripts/build_weng_course.py`, retain these structured input constants:
 
 ```python
-MATRIX = ROOT / "content/weng-source-cards.tsv"
-COMPARISON_MATRIX = ROOT / "content/weng-comparison-matrix.tsv"
-CLAIM_LADDER = ROOT / "content/weng-claim-ladder.json"
-STATUS = ROOT / "content/weng-course-status.json"
+MATRIX = ROOT / "lab/math/textbook/weng-source-cards.tsv"
+COMPARISON_MATRIX = ROOT / "lab/math/textbook/weng-comparison-matrix.tsv"
+CLAIM_LADDER = ROOT / "lab/math/textbook/weng-claim-ladder.json"
+STATUS = ROOT / "lab/math/textbook/weng-course-status.json"
 ```
 
 Replace the Markdown card root with:
@@ -793,19 +793,19 @@ CARD_ROOT = ROOT / "knowledge/rsi/weng-sources"
 Replace each `SECTION_METADATA` canonical companion route:
 
 ```text
-../content/weng/<name>.md
+../lab/math/textbook/weng/<name>.md
 -> ../knowledge/rsi/weng/<name>.md
 ```
 
 In rendered reference-page introduction text, make the distinction explicit:
 
 ```html
-Generated from structured inputs under <code>content/</code> and canonical
+Generated from structured inputs under <code>lab/math/textbook/</code> and canonical
 Markdown under <code>knowledge/rsi/weng-sources/</code>.
 ```
 
-Change rendered canonical-card and claim-ladder links from `../content/...md`
-to `../knowledge/rsi/...md`. Retain `../content/weng-claim-ladder.json` and
+Change rendered canonical-card and claim-ladder links from `../lab/math/textbook/...md`
+to `../knowledge/rsi/...md`. Retain `../lab/math/textbook/weng-claim-ladder.json` and
 other structured-input links. Update the builder self-test fixtures so
 `card_path` is `knowledge/rsi/weng-sources/test.md` and `canonical_route` is
 `knowledge/rsi/test.md`.
@@ -822,7 +822,7 @@ python3 scripts/build_weng_course.py --check
 
 Expected: all four `reference/*.html` files are deterministic and reference
 canonical Markdown below `knowledge/rsi/`, while their JSON/TSV inputs still
-link below `content/`.
+link below `lab/math/textbook/`.
 
 - [ ] **Step 4: Regenerate corpus JSON and offline Atlas export**
 
@@ -838,12 +838,12 @@ cd atlas && corepack pnpm run test:export
 
 Expected:
 
-- `atlas/src/content/generated/corpus.json` contains
+- `atlas/src/knowledge/generated/corpus.json` contains
   `knowledge/rsi/...` canonical paths;
 - `atlas/dist/harp-atlas.html` and
   `atlas/dist/harp-atlas.receipt.json` are regenerated together; and
 - TypeScript still imports its generated payload from
-  `atlas/src/content/generated/corpus.json`.
+  `atlas/src/knowledge/generated/corpus.json`.
 
 - [ ] **Step 5: Verify search and projection boundaries**
 
@@ -880,12 +880,12 @@ Replace the `AGENTS.md` canonical-ownership bullet with:
 
 ```markdown
 - Managed Markdown under `knowledge/rsi/` and registered topic packets under
-  `knowledge/` are the only authorities for technical prose. `content/` is
+  `knowledge/` are the only authorities for technical prose. `lab/math/textbook/` is
   reserved for structured machine-readable contracts and diagnostics; do not
   add Markdown beneath it.
 ```
 
-In `README.md`, replace the old `content/`/Meta-Harness description with a
+In `README.md`, replace the old `lab/math/textbook/`/Meta-Harness description with a
 short authority statement naming:
 
 ```text
@@ -895,7 +895,7 @@ knowledge/meta_harness/
 knowledge/harness_benchmarks/
 ```
 
-State that generated JSON and HTML are derived artifacts and that `content/`
+State that generated JSON and HTML are derived artifacts and that `lab/math/textbook/`
 contains structured contracts and diagnostics.
 
 - [ ] **Step 2: Update the product and Atlas contracts**
@@ -905,10 +905,10 @@ In `docs/product-contract.md`:
 - make the product boundary say canonical RSI and SICP Markdown is under
   `knowledge/rsi/`;
 - describe the named packet roots as canonical technical prose;
-- preserve `content/diagnostics/` as the diagnostics contract home;
-- state that `content/weng-sources` no longer exists and that
+- preserve `lab/math/textbook/diagnostics/` as the diagnostics contract home;
+- state that `lab/math/textbook/weng-sources` no longer exists and that
   `knowledge/rsi/weng-sources/` owns the 42 source-card Markdown documents;
-- retain all JSON/TSV authority statements under `content/`;
+- retain all JSON/TSV authority statements under `lab/math/textbook/`;
 - replace the search root list with the four explicit managed knowledge roots
   plus the two evidence-text roots; and
 - retain corpus-count and evidence/licensing claims unchanged.
@@ -916,7 +916,7 @@ In `docs/product-contract.md`:
 In `atlas/README.md`, replace:
 
 ```markdown
-[Return to the canonical RSI orientation packet](../content/rsi_index.md).
+[Return to the canonical RSI orientation packet](../lab/math/textbook/rsi_index.md).
 ```
 
 with:
@@ -926,7 +926,7 @@ with:
 ```
 
 Describe canonical chapters, concepts, systems, and lessons as living under
-`knowledge/rsi/`, with `coverage-map.tsv` remaining a structured `content/`
+`knowledge/rsi/`, with `coverage-map.tsv` remaining a structured `lab/math/textbook/`
 input.
 
 In `RESOURCES.md`, update the deconstruction link to:
@@ -943,7 +943,7 @@ Stage only migration files:
 git add \
   AGENTS.md README.md RESOURCES.md \
   docs/product-contract.md docs/import-map.tsv \
-  crates/harp/src crates/harp/tests \
+  cli/src cli/tests \
   scripts/build_weng_course.py \
   atlas/src atlas/dist \
   content \
@@ -1042,7 +1042,7 @@ the exact co-author trailer once each, and no unrelated file is committed.
 ## Plan self-review
 
 - **Spec coverage:** Tasks 1–4 cover the `knowledge/rsi/` move, no-Markdown
-  `content/` invariant, explicit packet/search roots, structured contract
+  `lab/math/textbook/` invariant, explicit packet/search roots, structured contract
   retention, cross-root link repair, Weng projections, Atlas derivation,
   contributor docs, receipt refresh, and isolated validation.
 - **No placeholders:** Every task names exact files, required values, commands,

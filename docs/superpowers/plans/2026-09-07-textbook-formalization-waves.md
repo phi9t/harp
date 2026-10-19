@@ -63,7 +63,7 @@ are scheduled throughout, not left exclusively for W10.
   policy. A packet has reviewed statements, dependencies, proof mode, verifier
   fixture IDs, and limits. Adjust batch size from measured compile/review cost.
 - [ ] Register machine records through Harp's existing corpus contracts before
-  adding them to managed `content/`; never add Markdown there. Pair registration,
+  adding them to managed `lab/math/textbook/`; never add Markdown there. Pair registration,
   fixtures, canonical knowledge and generated atlas updates where required.
 
 W0 can proceed while W1 is built. Complete item extraction is substantial work;

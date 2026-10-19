@@ -15,7 +15,7 @@ canonical: theorem_dependency_map.md
 This page is the stable reader route for the pedagogical dependency report. It
 does not maintain a second graph or copy the derived edge table. The sole
 structured authority is each theorem row's `pedagogical_prerequisites` field in
-`content/crouzeix_textbook/coverage.json`.
+`lab/math/textbook/coverage.json`.
 
 ## Reading the generated ledger
 

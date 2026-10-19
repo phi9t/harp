@@ -24,8 +24,8 @@
 - Use newly authored prose and exercises. Do not copy Lax, Spivak, Bishop, or
   captured Crouzeix source text.
 - Keep technical prose under `knowledge/crouzeix_textbook/`; keep structured
-  contracts under `content/crouzeix_textbook/`; do not add Markdown below
-  `content/`.
+  contracts under `lab/math/textbook/`; do not add Markdown below
+  `lab/math/textbook/`.
 - Use exact `CFT-<chapter>-<sequence>` identifiers. Once a published ID lands,
   do not reuse it.
 - A chapter may land as `draft` with `open-formalization` rows only on a
@@ -97,7 +97,7 @@ knowledge/crouzeix_textbook/
 ### Structured contracts
 
 ```text
-content/crouzeix_textbook/
+lab/math/textbook/
 ├── coverage.json
 ├── exercises.json
 └── theorem_dependencies.json
@@ -122,18 +122,18 @@ lines for every public declaration.
 ### Verification and presentation files
 
 ```text
-crates/harp/tests/crouzeix_textbook.rs
-crates/harp/tests/lean_library.rs
-crates/harp/src/corpus/mod.rs
-crates/harp/src/corpus/render.rs
-crates/harp/src/corpus/tests.rs
+cli/tests/crouzeix_textbook.rs
+cli/tests/lean_library.rs
+cli/src/corpus/mod.rs
+cli/src/corpus/render.rs
+cli/src/corpus/tests.rs
 scripts/render_crouzeix_textbook_ledgers.py
 scripts/check_lean_library.sh
 formalization/lean/lakefile.toml
 mise.toml
-atlas/src/content/canonical.test.ts
+atlas/src/lab/math/textbook/canonical.test.ts
 atlas/src/app/math.test.ts
-atlas/src/content/generated/corpus.json
+atlas/src/knowledge/generated/corpus.json
 atlas/dist/harp-atlas.html
 docs/import-receipt.md
 ```
@@ -189,7 +189,7 @@ it.
 
 ## Structured contract shapes
 
-`content/crouzeix_textbook/coverage.json` begins with:
+`lab/math/textbook/coverage.json` begins with:
 
 ```json
 {
@@ -221,11 +221,11 @@ and mismatches between the three files.
 ## Task 1: Add fail-closed textbook contract tests
 
 **Files:**
-- Create: `crates/harp/tests/crouzeix_textbook.rs`
+- Create: `cli/tests/crouzeix_textbook.rs`
 - Create: `scripts/render_crouzeix_textbook_ledgers.py`
-- Create: `content/crouzeix_textbook/coverage.json`
-- Create: `content/crouzeix_textbook/exercises.json`
-- Create: `content/crouzeix_textbook/theorem_dependencies.json`
+- Create: `lab/math/textbook/coverage.json`
+- Create: `lab/math/textbook/exercises.json`
+- Create: `lab/math/textbook/theorem_dependencies.json`
 
 - [ ] **Step 1: Write the failing packet-roster and schema tests**
 
@@ -292,11 +292,11 @@ exception and no other skipped assertion.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add crates/harp/tests/crouzeix_textbook.rs \
+git add cli/tests/crouzeix_textbook.rs \
   scripts/render_crouzeix_textbook_ledgers.py \
-  content/crouzeix_textbook/coverage.json \
-  content/crouzeix_textbook/exercises.json \
-  content/crouzeix_textbook/theorem_dependencies.json
+  lab/math/textbook/coverage.json \
+  lab/math/textbook/exercises.json \
+  lab/math/textbook/theorem_dependencies.json
 git commit -m "test(crouzeix): define textbook coverage contracts"
 ```
 
@@ -306,7 +306,7 @@ git commit -m "test(crouzeix): define textbook coverage contracts"
 - Modify: `formalization/lean/lakefile.toml`
 - Modify: `scripts/check_lean_library.sh`
 - Modify: `mise.toml`
-- Modify: `crates/harp/tests/lean_library.rs`
+- Modify: `cli/tests/lean_library.rs`
 - Create: `formalization/lean/CrouzeixTextbook.lean`
 - Create: `formalization/lean/CrouzeixTextbook/PublicTheorems.lean`
 - Create: `formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean`
@@ -420,7 +420,7 @@ git add formalization/lean/lakefile.toml \
   formalization/lean/CrouzeixTextbook.lean \
   formalization/lean/CrouzeixTextbook/PublicTheorems.lean \
   formalization/lean/CrouzeixTextbook/Part01/Chapter01.lean \
-  scripts/check_lean_library.sh mise.toml crates/harp/tests/lean_library.rs
+  scripts/check_lean_library.sh mise.toml cli/tests/lean_library.rs
 git commit -m "feat(crouzeix): add textbook Lean target"
 ```
 
@@ -429,12 +429,12 @@ git commit -m "feat(crouzeix): add textbook Lean target"
 **Files:**
 - Create all nine support documents under `knowledge/crouzeix_textbook/`
 - Create: `knowledge/crouzeix_textbook/part_01_linear_structure/01_objects_and_representations.md`
-- Modify the three files under `content/crouzeix_textbook/`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/corpus/render.rs`
-- Modify: `crates/harp/src/corpus/tests.rs`
-- Modify: `atlas/src/content/canonical.test.ts`
+- Modify the three files under `lab/math/textbook/`
+- Modify: `cli/tests/crouzeix_textbook.rs`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/corpus/render.rs`
+- Modify: `cli/src/corpus/tests.rs`
+- Modify: `atlas/src/lab/math/textbook/canonical.test.ts`
 - Modify: `atlas/src/app/math.test.ts`
 
 - [ ] **Step 1: Remove the bootstrap exception and verify failure**
@@ -461,7 +461,7 @@ coverage ledger from the three contracts with:
 
 ```sh
 python3 scripts/render_crouzeix_textbook_ledgers.py \
-  --contracts-root content/crouzeix_textbook \
+  --contracts-root lab/math/textbook \
   --packet-root knowledge/crouzeix_textbook \
   --write
 ```
@@ -921,13 +921,13 @@ git commit -m "feat(crouzeix): teach both constant-two proof routes"
 ## Task 10: Prove whole-book completeness
 
 **Files:**
-- Modify all three files under `content/crouzeix_textbook/`
+- Modify all three files under `lab/math/textbook/`
 - Modify: `knowledge/crouzeix_textbook/status_and_scope.md`
 - Modify: `knowledge/crouzeix_textbook/lean_coverage_ledger.md`
 - Modify: `knowledge/crouzeix_textbook/theorem_dependency_map.md`
 - Modify: `formalization/lean/CrouzeixTextbook/PublicTheorems.lean`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
-- Modify: `atlas/src/content/generated/corpus.json`
+- Modify: `cli/tests/crouzeix_textbook.rs`
+- Modify: `atlas/src/knowledge/generated/corpus.json`
 - Modify: `atlas/dist/harp-atlas.html`
 - Modify: `docs/import-receipt.md`
 
@@ -968,7 +968,7 @@ with `--check` and require byte-for-byte equality in the contract test. Set
 ```sh
 python3 scripts/migrate_obsidian_links.py --check
 python3 scripts/render_crouzeix_textbook_ledgers.py \
-  --contracts-root content/crouzeix_textbook \
+  --contracts-root lab/math/textbook \
   --packet-root knowledge/crouzeix_textbook \
   --check
 cargo test --profile test-small -p harp --test crouzeix_textbook -- --test-threads=1

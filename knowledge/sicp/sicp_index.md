@@ -3,7 +3,7 @@
 **EVIDENCE — source identity.** The vendored seed is *Structure and
 Interpretation of Computer Programs*, second edition, Unofficial Texinfo Format
 `2.andresraba5.6`, registered as `SICP-2E-UF` in the
-[[content/sicp/sources/source_registry.tsv|source registry]]. The exact PDF, license,
+[[lab/sicp/contracts/sources/source_registry.tsv|source registry]]. The exact PDF, license,
 manifest, and capture metadata live under
 [[evidence/sicp/PROVENANCE|`evidence/sicp/`]].
 
@@ -12,7 +12,7 @@ manifest, and capture metadata live under
 Open the [[knowledge/sicp/course/sicp_course_guide|course guide]] for the complete sequential
 route through all twelve seminars and the capstone. If Scheme syntax is not
 fresh, begin with the [[knowledge/sicp/course/scheme_reading_primer|Scheme reading primer]]
-before Seminar 1. The [[content/sicp/course/coverage.tsv|coverage ledger]] maps every main
+before Seminar 1. The [[lab/sicp/contracts/course/coverage.tsv|coverage ledger]] maps every main
 section from §1.1 through §5.5 exactly once.
 
 The course maps exactly 24 selected SICP exercises as practice prompts. It does
@@ -43,7 +43,7 @@ sequential course for dependencies the shorter path omits.
   Hermes, and Codex profiles as separate implementation overlays rather than
   evidence about the SICP source.
 - **Check source authority and open gaps.** Start with the [[knowledge/sicp/domain_orientation|domain orientation]],
-  then use the [[content/sicp/sources/source_registry.tsv|source registry]], [[content/sicp/sources/evidence_graph.tsv|evidence graph]], [[knowledge/sicp/missing_evidence|missing-evidence ledger]],
+  then use the [[lab/sicp/contracts/sources/source_registry.tsv|source registry]], [[lab/sicp/contracts/sources/evidence_graph.tsv|evidence graph]], [[knowledge/sicp/missing_evidence|missing-evidence ledger]],
   and [[evidence/sicp/PROVENANCE|capture provenance]]. The course currently has one fetched
   source; the linked harness material does not expand that source boundary.
 
@@ -57,7 +57,7 @@ prerequisite for a focused question.
 
 - [[knowledge/sicp/course/scheme_reading_primer|Scheme reading primer]] establishes the
   notation used in the seminars.
-- [[knowledge/sicp/course/sicp_course_guide|Course guide]], [[content/sicp/course/coverage.tsv|coverage ledger]],
+- [[knowledge/sicp/course/sicp_course_guide|Course guide]], [[lab/sicp/contracts/course/coverage.tsv|coverage ledger]],
   and [[knowledge/sicp/course/exercise_map|exercise map]] define the reading order, source
   coverage, and selected practice prompts.
 - [[knowledge/sicp/course/dialogue_state|Dialogue cursor]] records the single question that
@@ -98,7 +98,7 @@ prerequisite for a focused question.
   evidence.
 - [[knowledge/agentic_engineering/pi_harness_deep_dive|Pi harness deep dive]], [[knowledge/agentic_engineering/hermes_harness_deep_dive|Hermes harness deep dive]], and [[knowledge/agentic_engineering/codex_harness_deep_dive|Codex harness deep dive]] are implementation overlays for
   comparison, with their own revisions and evidence contracts.
-- [[knowledge/sicp/domain_orientation|domain orientation]], [[content/sicp/sources/source_registry.tsv|source registry]], [[content/sicp/sources/evidence_graph.tsv|evidence graph]], [[knowledge/sicp/missing_evidence|missing-evidence ledger]],
+- [[knowledge/sicp/domain_orientation|domain orientation]], [[lab/sicp/contracts/sources/source_registry.tsv|source registry]], [[lab/sicp/contracts/sources/evidence_graph.tsv|evidence graph]], [[knowledge/sicp/missing_evidence|missing-evidence ledger]],
   and [[evidence/sicp/PROVENANCE|capture provenance]] hold the packet's source, gap, and
   provenance records.
 
@@ -121,7 +121,7 @@ understanding.
 - [[knowledge/agentic_engineering/pi_harness_deep_dive|Pi harness deep dive]]
 - [[knowledge/agentic_engineering/hermes_harness_deep_dive|Hermes harness deep dive]]
 - [[knowledge/agentic_engineering/codex_harness_deep_dive|Codex harness deep dive]]
-- [[content/sicp/sources/source_registry.tsv|Source registry]]
-- [[content/sicp/sources/evidence_graph.tsv|Evidence graph]]
+- [[lab/sicp/contracts/sources/source_registry.tsv|Source registry]]
+- [[lab/sicp/contracts/sources/evidence_graph.tsv|Evidence graph]]
 - [[knowledge/sicp/missing_evidence|Missing-evidence ledger]]
 - [[evidence/sicp/PROVENANCE|Capture provenance]]

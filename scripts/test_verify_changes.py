@@ -64,6 +64,12 @@ class VerificationTests(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_context_contracts_select_their_rust_consumer(self):
+        self.write("durable/context/workflows/general_coding/manifest.json", "{}\n")
+        commands = [job["command"] for job in self.selected()["checks"]]
+        self.assertTrue(any("context_control::" in cmd and "--lib" in cmd for cmd in commands))
+        self.assertTrue(any("context_control_cli" in cmd and "--test" in cmd for cmd in commands))
+
     def test_captured_benchmarks_select_preservation_without_rewriting_links(self):
         self.write("lab/benchmarks/studies/example/old.md", "[Captured link](missing-at-capture.md)\n")
         jobs = self.selected()["checks"]
@@ -105,13 +111,13 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(self.selected("--base", before)["base"], before)
 
     def test_corpus_changes_do_not_select_proof_builds(self):
-        self.write("content/example.json", "{}\n")
+        self.write("lab/math/textbook/example.json", "{}\n")
         jobs = self.selected()["checks"]
         self.assertEqual({j["surface"] for j in jobs}, {"diff", "corpus"})
         self.assertFalse(any("lean-all" in j["command"] for j in jobs))
 
     def test_affected_failure_blocks_gate_and_does_not_run_later_check(self):
-        self.write("content/example.json", "{}\n")
+        self.write("lab/math/textbook/example.json", "{}\n")
         self.write("AGENTS.md", "# New guidance\n")
         tools = self.root / "fake-tools"
         tools.mkdir()
@@ -150,10 +156,10 @@ class VerificationTests(unittest.TestCase):
         self.assertNotEqual(self.run_gate("--base", "missing-ref").returncode, 0)
 
     def test_shared_rust_contract_selects_consumers_and_executes_the_checks(self):
-        self.write("crates/harp-contracts/src/lib.rs", "pub struct Contract;\n")
+        self.write("sessions/src/lib.rs", "pub struct Contract;\n")
         packages = [
-            {"name": "harp-contracts", "id": "contracts", "manifest_path": str(self.root / "crates/harp-contracts/Cargo.toml"), "dependencies": []},
-            {"name": "harp", "id": "harp", "manifest_path": str(self.root / "crates/harp/Cargo.toml"), "dependencies": [{"name": "harp-contracts"}]},
+            {"name": "harp-session-index", "id": "contracts", "manifest_path": str(self.root / "sessions/Cargo.toml"), "dependencies": []},
+            {"name": "harp", "id": "harp", "manifest_path": str(self.root / "cli/Cargo.toml"), "dependencies": [{"name": "harp-session-index"}]},
         ]
         metadata = self.write("fake-tools/metadata.json", json.dumps({"packages": packages, "workspace_members": ["contracts", "harp"]}))
         log = self.root / "fake-tools/checks.log"
@@ -162,10 +168,10 @@ class VerificationTests(unittest.TestCase):
         self.write(".gitignore", "fake-tools/\n")
         self.env.update(PATH=str(cargo.parent) + os.pathsep + self.env["PATH"], FIXTURE_METADATA=str(metadata), CHECKS_LOG=str(log))
         jobs = self.selected()["checks"]
-        self.assertEqual({j["command"][j["command"].index("-p") + 1] for j in jobs if "-p" in j["command"]}, {"harp", "harp-contracts"})
+        self.assertEqual({j["command"][j["command"].index("-p") + 1] for j in jobs if "-p" in j["command"]}, {"harp", "harp-session-index"})
         self.assertEqual(self.run_gate().returncode, 0)
         self.assertIn("-p harp --lib", log.read_text())
-        self.assertIn("-p harp-contracts", log.read_text())
+        self.assertIn("-p harp-session-index", log.read_text())
 
     def test_portable_profile_changes_select_real_asset_validation(self):
         self.write("tools/obsidian/profile/bookmarks.json", "[]\n")

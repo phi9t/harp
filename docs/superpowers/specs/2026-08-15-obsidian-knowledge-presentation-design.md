@@ -42,7 +42,7 @@ portable wikilinks to:
 
 - managed prose in `knowledge/`;
 - immutable captured evidence in `evidence/`;
-- structured registries and contracts in `content/`;
+- structured registries and contracts in `lab/math/textbook/`;
 - public source snapshots in `evidence/implementations/`; and
 - relevant local runnable supplements in `labs/`.
 
@@ -84,7 +84,7 @@ This work does not:
   services;
 - make Obsidian the source of truth for generated Atlas output;
 - require the Obsidian desktop application or its CLI in CI;
-- add Markdown beneath `content/`;
+- add Markdown beneath `lab/math/textbook/`;
 - index ignored research investigations or personal notes; or
 - claim that an Obsidian link, graph edge, Base row, or Canvas edge is
   evidence.
@@ -261,7 +261,7 @@ It rejects:
 - `..` traversal;
 - empty paths except same-note headings;
 - malformed aliases or unclosed delimiters;
-- targets outside `knowledge/`, `evidence/`, `content/`, `labs/`, or `crates/`;
+- targets outside `knowledge/`, `evidence/`, `lab/math/textbook/`, `labs/`, or `crates/`;
 - ambiguous omitted-extension note targets;
 - nonexistent target files; and
 - nonexistent or ambiguous target headings.
@@ -527,7 +527,7 @@ Land independently reviewable commits in this order:
    Home note, Base, Canvas, profile/bootstrap tool, DarwinX registration,
    search/Atlas integration, and user documentation.
 5. `build: regenerate and seal Obsidian knowledge presentation`
-   Regenerate `atlas/src/content/generated/corpus.json`,
+   Regenerate `atlas/src/knowledge/generated/corpus.json`,
    `atlas/dist/harp-atlas.html`, and `atlas/dist/harp-atlas.receipt.json`; then
    refresh `docs/import-receipt.md` with `harp repository verify`.
 

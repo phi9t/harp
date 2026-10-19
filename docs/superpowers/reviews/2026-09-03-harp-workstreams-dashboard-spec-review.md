@@ -30,7 +30,7 @@ The candidate does not change Lean theorem sources or proof claims.
 - `atlas/src/app/routes.ts` parses and formats only the exact Workstreams route.
 - `atlas/src/app/AtlasApp.tsx` selects the dedicated console before constructing
   reader-only state, while all previous reader routes retain their existing shell.
-- `atlas/src/content/workstreams.ts` validates the static snapshot at its
+- `atlas/src/lab/math/textbook/workstreams.ts` validates the static snapshot at its
   boundary, including identifiers, timestamps, statuses, stage invariants,
   artifact sets, and watchlist references.
 - The dashboard provides the required focus strip, workstream cards, velocity

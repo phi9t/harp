@@ -47,9 +47,9 @@ tracked file that names the source repository.
 
 ## Rewrites and removals
 
-- Canonical material moved from `knowledge/rsi/` to `content/`.
+- Canonical material moved from `knowledge/rsi/` to `lab/math/textbook/`.
 - The dedicated app moved to `atlas/`, with
-  `atlas/src/content/generated/corpus.json` and
+  `atlas/src/knowledge/generated/corpus.json` and
   `atlas/dist/harp-atlas.html` as derived artifacts.
 - Evidence moved from source third-party paths to `evidence/weng/`,
   `evidence/rlm/`, and `evidence/sicp/`; provenance and acquisition metadata
@@ -280,4 +280,4 @@ recursive successor improvement. This extension does not alter the fixed
 The final tracked product payload, excluding this self-referential receipt and
 ignored build/materialization state, has SHA-256:
 
-`b6bedfb03ed5bccf7a901e75c116f53e78dfe0f1922d273edb8f6a77e51bfe43`
+`2a0c5454b7a8349cb3bc95ef3d14a9d938b6a9ba538aa3f3862dfb3277cfe3e9`

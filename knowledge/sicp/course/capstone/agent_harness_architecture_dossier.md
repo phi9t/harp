@@ -26,16 +26,16 @@ testable future work, not a decision. Missing evidence remains `MISSING`.
 | `CLAIM` — explicit-control machines expose live state, transfers, storage obligations, and terminal paths. [[evidence/sicp/sicp.pdf#page=769|§§5.4–5.5.1, printed pp. 741–778 / PDF pp. 769–806]] [[knowledge/sicp/course/seminars/12-machines-storage-control-and-compilation#Agent-harness bridge|Seminar 12]] | `EVIDENCE` — pinned Pi, Hermes, and Codex each expose concrete turn-loop branches. [[evidence/implementations/pi/snapshot/packages/agent/src/agent-loop.ts|Pi loop]] ([exact lines 152–371](../../../../evidence/implementations/pi/snapshot/packages/agent/src/agent-loop.ts#L152-L371)) [[evidence/implementations/hermes/snapshot/agent/conversation_loop.py|Hermes loop]] ([exact lines 1084–1325](../../../../evidence/implementations/hermes/snapshot/agent/conversation_loop.py#L1084-L1325)) [[evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/session/turn.rs|Codex turn]] ([exact lines 149–520](../../../../evidence/implementations/codex-sicp/snapshot/codex-rs/core/src/session/turn.rs#L149-L520)) | `INFERENCE` — a research harness can name intermediate obligations without pretending those names are shared by existing systems. | `HYPOTHESIS` — explicit transitions improve diagnosis relative to one opaque recursive loop. | `MISSING` — a cross-system state-transition trace collected under one workload and instrumentation contract. |
 
 The Pi, Hermes, and Codex identities used here are fixed by the tracked
-[[content/sicp/sources/harness_revisions.tsv|harness revision ledger]], and the local
+[[lab/sicp/contracts/sources/harness_revisions.tsv|harness revision ledger]], and the local
 checkouts are verified by the tracked
-[[crates/harp/src/sources.rs|materializer]]. Three tracked
+[[cli/src/sources.rs|materializer]]. Three tracked
 repository-local harness deep dives are useful explanatory navigation:
 
 - [[knowledge/agentic_engineering/pi_harness_deep_dive|Pi harness deep dive]]
 - [[knowledge/agentic_engineering/hermes_harness_deep_dive|Hermes harness deep dive]]
 - [[knowledge/agentic_engineering/codex_harness_deep_dive|Codex harness deep dive]]
 
-Their tracked [[content/harness_deep_dive_manifest.tsv|promotion and pin manifest]]
+Their tracked [[evidence/implementations/harness_deep_dive_manifest.tsv|promotion and pin manifest]]
 records each document's promoted digest, repository identity, declared
 revision, and exact-match status. They remain explanatory supplements rather
 than pin authority: every `EVIDENCE` cell below links the materialized source or

@@ -55,7 +55,7 @@ or spreads one concept across more call sites.
 ### Problem
 
 The `rlm` and `workflow` CLI paths both execute durable runs through the same
-Engine, but their orchestration is duplicated in `crates/harp/src/main.rs`.
+Engine, but their orchestration is duplicated in `cli/src/main.rs`.
 Both paths open state, build an `ActivityRuntime`, construct or load a graph,
 execute or resume, and serialize run status. ADR 0002 says Dynamic Workflow
 compiles to `TaskGraph` and the Engine remains the only durable executor, but
@@ -103,14 +103,14 @@ module. The `workflow` command remains the adapter from authored
 
 ### Problem
 
-Atlas strictly parses `atlas/src/content/generated/corpus.json`, but after
+Atlas strictly parses `atlas/src/knowledge/generated/corpus.json`, but after
 parsing, React modules repeatedly join documents, systems, Weng sections,
 diagnostic cases, lessons, and reader routes. This spreads generated-corpus
 relationship knowledge across view modules.
 
 ### Desired shape
 
-Deepen `atlas/src/content/canonical.ts` into an Atlas corpus view module. It
+Deepen `atlas/src/lab/math/textbook/canonical.ts` into an Atlas corpus view module. It
 should build lookup maps once from the validated corpus and expose small
 queries such as:
 

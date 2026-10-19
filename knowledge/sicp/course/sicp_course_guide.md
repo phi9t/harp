@@ -4,7 +4,7 @@
 
 This course uses *Structure and Interpretation of Computer Programs* to sharpen systems judgment: how processes consume resources, where representations create boundaries, how state changes reasoning, and how evaluators and machines make semantics operational. It is a reader course for experienced programmers, not a survey of Scheme syntax or a race to complete every exercise.
 
-The [[content/sicp/course/coverage.tsv|coverage ledger]] distinguishes deep treatment from focused treatment and required reading from skimming. The [[knowledge/sicp/course/exercise_map|exercise map]] supplies diagnostics and transfer targets without solutions.
+The [[lab/sicp/contracts/course/coverage.tsv|coverage ledger]] distinguishes deep treatment from focused treatment and required reading from skimming. The [[knowledge/sicp/course/exercise_map|exercise map]] supplies diagnostics and transfer targets without solutions.
 
 ## How to use a seminar
 
@@ -95,4 +95,4 @@ Open [[knowledge/sicp/course/dialogue_state|dialogue_state.md]], follow the sing
 
 ## Source and license boundary
 
-The canonical course artifact is the vendored [[evidence/sicp/sicp.pdf|SICP PDF]]. Consult the [[content/sicp/sources/source_registry.tsv|source registry]] for provenance and use constraints, and preserve the boundary described by the vendored [[evidence/sicp/LICENSE.txt|license text]]. Course notes paraphrase and point into the source; they do not replace or silently relicense it.
+The canonical course artifact is the vendored [[evidence/sicp/sicp.pdf|SICP PDF]]. Consult the [[lab/sicp/contracts/sources/source_registry.tsv|source registry]] for provenance and use constraints, and preserve the boundary described by the vendored [[evidence/sicp/LICENSE.txt|license text]]. Course notes paraphrase and point into the source; they do not replace or silently relicense it.

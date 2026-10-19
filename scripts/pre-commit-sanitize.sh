@@ -17,7 +17,7 @@ root = Path(os.fsdecode(git("rev-parse", "--show-toplevel").rstrip(b"\n")))
 os.chdir(root)
 paths = [path for path in git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMR").split(b"\0") if path]
 # The implementation deliberately contains detection fixtures and rule literals.
-paths = [path for path in paths if not path.startswith(b"crates/harp/src/sanitize/")]
+paths = [path for path in paths if not path.startswith(b"cli/src/sanitize/")]
 if not paths:
     raise SystemExit(0)
 configured = os.environ.get("HARP_BIN")

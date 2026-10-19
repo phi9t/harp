@@ -27,8 +27,8 @@ Mathlib cache. No claim is made that this is a new proof of Cauchy–Schwarz.
 | Create | `formalization/lean/MathematicalFoundations/TextbookCauchySchwarz.lean` | Fixed proposition and library-reuse reference |
 | Create | `formalization/lean/MathematicalFoundations/TextbookCauchySchwarzControls.lean` | Literal full-target and edge-case compile controls |
 | Modify | `formalization/lean/MathematicalFoundations.lean` | Import controls so the existing gate checks both new files |
-| Modify | `crates/harp/tests/lean_library.rs` | Include the new direct Mathlib import in the all-library fake cache |
-| Modify | `crates/harp/tests/mathematical_foundations_lean.rs` | Include the same import in both foundations fake-cache rosters |
+| Modify | `cli/tests/lean_library.rs` | Include the new direct Mathlib import in the all-library fake cache |
+| Modify | `cli/tests/mathematical_foundations_lean.rs` | Include the same import in both foundations fake-cache rosters |
 
 These paths are relative to the isolated execution worktree, not a dependency
 on another checkout. Use the primary checkout only for the approved machine-local
@@ -149,7 +149,7 @@ Execution uncovered this missing integration step. These fixtures test wrapper
 selection and environment isolation; they do not stand in for real Lean proof
 acceptance. All three affected rosters need the new direct import.
 
-- [ ] In `crates/harp/tests/lean_library.rs`, add the following entry after
+- [ ] In `cli/tests/lean_library.rs`, add the following entry after
   `"Mathlib.Algebra.Module.Submodule.Ker",` in
   `write_fake_all_mathlib_artifacts`:
 
@@ -157,7 +157,7 @@ acceptance. All three affected rosters need the new direct import.
             "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
 ```
 
-- [ ] In `crates/harp/tests/mathematical_foundations_lean.rs`, add the following
+- [ ] In `cli/tests/mathematical_foundations_lean.rs`, add the following
   entry after `"Mathlib.Algebra.Module.Submodule.Ker",` in
   `ambient_project_override_is_ignored`:
 
@@ -165,7 +165,7 @@ acceptance. All three affected rosters need the new direct import.
             "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
 ```
 
-- [ ] In `crates/harp/tests/mathematical_foundations_lean.rs`, add the following
+- [ ] In `cli/tests/mathematical_foundations_lean.rs`, add the following
   entry after `"Mathlib.Algebra.Module.Submodule.Ker",` in
   `ambient_elan_toolchain_is_overridden_for_normal_builds`:
 
@@ -197,7 +197,7 @@ had already passed. Do not change production cache policy or test assertions.
   repository receipt/derived-file checks have passed:
 
 ```sh
-git add formalization/lean/MathematicalFoundations.lean formalization/lean/MathematicalFoundations/TextbookCauchySchwarz.lean formalization/lean/MathematicalFoundations/TextbookCauchySchwarzControls.lean crates/harp/tests/lean_library.rs crates/harp/tests/mathematical_foundations_lean.rs
+git add formalization/lean/MathematicalFoundations.lean formalization/lean/MathematicalFoundations/TextbookCauchySchwarz.lean formalization/lean/MathematicalFoundations/TextbookCauchySchwarzControls.lean cli/tests/lean_library.rs cli/tests/mathematical_foundations_lean.rs
 git commit -m "feat(lean): add trusted textbook Cauchy-Schwarz controls"
 ```
 

@@ -52,7 +52,7 @@ These invariants apply to every task:
 - Modify: `mise.toml`
 - Create: `labs/crouzeix_proof_reproduction/proof_evidence.py`
 - Create: `labs/crouzeix_proof_reproduction/tests/test_proof_evidence.py`
-- Modify: `crates/harp/tests/lean_library.rs`
+- Modify: `cli/tests/lean_library.rs`
 
 - [ ] **Step 1: Freeze RED target and preflight tests**
 
@@ -138,8 +138,8 @@ preflight reports no missing dependency artifact. Commit as
 - Create: `labs/crouzeix_proof_reproduction/schemas/proof_review.schema.json`
 - Create: `labs/crouzeix_proof_reproduction/tests/test_route_validation.py`
 - Modify: `labs/crouzeix_proof_reproduction/proof_evidence.py`
-- Create: `crates/harp/src/sources/crouzeix/route.rs`
-- Modify: `crates/harp/src/sources/crouzeix.rs`
+- Create: `cli/src/sources/crouzeix/route.rs`
+- Modify: `cli/src/sources/crouzeix.rs`
 
 - [ ] **Step 1: Encode the contract as RED tests**
 
@@ -395,7 +395,7 @@ Commit as `evidence(crouzeix): certify Harp finite-horizon route`.
 
 - Modify: `labs/crouzeix_proof_reproduction/local_formalization_evidence.py`
 - Modify: `labs/crouzeix_proof_reproduction/tests/test_local_formalization_evidence.py`
-- Modify: `crates/harp/src/sources/crouzeix.rs`
+- Modify: `cli/src/sources/crouzeix.rs`
 - Create: `evidence/crouzeix_conjecture/local_formalization/`
 
 - [ ] **Step 1: Write RED six-route-boundary tests**
@@ -453,8 +453,8 @@ Commit as `evidence(crouzeix): require local proof bundle`.
 - Modify: `knowledge/crouzeix_conjecture/source_registry.md`
 - Modify: `evidence/crouzeix_conjecture/PROVENANCE.md`
 - Modify: `labs/crouzeix_proof_reproduction/README.md`
-- Modify: `crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs`
-- Regenerate: `atlas/src/content/generated/corpus.json`
+- Modify: `cli/tests/crouzeix_conjecture_knowledge_packet.rs`
+- Regenerate: `atlas/src/knowledge/generated/corpus.json`
 - Regenerate: `atlas/dist/harp-atlas.html`
 - Regenerate: `atlas/dist/harp-atlas.receipt.json`
 

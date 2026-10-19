@@ -90,7 +90,7 @@ every lower layer.
 Algol block structure, lexical scope, and λ-calculus in its first-edition
 preface (`SICP-2E-UF`, printed pp. xxiii–xxiv, PDF pp. 23–24). The exact
 lineage edges and access states are recorded in
-[[content/sicp/sources/evidence_graph.tsv|`sources/evidence_graph.tsv`]].
+[[lab/sicp/contracts/sources/evidence_graph.tsv|`sources/evidence_graph.tsv`]].
 
 **MISSING — blocked reconstruction.** `MCCARTHY-1960`, `CHURCH-1941`,
 `STEELE-SUSSMAN-1975`, `REES-ADAMS-1982`, `FEELEY-1986`,

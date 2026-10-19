@@ -10,10 +10,10 @@ existing harnesses implement a shared formal semantics.
 
 ## Authority and location
 
-- Canonical technical prose: `content/sicp/agentic_eval_apply.md`.
-- Navigation updates: `content/sicp/sicp_index.md` and
-  `content/sicp/course/sicp_course_guide.md`.
-- Derived artifacts: `atlas/src/content/generated/corpus.json` and
+- Canonical technical prose: `lab/sicp/contracts/agentic_eval_apply.md`.
+- Navigation updates: `lab/sicp/contracts/sicp_index.md` and
+  `lab/sicp/contracts/course/sicp_course_guide.md`.
+- Derived artifacts: `atlas/src/knowledge/generated/corpus.json` and
   `atlas/dist/harp-atlas.html`, regenerated together from canonical inputs.
 - Evidence: reuse the checked-in SICP source and the existing pinned Pi,
   Hermes, and Codex overlays. Do not add, edit, or infer new source evidence.

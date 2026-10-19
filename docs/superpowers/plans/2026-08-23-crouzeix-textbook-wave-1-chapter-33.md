@@ -130,8 +130,8 @@ gate reports the new payload digest.
 
 - `knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md`
 - `formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean`
-- `content/crouzeix_textbook/coverage.json`
-- `content/crouzeix_textbook/exercises.json`
+- `lab/math/textbook/coverage.json`
+- `lab/math/textbook/exercises.json`
 - generated textbook ledgers, corpus JSON, and Atlas HTML
 
 **Read as proof authorities:**
@@ -184,10 +184,10 @@ Map each symbol to the exact Lean field or definition, especially
 - [ ] **Step 3: Commit the source/notation test surface**
 
 ```sh
-git add crates/harp/tests/crouzeix_textbook.rs \
+git add cli/tests/crouzeix_textbook.rs \
   knowledge/crouzeix_textbook/source_registry.md \
   knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md \
-  content/crouzeix_textbook/coverage.json
+  lab/math/textbook/coverage.json
 git commit -m "test(crouzeix-textbook): freeze chapter 33 proof correspondence"
 ```
 
@@ -234,7 +234,7 @@ MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-textbook
 cargo test -p harp --test crouzeix_textbook chapter_33_cft_001_002 -- --test-threads=1
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md \
   formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean \
-  content/crouzeix_textbook/coverage.json content/crouzeix_textbook/exercises.json
+  lab/math/textbook/coverage.json lab/math/textbook/exercises.json
 git commit -m "docs(crouzeix-textbook): derive the LS recurrence"
 ```
 
@@ -274,7 +274,7 @@ MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-textbook
 cargo test -p harp --test crouzeix_textbook chapter_33_cft_003 -- --test-threads=1
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md \
   formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean \
-  content/crouzeix_textbook
+  lab/math/textbook
 git commit -m "docs(crouzeix-textbook): prove the LS telescoping bound"
 ```
 
@@ -317,7 +317,7 @@ MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-ls
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-textbook
 cargo test -p harp --test crouzeix_textbook chapter_33_cft_004_005 -- --test-threads=1
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/33_lorist_schwenninger_perturbation_lemma.md \
-  formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean content/crouzeix_textbook
+  formalization/lean/CrouzeixTextbook/Part06/Chapter33.lean lab/math/textbook
 git commit -m "docs(crouzeix-textbook): close the LS scalar contradiction"
 ```
 

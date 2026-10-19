@@ -147,7 +147,7 @@ An attempt can fail while retaining a valid candidate or an unresolved effect.
 | WorkspaceRecord | Repository and administrative-directory identities, root device/inode, base tree, owner/epoch, scope/policy digest |
 | MutationIntent | Effect key, attempt/activity links, admitted baseline digest, ownership epoch, prepared/dispatch-intent state |
 | MutationReceipt | Intent, before/after manifests, process-quiescence evidence, disposition, observed scope violations |
-| CandidateManifest | Base identity, complete path/content/mode mapping, additions/deletions, artifact hashes, producing intent |
+| CandidateManifest | Base identity, complete path/lab/math/textbook/mode mapping, additions/deletions, artifact hashes, producing intent |
 | VerificationReceipt | Candidate digest, verifier key, argv/cwd/env/tool identities, process outcome, bounded stdout/stderr references, verdict |
 | ContinuationPacket | Original contract, candidate/checkpoint refs, observed facts, agent-reported notes, pending work, remaining authority/budget |
 | RecoveryDecision | State version, ownership prerequisites, referenced evidence, selected action and reason |

@@ -43,15 +43,18 @@ runner/                     SSH transport, preflight, request/result transfer
   hosts.example.toml        fictional example only
 lab/
   math/                     Lean developments and proof companion programs
+    textbook/               textbook coverage, exercises and compatibility JSON
   sicp/                     evaluator and executable educational exercises
   benchmarks/               retained terminal/build/coding task collections
+    legacy_runtime/         isolated historical Rust runtime qualification workspace
   soma/                     Emacs/Doom environment, gym, probes and AI/LSP workloads
   mixed_build/              compact C++/Rust/Python Bazel workload
   triton_compile/           Triton compilation and correctness workload
   training/                 small transformer training workload
-crates/                     Harp Rust CLI, supporting product libraries
+cli/                        Harp Rust CLI and supporting product library
+sessions/                   rollout indexing and session analysis
 knowledge/                  maintained shared prose, including math and SICP
-content/                    registered machine-readable contracts, derived corpus
+  # Workload contracts live beside math/SICP; context contracts live in durable/.
 evidence/                   captured bytes, licenses, provenance, qualification
 tools/                      shared authoring, PDF and repository tools
 scripts/                    repository verification and maintenance
@@ -357,3 +360,17 @@ The existing-code migration is complete. The [qualification record](../../../evi
 identifies the verified body commit, source-bound native checks and complete
 changed-surface gate. Tickets 08–10 and 14 remain explicit follow-ups for new
 workloads and stronger service-owner capabilities.
+
+## Remaining container cleanup
+
+The CLI and session index are top-level components. The old top-level benchmark
+fixtures live under lab/benchmarks; historical Rust controller packages and their
+schema receipts form its independent legacy_runtime workspace. The product Cargo
+workspace excludes that workload, and the CLI no longer depends on its engine
+for schema checks.
+
+The generic content directory is removed. Textbook JSON lives under
+lab/math/textbook, SICP records under lab/sicp/contracts, embedded workflow context
+under durable/context, and shared source records under evidence/sources. The
+compiled corpus is knowledge/generated/corpus.json. Original evidence and
+historical qualification source identities remain distinct from current checks.

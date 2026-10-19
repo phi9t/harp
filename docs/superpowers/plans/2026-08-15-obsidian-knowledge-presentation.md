@@ -26,7 +26,7 @@ and the pinned `kepano/obsidian-skills` repository.
 
 | Boundary | Enforced invariant | Structural enforcement |
 |---|---|---|
-| Prose authority | Technical prose remains under managed `knowledge/` roots; `content/` remains structured-only. | Existing corpus content-root rejection plus managed-root migration audit. |
+| Prose authority | Technical prose remains under managed `knowledge/` roots; `lab/math/textbook/` remains structured-only. | Existing corpus content-root rejection plus managed-root migration audit. |
 | Evidence fidelity | Captured files under `evidence/*/artifacts/` are never reformatted or decorated with block IDs. | Migration scanner excludes `evidence/`; source manifests hash vendored bytes. |
 | Local links | Wiki targets cannot escape the repository or pass through symlinks. | One typed resolver rejects absolute paths, traversal, nonregular targets, and ambiguous names. |
 | Claim routes | Reader claim → exact ledger H2 → exact evidence locator remains intact. | Credible-docs parser validates the wiki claim target and exact locator separately. |
@@ -67,17 +67,17 @@ URLs remain standard Markdown links.
 |---|---|
 | `evidence/implementations/obsidian_skills/{REMOTE,REVISION,LICENSE,LICENSE_STATUS,snapshot/**}` | Complete MIT-licensed upstream snapshot. |
 | `evidence/implementations/manifest.tsv` | Digest records for each vendored upstream file. |
-| `crates/harp/src/corpus/obsidian.rs` | Typed scanner/parser/resolver for wiki links, embeds, callouts, headings, and safe paths. |
-| `crates/harp/src/corpus/{contracts.rs,render.rs,mod.rs,tests.rs}` | Corpus validation, safe Atlas projection, metadata projection, route registration. |
-| `crates/harp/src/search.rs` | DarwinX and vault-home search-root registration. |
-| `crates/harp/tests/{credible_docs_style.rs,dgm_knowledge_packet.rs,crouzeix_conjecture_knowledge_packet.rs,obsidian_knowledge_packet.rs,cli.rs}` | Shared claim/link contracts and packet/integration coverage. |
+| `cli/src/corpus/obsidian.rs` | Typed scanner/parser/resolver for wiki links, embeds, callouts, headings, and safe paths. |
+| `cli/src/corpus/{contracts.rs,render.rs,mod.rs,tests.rs}` | Corpus validation, safe Atlas projection, metadata projection, route registration. |
+| `cli/src/search.rs` | DarwinX and vault-home search-root registration. |
+| `cli/tests/{credible_docs_style.rs,dgm_knowledge_packet.rs,crouzeix_conjecture_knowledge_packet.rs,obsidian_knowledge_packet.rs,cli.rs}` | Shared claim/link contracts and packet/integration coverage. |
 | `scripts/migrate_obsidian_links.py` | Deterministic, idempotent, checkable migration and audit tool. |
 | `scripts/validate_obsidian_assets.py` | Standard-library validation for frontmatter, Base YAML shape, Canvas graph, and profile allowlist. |
 | `knowledge/harp_knowledge_home.md` | Reader-first vault entrypoint. |
 | `knowledge/obsidian/{README.md,harp_knowledge.base,harp_knowledge_map.canvas}` | Portable vault navigation assets. |
 | `tools/obsidian/profile/**` | Sanitized portable `.obsidian/` profile source. |
 | `tools/obsidian/apply_profile.py` | Explicit, symlink-safe, create-only profile installer. |
-| `atlas/src/content/{types.ts,contracts.ts,canonical.ts}` | Strict projection and metadata access. |
+| `atlas/src/lab/math/textbook/{types.ts,contracts.ts,canonical.ts}` | Strict projection and metadata access. |
 | `atlas/src/app/{AtlasApp.tsx,ChapterReader.tsx,KnowledgeHome.tsx}` | Atlas knowledge route, callout styling, metadata strip, safe embeds. |
 | `atlas/src/**/*.{test.ts,test.tsx,css}` | Atlas route/rendering/accessibility tests and style. |
 | `README.md`, `RESOURCES.md`, `AGENTS.md`, `docs/{product-contract.md,contributing.md,writing-style/*.md}` | Operator, authoring, evidence, and route documentation. |
@@ -91,14 +91,14 @@ URLs remain standard Markdown links.
 - Create: `evidence/implementations/obsidian_skills/LICENSE_STATUS`
 - Create: `evidence/implementations/obsidian_skills/snapshot/**`
 - Modify: `evidence/implementations/manifest.tsv`
-- Modify: `crates/harp/tests/cli.rs`
+- Modify: `cli/tests/cli.rs`
 - Modify: `docs/product-contract.md`
 - Modify: `AGENTS.md`
-- Test: `crates/harp/tests/cli.rs`
+- Test: `cli/tests/cli.rs`
 
 - [ ] **Step 1: Add the failing vendor-manifest expectation**
 
-  In `crates/harp/tests/cli.rs`, add assertions in
+  In `cli/tests/cli.rs`, add assertions in
   `sources_verify_accepts_the_tracked_offline_evidence` for an
   `OBSIDIAN-SKILLS` implementation source and its expected snapshot-file count.
   Use a count derived from the actual vendored manifest rows, not a guessed
@@ -225,7 +225,7 @@ URLs remain standard Markdown links.
   git add \
     evidence/implementations/obsidian_skills \
     evidence/implementations/manifest.tsv \
-    crates/harp/tests/cli.rs \
+    cli/tests/cli.rs \
     docs/product-contract.md \
     AGENTS.md
   git diff --cached --check
@@ -236,12 +236,12 @@ URLs remain standard Markdown links.
 ### Task 2: Add a typed Obsidian syntax and link-resolution boundary
 
 **Files:**
-- Create: `crates/harp/src/corpus/obsidian.rs`
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/corpus/contracts.rs`
-- Modify: `crates/harp/src/corpus/render.rs`
-- Modify: `crates/harp/src/corpus/tests.rs`
-- Test: `crates/harp/src/corpus/obsidian.rs`
+- Create: `cli/src/corpus/obsidian.rs`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/corpus/contracts.rs`
+- Modify: `cli/src/corpus/render.rs`
+- Modify: `cli/src/corpus/tests.rs`
+- Test: `cli/src/corpus/obsidian.rs`
 
 - [ ] **Step 1: Write parser/resolver tests first**
 
@@ -291,7 +291,7 @@ URLs remain standard Markdown links.
 
 - [ ] **Step 3: Implement the typed parser**
 
-  Add `mod obsidian;` in `crates/harp/src/corpus/mod.rs`. In
+  Add `mod obsidian;` in `cli/src/corpus/mod.rs`. In
   `obsidian.rs`, define:
 
   ```rust
@@ -392,7 +392,7 @@ URLs remain standard Markdown links.
 - [ ] **Step 7: Commit the parser/render slice**
 
   ```sh
-  git add crates/harp/src/corpus/{mod.rs,obsidian.rs,contracts.rs,render.rs,tests.rs}
+  git add cli/src/corpus/{mod.rs,obsidian.rs,contracts.rs,render.rs,tests.rs}
   git diff --cached --check
   git commit -m "feat: parse and render Obsidian knowledge links" \
     -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
@@ -401,10 +401,10 @@ URLs remain standard Markdown links.
 ### Task 3: Make claim and packet contracts wiki-link aware
 
 **Files:**
-- Modify: `crates/harp/tests/credible_docs_style.rs`
-- Modify: `crates/harp/tests/dgm_knowledge_packet.rs`
-- Modify: `crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs`
-- Create: `crates/harp/tests/obsidian_knowledge_packet.rs`
+- Modify: `cli/tests/credible_docs_style.rs`
+- Modify: `cli/tests/dgm_knowledge_packet.rs`
+- Modify: `cli/tests/crouzeix_conjecture_knowledge_packet.rs`
+- Create: `cli/tests/obsidian_knowledge_packet.rs`
 - Test: the four files above
 
 - [ ] **Step 1: Add failing wiki-claim fixtures**
@@ -506,10 +506,10 @@ URLs remain standard Markdown links.
 
   ```sh
   git add \
-    crates/harp/tests/credible_docs_style.rs \
-    crates/harp/tests/dgm_knowledge_packet.rs \
-    crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs \
-    crates/harp/tests/obsidian_knowledge_packet.rs
+    cli/tests/credible_docs_style.rs \
+    cli/tests/dgm_knowledge_packet.rs \
+    cli/tests/crouzeix_conjecture_knowledge_packet.rs \
+    cli/tests/obsidian_knowledge_packet.rs
   git diff --cached --check
   git commit -m "test: validate Obsidian claim and packet contracts" \
     -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
@@ -646,7 +646,7 @@ URLs remain standard Markdown links.
 **Files:**
 - Modify: every tracked `knowledge/**/*.md` in the managed packet roots
 - Modify: `scripts/migrate_obsidian_links.py`
-- Modify: `crates/harp/tests/obsidian_knowledge_packet.rs`
+- Modify: `cli/tests/obsidian_knowledge_packet.rs`
 - Test: all managed Markdown through migration `--check`
 
 - [ ] **Step 1: Add a failing zero-legacy-link assertion**
@@ -775,7 +775,7 @@ URLs remain standard Markdown links.
   git add knowledge/meta_harness knowledge/harness_benchmarks
   git add knowledge/evaluator_integrity knowledge/self_improving_agents_survey
   git add knowledge/agentic_engineering knowledge/crouzeix_conjecture
-  git add scripts/migrate_obsidian_links.py crates/harp/tests/obsidian_knowledge_packet.rs
+  git add scripts/migrate_obsidian_links.py cli/tests/obsidian_knowledge_packet.rs
   git diff --cached --check
   git commit -m "docs: migrate managed knowledge to Obsidian links" \
     -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
@@ -967,10 +967,10 @@ URLs remain standard Markdown links.
 ### Task 7: Register metadata, DarwinX, and the knowledge home in corpus, search, and Atlas
 
 **Files:**
-- Modify: `crates/harp/src/corpus/{mod.rs,contracts.rs,render.rs,tests.rs}`
-- Modify: `crates/harp/src/search.rs`
-- Modify: `crates/harp/tests/{cli.rs,obsidian_knowledge_packet.rs}`
-- Modify: `atlas/src/content/{types.ts,contracts.ts,canonical.ts,canonical.test.ts}`
+- Modify: `cli/src/corpus/{mod.rs,contracts.rs,render.rs,tests.rs}`
+- Modify: `cli/src/search.rs`
+- Modify: `cli/tests/{cli.rs,obsidian_knowledge_packet.rs}`
+- Modify: `atlas/src/lab/math/textbook/{types.ts,contracts.ts,canonical.ts,canonical.test.ts}`
 - Create: `atlas/src/app/KnowledgeHome.tsx`
 - Modify: `atlas/src/app/{AtlasApp.tsx,ChapterReader.tsx,routes.ts,routes.test.ts,ReaderApp.test.tsx}`
 - Create/Modify: focused `atlas/src/app/**/*.test.tsx`
@@ -1051,7 +1051,7 @@ URLs remain standard Markdown links.
 
 - [ ] **Step 5: Add strict Atlas metadata contracts**
 
-  In `atlas/src/content/types.ts`, add the TypeScript equivalent:
+  In `atlas/src/lab/math/textbook/types.ts`, add the TypeScript equivalent:
 
   ```ts
   export type DocumentMetadata = {
@@ -1117,7 +1117,7 @@ URLs remain standard Markdown links.
 - [ ] **Step 8: Commit corpus/Atlas registration**
 
   ```sh
-  git add crates/harp/src/corpus crates/harp/src/search.rs crates/harp/tests
+  git add cli/src/corpus cli/src/search.rs cli/tests
   git add atlas/src/app atlas/src/content atlas/src/**/*.css
   git diff --cached --check
   git commit -m "feat: register Obsidian knowledge in Atlas and search" \
@@ -1131,7 +1131,7 @@ URLs remain standard Markdown links.
 - Modify: `RESOURCES.md`
 - Modify: `AGENTS.md`
 - Modify: `docs/{product-contract.md,contributing.md}`
-- Modify: `atlas/src/content/generated/corpus.json`
+- Modify: `atlas/src/knowledge/generated/corpus.json`
 - Modify: `atlas/dist/harp-atlas.html`
 - Modify: `atlas/dist/harp-atlas.receipt.json`
 - Modify: `docs/import-receipt.md`
@@ -1173,7 +1173,7 @@ URLs remain standard Markdown links.
   Confirm that only:
 
   ```text
-  atlas/src/content/generated/corpus.json
+  atlas/src/knowledge/generated/corpus.json
   atlas/dist/harp-atlas.html
   atlas/dist/harp-atlas.receipt.json
   ```
@@ -1189,7 +1189,7 @@ URLs remain standard Markdown links.
     README.md RESOURCES.md AGENTS.md docs \
     evidence/implementations/obsidian_skills \
     evidence/implementations/manifest.tsv \
-    crates/harp atlas knowledge tools scripts .gitignore
+    cli atlas knowledge tools scripts .gitignore
   git stash push --keep-index -u -m "obsidian-presentation-unrelated-work"
   mise run verify
   git stash pop
@@ -1236,7 +1236,7 @@ URLs remain standard Markdown links.
   ```sh
   git add \
     README.md RESOURCES.md AGENTS.md docs \
-    atlas/src/content/generated/corpus.json \
+    atlas/src/knowledge/generated/corpus.json \
     atlas/dist/harp-atlas.html \
     atlas/dist/harp-atlas.receipt.json
   git diff --cached --check

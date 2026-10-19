@@ -106,12 +106,12 @@ worktree; no path under another developer's home may be embedded in runtime code
 
 | Owner | Existing implementation boundaries | Proposed additions |
 | --- | --- | --- |
-| Harp contracts | `crates/harp-contracts/src/{dynamic_workflow,graph,runtime,result}.rs` | `workflow_v2.rs`, `job.rs`, `environment.rs`, `qualification.rs` |
-| Harp state | `crates/harp-state/src/{sqlite,model,store,inspection}.rs`, `src/transitions/` | `0006_workflow_jobs.sql`, transitions `jobs.rs`, `admission.rs`, `reservations.rs` |
-| Harp Engine | `crates/harp-engine/src/{execution_plan,validate,projection,scheduler,recovery,cancel,inspection}.rs` | `jobs.rs`, `bindings.rs`, `finalization.rs`, `resources.rs`; later `workspace.rs`, `expansion.rs` |
-| Harp runtime | `crates/harp-runtime/src/{contract,conformance}.rs`, `crates/harp-cli-process/src/process.rs` | command job trait and local owner module/binary under `harp-cli-process`; `xena.rs`, `armada.rs` adapters under `harp-runtime` |
-| Harp artifacts | `crates/harp-artifacts/src/{store,platform}.rs` | `collection.rs`; later `chunked.rs` |
-| Harp CLI | `crates/harp/src/main.rs`, `context_control/workflow.rs` | `crates/harp/src/workflow_execution.rs` for new routes, avoiding further scheduler logic in `main.rs` |
+| Harp contracts | `lab/benchmarks/legacy_runtime/harp-contracts/src/{dynamic_workflow,graph,runtime,result}.rs` | `workflow_v2.rs`, `job.rs`, `environment.rs`, `qualification.rs` |
+| Harp state | `lab/benchmarks/legacy_runtime/harp-state/src/{sqlite,model,store,inspection}.rs`, `src/transitions/` | `0006_workflow_jobs.sql`, transitions `jobs.rs`, `admission.rs`, `reservations.rs` |
+| Harp Engine | `lab/benchmarks/legacy_runtime/harp-engine/src/{execution_plan,validate,projection,scheduler,recovery,cancel,inspection}.rs` | `jobs.rs`, `bindings.rs`, `finalization.rs`, `resources.rs`; later `workspace.rs`, `expansion.rs` |
+| Harp runtime | `lab/benchmarks/legacy_runtime/harp-runtime/src/{contract,conformance}.rs`, `lab/benchmarks/legacy_runtime/harp-cli-process/src/process.rs` | command job trait and local owner module/binary under `harp-cli-process`; `xena.rs`, `armada.rs` adapters under `harp-runtime` |
+| Harp artifacts | `lab/benchmarks/legacy_runtime/harp-artifacts/src/{store,platform}.rs` | `collection.rs`; later `chunked.rs` |
+| Harp CLI | `cli/src/main.rs`, `context_control/workflow.rs` | `cli/src/workflow_execution.rs` for new routes, avoiding further scheduler logic in `main.rs` |
 | Standalone Ferric fixture | Imported pinned modules and licenses, existing Bazel metadata if retained | `research/{data,models,train,eval,analysis,experiments,workflows,tests}/`; `research/cli.py`, `research/locks/` |
 | Xena | `src/execution/owner/`, `src/python_build_standalone.rs`, `src/receipt.rs`, `src/harness.rs` | `tests/research_execution.rs` for actual boundary qualification |
 | Vaso | `src/vaso/{cli,config,bwrap,run_records,paths,doctor}.py` | `environment.py`, `execute.py`, `tests/test_execution.py`, `tests/test_environment.py` |
@@ -232,7 +232,7 @@ a separate Q3 admission under an explicit allocated-device budget.
 ## H1. V2 tasks, native actions and explicit bindings
 
 Depends on P0. Owns contract/Engine paths in the map and new
-`crates/harp-engine/tests/workflow_v2.rs`, `tests/bindings.rs`.
+`lab/benchmarks/legacy_runtime/harp-engine/src/workflow_v2_tests.rs`, `tests/bindings.rs`.
 
 - [ ] Define v2 task action as `Agent` or `Command`, separate from role. Command
   admission carries argv, cwd relative to its authority, declared env references,
@@ -255,7 +255,7 @@ settled failure report. Existing v1 dynamic-workflow tests must still pass.
 ## H2. Admission, job rows, reservations and CAS transitions
 
 Depends on H1. Owns Harp state map, new
-`crates/harp-state/tests/job_transitions.rs` and `admission.rs`.
+`lab/benchmarks/legacy_runtime/harp-state/src/job_transitions_tests.rs` and `admission.rs`.
 
 - [ ] Add migration with typed admission/jobs/environment/reservation/decision
   records, unique submission coordinates and append-only transition events.
@@ -274,7 +274,7 @@ and simultaneous reservations cannot exceed any budget dimension.
 ## H3. Local command-job execution and durable ownership
 
 Depends on H2. Owns Harp runtime/CLI-process job modules and
-`crates/harp-cli-process/tests/jobs.rs`, `crates/harp-engine/tests/jobs.rs`.
+`lab/benchmarks/legacy_runtime/harp-cli-process/src/jobs_tests.rs`, `lab/benchmarks/legacy_runtime/harp-engine/tests/jobs.rs`.
 
 The required backend interface, expressed as protocol operations rather than
 language-specific trait syntax, is:
@@ -310,7 +310,7 @@ No permanent background service is installed by these tests.
 ## H4. Supervisor interface, cancellation and review
 
 Depends on H3. Owns CLI/inspection/finalization modules and
-`crates/harp/tests/workflow_execution.rs`, `crates/harp-engine/tests/job_inspection.rs`.
+`cli/tests/workflow_execution.rs`, `lab/benchmarks/legacy_runtime/harp-engine/tests/job_inspection.rs`.
 
 - [ ] Add proposed submit/drive/wait/cancel routes with a versioned admission receipt
   and JSON reports; retain existing v1 run/resume/inspect contracts.
@@ -457,7 +457,7 @@ never pass. GPU tests remain out of Harp's portable default gate.
 
 Depends on Q1 for the initial local managed-mutation implementation. Owns the
 workspace/effect/artifact/verifier modules in the coding spec and new
-`crates/harp-engine/tests/coding_candidates.rs`.
+`lab/benchmarks/legacy_runtime/harp-engine/tests/coding_candidates.rs`.
 
 - [ ] Implement CodingWorkPolicy, journaled isolated workspace allocation,
   ownership/quiescence, immutable source candidates and candidate-bound checks.

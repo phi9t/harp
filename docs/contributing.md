@@ -91,7 +91,7 @@ inform later distillation but are not themselves project guidance.
 
 ## Content changes
 
-1. Edit canonical technical prose under `knowledge/`; use `content/` only for
+1. Edit canonical technical prose under `knowledge/`; use `lab/math/textbook/` only for
    structured machine-readable contracts and diagnostics.
 2. Use vault-root-qualified wiki links for managed note, claim-ledger, and
    artifact navigation. Preserve exact raw-evidence line locators as the

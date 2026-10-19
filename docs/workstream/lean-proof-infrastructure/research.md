@@ -379,8 +379,8 @@ At the reference tree:
   its test directory is 22,113 lines under the audit's explicit counting
   boundary.
 - The Rust Crouzeix verifier surfaces total 9,445 lines across
-  `crates/harp/src/sources/crouzeix.rs` and
-  `crates/harp/src/sources/crouzeix/route.rs`.
+  `cli/src/sources/crouzeix.rs` and
+  `cli/src/sources/crouzeix/route.rs`.
 - The canonical dependency cache is approximately 14 GiB. One historical
   worktree had another real cache of approximately 13 GiB, while the current
   certification worktree links to the canonical cache as policy requires.
@@ -411,9 +411,9 @@ the top of this document; it does not mean the mutable primary checkout.
 | Route identifiers, expected manifest paths, and reuse policy | `HEAD:labs/crouzeix_proof_reproduction/route_validation.py:29-74` |
 | Proof/source graph node contract | `HEAD:labs/crouzeix_proof_reproduction/route_validation.py:81-115` |
 | Route receipt and review contract | `HEAD:labs/crouzeix_proof_reproduction/route_validation.py:139-156` |
-| Duplicated Rust route identifiers and policy | `HEAD:crates/harp/src/sources/crouzeix/route.rs:16-38` |
-| Missing route manifests are skipped | `HEAD:crates/harp/src/sources/crouzeix/route.rs:760-789` |
-| Local formalization bundle is optional | `HEAD:crates/harp/src/sources/crouzeix.rs:61-104,472-505` |
+| Duplicated Rust route identifiers and policy | `HEAD:cli/src/sources/crouzeix/route.rs:16-38` |
+| Missing route manifests are skipped | `HEAD:cli/src/sources/crouzeix/route.rs:760-789` |
+| Local formalization bundle is optional | `HEAD:cli/src/sources/crouzeix.rs:61-104,472-505` |
 | Route-specific Lake targets | `HEAD:formalization/lean/lakefile.toml:1-40` |
 | Focused target, cache, and policy checks | `HEAD:scripts/check_lean_library.sh:80-172,235-608` |
 | Cache/worktree receipt validation | `HEAD:labs/crouzeix_proof_reproduction/proof_evidence.py:677-780` |

@@ -481,7 +481,7 @@ substrate unless crash testing proves a missing primitive.
 
 ## Lean adapter behavior
 
-`crates/harp-lean` is a process adapter with no durable control plane.
+`cli-lean` is a process adapter with no durable control plane.
 
 ### Interactive lane
 

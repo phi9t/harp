@@ -13,20 +13,20 @@
 ## File structure
 
 ```text
-crates/harp/src/crouzeix_textbook/
+cli/src/crouzeix_textbook/
 ├── mod.rs          # public check/write orchestration
 ├── contract.rs     # v2 Serde types and semantic validation
 ├── diagnostic.rs   # stable typed failure surface
 ├── markdown.rs     # frontmatter, anchor, theorem-card, source validation
 ├── lean.rs         # check-source generation and receipt validation
 └── publish.rs      # deterministic rendering and atomic sibling replacement
-crates/harp/tests/
+cli/tests/
 ├── crouzeix_textbook.rs
 └── fixtures/crouzeix_textbook/valid/...
 formalization/lean/CrouzeixTextbook/
 ├── Correspondence.lean        # generated declaration checks
 └── ExportReceipt.lean         # maintained bounded JSON exporter
-content/crouzeix_textbook/
+lab/math/textbook/
 ├── coverage.json              # v2 theorem contract
 ├── exercises.json             # v2 exercise contract
 └── compatibility_routes.json  # canonical frontmatter ID to legacy route map
@@ -40,13 +40,13 @@ replacement behavior has explicit tests.
 
 **Files:**
 
-- Create: `crates/harp/src/crouzeix_textbook/diagnostic.rs`
-- Create: `crates/harp/src/crouzeix_textbook/contract.rs`
-- Create: `crates/harp/src/crouzeix_textbook/mod.rs`
-- Modify: `crates/harp/src/lib.rs`
-- Rewrite: `crates/harp/tests/crouzeix_textbook.rs`
-- Create: `crates/harp/tests/fixtures/crouzeix_textbook/valid/content/crouzeix_textbook/coverage.json`
-- Create: `crates/harp/tests/fixtures/crouzeix_textbook/valid/content/crouzeix_textbook/exercises.json`
+- Create: `cli/src/crouzeix_textbook/diagnostic.rs`
+- Create: `cli/src/crouzeix_textbook/contract.rs`
+- Create: `cli/src/crouzeix_textbook/mod.rs`
+- Modify: `cli/src/lib.rs`
+- Rewrite: `cli/tests/crouzeix_textbook.rs`
+- Create: `cli/tests/fixtures/crouzeix_textbook/valid/lab/math/textbook/coverage.json`
+- Create: `cli/tests/fixtures/crouzeix_textbook/valid/lab/math/textbook/exercises.json`
 
 - [ ] **Step 1: Add RED tests for strict deserialization and stable errors**
 
@@ -111,9 +111,9 @@ checks through renderers.
 cargo fmt --all --check
 cargo test -p harp --test crouzeix_textbook v2_ -- --test-threads=1
 git diff --check
-git add crates/harp/src/crouzeix_textbook crates/harp/src/lib.rs \
-  crates/harp/tests/crouzeix_textbook.rs \
-  crates/harp/tests/fixtures/crouzeix_textbook
+git add cli/src/crouzeix_textbook cli/src/lib.rs \
+  cli/tests/crouzeix_textbook.rs \
+  cli/tests/fixtures/crouzeix_textbook
 git commit -m "feat(crouzeix-textbook): define publication contracts"
 ```
 
@@ -144,10 +144,10 @@ remains outside this task and does not change the focused acceptance gate.
 
 **Files:**
 
-- Create: `crates/harp/src/crouzeix_textbook/markdown.rs`
-- Modify: `crates/harp/src/crouzeix_textbook/mod.rs`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
-- Create: `content/crouzeix_textbook/compatibility_routes.json`
+- Create: `cli/src/crouzeix_textbook/markdown.rs`
+- Modify: `cli/src/crouzeix_textbook/mod.rs`
+- Modify: `cli/tests/crouzeix_textbook.rs`
+- Create: `lab/math/textbook/compatibility_routes.json`
 
 - [ ] **Step 1: Add RED identity, file-safety, and anchor tests**
 
@@ -209,8 +209,8 @@ old corpus routes. Do not hand-author a second canonical document roster.
 cargo test -p harp --test crouzeix_textbook canonical_identity_ -- --test-threads=1
 cargo test -p harp --test crouzeix_textbook prose_anchor_ -- --test-threads=1
 cargo test -p harp --test crouzeix_textbook rejects_nonregular_ -- --test-threads=1
-git add crates/harp/src/crouzeix_textbook crates/harp/tests/crouzeix_textbook.rs \
-  content/crouzeix_textbook/compatibility_routes.json
+git add cli/src/crouzeix_textbook cli/tests/crouzeix_textbook.rs \
+  lab/math/textbook/compatibility_routes.json
 git commit -m "feat(crouzeix-textbook): adopt canonical frontmatter identity"
 ```
 
@@ -218,9 +218,9 @@ git commit -m "feat(crouzeix-textbook): adopt canonical frontmatter identity"
 
 **Files:**
 
-- Modify: `crates/harp/src/crouzeix_textbook/contract.rs`
-- Modify: `crates/harp/src/crouzeix_textbook/markdown.rs`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
+- Modify: `cli/src/crouzeix_textbook/contract.rs`
+- Modify: `cli/src/crouzeix_textbook/markdown.rs`
+- Modify: `cli/tests/crouzeix_textbook.rs`
 - Modify: `knowledge/crouzeix_textbook/claim_evidence_ledger.md`
 
 - [ ] **Step 1: Add RED tests**
@@ -247,7 +247,7 @@ violation.
 ```sh
 cargo test -p harp --test crouzeix_textbook evidence_ -- --test-threads=1
 cargo test -p harp --test crouzeix_textbook pedagogical_graph_ -- --test-threads=1
-git add crates/harp/src/crouzeix_textbook crates/harp/tests/crouzeix_textbook.rs \
+git add cli/src/crouzeix_textbook cli/tests/crouzeix_textbook.rs \
   knowledge/crouzeix_textbook/claim_evidence_ledger.md
 git commit -m "fix(crouzeix-textbook): validate evidence and proof routes"
 ```
@@ -315,8 +315,8 @@ needed by the approved publication interface and must not be invented here.
 - Create: `formalization/lean/CrouzeixTextbook/ExportReceipt.lean`
 - Modify: `formalization/lean/CrouzeixTextbook.lean`
 - Modify: `formalization/lean/lakefile.toml`
-- Create: `crates/harp/src/crouzeix_textbook/lean.rs`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
+- Create: `cli/src/crouzeix_textbook/lean.rs`
+- Modify: `cli/tests/crouzeix_textbook.rs`
 - Modify: `scripts/check_lean_library.sh`
 
 - [ ] **Step 1: Add RED receipt tests**
@@ -368,7 +368,7 @@ MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-jin
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-ls
 git add formalization/lean/CrouzeixTextbook formalization/lean/CrouzeixTextbook.lean \
   formalization/lean/lakefile.toml scripts/check_lean_library.sh \
-  crates/harp/src/crouzeix_textbook crates/harp/tests/crouzeix_textbook.rs
+  cli/src/crouzeix_textbook cli/tests/crouzeix_textbook.rs
 git commit -m "feat(crouzeix-textbook): verify exact Lean correspondence"
 ```
 
@@ -413,11 +413,11 @@ expansion, or cache hydration is authorized.
 
 **Files:**
 
-- Create: `crates/harp/src/crouzeix_textbook/publish.rs`
-- Modify: `crates/harp/src/crouzeix_textbook/mod.rs`
-- Modify: `crates/harp/src/lib.rs`
-- Modify: `crates/harp/src/main.rs`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
+- Create: `cli/src/crouzeix_textbook/publish.rs`
+- Modify: `cli/src/crouzeix_textbook/mod.rs`
+- Modify: `cli/src/lib.rs`
+- Modify: `cli/src/main.rs`
+- Modify: `cli/tests/crouzeix_textbook.rs`
 
 - [ ] **Step 1: Add RED check/write and failure-atomicity tests**
 
@@ -466,8 +466,8 @@ line or environment.
 cargo test -p harp --test crouzeix_textbook publication_ -- --test-threads=1
 cargo test -p harp --test cli crouzeix_textbook_ -- --test-threads=1
 cargo fmt --all --check
-git add crates/harp/src/crouzeix_textbook crates/harp/src/lib.rs \
-  crates/harp/src/main.rs crates/harp/tests/crouzeix_textbook.rs crates/harp/tests/cli.rs
+git add cli/src/crouzeix_textbook cli/src/lib.rs \
+  cli/src/main.rs cli/tests/crouzeix_textbook.rs cli/tests/cli.rs
 git commit -m "feat(crouzeix-textbook): publish verified sibling outputs"
 ```
 
@@ -568,8 +568,8 @@ quality reviewer reports no Critical or Important findings.
 
 **Files:**
 
-- Modify: `content/crouzeix_textbook/coverage.json`
-- Modify: `content/crouzeix_textbook/exercises.json`
+- Modify: `lab/math/textbook/coverage.json`
+- Modify: `lab/math/textbook/exercises.json`
 - Modify: all 44 Markdown frontmatter blocks under `knowledge/crouzeix_textbook/`
 - Modify: `knowledge/crouzeix_textbook/status_and_scope.md`
 
@@ -710,7 +710,7 @@ publisher's exact-mode contract even when the original worktree passed.
 
 Keep the Task 5 security boundary unchanged: do not relax any exact mode,
 owner, link, descriptor, or atomic-switch check. Treat
-`atlas/src/content/generated/crouzeix_textbook/publication/` as regenerable
+`atlas/src/knowledge/generated/crouzeix_textbook/publication/` as regenerable
 runtime state, add an exact root-qualified ignore rule for that tree, and remove
 its current pointer, lock, and generation ledgers from the Git index. The
 canonical version-two contracts, human knowledge ledgers, publisher code, and
@@ -828,8 +828,8 @@ distinct solutions; none may reuse the studied checkpoint as a solution.
 ```sh
 cargo test -p harp --test crouzeix_textbook -- --test-threads=1
 git diff --check
-git add content/crouzeix_textbook/coverage.json content/crouzeix_textbook/exercises.json \
-  content/crouzeix_textbook/compatibility_routes.json knowledge/crouzeix_textbook
+git add lab/math/textbook/coverage.json lab/math/textbook/exercises.json \
+  lab/math/textbook/compatibility_routes.json knowledge/crouzeix_textbook
 git commit -m "feat(crouzeix-textbook): migrate truthful correspondence data"
 ```
 
@@ -837,11 +837,11 @@ git commit -m "feat(crouzeix-textbook): migrate truthful correspondence data"
 
 **Files:**
 
-- Delete: `content/crouzeix_textbook/theorem_dependencies.json`
+- Delete: `lab/math/textbook/theorem_dependencies.json`
 - Delete: `formalization/lean/CrouzeixTextbook/PublicTheorems.lean`
 - Delete: `scripts/render_crouzeix_textbook_ledgers.py`
 - Modify: `formalization/lean/CrouzeixTextbook.lean`
-- Modify: `crates/harp/tests/crouzeix_textbook.rs`
+- Modify: `cli/tests/crouzeix_textbook.rs`
 - Modify: `mise.toml`
 
 - [ ] **Step 1: Add deletion tests**
@@ -864,8 +864,8 @@ rg -n "theorem_dependencies|PublicTheorems|render_crouzeix_textbook_ledgers" \
   --glob '!docs/**' .
 cargo test -p harp --test crouzeix_textbook deletion_ -- --test-threads=1
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-textbook
-git add content/crouzeix_textbook formalization/lean/CrouzeixTextbook.lean \
-  formalization/lean/CrouzeixTextbook scripts crates/harp/tests/crouzeix_textbook.rs mise.toml
+git add lab/math/textbook formalization/lean/CrouzeixTextbook.lean \
+  formalization/lean/CrouzeixTextbook scripts cli/tests/crouzeix_textbook.rs mise.toml
 git commit -m "refactor(crouzeix-textbook): remove duplicate publication paths"
 ```
 
@@ -916,7 +916,7 @@ select a different generator instead of failing closed.
 
 Remove the legacy coverage and exercise types, schema constants, parsing
 helpers, declaration sanitizer, and fallback dispatch from
-`crates/harp/src/crouzeix_textbook/lean.rs`. Replace the legacy injection test
+`cli/src/crouzeix_textbook/lean.rs`. Replace the legacy injection test
 with explicit v2-only regressions proving that version-one and otherwise
 invalid inputs return the typed canonical diagnostics and never generate Lean.
 The valid v2 generator and checked-in `Correspondence.lean` bytes must remain
@@ -931,7 +931,7 @@ the import receipt unless canonical generated bytes genuinely change.
 
 Canonical textbook identities are selected while corpus links are rendered,
 so replacing the per-chapter roster with validated packet registration also
-requires the narrow `crates/harp/src/corpus/render.rs` change that threads the
+requires the narrow `cli/src/corpus/render.rs` change that threads the
 discovered path-to-identity map through document and link routing. This is a
 forced corpus integration path, not a new prose or publication owner.
 
@@ -988,12 +988,12 @@ rejection and v6 acceptance tests.
 
 **Files:**
 
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/corpus/contracts.rs`
-- Modify: `crates/harp/src/corpus/tests.rs`
-- Modify: `atlas/src/content/canonical.test.ts`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/corpus/contracts.rs`
+- Modify: `cli/src/corpus/tests.rs`
+- Modify: `atlas/src/lab/math/textbook/canonical.test.ts`
 - Modify: `atlas/src/app/math.test.ts`
-- Regenerate: `atlas/src/content/generated/corpus.json`
+- Regenerate: `atlas/src/knowledge/generated/corpus.json`
 - Regenerate: `atlas/dist/harp-atlas.html`
 
 - [ ] **Step 1: Add RED discovery and compatibility tests**
@@ -1016,9 +1016,9 @@ cargo test -p harp corpus::tests --lib -- --test-threads=1
 cargo test -p harp --test crouzeix_textbook -- --test-threads=1
 cd atlas && corepack pnpm run test && cd ..
 PATH=/opt/homebrew/bin:$PATH mise run verify-atlas
-git add crates/harp/src/corpus crates/harp/tests/crouzeix_textbook.rs \
-  atlas/src/content/canonical.test.ts atlas/src/app/math.test.ts \
-  atlas/src/content/generated/corpus.json atlas/dist/harp-atlas.html
+git add cli/src/corpus cli/tests/crouzeix_textbook.rs \
+  atlas/src/lab/math/textbook/canonical.test.ts atlas/src/app/math.test.ts \
+  atlas/src/knowledge/generated/corpus.json atlas/dist/harp-atlas.html
 git commit -m "feat(crouzeix-textbook): publish canonical textbook routes"
 ```
 

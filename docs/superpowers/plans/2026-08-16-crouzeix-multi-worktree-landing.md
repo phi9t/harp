@@ -464,8 +464,8 @@ git commit -m "docs(crouzeix): record proof reproduction retrospective" \
   - `docs/superpowers/plans/2026-08-15-crouzeix-rsi-hermetic-reproduction.md`
   - `labs/**`
   - `evidence/**`
-  - `crates/harp/src/sources.rs`
-  - `crates/harp/tests/cli.rs`
+  - `cli/src/sources.rs`
+  - `cli/tests/cli.rs`
   - `docs/import-receipt.md`
 
 - [ ] **Step 1: Create fresh RSI integration worktree**

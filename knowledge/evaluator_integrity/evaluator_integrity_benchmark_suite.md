@@ -246,7 +246,7 @@ evaluation:
    accounting.
 
 For every choice, preserve the candidate/envelope split from
-`content/evaluator_integrity_and_promotion.md`: the agent may improve within
+`lab/math/textbook/evaluator_integrity_and_promotion.md`: the agent may improve within
 its declared mutable surface, while task selection, access policy, verifier,
 budget accounting, archive, and promotion authority remain independently
 controlled. A benchmark score becomes useful evidence only after those

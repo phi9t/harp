@@ -84,7 +84,7 @@ MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-ls
 cargo test -p harp --test crouzeix_textbook chapter_34_ -- --test-threads=1
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-ls
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/34_lorist_schwenninger_realization.md \
-  formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean content/crouzeix_textbook
+  formalization/lean/CrouzeixTextbook/Part06/Chapter34.lean lab/math/textbook
 git commit -m "docs(crouzeix-textbook): realize the LS boundary dilation"
 ```
 
@@ -131,7 +131,7 @@ cargo test -p harp --test crouzeix_textbook chapter_35_ -- --test-threads=1
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-jin
 MISE_TRUSTED_CONFIG_PATHS="$PWD/mise.toml" mise run lean-crouzeix-ls
 git add knowledge/crouzeix_textbook/part_06_constant_two_routes/35_comparison_verification_and_boundaries.md \
-  formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean content/crouzeix_textbook
+  formalization/lean/CrouzeixTextbook/Part06/Chapter35.lean lab/math/textbook
 git commit -m "docs(crouzeix-textbook): compare three verified constant-two routes"
 ```
 

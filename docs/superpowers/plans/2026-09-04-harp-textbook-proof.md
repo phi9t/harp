@@ -154,12 +154,12 @@ Modify: Chapter 36 Markdown; Chapter 35 navigation and comparison pointers.
 
 Modify:
 
-- `crates/harp/src/crouzeix_textbook/contract.rs`
-- `crates/harp/tests/crouzeix_textbook.rs`
-- `content/crouzeix_textbook/coverage.json`
-- `content/crouzeix_textbook/exercises.json`
-- `content/crouzeix_textbook/compatibility_routes.json`
-- `crates/harp/src/corpus/mod.rs` and its tests where packet membership is owned
+- `cli/src/crouzeix_textbook/contract.rs`
+- `cli/tests/crouzeix_textbook.rs`
+- `lab/math/textbook/coverage.json`
+- `lab/math/textbook/exercises.json`
+- `lab/math/textbook/compatibility_routes.json`
+- `cli/src/corpus/mod.rs` and its tests where packet membership is owned
 - `formalization/lean/CrouzeixTextbook/Correspondence.lean`, through its owner
 
 - [x] Add chapter-36 acceptance and chapter-37 rejection regressions, plus
@@ -184,7 +184,7 @@ Modify:
 
 Modify: the textbook index, reading guide, status/scope, source registry,
 notation, managed ledgers, and `tools/textbook_pdf/{inputs.cjs,inputs.test.cjs,build.cjs,README.md}`.
-Regenerate: `atlas/src/content/generated/corpus.json` and `atlas/dist/harp-atlas.html`.
+Regenerate: `atlas/src/knowledge/generated/corpus.json` and `atlas/dist/harp-atlas.html`.
 
 - [x] Extend PDF fixture generation to 36 chapters and add these behavioral
   checks using the existing `fixture` helper:

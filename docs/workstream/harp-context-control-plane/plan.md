@@ -72,7 +72,7 @@ before the final documentation commit.
 Create these focused Rust modules:
 
 ```text
-crates/harp/src/context_control/
+cli/src/context_control/
 ├── mod.rs                 public facade and schema-version constants
 ├── schema.rs              shared wire enums and receipts
 ├── canonical.rs           canonical JSON and SHA-256 helpers
@@ -95,15 +95,15 @@ crates/harp/src/context_control/
 Add integration tests without enlarging the existing general CLI test file:
 
 ```text
-crates/harp/tests/context_control_cli.rs
-crates/harp/tests/context_control_run.rs
-crates/harp/tests/support/context_control.rs
+cli/tests/context_control_cli.rs
+cli/tests/context_control_run.rs
+cli/tests/support/context_control.rs
 ```
 
 Track source packages here and embed them with `include_bytes!`:
 
 ```text
-content/context_control/workflows/
+durable/context/workflows/
 ├── ci_repair/
 ├── code_review/
 ├── dependency_update/
@@ -192,11 +192,11 @@ Serde wire values are snake case: `trae`, `codex`, `ci_repair`,
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/mod.rs`
-- Create: `crates/harp/src/context_control/schema.rs`
-- Modify: `crates/harp/src/lib.rs`
-- Modify: `crates/harp/src/main.rs`
-- Modify: `crates/harp/tests/context_control_cli.rs`
+- Create: `cli/src/context_control/mod.rs`
+- Create: `cli/src/context_control/schema.rs`
+- Modify: `cli/src/lib.rs`
+- Modify: `cli/src/main.rs`
+- Modify: `cli/tests/context_control_cli.rs`
 - Modify: `README.md`
 - Modify: `docs/product-contract.md`
 
@@ -301,9 +301,9 @@ the declared typed error.
 
 ```sh
 git add README.md docs/product-contract.md \
-  crates/harp/src/lib.rs crates/harp/src/main.rs \
-  crates/harp/src/context_control \
-  crates/harp/tests/context_control_cli.rs
+  cli/src/lib.rs cli/src/main.rs \
+  cli/src/context_control \
+  cli/tests/context_control_cli.rs
 git commit -m "feat: define context control contracts" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -318,12 +318,12 @@ git commit -m "feat: define context control contracts" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/workflow.rs`
-- Create: `content/context_control/workflows/ci_repair/*`
-- Create: `content/context_control/workflows/code_review/*`
-- Create: `content/context_control/workflows/dependency_update/*`
-- Create: `content/context_control/workflows/general_coding/*`
-- Modify: `crates/harp/src/context_control/mod.rs`
+- Create: `cli/src/context_control/workflow.rs`
+- Create: `durable/context/workflows/ci_repair/*`
+- Create: `durable/context/workflows/code_review/*`
+- Create: `durable/context/workflows/dependency_update/*`
+- Create: `durable/context/workflows/general_coding/*`
+- Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write strict package-loader tests**
 
@@ -422,7 +422,7 @@ from the target repository at runtime.
 After writing the five non-manifest members, compute their hashes:
 
 ```sh
-for workflow_dir in content/context_control/workflows/*; do
+for workflow_dir in durable/context/workflows/*; do
   for member in routing.json context_schema.json verification.json \
     outcome_rules.json playbook.jsonl; do
     shasum -a 256 "$workflow_dir/$member"
@@ -448,9 +448,9 @@ the strict-parser negative tests pass.
 - [ ] **Step 5: Commit workflow packages**
 
 ```sh
-git add content/context_control/workflows \
-  crates/harp/src/context_control/workflow.rs \
-  crates/harp/src/context_control/mod.rs
+git add durable/context/workflows \
+  cli/src/context_control/workflow.rs \
+  cli/src/context_control/mod.rs
 git commit -m "feat: add built-in context workflows" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -465,8 +465,8 @@ git commit -m "feat: add built-in context workflows" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/state.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
+- Create: `cli/src/context_control/state.rs`
+- Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write state-root security tests**
 
@@ -579,8 +579,8 @@ concurrent-replacement tests pass.
 - [ ] **Step 5: Commit secure state**
 
 ```sh
-git add crates/harp/src/context_control/state.rs \
-  crates/harp/src/context_control/mod.rs
+git add cli/src/context_control/state.rs \
+  cli/src/context_control/mod.rs
 git commit -m "feat: secure context control state" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -595,11 +595,11 @@ git commit -m "feat: secure context control state" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/canonical.rs`
-- Create: `crates/harp/src/context_control/release.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
-- Modify: `crates/harp/src/main.rs`
-- Modify: `crates/harp/tests/context_control_cli.rs`
+- Create: `cli/src/context_control/canonical.rs`
+- Create: `cli/src/context_control/release.rs`
+- Modify: `cli/src/context_control/mod.rs`
+- Modify: `cli/src/main.rs`
+- Modify: `cli/tests/context_control_cli.rs`
 
 - [ ] **Step 1: Write canonical identity and idempotence tests**
 
@@ -701,11 +701,11 @@ list, and inspect tests pass.
 - [ ] **Step 5: Commit release compilation**
 
 ```sh
-git add crates/harp/src/context_control/canonical.rs \
-  crates/harp/src/context_control/release.rs \
-  crates/harp/src/context_control/mod.rs \
-  crates/harp/src/main.rs \
-  crates/harp/tests/context_control_cli.rs
+git add cli/src/context_control/canonical.rs \
+  cli/src/context_control/release.rs \
+  cli/src/context_control/mod.rs \
+  cli/src/main.rs \
+  cli/tests/context_control_cli.rs
 git commit -m "feat: compile immutable context releases" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -720,8 +720,8 @@ git commit -m "feat: compile immutable context releases" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/routing.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
+- Create: `cli/src/context_control/routing.rs`
+- Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write the routing matrix**
 
@@ -799,8 +799,8 @@ no-side-effect tests pass.
 - [ ] **Step 5: Commit routing**
 
 ```sh
-git add crates/harp/src/context_control/routing.rs \
-  crates/harp/src/context_control/mod.rs
+git add cli/src/context_control/routing.rs \
+  cli/src/context_control/mod.rs
 git commit -m "feat: route context workflows" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -815,8 +815,8 @@ git commit -m "feat: route context workflows" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/context.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
+- Create: `cli/src/context_control/context.rs`
+- Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write deterministic bundle tests**
 
@@ -920,8 +920,8 @@ and no-truncation tests pass.
 - [ ] **Step 5: Commit context resolution**
 
 ```sh
-git add crates/harp/src/context_control/context.rs \
-  crates/harp/src/context_control/mod.rs
+git add cli/src/context_control/context.rs \
+  cli/src/context_control/mod.rs
 git commit -m "feat: resolve bounded workflow context" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -936,9 +936,9 @@ git commit -m "feat: resolve bounded workflow context" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/policy.rs`
-- Create: `crates/harp/src/context_control/repository_state.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
+- Create: `cli/src/context_control/policy.rs`
+- Create: `cli/src/context_control/repository_state.rs`
+- Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write policy and Git-state tests**
 
@@ -1028,9 +1028,9 @@ and output-limit tests pass.
 - [ ] **Step 5: Commit repository preflight**
 
 ```sh
-git add crates/harp/src/context_control/policy.rs \
-  crates/harp/src/context_control/repository_state.rs \
-  crates/harp/src/context_control/mod.rs
+git add cli/src/context_control/policy.rs \
+  cli/src/context_control/repository_state.rs \
+  cli/src/context_control/mod.rs
 git commit -m "feat: capture repository control state" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -1046,14 +1046,14 @@ git commit -m "feat: capture repository control state" \
 **Files:**
 
 - Modify: `Cargo.toml`
-- Modify: `crates/harp/Cargo.toml`
+- Modify: `cli/Cargo.toml`
 - Modify: `Cargo.lock`
-- Create: `crates/harp/src/context_control/provider/mod.rs`
-- Create: `crates/harp/src/context_control/provider/probe.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
-- Modify: `crates/harp/src/main.rs`
-- Create: `crates/harp/tests/support/context_control.rs`
-- Modify: `crates/harp/tests/context_control_cli.rs`
+- Create: `cli/src/context_control/provider/mod.rs`
+- Create: `cli/src/context_control/provider/probe.rs`
+- Modify: `cli/src/context_control/mod.rs`
+- Modify: `cli/src/main.rs`
+- Create: `cli/tests/support/context_control.rs`
+- Modify: `cli/tests/context_control_cli.rs`
 
 - [ ] **Step 1: Write fake-provider probe tests**
 
@@ -1148,12 +1148,12 @@ provider binary.
 - [ ] **Step 5: Commit provider probing**
 
 ```sh
-git add Cargo.toml Cargo.lock crates/harp/Cargo.toml \
-  crates/harp/src/context_control/provider \
-  crates/harp/src/context_control/mod.rs \
-  crates/harp/src/main.rs \
-  crates/harp/tests/context_control_cli.rs \
-  crates/harp/tests/support/context_control.rs
+git add Cargo.toml Cargo.lock cli/Cargo.toml \
+  cli/src/context_control/provider \
+  cli/src/context_control/mod.rs \
+  cli/src/main.rs \
+  cli/tests/context_control_cli.rs \
+  cli/tests/support/context_control.rs
 git commit -m "feat: probe agent CLI providers" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -1168,8 +1168,8 @@ git commit -m "feat: probe agent CLI providers" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/episode.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
+- Create: `cli/src/context_control/episode.rs`
+- Modify: `cli/src/context_control/mod.rs`
 
 - [ ] **Step 1: Write manifest-order and partial-run tests**
 
@@ -1265,8 +1265,8 @@ episode, and preflight separation tests pass.
 - [ ] **Step 5: Commit episode publication**
 
 ```sh
-git add crates/harp/src/context_control/episode.rs \
-  crates/harp/src/context_control/mod.rs
+git add cli/src/context_control/episode.rs \
+  cli/src/context_control/mod.rs
 git commit -m "feat: publish context episodes" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -1281,8 +1281,8 @@ git commit -m "feat: publish context episodes" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/provider/invocation.rs`
-- Modify: `crates/harp/src/context_control/provider/mod.rs`
+- Create: `cli/src/context_control/provider/invocation.rs`
+- Modify: `cli/src/context_control/provider/mod.rs`
 
 - [ ] **Step 1: Write exact argument and prompt tests**
 
@@ -1390,8 +1390,8 @@ forbidden-flag tests pass.
 - [ ] **Step 5: Commit invocation builders**
 
 ```sh
-git add crates/harp/src/context_control/provider/invocation.rs \
-  crates/harp/src/context_control/provider/mod.rs
+git add cli/src/context_control/provider/invocation.rs \
+  cli/src/context_control/provider/mod.rs
 git commit -m "feat: build provider-safe invocations" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -1407,12 +1407,12 @@ git commit -m "feat: build provider-safe invocations" \
 **Files:**
 
 - Modify: `Cargo.toml`
-- Modify: `crates/harp/Cargo.toml`
+- Modify: `cli/Cargo.toml`
 - Modify: `Cargo.lock`
-- Create: `crates/harp/src/context_control/provider/process.rs`
-- Modify: `crates/harp/src/context_control/provider/mod.rs`
-- Modify: `crates/harp/tests/support/context_control.rs`
-- Create: `crates/harp/tests/context_control_run.rs`
+- Create: `cli/src/context_control/provider/process.rs`
+- Modify: `cli/src/context_control/provider/mod.rs`
+- Modify: `cli/tests/support/context_control.rs`
+- Create: `cli/tests/context_control_run.rs`
 
 - [ ] **Step 1: Write byte-exact, nonzero, limit, and signal tests**
 
@@ -1502,10 +1502,10 @@ output cap, and signal-forwarding tests pass.
 - [ ] **Step 5: Commit process capture**
 
 ```sh
-git add Cargo.toml Cargo.lock crates/harp/Cargo.toml \
-  crates/harp/src/context_control/provider \
-  crates/harp/tests/context_control_run.rs \
-  crates/harp/tests/support/context_control.rs
+git add Cargo.toml Cargo.lock cli/Cargo.toml \
+  cli/src/context_control/provider \
+  cli/tests/context_control_run.rs \
+  cli/tests/support/context_control.rs
 git commit -m "feat: capture provider execution" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -1520,10 +1520,10 @@ git commit -m "feat: capture provider execution" \
 
 **Files:**
 
-- Create: `crates/harp/src/context_control/run.rs`
-- Modify: `crates/harp/src/context_control/mod.rs`
-- Modify: `crates/harp/src/main.rs`
-- Modify: `crates/harp/tests/context_control_run.rs`
+- Create: `cli/src/context_control/run.rs`
+- Modify: `cli/src/context_control/mod.rs`
+- Modify: `cli/src/main.rs`
+- Modify: `cli/tests/context_control_run.rs`
 
 - [ ] **Step 1: Write two-provider parity and failure-path tests**
 
@@ -1614,10 +1614,10 @@ tests pass with fake binaries only.
 - [ ] **Step 5: Commit end-to-end observation**
 
 ```sh
-git add crates/harp/src/context_control/run.rs \
-  crates/harp/src/context_control/mod.rs \
-  crates/harp/src/main.rs \
-  crates/harp/tests/context_control_run.rs
+git add cli/src/context_control/run.rs \
+  cli/src/context_control/mod.rs \
+  cli/src/main.rs \
+  cli/tests/context_control_run.rs
 git commit -m "feat: run agent CLIs through Harp" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
 ```
@@ -1678,7 +1678,7 @@ Stage the complete milestone except the receipt:
 ```sh
 git add README.md docs/product-contract.md docs/contributing.md \
   docs/workstream/harp-context-control-plane/tracker.org \
-  content/context_control crates/harp Cargo.toml Cargo.lock
+  durable/context cli Cargo.toml Cargo.lock
 ```
 
 Run:

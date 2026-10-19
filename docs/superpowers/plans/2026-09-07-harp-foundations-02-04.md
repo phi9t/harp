@@ -49,7 +49,7 @@ or missing statements, proofs and formal correspondence; code, quoted text,
 and the next card cannot satisfy a missing field. No new public manifest,
 duplicate production validator, theorem promotion, or chapter-specific bypass.
 The integration owner reviews this repair separately before publication.
-Files are `crates/harp/src/crouzeix_textbook/markdown.rs`, a focused integration
+Files are `cli/src/crouzeix_textbook/markdown.rs`, a focused integration
 test, and its review record. Mathematical chapter delivery may continue while
 this independent publication repair is implemented.
 
@@ -95,8 +95,8 @@ formalization/lean/CrouzeixTextbook/Part01/Chapter04.lean.
 
 ## Task 4: Contracts and publication
 
-Files: content/crouzeix_textbook/coverage.json and exercises.json;
-generated Correspondence.lean and existing ledgers; crates/harp/tests/crouzeix_textbook.rs;
+Files: lab/math/textbook/coverage.json and exercises.json;
+generated Correspondence.lean and existing ledgers; cli/tests/crouzeix_textbook.rs;
 atlas/src/app/ChapterReader.test.tsx and generated corpus/export.
 
 - [x] Add failing tests for retained identities, exact correspondence, 18 nonalias solution statements, missing assumptions, stale hashes/positions, and acyclic prerequisites. New compiler-backed and scoped tests passed; existing mutation fixtures passed in the full suite.

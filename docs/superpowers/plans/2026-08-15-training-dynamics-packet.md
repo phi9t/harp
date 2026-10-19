@@ -15,17 +15,17 @@
 - Create: `knowledge/training_dynamics/{training_dynamics_index,01_quadratic_gradient_descent,02_momentum_and_acceleration,03_stochastic_gradients,04_diagnostics_and_transfer,glossary,source_registry,claim_evidence_ledger}.md` — advanced reader packet.
 - Create: `formalization/training_dynamics/{lean-toolchain,lakefile.toml,TrainingDynamics.lean,TrainingDynamics/Quadratic.lean,TrainingDynamics/Momentum.lean,TrainingDynamics/Stochastic.lean,README.md}` — pinned Lean project and proof-bearing modules.
 - Create: `scripts/check_training_dynamics_lean.sh` — fail-closed wrapper that runs the packet’s Lake build.
-- Modify: `crates/harp/src/corpus/{mod.rs,render.rs,tests.rs}`, `crates/harp/src/search.rs`, `crates/harp/tests/cli.rs` — packet roster, reader route, safe math scope, search, contracts.
-- Modify: `atlas/src/{app/AtlasApp.tsx,app/ReaderApp.test.tsx,app/math.test.ts,app/routes.test.ts,content/types.ts,content/canonical.test.ts}` — route type, navigation, reader, math, and fixture coverage.
+- Modify: `cli/src/corpus/{mod.rs,render.rs,tests.rs}`, `cli/src/search.rs`, `cli/tests/cli.rs` — packet roster, reader route, safe math scope, search, contracts.
+- Modify: `atlas/src/{app/AtlasApp.tsx,app/ReaderApp.test.tsx,app/math.test.ts,app/routes.test.ts,lab/math/textbook/types.ts,lab/math/textbook/canonical.test.ts}` — route type, navigation, reader, math, and fixture coverage.
 - Modify: `mise.toml`, `README.md`, `docs/product-contract.md`, `docs/import-receipt.md` — Lean verification task, product boundary, and final receipt.
-- Derived: `atlas/src/content/generated/corpus.json`, `atlas/dist/harp-atlas.html`, `atlas/dist/harp-atlas.receipt.json`.
+- Derived: `atlas/src/knowledge/generated/corpus.json`, `atlas/dist/harp-atlas.html`, `atlas/dist/harp-atlas.receipt.json`.
 
 ### Task 1: Establish a self-contained source boundary
 
 **Files:**
 - Create: all eight documents under `knowledge/training_dynamics/`
 - Create: `formalization/training_dynamics/README.md`
-- Modify: `crates/harp/src/corpus/tests.rs`
+- Modify: `cli/src/corpus/tests.rs`
 
 - [ ] **Step 1: Inventory the input concepts without importing artifacts**
 
@@ -80,7 +80,7 @@ Expected: the test passes and the scan reports no matches.
 
 - [ ] **Step 1: Write the missing-toolchain failure test**
 
-Add `crates/harp/tests/training_dynamics_lean.rs` that executes the wrapper with
+Add `cli/tests/training_dynamics_lean.rs` that executes the wrapper with
 `PATH` containing no `lake`, and asserts its stderr contains
 `Training Dynamics Lean toolchain is unavailable` and its status is nonzero.
 
@@ -161,7 +161,7 @@ Expected: `Build completed successfully.`
 - [ ] **Step 6: Commit**
 
 ```sh
-git add formalization/training_dynamics scripts/check_training_dynamics_lean.sh mise.toml crates/harp/tests/training_dynamics_lean.rs
+git add formalization/training_dynamics scripts/check_training_dynamics_lean.sh mise.toml cli/tests/training_dynamics_lean.rs
 git commit -m "build: add pinned training dynamics Lean project"
 ```
 
@@ -171,7 +171,7 @@ git commit -m "build: add pinned training dynamics Lean project"
 - Create: `formalization/training_dynamics/TrainingDynamics/Quadratic.lean`
 - Modify: `formalization/training_dynamics/TrainingDynamics.lean`
 - Modify: `scripts/check_training_dynamics_lean.sh`
-- Modify: `crates/harp/tests/training_dynamics_lean.rs`
+- Modify: `cli/tests/training_dynamics_lean.rs`
 
 - [ ] **Step 1: Write failing theorem examples**
 
@@ -229,7 +229,7 @@ Expected: PASS with no declarations containing `sorry`.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add formalization/training_dynamics/TrainingDynamics/Quadratic.lean scripts/check_training_dynamics_lean.sh crates/harp/tests/training_dynamics_lean.rs
+git add formalization/training_dynamics/TrainingDynamics/Quadratic.lean scripts/check_training_dynamics_lean.sh cli/tests/training_dynamics_lean.rs
 git commit -m "feat: formalize quadratic gradient descent dynamics"
 ```
 
@@ -333,7 +333,7 @@ git commit -m "feat: formalize finite stochastic gradient symmetry"
 
 - [ ] **Step 1: Add packet-contract tests**
 
-In `crates/harp/src/corpus/tests.rs`, write a test asserting exactly eight
+In `cli/src/corpus/tests.rs`, write a test asserting exactly eight
 `training-dynamics-*` document IDs, four modules with six `TD-XX-YY` original
 problem headings each, 24 unique solution anchors, no absolute local path or
 external-checkout identifier, and exactly one backlink from every non-index
@@ -380,17 +380,17 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add knowledge/training_dynamics knowledge/mathematical_foundations/mathematical_foundations_index.md crates/harp/src/corpus/tests.rs
+git add knowledge/training_dynamics knowledge/mathematical_foundations/mathematical_foundations_index.md cli/src/corpus/tests.rs
 git commit -m "docs: add training dynamics learning packet"
 ```
 
 ### Task 7: Register corpus, search, and safe TeX support
 
 **Files:**
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/corpus/render.rs`
-- Modify: `crates/harp/src/search.rs`
-- Modify: `crates/harp/tests/cli.rs`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/corpus/render.rs`
+- Modify: `cli/src/search.rs`
+- Modify: `cli/tests/cli.rs`
 
 - [ ] **Step 1: Add failing route/search assertions**
 
@@ -426,15 +426,15 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add crates/harp/src/corpus/mod.rs crates/harp/src/corpus/render.rs crates/harp/src/search.rs crates/harp/src/corpus/tests.rs crates/harp/tests/cli.rs
+git add cli/src/corpus/mod.rs cli/src/corpus/render.rs cli/src/search.rs cli/src/corpus/tests.rs cli/tests/cli.rs
 git commit -m "feat: register training dynamics packet"
 ```
 
 ### Task 8: Add Atlas navigation and math rendering coverage
 
 **Files:**
-- Modify: `atlas/src/content/types.ts`
-- Modify: `atlas/src/content/canonical.test.ts`
+- Modify: `atlas/src/lab/math/textbook/types.ts`
+- Modify: `atlas/src/lab/math/textbook/canonical.test.ts`
 - Modify: `atlas/src/app/AtlasApp.tsx`
 - Modify: `atlas/src/app/routes.test.ts`
 - Modify: `atlas/src/app/ReaderApp.test.tsx`
@@ -453,7 +453,7 @@ math, MathML parity, and zero `.math-error` elements.
 Run from `atlas/`:
 
 ```sh
-corepack pnpm exec vitest run src/app/routes.test.ts src/app/ReaderApp.test.tsx src/app/math.test.ts src/content/canonical.test.ts
+corepack pnpm exec vitest run src/app/routes.test.ts src/app/ReaderApp.test.tsx src/app/math.test.ts src/lab/math/textbook/canonical.test.ts
 ```
 
 Expected: FAIL because the route type and navigation are absent.
@@ -469,7 +469,7 @@ button using the same `legacy` route shape as Math foundations and Crouzeix.
 Run from `atlas/`:
 
 ```sh
-corepack pnpm exec vitest run src/app/routes.test.ts src/app/ReaderApp.test.tsx src/app/math.test.ts src/content/canonical.test.ts
+corepack pnpm exec vitest run src/app/routes.test.ts src/app/ReaderApp.test.tsx src/app/math.test.ts src/lab/math/textbook/canonical.test.ts
 corepack pnpm exec tsc -b
 ```
 
@@ -478,7 +478,7 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add atlas/src/app atlas/src/content/types.ts atlas/src/content/canonical.test.ts
+git add atlas/src/app atlas/src/lab/math/textbook/types.ts atlas/src/lab/math/textbook/canonical.test.ts
 git commit -m "feat: add training dynamics Atlas route"
 ```
 
@@ -538,7 +538,7 @@ the packet verified.
 - [ ] **Step 5: Commit**
 
 ```sh
-git add README.md docs/product-contract.md docs/import-receipt.md atlas/src/content/generated/corpus.json atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json crates/harp/tests/cli.rs
+git add README.md docs/product-contract.md docs/import-receipt.md atlas/src/knowledge/generated/corpus.json atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json cli/tests/cli.rs
 git commit -m "docs: publish training dynamics packet"
 ```
 

@@ -197,7 +197,7 @@ git commit -m "chore(crouzeix): start LS route certification"
 - Create: `labs/crouzeix_proof_reproduction/tests/test_route_lorist_schwenninger.py`
 - Modify: `labs/crouzeix_proof_reproduction/route_validation.py`
 - Modify: `labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json`
-- Modify: `crates/harp/src/sources/crouzeix/route.rs`
+- Modify: `cli/src/sources/crouzeix/route.rs`
 
 - [ ] **Step 1: Write RED Python and schema tests for the arXiv identity**
 
@@ -325,7 +325,7 @@ git add labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/arti
   labs/crouzeix_proof_reproduction/tests/test_route_lorist_schwenninger.py \
   labs/crouzeix_proof_reproduction/route_validation.py \
   labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json \
-  crates/harp/src/sources/crouzeix/route.rs
+  cli/src/sources/crouzeix/route.rs
 git commit -m "feat(crouzeix): validate LS arXiv provenance"
 ```
 
@@ -677,7 +677,7 @@ git commit -m "feat(crouzeix): add atomic LS graph promotion"
 - Create: `labs/crouzeix_proof_reproduction/formal_targets/lorist-schwenninger/declaration-types/*.txt`
 - Extend: `labs/crouzeix_proof_reproduction/tests/test_route_lorist_schwenninger.py`
 - Modify: `labs/crouzeix_proof_reproduction/route_publication.py`
-- Modify: `crates/harp/src/sources/crouzeix/route.rs` only for parity gaps exposed by RED tests
+- Modify: `cli/src/sources/crouzeix/route.rs` only for parity gaps exposed by RED tests
 
 - [ ] **Step 1: Acquire the pinned source into temporary review storage**
 

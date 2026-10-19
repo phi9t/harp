@@ -14,7 +14,7 @@ canonical: lean_coverage_ledger.md
 
 This page is the stable reader route for the book's Lean-coverage report. It
 does not copy the derived theorem table. The structured authority is
-`content/crouzeix_textbook/coverage.json`; the Rust publisher combines that
+`lab/math/textbook/coverage.json`; the Rust publisher combines that
 contract with a fresh compiled Lean receipt.
 
 ## Reading the generated ledger

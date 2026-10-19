@@ -79,7 +79,7 @@ symlinks to the verified machine-local caches.
 |-|-|
 | `atlas/package.json`, `atlas/pnpm-lock.yaml` | exact Lucide dependency |
 | `atlas/src/app/routes.ts`, `routes.test.ts` | Workstreams route contract |
-| `atlas/src/content/workstreams.ts`, `workstreams.test.ts` | types, parser, reference snapshot |
+| `atlas/src/lab/math/textbook/workstreams.ts`, `workstreams.test.ts` | types, parser, reference snapshot |
 | `atlas/src/app/workstreamsSession.ts`, `workstreamsSession.test.ts` | bounded session queue |
 | `atlas/src/app/workstreamsPresentation.ts` | shared exhaustive status labels and Lucide icons |
 | `atlas/src/app/WorkstreamsDashboard.tsx` | console shell and composition |
@@ -315,8 +315,8 @@ git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
 ### Task 3: Define and validate the reference snapshot
 
 **Files:**
-- Create: `atlas/src/content/workstreams.ts`
-- Create: `atlas/src/content/workstreams.test.ts`
+- Create: `atlas/src/lab/math/textbook/workstreams.ts`
+- Create: `atlas/src/lab/math/textbook/workstreams.test.ts`
 
 - [ ] **Step 1: Write boundary-validation RED tests**
 
@@ -356,7 +356,7 @@ test asserts the four titles in order, `source === "repository-reference"`,
 
 ```sh
 cd atlas
-node_modules/.bin/vitest run src/content/workstreams.test.ts --configLoader runner --no-cache
+node_modules/.bin/vitest run src/lab/math/textbook/workstreams.test.ts --configLoader runner --no-cache
 ```
 
 - [ ] **Step 3: Implement validation helpers and types**
@@ -548,10 +548,10 @@ delta are presentation fixtures, not measured telemetry; retain the word
 
 ```sh
 cd atlas
-node_modules/.bin/vitest run src/content/workstreams.test.ts --configLoader runner --no-cache
+node_modules/.bin/vitest run src/lab/math/textbook/workstreams.test.ts --configLoader runner --no-cache
 node_modules/.bin/tsc -b
 cd ..
-git add atlas/src/content/workstreams.ts atlas/src/content/workstreams.test.ts
+git add atlas/src/lab/math/textbook/workstreams.ts atlas/src/lab/math/textbook/workstreams.test.ts
 git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "feat(atlas): define workstreams snapshot"
 ```
@@ -1312,7 +1312,7 @@ git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
 - Modify: `README.md`
 - Regenerate: `atlas/dist/harp-atlas.html`
 - Regenerate: `atlas/dist/harp-atlas.receipt.json`
-- Regenerate if changed: `atlas/src/content/generated/corpus.json`
+- Regenerate if changed: `atlas/src/knowledge/generated/corpus.json`
 
 - [ ] **Step 1: Extend the static-export test before regeneration**
 
@@ -1372,13 +1372,13 @@ Do not call it live monitoring or production control.
 mise run verify-atlas
 ```
 
-Expected: lint, typecheck, all Vitest suites, production build, HTML export, and decoded export test pass. Inspect `atlas/src/content/generated/corpus.json`, `atlas/dist/harp-atlas.html`, and `atlas/dist/harp-atlas.receipt.json` together.
+Expected: lint, typecheck, all Vitest suites, production build, HTML export, and decoded export test pass. Inspect `atlas/src/knowledge/generated/corpus.json`, `atlas/dist/harp-atlas.html`, and `atlas/dist/harp-atlas.receipt.json` together.
 
 - [ ] **Step 4: Commit docs and generated artifacts**
 
 ```sh
 git add README.md atlas/README.md atlas/tests/static-export.test.mjs atlas/dist/harp-atlas.html atlas/dist/harp-atlas.receipt.json
-if ! git diff --quiet -- atlas/src/content/generated/corpus.json; then git add atlas/src/content/generated/corpus.json; fi
+if ! git diff --quiet -- atlas/src/knowledge/generated/corpus.json; then git add atlas/src/knowledge/generated/corpus.json; fi
 git diff --cached --check
 git -c user.name=phi9t -c user.email=[REDACTED_EMAIL] \
   -c core.hooksPath=/dev/null commit -m "docs(atlas): publish workstreams console"

@@ -20,7 +20,7 @@ pipeline progress, recovery, schema enforcement, and side-effect boundaries.
 
 | Source class | Evidence used | Claim ceiling |
 |-|-|-|
-| Harp-local implementation | `crates/harp-contracts/src/dynamic_workflow.rs`, `crates/harp-engine/src/dynamic_workflow.rs`, `crates/harp/src/main.rs`, and focused tests in this branch | Current Rust IR and durable execution behavior |
+| Harp-local implementation | `lab/benchmarks/legacy_runtime/harp-contracts/src/dynamic_workflow.rs`, `lab/benchmarks/legacy_runtime/harp-engine/src/dynamic_workflow.rs`, `cli/src/main.rs`, and focused tests in this branch | Current Rust IR and durable execution behavior |
 | Harp-local research packet | Ignored internal capture in local investigations | Source-backed interpretation of Dynamic Workflow ideas, not canonical tracked authority |
 | Existing Harp benchmark guide | `knowledge/harness_benchmarks/harness_benchmark_field_guide.md` | Evaluation discipline and claim ceilings for harness benchmarks |
 | Supplied benchmark taxonomy | User-provided 47-benchmark operational and reasoning ladder, dated 2026-08-12 | Provisional map from benchmark families to Dynamic Workflow stressors |
@@ -213,7 +213,7 @@ quality, task success on real workloads, or recursive self-improvement.
 
 ## Recommended implementation order
 
-1. Add tracked benchmark fixtures under `benchmarks/dynamic-workflow/` for the
+1. Add tracked benchmark fixtures under `lab/benchmarks/dynamic-workflow/` for the
    first five cases.
 2. Add schema/manifest validation for the fixture packet.
 3. Add contract-level tests for sequence, barrier, and pipeline compilation.

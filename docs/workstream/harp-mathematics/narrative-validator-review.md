@@ -90,11 +90,11 @@ worktree-local `.build/harp-target`.
   6 passed, 0 failed.
 - `cargo test --profile test-small -p harp --test crouzeix_textbook theorem_card`:
   3 passed, 0 failed (one overlaps the preceding filter).
-- `rustfmt --check --edition 2021 crates/harp/src/crouzeix_textbook/markdown.rs crates/harp/tests/foundations_narrative.rs`:
+- `rustfmt --check --edition 2021 cli/src/crouzeix_textbook/markdown.rs cli/tests/foundations_narrative.rs`:
   passed.
 - `cargo clippy --profile test-small -p harp --lib --test foundations_narrative -- -D warnings`:
   passed.
-- `git diff --check -- crates/harp/src/crouzeix_textbook/markdown.rs`:
+- `git diff --check -- cli/src/crouzeix_textbook/markdown.rs`:
   passed.
 
 No Lean/Lake command, dependency-cache maintenance, full repository gate,
@@ -105,9 +105,9 @@ integration responsibility after the chapter candidate is frozen.
 
 SHA-256:
 
-- `crates/harp/src/crouzeix_textbook/markdown.rs`:
+- `cli/src/crouzeix_textbook/markdown.rs`:
   `6a732511b4fb3766dfa171c59522e5a033a1c140e918188cc28255d2a5013927`.
-- `crates/harp/tests/foundations_narrative.rs`:
+- `cli/tests/foundations_narrative.rs`:
   `b2680bda23d725c10d42595f553d231d0d2cab0152f806c99a7f058e9b693485`.
 
 ## Independent acceptance

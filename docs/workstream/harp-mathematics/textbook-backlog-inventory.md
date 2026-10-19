@@ -1,8 +1,8 @@
 # Textbook completion backlog inventory
 
 Package 0 of [the remaining-work plan](../../superpowers/plans/2026-09-08-textbook-remaining-work.md).
-Recomputed from `content/crouzeix_textbook/coverage.json` and
-`content/crouzeix_textbook/exercises.json`, most recently on 2026-09-09 after
+Recomputed from `lab/math/textbook/coverage.json` and
+`lab/math/textbook/exercises.json`, most recently on 2026-09-09 after
 Chapters 7, 8 and 9 landed. Every number below is derived from those two contracts,
 not copied from a status page.
 

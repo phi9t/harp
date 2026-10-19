@@ -369,7 +369,7 @@ The work is complete when:
 - Claiming external proof completion from readbacks or graph shape.
 - Flattening the graph into every local Lean helper declaration.
 - Rewriting captured evidence under `evidence/*/artifacts/`.
-- Adding Markdown under `content/`.
+- Adding Markdown under `lab/math/textbook/`.
 - Hydrating or updating Lean dependencies.
 
 ## Further Notes

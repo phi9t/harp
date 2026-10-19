@@ -1523,7 +1523,7 @@ class ProofEvidencePreflightTests(unittest.TestCase):
         git_common_dir.mkdir()
         (expected_primary / "scripts").mkdir()
         (expected_primary / "scripts/check_lean_library.sh").write_text("", encoding="utf-8")
-        (expected_primary / "crates/harp").mkdir(parents=True)
+        (expected_primary / "cli").mkdir(parents=True)
         (expected_primary / "lab/math/lean").mkdir(parents=True, exist_ok=True)
         (expected_primary / "lab/math/lean/lake-manifest.json").write_text(
             "{}\n", encoding="utf-8"

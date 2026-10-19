@@ -90,7 +90,7 @@ None is claimed completed by the current core slice.
 
 ## Verification seam
 
-`crates/harp/tests/foundations_contract.rs` reads canonical chapter Markdown and
+`cli/tests/foundations_contract.rs` reads canonical chapter Markdown and
 the existing JSON contracts. It freezes the roster, current core statuses,
 distinct registered solution fingerprints, and explicitly pending remainder.
 Its temporary fixtures demonstrate that a missing analogy label and repeated

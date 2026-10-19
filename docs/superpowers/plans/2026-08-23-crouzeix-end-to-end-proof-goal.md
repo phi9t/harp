@@ -385,7 +385,7 @@ Task 1.
 - Modify: `formalization/lean/CrouzeixConjecture/HilbertSpectralSet.lean`
 - Modify: `labs/crouzeix_proof_reproduction/route_validation.py`
 - Modify: `labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json`
-- Modify: `crates/harp/src/sources/crouzeix/route.rs`
+- Modify: `cli/src/sources/crouzeix/route.rs`
 - Modify: `labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/artifact-manifest.json`
 - Create/modify: `labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/route-manifest.json`
 - Create: `labs/crouzeix_proof_reproduction/formal_targets/jin-565b6a3/declaration-types/*.txt`
@@ -657,7 +657,7 @@ and packet path in the tracker and execution ledger with state
 - Create: `labs/crouzeix_proof_reproduction/tests/test_route_publication.py`
 - Modify: `labs/crouzeix_proof_reproduction/proof_evidence.py`
 - Modify: `labs/crouzeix_proof_reproduction/route_validation.py`
-- Read/verify: `crates/harp/src/sources/crouzeix/route.rs`
+- Read/verify: `cli/src/sources/crouzeix/route.rs`
 
 - [ ] **Step 1: Write producer/consumer RED tests**
 
@@ -960,7 +960,7 @@ worktree until the final audit.
 - Create: LS `route-manifest.json` and declaration types
 - Modify: `labs/crouzeix_proof_reproduction/route_validation.py`
 - Modify: `labs/crouzeix_proof_reproduction/schemas/route_manifest.schema.json`
-- Modify: `crates/harp/src/sources/crouzeix/route.rs`
+- Modify: `cli/src/sources/crouzeix/route.rs`
 - Create: `labs/crouzeix_proof_reproduction/tests/test_route_lorist_schwenninger.py`
 - Create: `evidence/crouzeix_conjecture/routes/lorist-schwenninger/*`
 - Create: `evidence/crouzeix_conjecture/reviews/lorist-schwenninger.json`
@@ -1325,7 +1325,7 @@ the row instead binds a future schema-validated typed JSON evidence object:
 - Modify: `labs/crouzeix_proof_reproduction/local_formalization_evidence.py`
 - Create: `labs/crouzeix_proof_reproduction/local_formalization_validation.py`
 - Modify: `labs/crouzeix_proof_reproduction/tests/test_local_formalization_evidence.py`
-- Modify: `crates/harp/src/sources/crouzeix.rs`
+- Modify: `cli/src/sources/crouzeix.rs`
 - Modify: Rust Crouzeix source tests in the same module
 - Create: `evidence/crouzeix_conjecture/local_formalization/*`
 - Modify: CPFR-088 tracker subtree and execution ledger
@@ -1452,8 +1452,8 @@ receipt last, fast-forward local `master`, close `harp#ga15`, and mark CPFR-088
 - Modify: `knowledge/crouzeix_conjecture/source_registry.md`
 - Modify: `evidence/crouzeix_conjecture/PROVENANCE.md`
 - Modify: `labs/crouzeix_proof_reproduction/README.md`
-- Modify: `crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs`
-- Regenerate together: `atlas/src/content/generated/corpus.json`
+- Modify: `cli/tests/crouzeix_conjecture_knowledge_packet.rs`
+- Regenerate together: `atlas/src/knowledge/generated/corpus.json`
 - Regenerate together: `atlas/dist/harp-atlas.html`
 - Regenerate together: `atlas/dist/harp-atlas.receipt.json`
 - Modify: CPFR-089 tracker subtree and execution ledger

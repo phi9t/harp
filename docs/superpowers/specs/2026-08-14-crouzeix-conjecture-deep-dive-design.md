@@ -919,7 +919,7 @@ Implementation will:
 6. implement deterministic MathML rendering;
 7. update exact corpus counts and `docs/product-contract.md`;
 8. add packet, source-receipt, route, math, and export tests;
-9. regenerate `atlas/src/content/generated/corpus.json`;
+9. regenerate `atlas/src/knowledge/generated/corpus.json`;
 10. run `corepack pnpm run export:html` to regenerate
     `atlas/dist/harp-atlas.html` and
     `atlas/dist/harp-atlas.receipt.json`; and
@@ -937,7 +937,7 @@ case, lesson, source-registry row, or evidence-edge count changes.
 
 ## 13. Test contract
 
-`crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs` verifies:
+`cli/tests/crouzeix_conjecture_knowledge_packet.rs` verifies:
 
 - the exact thirteen-file packet roster;
 - required frontmatter and maintained authority notice;

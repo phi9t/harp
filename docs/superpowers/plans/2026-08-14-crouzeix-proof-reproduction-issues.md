@@ -200,8 +200,8 @@ verify them offline.
 - `evidence/crouzeix_conjecture_reproduction/PROVENANCE.md`
 - `evidence/crouzeix_conjecture_reproduction/manifest.tsv`
 - selected sealed run artifacts
-- `crates/harp/src/sources/crouzeix_reproduction.rs`
-- `crates/harp/src/sources.rs`
+- `cli/src/sources/crouzeix_reproduction.rs`
+- `cli/src/sources.rs`
 - focused Rust tests in the child verifier
 
 **Test-first slices:**
@@ -326,10 +326,10 @@ existing Crouzeix packet contract.
 - `knowledge/crouzeix_conjecture/crouzeix_conjecture_index.md`
 - `knowledge/crouzeix_conjecture/source_registry.md`
 - `knowledge/crouzeix_conjecture/claim_evidence_ledger.md`
-- `crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs`
-- `crates/harp/src/corpus/mod.rs`
-- `crates/harp/src/corpus/tests.rs`
-- `crates/harp/tests/cli.rs`
+- `cli/tests/crouzeix_conjecture_knowledge_packet.rs`
+- `cli/src/corpus/mod.rs`
+- `cli/src/corpus/tests.rs`
+- `cli/tests/cli.rs`
 - `docs/product-contract.md`
 - generated Atlas corpus and offline export
 - `docs/import-receipt.md`

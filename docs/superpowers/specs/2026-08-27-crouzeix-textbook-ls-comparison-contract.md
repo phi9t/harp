@@ -3,7 +3,7 @@
 This document is the executable development contract for Chapters 34 and 35.
 It freezes the state before the chapter mathematics is rewritten. Canonical
 mathematics remains under `knowledge/crouzeix_textbook/`; canonical
-correspondence metadata remains under `content/crouzeix_textbook/`.
+correspondence metadata remains under `lab/math/textbook/`.
 
 - Active phase: `three-route-comparison-complete`.
 - Target phase: `three-route-comparison-complete`.
@@ -166,7 +166,7 @@ The compiler-normalized type hash of
 ## Exercise signatures and proof boundaries
 
 The raw block `WAVE3_PROBE_DECLARATIONS` in
-`crates/harp/tests/support/crouzeix_textbook_wave3_contract.rs` is the durable
+`cli/tests/support/crouzeix_textbook_wave3_contract.rs` is the durable
 signature source. The test writes it to a private temporary Lean file. The
 file imports `CrouzeixTextbook.ExportReceipt` and `CrouzeixHarp`, but no project
 module imports the temporary file. Its axioms therefore do not enter the

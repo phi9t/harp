@@ -20,14 +20,14 @@ This final review covers the full Workstreams dashboard feature and the related
 Crouzeix evidence-path hardening that landed in the same candidate range:
 
 - Atlas dashboard UI, routing, offline export, accessibility, and browser-only
-  command queue behavior under `atlas/src/app/`, `atlas/src/content/`,
+  command queue behavior under `atlas/src/app/`, `atlas/src/lab/math/textbook/`,
   `atlas/src/styles/`, and `atlas/tests/`.
 - Python evidence and cache-path handling under
   `labs/crouzeix_proof_reproduction/`, including route validation, route
   publication, receipt validation, promotion semantics, and XDG environment
   helpers.
 - Rust temporal-parity adjustments under
-  `crates/harp/src/sources/crouzeix.rs` and related test coverage.
+  `cli/src/sources/crouzeix.rs` and related test coverage.
 
 ## Findings
 
@@ -50,7 +50,7 @@ None.
 ### Atlas dashboard and export boundary
 
 The Atlas feature remains bounded to static, local presentation logic.
-`parseWorkstreamsSnapshot()` in `atlas/src/content/workstreams.ts` validates the
+`parseWorkstreamsSnapshot()` in `atlas/src/lab/math/textbook/workstreams.ts` validates the
 snapshot contract before rendering, and the session queue in
 `atlas/src/app/workstreamsSession.ts` stays fail-closed on malformed storage
 state, read exceptions, and overlong command text. `AgentVelocityCard.tsx`
@@ -160,7 +160,7 @@ hydration paths.
 
 ### Rust change stays scoped to temporal parity
 
-The Rust delta in `crates/harp/src/sources/crouzeix.rs` was reviewed against the
+The Rust delta in `cli/src/sources/crouzeix.rs` was reviewed against the
 Python temporal semantics and remains scoped to parity for committed-vs-current
 wrapper handling. The change does not broaden evidence admission generally and
 does not undermine the stricter promotion path.

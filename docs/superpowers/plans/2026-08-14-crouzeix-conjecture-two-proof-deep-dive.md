@@ -16,23 +16,23 @@
 
 ### Evidence boundary
 
-- Create `crates/harp/src/sources/crouzeix.rs`: strict parsers and offline verification for the Crouzeix source and verification manifests.
-- Modify `crates/harp/src/sources.rs`: register the verifier, include its receipts in source accounting, and expose test-only helpers to the child module.
+- Create `cli/src/sources/crouzeix.rs`: strict parsers and offline verification for the Crouzeix source and verification manifests.
+- Modify `cli/src/sources.rs`: register the verifier, include its receipts in source accounting, and expose test-only helpers to the child module.
 - Create `evidence/crouzeix_conjecture/PROVENANCE.md`: source classes, acquisition method, normalization rules, rights boundary, and claim ceiling.
 - Create `evidence/crouzeix_conjecture/acquire.sh`: explicit networked acquisition, detached Git verification, Lean build/scan runs, log normalization, and deterministic manifest generation.
 - Create `evidence/crouzeix_conjecture/source_manifest.tsv`: remote-only artifact receipts.
 - Create `evidence/crouzeix_conjecture/verification_manifest.tsv`: revision-bound Harp-local build and scan receipts.
 - Create `evidence/crouzeix_conjecture/verification/*.log`: normalized metadata-only logs for two Jin revisions.
-- Modify `crates/harp/tests/cli.rs`: update exact source-report accounting.
+- Modify `cli/tests/cli.rs`: update exact source-report accounting.
 - Modify `docs/product-contract.md`: declare the remote-only Crouzeix evidence bundle and its verification ceiling.
 - Modify `docs/import-receipt.md`: refresh the tracked payload digest after the evidence commit settles.
 
 ### Reader substrate
 
-- Modify `crates/harp/src/corpus/mod.rs`: build route targets before rendering and pass them into the renderer.
-- Modify `crates/harp/src/corpus/contracts.rs`: parse explicit heading IDs for the packet and validate packet-local anchor uniqueness.
-- Modify `crates/harp/src/corpus/render.rs`: route-target precedence, fragment-preserving links, packet-scoped math parsing, explicit heading attributes, and escaped math spans with `data-tex`.
-- Modify `crates/harp/src/corpus/tests.rs`: red-green tests for reader-route precedence, auxiliary fragments, explicit heading IDs, and scoped math parsing.
+- Modify `cli/src/corpus/mod.rs`: build route targets before rendering and pass them into the renderer.
+- Modify `cli/src/corpus/contracts.rs`: parse explicit heading IDs for the packet and validate packet-local anchor uniqueness.
+- Modify `cli/src/corpus/render.rs`: route-target precedence, fragment-preserving links, packet-scoped math parsing, explicit heading attributes, and escaped math spans with `data-tex`.
+- Modify `cli/src/corpus/tests.rs`: red-green tests for reader-route precedence, auxiliary fragments, explicit heading IDs, and scoped math parsing.
 - Modify `atlas/package.json` and `atlas/pnpm-lock.yaml`: pin `katex` 0.18.4 and `@types/katex` 0.16.8.
 - Create `atlas/src/app/math.ts`: deterministic KaTeX rendering with MathML-only output and fail-visible fallback.
 - Create `atlas/src/app/math.test.ts`: valid inline/display math, escaping, invalid math, and no external resource tests.
@@ -60,17 +60,17 @@
 - Create `knowledge/crouzeix_conjecture/glossary.md`: symbols and proof-specific terms.
 - Create `knowledge/crouzeix_conjecture/source_registry.md`: source IDs, immutable identities, local receipt routes, quotation audit, and claim ceilings.
 - Create `knowledge/crouzeix_conjecture/claim_evidence_ledger.md`: canonical `CC-*` claim entries.
-- Create `crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs`: packet shape, ledger, locators, mechanisms, status, links, and registration tests.
-- Modify `crates/harp/src/corpus/mod.rs`: add one reader route and twelve auxiliary documents.
-- Modify `crates/harp/src/search.rs`: add the packet root.
-- Modify `crates/harp/src/corpus/tests.rs`: update fixture documents and exact packet registration checks.
-- Modify `crates/harp/tests/cli.rs`: update canonical document and search fixtures.
-- Modify `atlas/src/content/types.ts`: add `crouzeix-conjecture` to the closed route union.
-- Modify `atlas/src/content/canonical.test.ts`: add the twelfth route fixture.
+- Create `cli/tests/crouzeix_conjecture_knowledge_packet.rs`: packet shape, ledger, locators, mechanisms, status, links, and registration tests.
+- Modify `cli/src/corpus/mod.rs`: add one reader route and twelve auxiliary documents.
+- Modify `cli/src/search.rs`: add the packet root.
+- Modify `cli/src/corpus/tests.rs`: update fixture documents and exact packet registration checks.
+- Modify `cli/tests/cli.rs`: update canonical document and search fixtures.
+- Modify `atlas/src/lab/math/textbook/types.ts`: add `crouzeix-conjecture` to the closed route union.
+- Modify `atlas/src/lab/math/textbook/canonical.test.ts`: add the twelfth route fixture.
 - Modify `atlas/src/app/AtlasApp.tsx`: visible Crouzeix navigation and configured route labels.
 - Modify `atlas/src/app/routes.test.ts`: first-class Crouzeix route coverage.
 - Modify `docs/product-contract.md`: packet ownership, evidence, search, and exact counts.
-- Regenerate `atlas/src/content/generated/corpus.json`, `atlas/dist/harp-atlas.html`, and `atlas/dist/harp-atlas.receipt.json`.
+- Regenerate `atlas/src/knowledge/generated/corpus.json`, `atlas/dist/harp-atlas.html`, and `atlas/dist/harp-atlas.receipt.json`.
 - Modify `docs/import-receipt.md`: final packet payload digest.
 
 ## Fixed claim roster
@@ -158,10 +158,10 @@ SCHWENNINGER-DEVRIES-2025
 
 **Files:**
 
-- Create: `crates/harp/src/sources/crouzeix.rs`
-- Modify: `crates/harp/src/sources.rs:13-20`
-- Modify: `crates/harp/src/sources.rs:150-252`
-- Test: `crates/harp/src/sources/crouzeix.rs`
+- Create: `cli/src/sources/crouzeix.rs`
+- Modify: `cli/src/sources.rs:13-20`
+- Modify: `cli/src/sources.rs:150-252`
+- Test: `cli/src/sources/crouzeix.rs`
 
 - [ ] **Step 1: Add failing verifier tests**
 
@@ -310,13 +310,13 @@ Expected: compilation fails because `sources::crouzeix` is not registered or `ve
 
 - [ ] **Step 3: Implement strict parsing and verification**
 
-Add to `crates/harp/src/sources.rs`:
+Add to `cli/src/sources.rs`:
 
 ```rust
 mod crouzeix;
 ```
 
-Implement in `crates/harp/src/sources/crouzeix.rs`:
+Implement in `cli/src/sources/crouzeix.rs`:
 
 ```rust
 pub(super) const ROOT: &str = "evidence/crouzeix_conjecture";
@@ -395,7 +395,7 @@ Expected: all Crouzeix verifier tests pass.
 - Create: `evidence/crouzeix_conjecture/verification/jin-565b6a3-scan.log`
 - Create: `evidence/crouzeix_conjecture/verification/jin-9df0783-build.log`
 - Create: `evidence/crouzeix_conjecture/verification/jin-9df0783-scan.log`
-- Modify: `crates/harp/tests/cli.rs:330-339`
+- Modify: `cli/tests/cli.rs:330-339`
 - Modify: `docs/product-contract.md:166-182`
 - Modify: `docs/import-receipt.md:125-130`
 
@@ -505,8 +505,8 @@ State that source verification confirms receipt structure and local logs, not re
 Run:
 
 ```sh
-git add crates/harp/src/sources.rs crates/harp/src/sources/crouzeix.rs \
-  crates/harp/tests/cli.rs evidence/crouzeix_conjecture docs/product-contract.md
+git add cli/src/sources.rs cli/src/sources/crouzeix.rs \
+  cli/tests/cli.rs evidence/crouzeix_conjecture docs/product-contract.md
 cargo run -q -p harp -- repository verify
 ```
 
@@ -532,8 +532,8 @@ Expected: all commands pass.
 - [ ] **Step 7: Commit**
 
 ```sh
-git add crates/harp/src/sources.rs crates/harp/src/sources/crouzeix.rs \
-  crates/harp/tests/cli.rs evidence/crouzeix_conjecture \
+git add cli/src/sources.rs cli/src/sources/crouzeix.rs \
+  cli/tests/cli.rs evidence/crouzeix_conjecture \
   docs/product-contract.md docs/import-receipt.md
 git commit -m "evidence: add Crouzeix proof receipts" \
   -m "Co-authored-by: TRAE CLI <[REDACTED_EMAIL]>"
@@ -545,11 +545,11 @@ git commit -m "evidence: add Crouzeix proof receipts" \
 
 **Files:**
 
-- Modify: `crates/harp/src/corpus/mod.rs:302-359`
-- Modify: `crates/harp/src/corpus/contracts.rs:121-175`
-- Modify: `crates/harp/src/corpus/contracts.rs:1369-1430`
-- Modify: `crates/harp/src/corpus/render.rs:1-224`
-- Test: `crates/harp/src/corpus/tests.rs`
+- Modify: `cli/src/corpus/mod.rs:302-359`
+- Modify: `cli/src/corpus/contracts.rs:121-175`
+- Modify: `cli/src/corpus/contracts.rs:1369-1430`
+- Modify: `cli/src/corpus/render.rs:1-224`
+- Test: `cli/src/corpus/tests.rs`
 
 - [ ] **Step 1: Write failing corpus tests**
 
@@ -922,8 +922,8 @@ Expected: all Atlas tests pass; export contains bundled KaTeX code and no extern
 Stage all reader files and the two derived Atlas files, run `repository verify`, patch the reported digest, and restage:
 
 ```sh
-git add crates/harp/src/corpus/mod.rs crates/harp/src/corpus/contracts.rs \
-  crates/harp/src/corpus/render.rs crates/harp/src/corpus/tests.rs \
+git add cli/src/corpus/mod.rs cli/src/corpus/contracts.rs \
+  cli/src/corpus/render.rs cli/src/corpus/tests.rs \
   atlas/package.json atlas/pnpm-lock.yaml atlas/src/app atlas/src/styles/components.css \
   atlas/tests/static-export.test.mjs atlas/dist/harp-atlas.html \
   atlas/dist/harp-atlas.receipt.json
@@ -948,8 +948,8 @@ Expected: all commands pass.
 - [ ] **Step 11: Commit**
 
 ```sh
-git add crates/harp/src/corpus/mod.rs crates/harp/src/corpus/contracts.rs \
-  crates/harp/src/corpus/render.rs crates/harp/src/corpus/tests.rs \
+git add cli/src/corpus/mod.rs cli/src/corpus/contracts.rs \
+  cli/src/corpus/render.rs cli/src/corpus/tests.rs \
   atlas/package.json atlas/pnpm-lock.yaml atlas/src/app atlas/src/styles/components.css \
   atlas/tests/static-export.test.mjs atlas/dist/harp-atlas.html \
   atlas/dist/harp-atlas.receipt.json docs/import-receipt.md
@@ -963,7 +963,7 @@ git commit -m "feat: add addressable math documents to Atlas" \
 
 **Files:**
 
-- Create: `crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs`
+- Create: `cli/tests/crouzeix_conjecture_knowledge_packet.rs`
 
 - [ ] **Step 1: Define exact file, frontmatter, and claim contracts**
 
@@ -1364,16 +1364,16 @@ Expected: content, frontmatter, ledger, source, backlink, and mechanism checks p
 
 **Files:**
 
-- Modify: `crates/harp/src/corpus/mod.rs`
-- Modify: `crates/harp/src/search.rs:236-247`
-- Modify: `crates/harp/src/corpus/tests.rs`
-- Modify: `crates/harp/tests/cli.rs`
-- Modify: `atlas/src/content/types.ts`
-- Modify: `atlas/src/content/canonical.test.ts`
+- Modify: `cli/src/corpus/mod.rs`
+- Modify: `cli/src/search.rs:236-247`
+- Modify: `cli/src/corpus/tests.rs`
+- Modify: `cli/tests/cli.rs`
+- Modify: `atlas/src/lab/math/textbook/types.ts`
+- Modify: `atlas/src/lab/math/textbook/canonical.test.ts`
 - Modify: `atlas/src/app/AtlasApp.tsx`
 - Modify: `atlas/src/app/routes.test.ts`
 - Modify: `docs/product-contract.md`
-- Regenerate: `atlas/src/content/generated/corpus.json`
+- Regenerate: `atlas/src/knowledge/generated/corpus.json`
 - Regenerate: `atlas/dist/harp-atlas.html`
 - Regenerate: `atlas/dist/harp-atlas.receipt.json`
 - Modify: `docs/import-receipt.md`
@@ -1506,7 +1506,7 @@ Expected:
 
 ```text
 Harp corpus checked: 82 documents, 75 concepts
-atlas/src/content/generated/corpus.json matches canonical inputs
+atlas/src/knowledge/generated/corpus.json matches canonical inputs
 wrote .../atlas/dist/harp-atlas.html
 ```
 
@@ -1551,12 +1551,12 @@ Expected: release gate passes. Only the intentionally ignored local research bun
 
 ```sh
 git add knowledge/crouzeix_conjecture \
-  crates/harp/src/corpus/mod.rs crates/harp/src/search.rs \
-  crates/harp/src/corpus/tests.rs crates/harp/tests/cli.rs \
-  crates/harp/tests/crouzeix_conjecture_knowledge_packet.rs \
-  atlas/src/content/types.ts atlas/src/content/canonical.test.ts \
+  cli/src/corpus/mod.rs cli/src/search.rs \
+  cli/src/corpus/tests.rs cli/tests/cli.rs \
+  cli/tests/crouzeix_conjecture_knowledge_packet.rs \
+  atlas/src/lab/math/textbook/types.ts atlas/src/lab/math/textbook/canonical.test.ts \
   atlas/src/app/AtlasApp.tsx atlas/src/app/routes.test.ts \
-  atlas/src/content/generated/corpus.json atlas/dist/harp-atlas.html \
+  atlas/src/knowledge/generated/corpus.json atlas/dist/harp-atlas.html \
   atlas/dist/harp-atlas.receipt.json docs/product-contract.md \
   docs/import-receipt.md
 git commit -m "docs: add Crouzeix conjecture two-proof packet" \

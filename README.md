@@ -61,21 +61,25 @@ require the full contributor verification gate.
 
 ## How the repository fits together
 
-- `knowledge/` holds maintained educational and engineering prose.
-- `evidence/` holds captured source bytes, manifests, and source-specific
-  license records.
-- `content/` holds machine-readable contracts.
-- `content/generated/` holds the compiled headless corpus and local publication outputs.
-- `crates/` holds the CLI, reusable contracts and retained Rust libraries.
-- `durable/` holds the sole execution framework, SQLite journal, intent and Git workflow.
-- `insula/` holds containment and the service supervisor.
-- `runner/` dispatches to a privately configured SSH host.
+- `cli/` owns the Harp command and its supporting library; `sessions/` owns
+  rollout indexing and session analysis.
+- `durable/` owns the sole agent execution framework, SQLite journal,
+  Git-managed intent, verification and landing. Embedded workflow context
+  contracts live under `durable/context/`.
+- `insula/` owns containment and service supervision; `runner/` transports
+  admitted work to a privately configured SSH host.
 - `lab/math/`, `lab/sicp/`, `lab/soma/` and `lab/benchmarks/` hold workloads,
-  Lean proofs, educational exercises and preserved benchmark studies.
+  proofs, educational exercises and preserved benchmarks. Textbook JSON
+  contracts and SICP contracts live with those workloads.
+- `knowledge/` holds maintained prose; `knowledge/generated/corpus.json` is
+  its derived headless index. PDF outputs live under ignored `publications/`.
+- `evidence/` holds pinned source bytes, licenses and verification provenance.
+  See [the evidence guide](evidence/README.md).
 
-Markdown is the authority for technical prose. The compiled headless corpus is generated from it. The
-[product contract](docs/product-contract.md) records the detailed boundaries;
-the [contributor guide](docs/contributing.md) explains how to change them.
+The retired Rust controller packages are a standalone historical workload under
+`lab/benchmarks/legacy_runtime/`; they are not product dependencies or controller
+entrypoints. [The ownership design](docs/workstream/repo-architecture/design.md)
+records the dependency boundaries and deferred workloads.
 
 ## Scope and status
 

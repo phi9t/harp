@@ -61,17 +61,21 @@ def source_identity():
                     *ROOT.joinpath('runner').rglob('*.py'),
                     *ROOT.joinpath('lab/benchmarks/harness').glob('*.py'),
                     *ROOT.joinpath('insula/supervisor/src').rglob('*.rs'),
-                    *ROOT.joinpath('crates/harp/src').rglob('*.rs'),
-                    ROOT / 'Cargo.toml', ROOT / 'Cargo.lock',
+                    *(p for p in ROOT.joinpath('cli/src').rglob('*.rs')
+                      if not p.name.endswith('_test.rs') and not p.name.startswith('test_')
+                      and not {'test_support', 'test_fixtures'} & set(p.parts)),
+                    ROOT / 'Cargo.toml', ROOT / 'Cargo.lock', ROOT / 'cli/Cargo.toml',
                     ROOT / 'rust-toolchain.toml', ROOT / 'insula/supervisor/Cargo.toml',
                     ROOT / 'lab/math/relocation.py',
-                    ROOT / 'crates/harp/src/durable.rs'])
+                    ROOT / 'cli/src/durable.rs'])
     # A benchmark receipt must expire when its actual fixture, task or oracle
     # changes, not only when the harness changes. Captured studies/inventories
     # have their separate byte-preservation contract.
     for name in ('tasks', 'harness', 'insula', 'tmuxh', 'readiness'):
         paths.extend(p for p in ROOT.joinpath('lab/benchmarks', name).rglob('*')
                      if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc')
+    paths.extend(p for p in ROOT.joinpath('durable/context').rglob('*')
+                 if p.is_file() and p.suffix in {'.json', '.jsonl'})
     paths.extend(ROOT.joinpath('lab/soma').glob('*.py'))
     paths.append(ROOT / 'lab/soma/workload.json')
     paths = sorted(set(paths))

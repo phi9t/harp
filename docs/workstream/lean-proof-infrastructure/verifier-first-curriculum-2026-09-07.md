@@ -79,7 +79,7 @@ Source identity anchors:
 
 - [Spivak publisher contents](https://www.routledge.com/Calculus-On-Manifolds-A-Modern-Approach-To-Classical-Theorems-Of-Advanced/Spivak/p/book/9780805390216).
 - [Lax, Linear Algebra and Its Applications, expanded second edition, 2007](https://uat.store.wiley.com/en-us/linear-algebra-and-its-applications-2nd-edition-p-9780471751564), explicitly selected by the user on 2026-09-07. Include its numerical-algorithm chapters and all sixteen appendices.
-- [Bishop, Pattern Recognition and Machine Learning (2006), user-confirmed source](https://www.microsoft.com/en-us/research/wp-content/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf).
+- [Bishop, Pattern Recognition and Machine Learning (2006), user-confirmed source](https://www.microsoft.com/en-us/research/wp-lab/math/textbook/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf).
 - Christopher M. Bishop and Hugh Bishop, *Deep Learning: Foundations and Concepts*, Springer, 2024; ISBN 978-3-031-45468-4 (eBook), DOI `10.1007/978-3-031-45468-4`. User-supplied file `bishop-deep-learning.pdf`, SHA-256 `277ac35c73df83a72a6fefde790c097168959c7c054bf1d25f8f5ebf0ed195c7`. Bibliographic pages and contents inspected; the PDF was not copied into the repository.
 
 The deep-learning book is an additional track, not a replacement for PRML.

@@ -30,7 +30,7 @@ machinery used by every issue below. This map starts at CFT-33-003.
 
 Each chapter issue changes one canonical Markdown chapter, its matching
 `formalization/lean/CrouzeixTextbook/` chapter module, and its six theorem and
-exercise rows under `content/crouzeix_textbook/`. It may update source and
+exercise rows under `lab/math/textbook/`. It may update source and
 claim ledgers when the slice introduces a source-backed statement.
 
 Chapter issues do not publish shared generated files while another issue in
@@ -38,7 +38,7 @@ the wave is active. The wave integration issue owns:
 
 - generated textbook ledgers;
 - `formalization/lean/CrouzeixTextbook/Correspondence.lean`;
-- `atlas/src/content/generated/corpus.json`;
+- `atlas/src/knowledge/generated/corpus.json`;
 - `atlas/dist/harp-atlas.html` and its receipt;
 - `docs/import-receipt.md`.
 

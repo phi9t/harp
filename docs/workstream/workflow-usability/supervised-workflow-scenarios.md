@@ -40,7 +40,7 @@ Three possible starting points:
 - A coding repair exercises mutation and verification together, but requires the
   larger workspace and candidate design. Keep it as the third milestone.
 
-Existing `benchmarks/dynamic-workflow/` fixtures test execution shapes through a
+Existing `lab/benchmarks/dynamic-workflow/` fixtures test execution shapes through a
 fake runtime. They are useful regression tests, but are not evidence that an
 agent can supervise a useful coding operation. The recorded schema fixture also
 explicitly does not establish malformed-output rejection coverage.

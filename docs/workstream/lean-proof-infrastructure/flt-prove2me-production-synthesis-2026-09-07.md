@@ -340,14 +340,14 @@ cleanup into one moving target.
 
 ## Current Harp integration, not the August assumption
 
-At primary commit `2e5d57da`, `crates/harp-engine/src/execution_plan.rs` already
+At primary commit `2e5d57da`, `lab/benchmarks/legacy_runtime/harp-engine/src/execution_plan.rs` already
 defines `ExecutionPlan`, bundling `TaskGraph`, graph policy, and projection
 policy. It still wraps the agent-oriented graph. Runtime `ActivitySpec` and
 recovery records still use thread/turn identities. This needs a targeted
 compatibility analysis, not a second executor or a plan to introduce an
 abstraction that already exists.
 
-`crates/harp-contracts/src/graph.rs` bounds each TaskGraph at 64 nodes. An FLT-sized
+`lab/benchmarks/legacy_runtime/harp-contracts/src/graph.rs` bounds each TaskGraph at 64 nodes. An FLT-sized
 theorem store must therefore remain separate from an execution batch. Compile
 bounded frontier batches into the existing execution boundary, recording the
 mission revision, frontier inputs, and batch decisions. The domain planner is

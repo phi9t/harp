@@ -18,7 +18,7 @@ PDF URL is not a redistribution license.
 |---|---|---|
 | `lax-2007-2e` | User-confirmed edition; [university-hosted textbook scan](https://matematicas.unex.es/~navarro/algebralineal/lax.pdf), copyright/contents/prefaces inspected | Freeze the bytes used for item extraction and record digest; review errata |
 | `spivak-com` | [Publisher contents](https://www.routledge.com/Calculus-On-Manifolds-A-Modern-Approach-To-Classical-Theorems-Of-Advanced/Spivak/p/book/9780805390216); [university-hosted textbook scan](https://web.math.ucsb.edu/~bigelow/books/spivak.pdf) | Freeze printing: inspected scan has March 1968 corrected-printing preface and Addenda, despite 1965 copyright |
-| `bishop-prml-2006` | [User-confirmed PDF](https://www.microsoft.com/en-us/research/wp-content/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf); local SHA-256 `4ee767e0a6b04fa05ba7e599e9dbb4637a94a4407ccedf0b4d316b1fd7c8ec64` | Extract item-level inventory and attach errata revision |
+| `bishop-prml-2006` | [User-confirmed PDF](https://www.microsoft.com/en-us/research/wp-lab/math/textbook/uploads/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf); local SHA-256 `4ee767e0a6b04fa05ba7e599e9dbb4637a94a4407ccedf0b4d316b1fd7c8ec64` | Extract item-level inventory and attach errata revision |
 | `bishop-dlfc-2024` | User-supplied PDF, Christopher M. Bishop and Hugh Bishop; [publisher DOI](https://doi.org/10.1007/978-3-031-45468-4); SHA-256 `277ac35c73df83a72a6fefde790c097168959c7c054bf1d25f8f5ebf0ed195c7` | Extract item-level inventory and attach errata revision |
 
 University mirrors contain primary textbook text but are not publisher-hosted

@@ -1,17 +1,11 @@
 [workspace]
 members = [
-    "crates/harp",
+    "cli",
     "insula/supervisor",
-    "crates/harp-cli-process",
-    "crates/harp-cli-test-support",
-    "crates/harp-artifacts",
-    "crates/harp-contracts",
-    "crates/harp-engine",
-    "crates/harp-runtime",
-    "crates/harp-session-index",
-    "crates/harp-state",
+    "sessions",
     "lab/sicp",
 ]
+exclude = ["lab/benchmarks/legacy_runtime"]
 resolver = "2"
 
 [workspace.package]
