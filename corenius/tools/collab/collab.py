@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Executable entry point for the collab CLI."""
-from __future__ import annotations
-
-from pathlib import Path
+"""Retired imported orchestration; source history is preserved in Git."""
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+RETIREMENT = 'Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.'
 
-from cli import main
+
+def main(argv=None):
+    print(RETIREMENT, file=sys.stderr)
+    return 2
 
 
 if __name__ == "__main__":

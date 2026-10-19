@@ -5,6 +5,7 @@ No controller connections, native stores, databases, transcripts or tool calls.
 Use --render for plain text; 1/2/3 switches panes, j/k scrolls, r refreshes.
 """
 import argparse
+import sys
 import curses
 import datetime as dt
 import pathlib
@@ -470,20 +471,8 @@ def dashboard(screen, config, initial):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', required=True, type=pathlib.Path)
-    parser.add_argument('--view', choices=VIEWS, default='controller')
-    parser.add_argument('--render', action='store_true')
-    args = parser.parse_args(argv)
-    try:
-        config = load_config(args.config)
-    except (OSError, ValueError, TypeError, RecursionError) as error:
-        parser.exit(2, 'Config unavailable: ' + safe(error) + '\n')
-    if args.render:
-        print('\n'.join(render(load_snapshot(config), args.view)))
-    else:
-        curses.wrapper(dashboard, config, args.view)
-    return 0
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == '__main__':

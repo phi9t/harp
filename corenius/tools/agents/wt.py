@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Deprecated worktree compatibility shim; use tools/collab/collab.py for new workflows."""
-from pathlib import Path
+"""Retired imported orchestration; source history is preserved in Git."""
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "collab"))
-from worktree_compat import *  # noqa: E402,F403 - retain the public Python API for one release
-from worktree_compat import _load_plugins  # noqa: E402,F401
+RETIREMENT = 'Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.'
+
+
+def main(argv=None):
+    print(RETIREMENT, file=sys.stderr)
+    return 2
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

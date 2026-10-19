@@ -35,6 +35,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "collab"))
 import land as land_tool  # noqa: E402
 from landing_protocol import guard_initialized_trunk_mutation  # noqa: E402
 from common import Refused  # noqa: E402
@@ -275,30 +276,7 @@ def read_run(run_dir: str) -> dict:
 
 
 def cmd_new(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    slug = args.slug
-    base = args.base
-    if not rev(root, base):
-        raise WorkerError(f"base branch {base!r} not found")
-    worktree = root.parent / f"{root.name}-{slug}"
-    branch = f"effort/{slug}"
-    if worktree.exists():
-        raise WorkerError(f"{worktree} already exists")
-    if rev(root, branch):
-        raise WorkerError(f"branch {branch} already exists")
-    git(root, "worktree", "add", "-q", "-b", branch, str(worktree), base)
-    edir = effort_dir(worktree, slug)
-    (edir / "decisions").mkdir(parents=True)
-    (edir / "tickets").mkdir()
-    (edir / "evidence").mkdir()
-    for keep in ("decisions", "tickets", "evidence"):
-        (edir / keep / ".gitkeep").write_text("")
-    (edir / "EFFORT.md").write_text(EFFORT_TEMPLATE.format(slug=slug, base=base))
-    (edir / "STATE.md").write_text(STATE_TEMPLATE.format(slug=slug, start=START, end=END))
-    scratch_dir(root, slug).mkdir(parents=True, exist_ok=True)
-    print(json.dumps({"effort": slug, "worktree": str(worktree), "branch": branch,
-                      "durable": str(edir), "scratch": str(scratch_dir(root, slug))}))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def record_branch_name(slug: str) -> str:
@@ -328,396 +306,32 @@ def clean_worktree(root: Path) -> bool:
 
 
 def cmd_move_records(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    slug = args.slug
-    if not SLUG.match(slug):
-        raise WorkerError(f"bad effort slug {slug!r}: use lowercase letters, digits, hyphens")
-    source = effort_dir(root, slug)
-    effort_file = source / "EFFORT.md"
-    if not effort_file.exists():
-        raise WorkerError(f"no effort record at {effort_file}; run this from the checkout that currently holds the effort")
-    if not clean_worktree(root):
-        raise WorkerError("worktree has uncommitted changes")
-    metadata = land_tool.parse_effort_metadata(effort_file.read_text())
-    integration = metadata.get("integration_branch")
-    if integration and current_branch(root) != integration:
-        raise WorkerError(f"move-records must run from {integration}, not {current_branch(root) or 'detached'}")
-    branch = args.record_branch or metadata.get("record_branch") or record_branch_name(slug)
-    record_worktree = Path(args.worktree).resolve() if args.worktree else root.parent / f"{root.name}-{slug}-records"
-    with guard_initialized_trunk_mutation(root):
-        existing_branch = rev(root, branch)
-        existing_worktree = (
-            land_tool.worktree_for_ref(root, land_tool.local_mainline_ref(branch)) if existing_branch else None
-        )
-        if existing_branch:
-            if existing_worktree is None:
-                raise WorkerError(f"record branch {branch} already exists")
-            record_worktree = existing_worktree.resolve()
-        elif record_worktree.exists():
-            raise WorkerError(f"{record_worktree} already exists")
-        else:
-            git(root, "worktree", "add", "-q", "-b", branch, str(record_worktree), "HEAD")
-        record_effort = record_worktree / "docs" / "efforts" / slug
-        record_effort_file = record_effort / "EFFORT.md"
-        if not record_effort_file.exists():
-            raise WorkerError(f"record branch {branch} has no effort record at {record_effort_file}")
-        record_effort_file.write_text(append_record_branch(record_effort_file.read_text(), branch))
-        git(record_worktree, "add", f"docs/efforts/{slug}/EFFORT.md")
-        if git(record_worktree, "diff", "--cached", "--name-only").strip():
-            git(record_worktree, "commit", "-q", "-m", f"Move {slug} records to record branch")
-
-        if source.exists():
-            shutil.rmtree(source)
-            git(root, "add", "-A", f"docs/efforts/{slug}")
-            if git(root, "diff", "--cached", "--name-only").strip():
-                git(root, "commit", "-q", "-m", f"Remove {slug} records from code branch")
-    print(json.dumps({
-        "effort": slug,
-        "code_branch": current_branch(root),
-        "record_branch": branch,
-        "record_worktree": str(record_worktree),
-        "removed_from": str(source),
-    }, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_decide(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    edir = effort_record_dir(root, args.slug)
-    if not edir.is_dir():
-        raise WorkerError(f"no effort {args.slug} in {root}")
-    words = re.sub(r"[^a-z0-9]+", "-", args.title.lower()).strip("-")[:60]
-    date = datetime.now(timezone.utc).strftime("%Y%m%d")
-    path = edir / "decisions" / f"{date}-{words}.md"
-    if path.exists():
-        raise WorkerError(f"{path.name} exists; decisions are append-only, pick a new title")
-    path.write_text(DECISION_TEMPLATE.format(title=args.title, date=date))
-    print(str(path))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_snapshot(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    edir = effort_record_dir(root, args.slug)
-    record_root = edir.parent.parent.parent
-    if record_root.resolve() != root.resolve():
-        raise WorkerError(f"snapshot must run in the record worktree {record_root}")
-    state_path = edir / "STATE.md"
-    if not state_path.is_file():
-        raise WorkerError(f"no STATE.md at {state_path}")
-    previous, stripped = split_state(state_path.read_text())
-    problems = human_problems(stripped)
-    wanted = {str(root)} | {str(Path(w).resolve()) for w in args.worktree}
-    wanted.update(w["path"] for w in previous.get("worktrees", []))
-    old_worktrees = {w["path"]: w for w in previous.get("worktrees", [])}
-    worktrees = []
-    for path in sorted(wanted):
-        if not Path(path).exists():
-            if path not in old_worktrees:
-                problems.append(f"worktree {path} does not exist and has no prior snapshot")
-                continue
-            info = dict(old_worktrees[path], missing=True)
-        else:
-            info = describe_worktree(root, path, edir)
-            # Writing this snapshot itself leaves local state that Git cannot restore.
-            if path == str(record_root):
-                info["dirty"] = sorted(set(info["dirty"]) | {str(state_path.relative_to(root))})
-        info["dirty_contents"] = "local-only; not backed up" if info["dirty"] else "none"
-        worktrees.append(info)
-    evidence = {item["path"]: item for item in previous.get("evidence", [])}
-    for value in args.evidence:
-        path = Path(value).resolve()
-        if path == state_path.resolve():
-            problems.append("STATE.md cannot reference itself as verification evidence")
-            continue
-        if not path.is_file():
-            problems.append(f"evidence file missing: {path}")
-            continue
-        evidence[str(path)] = {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
-    runs = {r["run_dir"]: r for r in previous.get("runs", [])}
-    for value in args.run:
-        path = str(Path(value).resolve())
-        runs[path] = read_run(path)
-    if problems:
-        for problem in problems:
-            print(f"BLOCKED: {problem}", file=sys.stderr)
-        return ERROR
-    machine = {
-        "effort": args.slug, "mode": "snapshot", "dehydrated": now(),
-        "base_branch": args.base,
-        "base_commit": git(root, "merge-base", args.base, "HEAD").strip(),
-        "worktrees": worktrees, "runs": sorted(runs.values(), key=lambda r: r["run_dir"]),
-        "evidence": sorted(evidence.values(), key=lambda item: item["path"]),
-    }
-    state_path.write_text(join_state(stripped, machine))
-    print(json.dumps({"snapshot": args.slug, "state": str(state_path),
-                      "dirty_contents": "local-only; not backed up", "committed": False}))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_dehydrate(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    edir = effort_record_dir(root, args.slug)
-    record_root = edir.parent.parent.parent
-    state_path = edir / "STATE.md"
-    if not state_path.exists():
-        raise WorkerError(f"no STATE.md at {state_path}")
-    machine_old, stripped = split_state(state_path.read_text())
-    problems = human_problems(stripped)
-
-    wanted = {str(root), str(record_root)}
-    wanted.update(str(Path(w).resolve()) for w in args.worktree)
-    wanted.update(w["path"] for w in machine_old.get("worktrees", []))
-    worktrees = []
-    own_prefix = f"docs/efforts/{args.slug}/"
-    for path in sorted(wanted):
-        if path in args.forget:
-            continue
-        if not Path(path).exists():
-            problems.append(f"recorded worktree {path} is gone; dehydrate refuses to drop it silently (use --forget)")
-            continue
-        info = describe_worktree(root, path, edir)
-        stray = [p for p in info["dirty"] if not (path == str(record_root) and p.startswith(own_prefix))]
-        if stray:
-            problems.append(f"worktree {path} has uncommitted changes: {', '.join(stray[:5])}")
-        info["dirty"] = []
-        worktrees.append(info)
-
-    runs = {r["run_dir"]: r for r in machine_old.get("runs", [])}
-    for run_dir in args.run:
-        runs[str(Path(run_dir).resolve())] = read_run(run_dir)
-    for key, run in list(runs.items()):
-        if run.get("verdict") is None and Path(key).exists():
-            runs[key] = read_run(key)
-
-    if problems:
-        for p in problems:
-            print(f"BLOCKED: {p}", file=sys.stderr)
-        return ERROR
-
-    base_branch = args.base
-    base_commit = git(root, "merge-base", base_branch, "HEAD").strip()
-    machine = {
-        "effort": args.slug,
-        "dehydrated": now(),
-        "base_branch": base_branch,
-        "base_commit": base_commit,
-        "worktrees": worktrees,
-        "runs": sorted(runs.values(), key=lambda r: r["run_dir"]),
-    }
-    with guard_initialized_trunk_mutation(record_root):
-        state_path.write_text(join_state(stripped, machine))
-        git(record_root, "add", f"docs/efforts/{args.slug}")
-        if git(record_root, "diff", "--cached", "--name-only", "--", f"docs/efforts/{args.slug}").strip():
-            git(record_root, "commit", "-q", "-m", f"Dehydrate effort {args.slug}", "--", f"docs/efforts/{args.slug}")
-        machine["state_commit"] = git(record_root, "rev-parse", "HEAD").strip()
-    print(json.dumps({"dehydrated": args.slug, "worktrees": len(worktrees), "runs": len(machine["runs"]),
-                      "commit": machine["state_commit"]}))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_rehydrate(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    edir = effort_record_dir(root, args.slug)
-    if not (edir / "STATE.md").exists():
-        raise WorkerError(f"no STATE.md in {edir}; is this checkout at a commit that has the effort?")
-    machine, stripped = split_state((edir / "STATE.md").read_text())
-    if not machine:
-        raise WorkerError("STATE.md has never been dehydrated (empty machine block)")
-    errors: list[str] = []
-    warnings: list[str] = []
-    repaired: list[str] = []
-
-    base_branch, base_commit = machine["base_branch"], machine["base_commit"]
-    if not rev(root, base_commit):
-        errors.append(f"base commit {base_commit[:12]} is not in this repository")
-    elif not rev(root, base_branch):
-        errors.append(f"base branch {base_branch} not found")
-    elif not is_ancestor(root, base_commit, base_branch):
-        errors.append(f"base commit {base_commit[:12]} is not an ancestor of {base_branch}: history was rewritten")
-    else:
-        behind = git(root, "rev-list", "--count", f"{base_commit}..{base_branch}").strip()
-        if behind != "0":
-            warnings.append(f"{base_branch} moved {behind} commit(s) since dehydrate")
-
-    registered = registered_worktrees(root)
-    for w in machine.get("worktrees", []):
-        path, branch, head = w["path"], w["branch"], w["head"]
-        if Path(path).exists():
-            cur = registered.get(path) or registered.get(str(Path(path).resolve()))
-            if cur is None:
-                errors.append(f"{path} exists but is not a registered worktree")
-                continue
-            if cur.get("branch") != branch:
-                errors.append(f"{path} is on {cur.get('branch')}, expected {branch}")
-            elif cur["head"] != head and not (
-                is_ancestor(root, head, cur["head"]) and only_effort_changes(root, head, cur["head"], args.slug)
-            ):
-                (warnings if is_ancestor(root, head, cur["head"]) else errors).append(
-                    f"{branch} at {cur['head'][:12]}, recorded {head[:12]}"
-                    + ("" if is_ancestor(root, head, cur["head"]) else " (diverged: recorded work is not reachable)")
-                )
-            if dirty_paths(Path(path)):
-                warnings.append(f"{path} has uncommitted changes")
-            if w.get("dirty"):
-                warnings.append(f"{path}: recorded dirty contents are local-only, not backed up; verify them before continuing")
-            continue
-        if w.get("dirty"):
-            errors.append(f"{path} is missing: dirty contents were not backed up; refusing to restore a clean tree")
-            continue
-        tip = rev(root, branch)
-        if tip is None:
-            if rev(root, head):
-                git(root, "worktree", "add", "-q", "-b", branch, path, head)
-                repaired.append(f"recreated branch {branch} at {head[:12]} and worktree {path}")
-            else:
-                errors.append(f"branch {branch} and commit {head[:12]} are both gone: unlanded work is lost")
-            continue
-        if tip != head and not is_ancestor(root, head, tip):
-            errors.append(f"{branch} at {tip[:12]} does not contain recorded {head[:12]}: diverged")
-            continue
-        if tip != head and not only_effort_changes(root, head, tip, args.slug):
-            warnings.append(f"{branch} advanced from {head[:12]} to {tip[:12]}")
-        git(root, "worktree", "add", "-q", path, branch)
-        repaired.append(f"restored worktree {path} on {branch}")
-
-    lost = []
-    for r in machine.get("runs", []):
-        if not Path(r["run_dir"]).exists():
-            lost.append(f"run {Path(r['run_dir']).name}: logs lost, recorded verdict {r.get('verdict')}")
-    warnings.extend(lost)
-    for item in machine.get("evidence", []):
-        path = Path(item["path"])
-        if not path.is_file():
-            errors.append(f"verification evidence missing: {path}")
-        elif hashlib.sha256(path.read_bytes()).hexdigest() != item["sha256"]:
-            errors.append(f"verification evidence changed: {path}")
-    scratch_dir(root, args.slug).mkdir(parents=True, exist_ok=True)
-
-    sections = human_sections(stripped)
-    effort_text = (edir / "EFFORT.md").read_text() if (edir / "EFFORT.md").exists() else ""
-    status = re.search(r"^Status:\s*(.*)$", effort_text, re.M)
-    decisions = sorted(p.name for p in (edir / "decisions").glob("*.md")) if (edir / "decisions").is_dir() else []
-    print(f"# Briefing: {args.slug}  (status: {status.group(1).strip() if status else 'unknown'}, "
-          f"dehydrated {machine['dehydrated']})\n")
-    for name in HUMAN_SECTIONS:
-        body = sections.get(name)
-        if body:
-            print(f"## {name}\n{body}\n")
-    print(f"## Decisions ({len(decisions)})")
-    for d in decisions:
-        print(f"- {d}")
-    print("\n## Drift report")
-    for label, items in (("repaired", repaired), ("warning", warnings), ("error", errors)):
-        for item in items:
-            print(f"- {label}: {item}")
-    if not (repaired or warnings or errors):
-        print("- none")
-    return ERROR if errors else (WARN if warnings else OK)
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_status(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    rows = []
-    candidates, scan_problems = land_tool.scan_effort_records(root)
-    problem_rows: dict[str, str] = {}
-    for problem in scan_problems:
-        problem_rows.setdefault(problem.effort, f"{problem.path}: {problem.message}")
-    for effort_slug in sorted(candidates):
-        try:
-            record = land_tool.select_effort_record(root, effort_slug, candidates[effort_slug])
-            edir = record.path.parent
-            text = record.text
-            status = re.search(r"^Status:\s*(.*)$", text, re.M)
-            meta = record.metadata
-            base = meta["base"]
-            integration = meta["integration_branch"]
-            fork = merge_base(root, base, integration) if base and integration and rev(root, base) and rev(root, integration) else None
-            integration_behind = bool(fork and base and rev(root, base) != fork)
-            stale = "never dehydrated"
-            state = edir / "STATE.md"
-            if state.exists():
-                machine, _ = split_state(state.read_text())
-                if machine:
-                    when = datetime.strptime(machine["dehydrated"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-                    stale = f"{(datetime.now(timezone.utc) - when).days}d ago"
-            rows.append({
-                "effort": edir.name,
-                "status": status.group(1).strip() if status else "unknown",
-                "dehydrated": stale,
-                "decisions": len(list((edir / "decisions").glob("*.md"))) if (edir / "decisions").is_dir() else 0,
-                "effort_worktree": str(record.worktree),
-                "base_branch": base,
-                "integration_branch": integration,
-                "record_branch": meta.get("record_branch"),
-                "integration_behind_mainline": integration_behind,
-                "landed_candidates": accepted_candidates(root, edir, fork, integration),
-            })
-        except WorkerError as error:
-            problem_rows.setdefault(effort_slug, str(error))
-            continue
-        except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
-            problem_rows.setdefault(effort_slug, str(error))
-    for effort_slug in sorted(problem_rows):
-        rows.append({
-            "effort": effort_slug,
-            "status": "problem",
-            "dehydrated": "unknown",
-            "decisions": 0,
-            "effort_worktree": None,
-            "base_branch": None,
-            "integration_branch": None,
-            "integration_behind_mainline": False,
-            "landed_candidates": [],
-            "problem": problem_rows[effort_slug],
-        })
-    for row in rows:
-        print(json.dumps(row))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--repo", help="a checkout of the repository (default: cwd)")
-    sub = parser.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("new")
-    p.add_argument("slug")
-    p.add_argument("--base", default="main")
-    p.set_defaults(fn=cmd_new)
-    p = sub.add_parser("move-records")
-    p.add_argument("slug")
-    p.add_argument("--record-branch")
-    p.add_argument("--worktree")
-    p.set_defaults(fn=cmd_move_records)
-    p = sub.add_parser("decide")
-    p.add_argument("slug")
-    p.add_argument("title")
-    p.set_defaults(fn=cmd_decide)
-    p = sub.add_parser("snapshot")
-    p.add_argument("slug")
-    p.add_argument("--base", default="main")
-    p.add_argument("--worktree", action="append", default=[])
-    p.add_argument("--run", action="append", default=[])
-    p.add_argument("--evidence", action="append", default=[], help="verification file to reference with SHA-256")
-    p.set_defaults(fn=cmd_snapshot)
-    p = sub.add_parser("dehydrate")
-    p.add_argument("slug")
-    p.add_argument("--base", default="main")
-    p.add_argument("--worktree", action="append", default=[])
-    p.add_argument("--forget", action="append", default=[], help="drop a recorded worktree that is gone")
-    p.add_argument("--run", action="append", default=[], help="worker run dir to record")
-    p.set_defaults(fn=cmd_dehydrate)
-    p = sub.add_parser("rehydrate")
-    p.add_argument("slug")
-    p.set_defaults(fn=cmd_rehydrate)
-    p = sub.add_parser("status")
-    p.set_defaults(fn=cmd_status)
-    args = parser.parse_args(argv)
-    try:
-        return args.fn(args)
-    except (WorkerError, Refused) as error:
-        print(f"error: {error}", file=sys.stderr)
-        return 64
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == "__main__":

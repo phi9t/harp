@@ -217,112 +217,20 @@ def find_claim(claims: list[Claim], wanted: str) -> Claim:
 
 
 def cmd_sample(args: argparse.Namespace) -> int:
-    path = Path(args.file)
-    tags = parse_tags(args.tags)
-    claims = parse_claims(path, tags=tags)
-    for claim in sample_claims(path, claims, args.n, args.seed):
-        print(json.dumps(claim_json(claim), sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_record(args: argparse.Namespace) -> int:
-    report = Path(args.file)
-    claims = parse_claims(report)
-    claim = find_claim(claims, args.claim)
-    passed = bool(args.passed)
-    output_digest = None
-    output_path = None
-    if args.output:
-        output_path = Path(args.output)
-        if not output_path.is_file():
-            raise WorkerError(f"output file {output_path} not found")
-        output_digest = file_digest(output_path)
-    evidence_module = None
-    if args.evidence:
-        if not output_digest:
-            raise WorkerError("--evidence requires --output so an output digest can be recorded")
-        evidence_module = load_evidence_module()
-
-    record = {
-        "schema": "corenius.claim-outcome.v1",
-        "report": str(report.resolve()),
-        "claim_id": claim.claim_id,
-        "passed": passed,
-        "command": claim.command,
-        "output": str(output_path.resolve()) if output_path else None,
-        "output_digest": output_digest,
-        "evidence": args.evidence,
-        "recorded_at": now(),
-    }
-    path = outcome_path(report, create=True)
-    with path.open("a") as handle:
-        handle.write(json.dumps(record, sort_keys=True) + "\n")
-    if evidence_module is not None:
-        evidence_module.append_claim_outcome(
-            args.evidence,
-            claim.claim_id,
-            passed,
-            claim.command or "",
-            output_digest,
-            out_dir=None,
-        )
-    print(json.dumps({"recorded": str(path), **record}, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_summary(args: argparse.Namespace) -> int:
-    report = Path(args.file)
-    claims = parse_claims(report)
-    outcomes = load_outcomes(report)
-    claim_ids = {claim.claim_id for claim in claims}
-    recorded_ids = {outcome.get("claim_id") for outcome in outcomes if outcome.get("claim_id") in claim_ids}
-    summary = {
-        "sampled": len(claims),
-        "recorded": len(recorded_ids),
-        "outcomes": len(outcomes),
-        "passed": sum(1 for outcome in outcomes if outcome.get("passed") is True),
-        "failed": sum(1 for outcome in outcomes if outcome.get("passed") is False),
-        "unrecorded": len(claim_ids - recorded_ids),
-        "uncited": sum(1 for claim in claims if claim.status == "UNCITED"),
-    }
-    print(json.dumps(summary, sort_keys=True))
-    latest = {outcome.get("claim_id"): outcome for outcome in outcomes}
-    for claim in claims:
-        outcome = latest.get(claim.claim_id)
-        state = "unrecorded"
-        if outcome:
-            state = "passed" if outcome.get("passed") else "failed"
-        print(json.dumps({**claim_json(claim), "outcome": state}, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    sub = parser.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("sample")
-    p.add_argument("file")
-    p.add_argument("--n", type=int, required=True)
-    p.add_argument("--seed")
-    p.add_argument("--tags", help="comma-separated tag list, for example R,X")
-    p.set_defaults(fn=cmd_sample)
-    p = sub.add_parser("record")
-    p.add_argument("file")
-    p.add_argument("--claim", required=True)
-    verdict = p.add_mutually_exclusive_group(required=True)
-    verdict.add_argument("--passed", action="store_true")
-    verdict.add_argument("--failed", action="store_true")
-    p.add_argument("--output")
-    p.add_argument("--evidence", help="evidence record digest to append to")
-    p.set_defaults(fn=cmd_record)
-    p = sub.add_parser("summary")
-    p.add_argument("file")
-    p.set_defaults(fn=cmd_summary)
-    args = parser.parse_args(argv)
-    try:
-        return args.fn(args)
-    except WorkerError as error:
-        print(f"claims: {error}", file=sys.stderr)
-        return ERROR
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == "__main__":

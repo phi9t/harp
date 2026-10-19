@@ -404,28 +404,11 @@ def build_review_record(args: argparse.Namespace, root: Path) -> dict:
 
 
 def cmd_record(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    record = build_record(args, root)
-    path = record_path(root, args.effort, args.ticket, create=True)
-    with path.open("a") as handle:
-        handle.write(json.dumps(record, sort_keys=True) + "\n")
-    print(json.dumps({"recorded": str(path), "candidate": record["candidate"], "accepted": record["accepted"]}, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_review(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    record = build_review_record(args, root)
-    path = record_path(root, args.effort, args.ticket, create=True)
-    with path.open("a") as handle:
-        handle.write(json.dumps(record, sort_keys=True) + "\n")
-    print(json.dumps({
-        "recorded": str(path),
-        "candidate": record["candidate"],
-        "accepted": record["accepted"],
-        "round": record["round"],
-    }, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def load_rework_records(root: Path, effort: str, ticket: str) -> list[dict]:
@@ -535,20 +518,7 @@ def record_rework_round(
 
 
 def cmd_request_rework(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    ticket_path(root, args.effort, args.ticket)
-    findings = Path(args.findings_file)
-    record, path = record_rework_round(
-        root,
-        args.effort,
-        args.ticket,
-        candidate=args.candidate,
-        kind=args.kind,
-        findings=findings,
-        actor=args.actor,
-    )
-    print(json.dumps({"recorded": str(path), "round": record["round"], "counts_toward_cap": record["counts_toward_cap"]}, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def latest_accepted(records: list[dict]) -> dict[str, dict]:
@@ -564,22 +534,7 @@ def tickets_reviewed_by_other_context(records: list[dict]) -> list[str]:
 
 
 def cmd_summary(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    effort_dir(root, args.effort)
-    records = []
-    for path in sorted((root / "docs" / "efforts" / args.effort / "evidence").glob("acceptance-*.jsonl")):
-        for line in path.read_text().splitlines():
-            if line.strip():
-                records.append(json.loads(line))
-    latest = latest_accepted(records)
-    other = tickets_reviewed_by_other_context(records)
-    print(json.dumps({
-        "effort": args.effort,
-        "tickets_accepted": len(latest),
-        "tickets_reviewed_by_other_context": len(other),
-        "other_context_tickets": other,
-    }, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
@@ -630,14 +585,8 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    add_arguments(parser)
-    args = parser.parse_args(argv)
-    try:
-        return args.fn(args)
-    except WorkerError as error:
-        print(f"acceptance: {error}", file=sys.stderr)
-        return ERROR
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == "__main__":

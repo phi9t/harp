@@ -892,40 +892,7 @@ def create_private_worker_clone(
     base_repo: Path | None = None,
     base_sha: str | None = None,
 ) -> dict:
-    if ref_commit(repo, f"refs/heads/{branch}"):
-        raise WorkerError(f"branch {branch} already exists")
-    base_source = base_repo or repo
-    base_sha = base_sha or ref_commit(base_source, base)
-    if base_sha is None:
-        raise WorkerError(f"ref {base!r} not found")
-    if git_dir is not None:
-        git_dir.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        result = subprocess.run(clone_command(repo, worktree, git_dir, "local-hardlink"), capture_output=True, text=True, env=git_env())
-        object_mode = "local-hardlink"
-        if result.returncode != 0 and cross_device_clone_error(result):
-            if worktree.exists():
-                shutil.rmtree(worktree, ignore_errors=True)
-            if git_dir is not None and git_dir.exists():
-                shutil.rmtree(git_dir, ignore_errors=True)
-            result = subprocess.run(clone_command(repo, worktree, git_dir, "copy"), capture_output=True, text=True, env=git_env())
-            object_mode = "copy"
-        if result.returncode != 0:
-            raise WorkerError(f"git clone failed: {result.stderr.strip() or result.stdout.strip()}")
-        git(worktree, "checkout", "-q", "-b", branch, base_sha)
-        git(worktree, "remote", "remove", "origin", check=False)
-        return {
-            "base_sha": base_sha,
-            "git_dir": str(git_dir if git_dir is not None else worktree / ".git"),
-            "git_dir_layout": "separate" if git_dir is not None else "embedded",
-            "clone_object_mode": object_mode,
-        }
-    except Exception:
-        if worktree.exists():
-            shutil.rmtree(worktree, ignore_errors=True)
-        if git_dir is not None and git_dir.exists():
-            shutil.rmtree(git_dir, ignore_errors=True)
-        raise
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def shared_repo(run: dict) -> Path | None:
@@ -934,39 +901,11 @@ def shared_repo(run: dict) -> Path | None:
 
 
 def import_candidate_to_shared_repo(run: dict, candidate: dict) -> None:
-    repo = shared_repo(run)
-    if repo is None:
-        return
-    commit = candidate.get("commit")
-    branch = run["branch"]
-    if not commit:
-        return
-    git(repo, "fetch", "-q", "--no-tags", str(Path(run["worktree"])), commit)
-    ref = f"refs/heads/{branch}"
-    current = ref_commit(repo, ref)
-    expected = current or "0" * 40
-    git(repo, "update-ref", ref, commit, expected)
-    run.setdefault("published_candidates", []).append(
-        {"branch": branch, "commit": commit, "published_at": now()}
-    )
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def refresh_integration_branch(run: dict) -> dict | None:
-    repo = shared_repo(run)
-    integration = run.get("lead_launch", {}).get("integration")
-    if repo is None or not integration:
-        return None
-    head = ref_commit(repo, f"refs/heads/{integration}")
-    if not head:
-        return None
-    worktree = Path(run["worktree"])
-    current = git(worktree, "branch", "--show-current", check=False).strip()
-    if current != integration:
-        ref = f"refs/heads/{integration}"
-        git(worktree, "fetch", "-q", "--no-tags", str(repo), f"{ref}:{ref}")
-    run.setdefault("branch_baselines", {})[integration] = head
-    run.setdefault("shared_branch_baselines", {})[integration] = head
-    return {"branch": integration, "commit": head}
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def launch_access_profile(args: argparse.Namespace) -> dict:
@@ -1394,226 +1333,7 @@ def external_change_labels(run: dict, paths: list[str]) -> list[str]:
 
 
 def launch(args: argparse.Namespace) -> int:
-    if args.sandbox == "insula" and not getattr(args, "capsule", None):
-        raise WorkerError("--sandbox insula needs --capsule: the capsule is what enforces the paths")
-    if args.cap <= 0:
-        raise WorkerError("--cap must be positive")
-    if args.stall <= 0:
-        raise WorkerError("--stall must be positive")
-    if args.command_timeout <= 0:
-        raise WorkerError("--command-timeout must be positive")
-    validate_allowed_paths(list(args.allow))
-    if not Path(args.task).is_file():
-        raise WorkerError(f"task file {args.task} not found")
-    if args.handoff_mode == "marker" and not args.handoff_marker:
-        raise WorkerError("--handoff-marker is required when --handoff-mode marker")
-    requested_repo = Path(args.repo).resolve()
-    repo = main_worktree(requested_repo)
-    task = Path(args.task).read_text()
-    run_root = runs_root()
-    args.external_add_path = validate_external_add_paths(list(args.external_add_path or []), repo)
-    external_protected = validate_external_protected(list(args.external_protect_path or []), repo, run_root)
-    name = re.sub(r"[^a-z0-9-]", "-", args.name.lower()).strip("-")
-    if not name:
-        raise WorkerError("worker name is empty")
-    branch = f"worker/{name}"
-    worktree = repo.parent / f"{repo.name}-worker-{name}"
-    if worktree.exists():
-        raise WorkerError(f"{worktree} already exists; choose another name or remove it")
-    if ref_commit(repo, f"refs/heads/{branch}"):
-        raise WorkerError(f"branch {branch} already exists")
-    base_sha = ref_commit(requested_repo, args.base)
-    if base_sha is None:
-        raise WorkerError(f"ref {args.base!r} not found")
-    protected = protected_snapshots([str(repo)] + list(args.protect or []))
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    run_dir = run_root / "workers" / f"{name}-{stamp}"
-    run_dir.mkdir(parents=True)
-    capsule_ref = getattr(args, "capsule", None)
-    enforced = args.sandbox == "insula"
-    separate_git_dir = None if capsule_ref else run_dir / "git"
-    shared_branch_baselines = local_branch_heads(repo)
-    clone = create_private_worker_clone(repo, worktree, branch, args.base, separate_git_dir, base_repo=requested_repo, base_sha=base_sha)
-
-    # The main checkout is protected as-is: the worker must not touch it.
-
-    precreated: list[Path] = []
-    rw_binds: list[tuple[Path, str]] = []
-    if enforced:
-        rw_binds, precreated = sandbox_binds(worktree, list(args.allow))
-        rw_binds.append((worktree / ".git", "/workspace/.git"))
-    allowed_text = ", ".join(args.allow) or "(none: read-only run)"
-    if enforced:
-        allowed_text += " (enforced: every other path under /workspace is mounted read-only)"
-    if capsule_ref:
-        # Inside a capsule only the worktree is mounted (at /workspace); other repos and git metadata are not visible.
-        shown_tree, shown_branch = "/workspace", "(not visible in the capsule)"
-        protected_rule = "- Only /workspace is visible to you; other repositories and git metadata are not mounted."
-    else:
-        shown_tree, shown_branch = str(worktree), branch
-        protected_rule = (
-            f"- These repositories are read-only for you: {', '.join(p['path'] for p in protected)}. Read them at their\n"
-            "  recorded commit with `git -C <repo> show <commit>:<path>`; make no git writes there."
-        )
-    if external_protected:
-        protected_rule += (
-            "\n- These external paths are protected and observed for changes during the run: "
-            + ", ".join(str(p) for p in external_protected) + "."
-        )
-    handoff_rule = (
-        "Exit after committing the finished work."
-        if args.handoff_mode == "exit"
-        else f"Commit the ready hand-off with subject exactly {args.handoff_marker!r}; the supervisor may mark it ready before this process exits."
-    )
-    profile = launch_access_profile(args)
-    temp = new_run_temp(run_dir, keep=args.keep_temp)
-    prompt_temp = "/run/corenius-tmp (private capsule tmpfs)" if capsule_ref else temp["tmpdir"]
-    prompt = HEADER.format(
-        worktree=shown_tree,
-        branch=shown_branch,
-        allowed=allowed_text,
-        protected_rule=protected_rule,
-        handoff_rule=handoff_rule,
-        access_rules=access_rules(profile),
-        temp_dir=prompt_temp,
-    ) + task
-    (run_dir / "prompt.md").write_text(prompt)
-    brief_digest = hashlib.sha256(prompt.encode()).hexdigest()
-
-    runtime = args.runtime
-    worker_cmd = None
-    if args.interactive and capsule_ref:
-        raise WorkerError("interactive launch does not support --capsule")
-    runtime_trust = runtime_trust_config(runtime, worktree) if args.interactive else None
-    if args.interactive:
-        worker_cmd = interactive_argv(runtime, args, worktree, prompt)
-    elif capsule_ref:
-        # The capsule is the boundary, so the runtime's own sandbox is switched off.
-        inner = exec_argv(runtime, args, Path("/workspace"), Path("/home/bench/run"), "danger-full-access")
-        capsule_tool = Path(__file__).resolve().parents[1] / "insula" / "capsule.py"
-        worker_cmd = [
-            sys.executable, str(capsule_tool), "run", capsule_ref, "--workspace", str(worktree),
-            "--net", "host" if profile["network"] == "on" else "none",
-            "--rw", f"{run_dir}:/home/bench/run", "--env", "TRAE_HOME=/home/bench/.trae",
-            "--env", "TRAECLI_HOME=/home/bench/.trae/cli",
-            "--env", "TMPDIR=/run/corenius-tmp", "--env", "TMUX_TMPDIR=/run/corenius-tmp",
-            "--env", "TMPPREFIX=/run/corenius-tmp/zsh", "--record", str(run_dir / "capsule-run.json"),
-        ]
-        if enforced:
-            # F12: the worktree is read-only inside the capsule; only the allowed paths are writable. A write
-            # elsewhere fails with EROFS at the kernel instead of being caught afterwards by the supervisor.
-            worker_cmd.append("--ro-workspace")
-            for host, dest in rw_binds:
-                worker_cmd += ["--rw", f"{host}:{dest}"]
-        worker_cmd += ["--", *inner]
-    else:
-        extra_roots = [Path(clone["git_dir"])] if clone["git_dir_layout"] == "separate" else []
-        extra_roots.append(Path(temp["tmpdir"]))
-        worker_cmd = exec_argv(runtime, args, worktree, run_dir, args.sandbox, extra_roots)
-    (run_dir / "events.jsonl").touch()
-    (run_dir / "stderr.log").touch()
-    external_state = write_external_baseline(external_protected, run_dir, EXTERNAL_DIGEST_LIMIT_BYTES)
-    tmux_window = None
-    interactive_script = None
-    process = None
-    pid = None
-    if args.interactive:
-        if not args.tmux_session:
-            raise WorkerError("interactive launch requires --tmux-session")
-        window_name = args.tmux_window or name[:32]
-        shell_pid = run_dir / "shell.pid"
-        interactive_script = run_dir / "interactive-launch.sh"
-        command_text = (
-            "#!/bin/sh\n"
-            f"export TMPDIR={shlex.quote(temp['tmpdir'])}\n"
-            f"export TMUX_TMPDIR={shlex.quote(temp['tmux_tmpdir'])}\n"
-            f"export TMPPREFIX={shlex.quote(temp['tmpprefix'])}\n"
-            f"printf '%s\\n' \"$$\" > {shlex.quote(str(shell_pid))}\n"
-            f"cd {shlex.quote(str(worktree))}\n"
-            f"timeout --foreground {int(args.cap)} {shlex.join(worker_cmd)}\n"
-            "status=$?\n"
-            f"printf '%s\\n' \"$status\" > {shlex.quote(str(run_dir / 'exit_code'))}\n"
-            "printf '\\n[corenius] runtime exited with status %s; terminal retained for review/rework.\\n' \"$status\"\n"
-            "exec ${SHELL:-sh}\n"
-        )
-        interactive_script.write_text(command_text)
-        interactive_script.chmod(0o755)
-        tmux_window = tmux_interactive_window(
-            args.tmux_session,
-            window_name,
-            worktree,
-            shlex.quote(str(interactive_script)),
-            runtime_temp_env(temp),
-        )
-        pid = read_pid_file(shell_pid)
-    else:
-        script = (
-            f"timeout --foreground {int(args.cap)} {shlex.join(worker_cmd)} "
-            f"< {shlex.quote(str(run_dir / 'prompt.md'))} "
-            f"> {shlex.quote(str(run_dir / 'events.jsonl'))} "
-            f"2> {shlex.quote(str(run_dir / 'stderr.log'))}; "
-            f"echo $? > {shlex.quote(str(run_dir / 'exit_code'))}"
-        )
-        process = subprocess.Popen(
-            ["sh", "-c", script],
-            cwd=worktree,
-            start_new_session=True,
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            env=run_environment(temp),
-        )
-        pid = process.pid
-    run = {
-        "name": name,
-        "run_dir": str(run_dir),
-        "worktree": str(worktree),
-        "workspace_kind": "private-clone",
-        "shared_repo": str(repo),
-        "git_dir": clone["git_dir"],
-        "git_dir_layout": clone["git_dir_layout"],
-        "clone_object_mode": clone["clone_object_mode"],
-        "branch": branch,
-        "base_sha": base_sha,
-        "allowed": list(args.allow),
-        "protected": protected,
-        "branch_baselines": {k: v for k, v in local_branch_heads(worktree).items() if k != branch},
-        "shared_branch_baselines": shared_branch_baselines,
-        "forbidden": list(DEFAULT_FORBIDDEN) + list(args.forbid or []),
-        "runtime": runtime,
-        "runtime_observability": runtime_observability(runtime),
-        "interactive": bool(args.interactive),
-        "interactive_command": worker_cmd if args.interactive else None,
-        "runtime_trust": runtime_trust,
-        "interactive_script": str(interactive_script) if interactive_script else None,
-        "tmux_window": tmux_window,
-        "access_profile": profile,
-        "access_profile_support": access_profile_support(),
-        "external_state": external_state,
-        "temp": temp,
-        "brief_digest": brief_digest,
-        "handoff_mode": args.handoff_mode,
-        "handoff_marker": args.handoff_marker,
-        "model": args.model,
-        "effort": args.effort,
-        "sandbox_mode": args.sandbox,
-        "sandbox": ("insula (capsule, read-only worktree, allowed paths bound writable)" if enforced
-                    else "danger-full-access (capsule)" if capsule_ref else args.sandbox),
-        "capsule": capsule_ref,
-        "precreated": [str(p) for p in precreated],
-        "cap_seconds": int(args.cap),
-        "stall_seconds": int(args.stall),
-        "started": now(),
-        "started_epoch": time.time(),
-    }
-    run.update(process_identity(process) if process is not None else {
-        "pid": pid,
-        "process_group_id": None,
-        "process_session_id": None,
-    })
-    (run_dir / "run.json").write_text(json.dumps(run, indent=2) + "\n")
-    print(json.dumps({"run_dir": str(run_dir), "worktree": str(worktree), "branch": branch, "pid": pid}))
-    return 0
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 # --- checks -------------------------------------------------------------------
@@ -1685,6 +1405,8 @@ class Checker:
     """Stateful boundary checks for one run; each cycle returns new findings."""
 
     def __init__(self, run: dict, *, persist: bool = True):
+        if persist:
+            raise WorkerError("Retired worker verification authority; use harp durable verify.")
         self.run = run
         self.persist = persist
         self.run_dir = Path(run["run_dir"])
@@ -2455,87 +2177,7 @@ def read_pid_file(path: Path, timeout: float = 2.0) -> int | None:
 
 
 def supervise(args: argparse.Namespace) -> int:
-    run = load_run(args.run_dir)
-    run_dir = Path(run["run_dir"])
-    checker = Checker(run)
-    findings: list[dict] = []
-    started_here = time.time()
-    status_log = run_dir / "status.jsonl"
-    seen_notice_kinds: set[str] = set()
-    while True:
-        alive, exit_code = process_state(run)
-        new = checker.cycle(alive)
-        findings.extend(new)
-        acknowledge_pending_rework_deliveries(run)
-        elapsed = int(time.time() - run["started_epoch"])
-        notices = []
-        for notice in running_notices(run, alive, elapsed, exit_code):
-            if notice["kind"] not in seen_notice_kinds:
-                notices.append(notice)
-                seen_notice_kinds.add(notice["kind"])
-        with status_log.open("a") as handle:
-            handle.write(
-                json.dumps(
-                    {"t": now(), "elapsed": elapsed, "alive": alive, "events": checker.events,
-                     "new": new, "notices": notices}
-                )
-                + "\n"
-            )
-        if not alive:
-            # Paths pre-created for the sandbox binds that the worker never wrote are removed first, so an empty
-            # placeholder neither hides a missing output nor shows up as the worker's change.
-            removed = remove_untouched(run.get("precreated", []))
-            if removed:
-                findings.append({"severity": "NOTE", "kind": "precreated-removed", "detail": ", ".join(removed)})
-            # One more pass now that the process has exited: catch late writes.
-            findings.extend(checker.cycle(False))
-            acknowledge_pending_rework_deliveries(run)
-            findings.extend(checker.external_state_findings(hash_files=True))
-            removed_temp = cleanup_run_temp(run)
-            if removed_temp:
-                findings.append({"severity": "NOTE", "kind": "temp-removed", "detail": removed_temp})
-            break
-        handoff = handoff_state(run, exit_code, findings, persist=True)
-        if run.get("handoff_mode") == "marker" and handoff["ready_for_review"]:
-            break
-        if time.time() - started_here >= args.max_wait:
-            print(json.dumps({"verdict": "RUNNING", "elapsed": elapsed, "events": checker.events,
-                              "findings": findings, "disk_usage": disk_usage(run)}))
-            return RUNNING
-        time.sleep(args.interval)
-
-    missing = [a for a in run["allowed"] if not (Path(run["worktree"]) / a).exists()]
-    handoff = handoff_state(run, exit_code, findings, persist=True)
-    findings.extend(post_candidate_workspace_findings(run, checker))
-    findings.extend(handoff_findings(run))
-    severities = {f["severity"] for f in findings} - {"NOTE"}
-    bad_exit = run.get("handoff_mode", "exit") == "exit" and exit_code not in (0,)
-    if "VIOLATION" in severities:
-        code = VIOLATED
-    elif severities or bad_exit or missing or not handoff["ready_for_review"]:
-        code = DEGRADED
-    else:
-        code = CLEAN
-    verdict = {
-        "verdict": VERDICT_NAMES[code],
-        "exit_code": exit_code,
-        "elapsed_seconds": int(time.time() - run["started_epoch"]),
-        "events": checker.events,
-        "missing_allowed_outputs": missing,
-        "findings": findings,
-        **handoff,
-        "disk_usage": disk_usage(run),
-        "finished": now(),
-        "run_dir": str(run_dir),
-        "worktree": run["worktree"],
-        "branch": run["branch"],
-    }
-    verdict_file = run_dir / "verdict.json"
-    if verdict_file.exists():
-        verdict_file.replace(run_dir / "verdict.prev.json")
-    verdict_file.write_text(json.dumps(verdict, indent=2) + "\n")
-    print(json.dumps(verdict))
-    return code
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def status(args: argparse.Namespace) -> int:
@@ -2744,89 +2386,8 @@ def deliver_findings_locked(args: argparse.Namespace, run: dict) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    sub = parser.add_subparsers(dest="command", required=True)
-    p = sub.add_parser("launch", epilog=RUNTIME_HELP + "\n" + ACCESS_PROFILE_HELP, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--task", required=True, help="file with the task text")
-    p.add_argument("--name", required=True)
-    p.add_argument("--runtime", choices=RUNTIMES, default="traecli",
-                   help="worker runtime to launch (default: traecli)")
-    p.add_argument("--allow", action="append", default=[], help="path (relative to the worktree) the worker may write; repeatable")
-    p.add_argument("--protect", action="append", default=[], help="extra repo that must stay unchanged; repeatable")
-    p.add_argument("--capsule", help="capsule digest prefix or request file: run the worker inside it")
-    p.add_argument("--network", choices=("on", "off"), default="on",
-                   help="worker network access for this launch (default: on)")
-    p.add_argument("--command-timeout", type=int, default=120,
-                   help="maximum seconds for one worker shell command")
-    p.add_argument("--external-add-path", action="append", default=[],
-                   help="absolute or relative host path outside the repository where the worker may add entries")
-    p.add_argument("--external-protect-path", action="append", default=[],
-                   help="absolute host file or directory outside the repository to baseline and report changes for")
-    p.add_argument("--allow-container-builds", action="store_true",
-                   help="declare container builds allowed for this launch")
-    p.add_argument("--allow-shared-cache-writes", action="store_true",
-                   help="declare writes to shared caches allowed for this launch")
-    p.add_argument("--forbid", action="append", default=[], help="extra regex forbidden in worker commands")
-    p.add_argument("--repo", default=".")
-    p.add_argument("--base", default="main")
-    p.add_argument("--model", default="GPT-5.5")
-    p.add_argument("--effort", default="xhigh")
-    p.add_argument("--sandbox", default="workspace-write",
-                   help="traecli sandbox mode, or `insula` (needs --capsule): worktree read-only, allowed paths bound writable")
-    p.add_argument("--handoff-mode", choices=("exit", "marker"), default="exit",
-                   help="exit: ready after process exits 0; marker: ready when HEAD subject matches --handoff-marker")
-    p.add_argument("--handoff-marker", help="required marker commit subject for --handoff-mode marker")
-    p.add_argument("--interactive", action="store_true",
-                   help="start the runtime in an interactive tmux window instead of detached exec JSON mode")
-    p.add_argument("--tmux-session",
-                   help="named tmux session for --interactive; uses the user's default tmux server unless TMUX_TMPDIR is set")
-    p.add_argument("--tmux-window", help="window name for --interactive")
-    p.add_argument("--cap", type=int, default=2700, help="hard wall-clock cap in seconds")
-    p.add_argument("--stall", type=int, default=300, help="seconds without events before STALL")
-    p.add_argument("--keep-temp", action="store_true", help="keep the run temp directory after the worker is stopped")
-    p.set_defaults(func=launch)
-    p = sub.add_parser("supervise", epilog=WORKSPACE_ATTRIBUTION_HELP, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("run_dir")
-    p.add_argument("--interval", type=float, default=30)
-    p.add_argument("--max-wait", type=float, default=540, help="return RUNNING (exit 3) after this many seconds")
-    p.set_defaults(func=supervise)
-    p = sub.add_parser(
-        "status",
-        description=(
-            "One-shot check of a run. By default this writes nothing. Use --update-run-record to "
-            "write observed Candidate state, runtime session id, model usage or worker-side acknowledgement."
-        ),
-    )
-    p.add_argument("run_dir")
-    p.add_argument("--update-run-record", action="store_true",
-                   help="write observed Candidate state, runtime session id, model usage and acknowledgements to run.json")
-    p.set_defaults(func=status)
-    p = sub.add_parser("resume")
-    p.add_argument("run_dir")
-    p.add_argument("--message", help="follow-up message to send to the same runtime session")
-    p.add_argument("--message-file", help="file containing the follow-up message")
-    p.add_argument("--timeout", type=float, default=None,
-                   help="seconds before a foreground resume is marked timed out (default: run wall-clock cap)")
-    p.add_argument("--detach", action="store_true",
-                   help="start the resume turn detached and let supervise watch the run")
-    p.set_defaults(func=resume)
-    p = sub.add_parser("deliver-findings")
-    p.add_argument("run_dir")
-    p.add_argument("--findings-file", required=True)
-    p.add_argument("--kind", choices=("review", "stale-base"), default="review")
-    p.add_argument("--transport", choices=("terminal",), default="terminal")
-    p.add_argument("--terminal-target")
-    p.add_argument("--terminal-input-file")
-    p.add_argument("--message")
-    p.add_argument("--ack-timeout", type=float, default=2.0,
-                   help="seconds to wait for a worker-side acknowledgement after sending terminal findings")
-    p.set_defaults(func=deliver_findings)
-    args = parser.parse_args(argv)
-    try:
-        return args.func(args)
-    except WorkerError as error:
-        print(f"worker: {error}", file=sys.stderr)
-        return 64
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == "__main__":

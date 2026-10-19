@@ -1,3 +1,13 @@
+# Historical benchmark scope
+
+Only solo `reference`/`noop` replay and pure task/result validation remain supported.
+Direct `cmd:`/`traecli` agents, fleet/controller scheduling and lead-driven provider
+launches are retired before effects. Use `harp durable --help` for coding work.
+The inherited command examples below are historical design/evidence context;
+they do not re-enable retired execution or grant model/service authority.
+
+---
+
 # corenius-bench
 
 A benchmark for multi-agent work on real tasks. Tasks are small repos with real verifiers: terminal work, Python (uv), Rust

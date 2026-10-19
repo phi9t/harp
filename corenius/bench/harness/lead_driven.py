@@ -3,6 +3,11 @@
 
 from __future__ import annotations
 
+if __name__ == "__main__":
+    import sys as _retired_sys
+    print('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.', file=_retired_sys.stderr)
+    raise SystemExit(2)
+
 import argparse
 import hashlib
 import json
@@ -1016,144 +1021,7 @@ def verify_landing(scenario: Scenario, record: dict, case_dir: Path) -> dict:
 
 
 def launch_and_supervise(scenario: Scenario, participant: Participant, case_dir: Path, runtime: str = "scripted") -> dict:
-    repo = case_dir / "repo"
-    case_dir.mkdir(parents=True)
-    base = init_repo(scenario, repo)
-    env = os.environ.copy()
-    set_runtime_env(env, scenario, runtime)
-    runtime_binary = runtime_binary_path(runtime, env)
-    env["CORENIUS_RUNS"] = str(case_dir / "runs")
-    env["CORENIUS_READINESS_PARTICIPANT"] = participant.mode
-    if participant.handoff_marker:
-        env["CORENIUS_HANDOFF_MARKER"] = participant.handoff_marker
-    allow_args = [arg for path in scenario.allow for arg in ("--allow", path)]
-    handoff_args = ["--handoff-mode", participant.handoff_mode]
-    if participant.handoff_marker:
-        handoff_args += ["--handoff-marker", participant.handoff_marker]
-    external_paths = []
-    for path in participant.external_add_paths or []:
-        raw = Path(path)
-        external_paths.append(str(raw if raw.is_absolute() else (case_dir / raw).resolve()))
-    env["CORENIUS_READINESS_EXTERNAL_ADD_PATHS"] = os.pathsep.join(external_paths)
-    access_args = ["--network", participant.network]
-    if participant.command_timeout_seconds is not None:
-        access_args += ["--command-timeout", str(participant.command_timeout_seconds)]
-    for path in external_paths:
-        access_args += ["--external-add-path", path]
-    for path in participant.external_protect_paths or []:
-        protected = materialize_external_path(scenario, case_dir, path)
-        access_args += ["--external-protect-path", str(protected.resolve())]
-    if participant.allow_container_builds:
-        access_args.append("--allow-container-builds")
-    if participant.allow_shared_cache_writes:
-        access_args.append("--allow-shared-cache-writes")
-    launch = run_cmd(
-        tool_cmd(
-            "worker",
-            "launch",
-            "--task",
-            str(scenario.task),
-            "--name",
-            f"{scenario.id}-{participant.id}",
-            "--repo",
-            str(repo),
-            "--base",
-            base,
-            "--runtime",
-            "codex" if runtime == "codex" else "traecli",
-            "--stall",
-            "10",
-            *allow_args,
-            *handoff_args,
-            *access_args,
-            env=env,
-        ),
-        env=env,
-    )
-    if launch.returncode != 0:
-        raise LeadDrivenError(launch.stderr.strip() or launch.stdout.strip())
-    launched = read_json_stdout(launch, "worker launch")
-    max_wait = "20"
-    if participant.command_timeout_seconds is not None:
-        max_wait = str(max(20, int(participant.command_timeout_seconds) + 10))
-    supervise = run_cmd(
-        tool_cmd(
-            "worker",
-            "supervise",
-            launched["run_dir"],
-            "--interval",
-            "0.1",
-            "--max-wait",
-            max_wait,
-            env=env,
-        ),
-        env=env,
-    )
-    try:
-        if supervise.returncode not in (0, 1, 2):
-            raise LeadDrivenError(supervise.stderr.strip() or supervise.stdout.strip())
-        try:
-            toolbox_verdict = json.loads(supervise.stdout.strip().splitlines()[-1])
-        except (IndexError, json.JSONDecodeError) as error:
-            raise LeadDrivenError("worker supervise returned invalid JSON") from error
-        verification = verify_handoff(Path(launched["run_dir"]))
-        expected = participant.expect_ready
-        outcome, details = judge_result(expected, toolbox_verdict, verification)
-        details.extend(worker_execution_failures(Path(launched["run_dir"])))
-        landing_verification = None
-        expected_landing = None
-        observed_landing = None
-        if scenario.kind == "landing":
-            expected_landing = scenario.landing_expect
-            landing_verification = verify_landing(scenario, {
-                "repo": str(repo),
-                "run": {**json.loads((Path(launched["run_dir"]) / "run.json").read_text()),
-                        "last_message": str(Path(launched["run_dir"]) / "last-message.md")},
-                "toolbox_verdict": toolbox_verdict,
-            }, case_dir)
-            observed_landing = landing_verification["observed"]
-            details.extend(landing_verification["details"])
-            if landing_verification["details"]:
-                outcome = "fails"
-        post_ready = None
-        if participant.expect_candidate_moved:
-            post_ready = wait_for_candidate_moved(launched["run_dir"], env)
-            if "candidate-moved" not in json.dumps(post_ready.get("findings", [])):
-                outcome = "fails"
-                details.append("candidate-moved")
-        if details:
-            outcome = "fails"
-        observed_actions = observed_participant_actions(scenario, participant, case_dir, Path(launched["run_dir"]))
-        details.extend(observed_actions.get("failure_details", []))
-        if details:
-            outcome = "fails"
-        return {
-            "scenario": scenario.id,
-            "case": participant.id,
-            "participant": participant.id,
-            "stories": participant.stories if participant.stories is not None else scenario.stories,
-            "scenario_result": outcome,
-            "failure_details": details,
-            "expected_ready": expected,
-            "repo": str(repo),
-            "case_dir": str(case_dir),
-            "base": base,
-            "materialized_task": scenario.benchmark_task,
-            "runtime_binary": str(runtime_binary),
-            "runtime_binary_real": is_real_runtime_binary(runtime_binary),
-            "run": {**json.loads((Path(launched["run_dir"]) / "run.json").read_text()),
-                    "last_message": str(Path(launched["run_dir"]) / "last-message.md")},
-            "toolbox_verdict": toolbox_verdict,
-            "verification": verification,
-            "landing_verification": landing_verification,
-            "expected_landing": expected_landing,
-            "observed_landing": observed_landing,
-            "post_ready": post_ready,
-            "observed_actions": observed_actions,
-        }
-    finally:
-        if participant.handoff_mode == "marker":
-            stop_run(launched["run_dir"])
+    raise RuntimeError('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.')
 
 
 def commit_in_worktree(checkout: Path, path: str, text: str, message: str) -> None:
@@ -2995,51 +2863,7 @@ def init_rework_repo(scenario: Scenario, case: dict, case_dir: Path) -> dict:
 
 
 def launch_rework_participant(scenario: Scenario, case: dict, case_dir: Path, env: dict, runtime: str) -> dict:
-    setup = init_rework_repo(scenario, case, case_dir)
-    repo = setup["repo"]
-    base = setup["base"]
-    env["CORENIUS_READINESS_PARTICIPANT"] = case.get("participant", "rework")
-    command = tool_cmd(
-        "worker",
-        "launch",
-        "--task",
-        str(scenario.task),
-        "--name",
-        f"{scenario.id}-{case['id']}",
-        "--repo",
-        str(repo),
-        "--base",
-        base,
-        "--runtime",
-        worker_runtime(runtime),
-        "--handoff-mode",
-        "marker",
-        "--handoff-marker",
-        "ticket 01: ready for review",
-        "--stall",
-        "10",
-        env=env,
-    )
-    for path in scenario.allow:
-        command += ["--allow", path]
-    launch = run_cmd(command, env=env)
-    if launch.returncode != 0:
-        raise LeadDrivenError(launch.stderr.strip() or launch.stdout.strip())
-    launched = read_json_stdout(launch, "worker launch")
-    run_path = Path(launched["run_dir"]) / "run.json"
-    run = json.loads(run_path.read_text())
-    run["lead_launch"] = {"effort": setup["effort"], "ticket": "01", "integration": setup["integration_branch"], "base": base}
-    run_path.write_text(json.dumps(run, indent=2) + "\n")
-    supervise = run_cmd(tool_cmd("worker", "supervise", launched["run_dir"], "--interval", "0.1", "--max-wait", "20", env=env), env=env)
-    if supervise.returncode not in (worker_tool.CLEAN, worker_tool.DEGRADED, worker_tool.VIOLATED):
-        raise LeadDrivenError(supervise.stderr.strip() or supervise.stdout.strip())
-    try:
-        verdict = json.loads(supervise.stdout.strip().splitlines()[-1])
-    except (IndexError, json.JSONDecodeError) as error:
-        raise LeadDrivenError("worker supervise returned invalid JSON") from error
-    if not verdict.get("ready_for_review"):
-        raise LeadDrivenError(f"initial rework participant was not ready: {verdict}")
-    return {**setup, "launched": launched, "initial_verdict": verdict}
+    raise RuntimeError('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.')
 
 
 def acceptance_record_from_output(stdout: str) -> dict:
@@ -3401,75 +3225,7 @@ def append_running_note(notes_file: Path, kind: str, note: str) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("scenario", nargs="?")
-    parser.add_argument("--participant", action="append", default=[])
-    parser.add_argument("--out", default=str(ROOT / "bench" / "results" / "readiness"))
-    parser.add_argument("--runtime", default="scripted")
-    parser.add_argument("--proof", choices=results.READINESS_PROOFS, default="deterministic")
-    parser.add_argument("--intervention", action="append", default=[])
-    parser.add_argument("--report", metavar="DIR")
-    parser.add_argument("--note", nargs=2, metavar=("KIND", "TEXT"))
-    parser.add_argument("--notes-file", default=str(RUNNING_NOTES))
-    args = parser.parse_args(argv)
-    interventions: list[dict] = []
-    try:
-        if args.report:
-            print(results.readiness_report(Path(args.report), READINESS), end="")
-            return 0
-        if args.note:
-            append_running_note(Path(args.notes_file), args.note[0], args.note[1])
-            print(f"appended {args.note[0]} note to {args.notes_file}")
-            return 0
-        if not args.scenario:
-            parser.error("scenario is required unless --report or --note is used")
-        interventions = parse_interventions(args.intervention)
-        records = run_scenario(
-            args.scenario,
-            Path(args.out),
-            args.participant,
-            runtime=args.runtime,
-            proof=args.proof,
-            interventions=interventions,
-        )
-    except LeadDrivenError as error:
-        if args.scenario:
-            try:
-                append_scenario_row(
-                    Path(args.out),
-                    load_scenario(args.scenario),
-                    [],
-                    runtime=args.runtime,
-                    proof=args.proof,
-                    interventions=interventions,
-                    elapsed_seconds=0.0,
-                    reason=str(error),
-                )
-            except Exception:
-                pass
-        print(f"lead-driven: {error}", file=sys.stderr)
-        return 1
-    except ValueError as error:
-        print(f"lead-driven: {error}", file=sys.stderr)
-        return 2
-    ok = True
-    for record in records:
-        if record["scenario_result"] not in SCENARIO_RESULTS:
-            record["scenario_result"] = "fails"
-        ok = ok and record["scenario_result"] == "passes"
-        name = record.get("participant") or record.get("case")
-        if record.get("expected_landing"):
-            observed = record.get("observed_landing") or "unknown"
-            expected = record["expected_landing"]
-        elif "verification" in record:
-            observed = "ready" if record["verification"]["ready_for_review"] else "not-ready"
-            expected = "ready" if record["expected_ready"] else "not-ready"
-        else:
-            observed = "checked"
-            expected = "checked"
-        details = f" details={','.join(record['failure_details'])}" if record.get("failure_details") else ""
-        print(f"{record['scenario_result']} {record['scenario']} {name} expected={expected} observed={observed}{details}")
-    return 0 if ok else 1
+    raise RuntimeError('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.')
 
 
 if __name__ == "__main__":

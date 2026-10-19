@@ -26,21 +26,7 @@ from workspace import RepositoryWorkspace, run_git
 
 class Collab:
     def __init__(self, repo: str | Path):
-        self.invoked = output_path(repo)
-        common = run_git(self.invoked, "rev-parse", "--path-format=absolute", "--git-common-dir").strip()
-        self.common = output_path(common)
-        self.home = self.common / "collab"
-        self.db_path = self.home / "state.sqlite3"
-        self.store = StateStore(self.home, self.db_path)
-        self.config = self.store.load_config()
-        self.workspace = RepositoryWorkspace(self.invoked, self.common, self.store, self.config)
-        self.tickets = TicketSource(self.workspace)
-        self.checks = CheckRunner(self.store, self.workspace, self.tickets, self.require_config)
-        self.landing = LandingManager(self.store, self.workspace, self.tickets, self.require_config)
-        self.sweeper = SweepManager(self.store, self.workspace, self.require_config)
-        self.refresher = RefreshManager(
-            self.store, self.workspace, self.tickets, self.open_refreshed_attempt, self.require_refresh_stopped
-        )
+        raise RuntimeError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
     def require_refresh_stopped(self, attempt: dict) -> None:
         if attempt["state"] == "abandoning":

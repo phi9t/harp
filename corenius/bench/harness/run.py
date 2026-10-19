@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
-"""Run benchmark tasks under a condition with an agent, inside capsules; write result.json per run.
-
-  run.py TASK... | --all   --condition solo|fleet:N|controller:TICKET   --agent reference|noop|cmd:SHELL|traecli[:MODEL]
-         [--repeat K] [--out DIR] [--authorize-model-spend]
-  run.py --report DIR       aggregate results under DIR
-
-Agents run inside a capsule (task capsule, offline, for reference/noop/cmd; the agent capsule with network for
-traecli). Verification always runs in the task capsule with the network off and the pristine tests restored.
-A real model is only launched with --authorize-model-spend.
+"""Historical solo reference/noop capsule replay and result reporting.
+Provider/cmd and old fleet/controller execution are retired; use harp durable.
 """
 
 from __future__ import annotations
+
+if __name__ == "__main__":
+    import argparse as _retired_argparse
+    import sys as _retired_sys
+    _retired_parser = _retired_argparse.ArgumentParser(add_help=False)
+    _retired_parser.add_argument("--agent", default="reference")
+    _retired_parser.add_argument("--condition", default="solo")
+    _retired_args, _ = _retired_parser.parse_known_args()
+    if (_retired_args.condition != "solo" or
+            _retired_args.agent.split(":", 1)[0] not in {"reference", "noop"}):
+        print('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.', file=_retired_sys.stderr)
+        raise SystemExit(2)
 
 import argparse
 import json
@@ -66,6 +71,8 @@ class Plan:
 
 class Agent:
     def __init__(self, spec: str, authorized: bool = False, timeout: float | None = None):
+        if spec.split(":", 1)[0] not in {"reference", "noop"}:
+            raise SystemExit('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.')
         self.spec, self.authorized, self.timeout = spec, authorized, timeout
         self.kind = spec.split(":", 1)[0]
         if self.kind not in ("reference", "noop", "cmd", "traecli"):
@@ -190,39 +197,7 @@ def run_solo(task: tasklib.Task, agent: Agent, out: Path, index: int, rid: str |
 
 def run_fleet_condition(task: tasklib.Task, agent: Agent, out: Path, index: int, n: int, rid: str | None = None,
                         observer=None, log=None) -> dict:
-    observer = observer or (lambda event, **fields: None)
-    if "multi" not in task.tags:
-        raise SystemExit(f"{task.id} is a single-ticket task; fleet:{n} needs a multi task")
-    verify_record = tasklib.capsule_for(task)
-    agent_record = agent.capsule_record(task)
-    rid = rid or run_id(task.id, f"fleet:{n}", agent.spec, index)
-    (out / rid).mkdir(parents=True, exist_ok=True)
-
-    usages: list[dict] = []
-
-    def ticket_agent(ticket, ws, _record):
-        out = agent.run(ticket.instruction, ws, agent_record, ticket.path, task)
-        usage = parse_usage(str(out.get("tail", "")))
-        if usage:
-            usages.append(usage)
-        return out
-
-    observer("agents")
-    run = fleet.run_fleet(task, ticket_agent, verify_record, workers=n, log=log, observer=observer)
-    observer("done", passed=run["passed"], conflicts=run["conflicts"], redos=run["redos"])
-    (out / rid / "verify-tail.txt").write_text(str(run.get("verify_tail", "")))
-    rec = base_record(task, f"fleet:{n}", agent, verify_record, rid)
-    rec["outcome"] = {"passed": run["passed"], "reward": 1.0 if run["passed"] else 0.0, "verifier_rc": 0 if run["passed"] else 1,
-                      "timed_out": False, "agent_rc": None}
-    rec["timing"] = {"wall_seconds": run["wall_seconds"], "agent_seconds": round(sum(run["ticket_seconds"].values()), 3),
-                     "verify_seconds": run["verify_seconds"]}
-    rec["coordination"] = {"conflicts": run["conflicts"], "redos": run["redos"], "contamination": len(run["contamination"]), "contamination_paths": run["contamination"][:50],
-                           "tickets": len(run["order"]), "tickets_landed": sum(1 for l in run["landings"] if l["landed"]),
-                           "landing_order": run["order"]}
-    if usages:
-        rec["cost"].update({k: sum(u[k] for u in usages) for k in ("input_tokens", "output_tokens")})
-        rec["provenance"]["cost"] = "tokens measured from the agent event stream; usd unmeasured"
-    return rec
+    raise RuntimeError('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.')
 
 
 def persist(rec: dict, out: Path) -> Path:
@@ -253,6 +228,9 @@ def main(argv=None) -> int:
         rows = results.summarize(results.load_all(Path(args.report)))
         print(results.table(rows))
         return 0
+    if args.condition != "solo" or args.agent.split(":", 1)[0] not in {"reference", "noop"}:
+        print('Retired imported benchmark execution. Use harp durable --help; only historical solo reference/noop replay remains supported.', file=sys.stderr)
+        return 2
     (tasklib.ROOT / ".scratch").mkdir(exist_ok=True)
     agent = Agent(args.agent, args.authorize_model_spend, args.timeout)
     tasks = tasklib.load_tasks(root=Path(args.tasks_root), only=None if args.all else args.task)

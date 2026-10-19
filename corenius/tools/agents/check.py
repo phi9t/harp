@@ -14,16 +14,15 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def suites(root, environment):
-    entries = [("policy", ["python3", "tools/test_sync_agentic_workflow.py"], True)]
+    entries = []
     entries.extend((path.stem, ["sh", str(path.relative_to(root))], True)
                    for path in sorted((root / "tools/agents/checks.d").glob("*.sh")))
     entries.extend(("bench-" + path.stem.removeprefix("test_"),
                     ["python3", str(path.relative_to(root))], environment.get("CHECK_BENCH") == "1")
                    for path in [*sorted((root / "bench/harness").glob("test_*.py")),
                                 root / "tools/insula/test_capsule.py"]
-                   if path.name != "test_lead_driven.py")
+                   if path.name in {"test_validate.py", "test_tasks_tracked.py", "test_materialize_public_tasks.py", "test_capsule.py"})
     entries.extend([
-        ("sync", ["python3", "tools/sync_agentic_workflow.py", "--check"], environment.get("CHECK_SYNC") == "1"),
         ("cargo", ["cargo", "test", "--offline", "--", "--test-threads=1"], environment.get("CHECK_CARGO", "1") == "1"),
     ])
     return entries
@@ -86,7 +85,7 @@ def main():
     parser.add_argument("--suite", action="append", help="run only this suite (repeatable; see --list)")
     parser.add_argument("--list", action="store_true", help="list suites without executing checks")
     parser.add_argument("--timeout", type=positive_seconds, default=1800,
-                        help="seconds per suite (default: 1800; native controller cases exceed fifteen minutes)")
+                        help="seconds per suite (default: 1800)")
     parser.add_argument("--json", "--json-summary", dest="summary", type=Path,
                         help="write timing and status summary (also on interruption)")
     args = parser.parse_args()

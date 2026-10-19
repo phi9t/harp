@@ -1,236 +1,127 @@
-"""wt.py against throwaway git repos only."""
-
-from __future__ import annotations
-
-import argparse
-import io
+#!/usr/bin/env python3
+"""Retired launchers refuse before reading legacy state or starting effects."""
+import hashlib
 import json
+import os
+from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
-from contextlib import redirect_stderr, redirect_stdout
-from pathlib import Path
-from unittest import mock
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import wt  # noqa: E402
-
-# Apply the repository temporary-root policy before any host allocation.
-import runpy as _temp_policy_runpy
-from pathlib import Path as _temp_policy_path
-import tempfile as _temp_policy_tempfile
-import os as _temp_policy_os
-_temp_policy_file = next(parent / "tools" / "temp_root.py" for parent in _temp_policy_path(__file__).resolve().parents if (parent / "tools" / "temp_root.py").is_file())
-_temp_policy_root = str(_temp_policy_runpy.run_path(str(_temp_policy_file))["temporary_root"]())
-_temp_policy_tempfile.tempdir = _temp_policy_root
-_temp_policy_os.environ.update(TMPDIR=_temp_policy_root, TMP=_temp_policy_root, TEMP=_temp_policy_root)
+ROOT = Path(__file__).resolve().parents[2]
 
 
-def run(cwd, *args, check=True):
-    return subprocess.run(
-        ["git", "-C", str(cwd), *args],
-        check=check,
-        capture_output=True,
-        text=True,
-    )
-
-
-class WtTest(unittest.TestCase):
+class RetiredLaunchers(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        root = Path(self.tmp.name)
-        self.repo = root / "proj"
+        self.temporary = tempfile.TemporaryDirectory(prefix="retired-authority-")
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.repo = self.root / "repository"
         self.repo.mkdir()
-        run(self.repo, "init", "-q", "-b", "main")
-        run(self.repo, "config", "user.email", "a@b")
-        run(self.repo, "config", "user.name", "a")
-        (self.repo / "README").write_text("hi\n")
-        run(self.repo, "add", "README")
-        run(self.repo, "commit", "-qm", "init")
-        self.initial = run(self.repo, "rev-parse", "HEAD").stdout.strip()
+        subprocess.run(["git", "init", "-q", str(self.repo)], check=True)
+        for name in ("legacy.sqlite3", "legacy.sock", "run.json", "owner.json"):
+            (self.repo / name).write_bytes(b"preserve existing operator state\n")
+        self.bin = self.root / "bin"
+        self.bin.mkdir()
+        self.trace = self.root / "launched"
+        source = "#!" + sys.executable + "\nimport os\nfrom pathlib import Path\nPath(os.environ['RETIREMENT_TRACE']).write_text('launched')\nraise SystemExit(97)\n"
+        for name in ("git", "tmux", "codex", "traecli", "traex", "cargo", "kata", "curl"):
+            path = self.bin / name
+            path.write_text(source)
+            path.chmod(0o700)
+        self.home = self.root / "home"
+        self.home.mkdir()
+        self.environment = {**os.environ, "PATH": str(self.bin) + os.pathsep + os.environ["PATH"],
+                            "HOME": str(self.home), "PYTHONDONTWRITEBYTECODE": "1",
+                            "RETIREMENT_TRACE": str(self.trace)}
 
-    def tearDown(self):
-        self.tmp.cleanup()
+    def snapshot(self):
+        return {str(p.relative_to(self.root)): hashlib.sha256(p.read_bytes()).hexdigest()
+                for p in self.root.rglob("*") if p.is_file()}
 
-    def call(self, argv):
-        out, err = io.StringIO(), io.StringIO()
-        with redirect_stdout(out), redirect_stderr(err):
-            self.code = wt.main(argv)
-        self.err = err.getvalue()
-        return out.getvalue()
+    def refusal(self, command):
+        before = self.snapshot()
+        result = subprocess.run(command, cwd=self.repo, env=self.environment,
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn("Retired", result.stderr)
+        self.assertIn("harp durable", result.stderr)
+        self.assertEqual(result.stdout, "")
+        self.assertEqual(self.snapshot(), before, command)
 
-    def new_worktree(self, topic: str, agent: str = "worker") -> tuple[Path, str]:
-        out = self.call(["new", "--agent", agent, "--topic", topic, "--repo", str(self.repo)])
-        self.assertEqual(self.code, wt.OK, self.err)
-        payload = json.loads(out)
-        return Path(payload["path"]), payload["branch"]
+    def test_python_commands_and_direct_compatibility_modules_have_no_effects(self):
+        cases = {
+            "bench/harness/lead_driven.py": ["handoff", "--runtime", "codex"],
+            "controller/launch/sqlite_baseline.py": ["start", "--run-id", "old"],
+            "controller/launch/sqlite_responses_relay.py": ["legacy.sock"],
+            "controller/support/codex_insula.py": [],
+            "controller/operator/mac_dashboard.py": ["--config", "owner.json"],
+            "controller/operator/mac_tmux.py": ["--config", "owner.json"],
+            "controller/operator/mac_state_view.py": ["--config", "owner.json"],
+            "tools/collab/collab.py": ["init", "--trunk", "main"],
+            "tools/collab/cli.py": ["land", "attempt"],
+            "tools/collab/worktree_compat.py": ["new", "ticket"],
+            "tools/collab/legacy_landing.py": ["--push", "ticket"],
+            "tools/agents/wt.py": ["land", "ticket"],
+            "tools/agents/land.py": ["ticket", "--no-push"],
+            "tools/agents/worker.py": ["launch", "--runtime", "codex", "--task", "task.md"],
+            "tools/agents/lead_launch.py": ["launch", "effort"],
+            "tools/agents/monitor_wake.py": ["--config", "owner.json"],
+            "tools/agents/msg.py": ["send", "worker", "hello"],
+            "tools/agents/effort.py": ["rehydrate", "effort"],
+            "tools/agents/tracker.py": ["claim", "effort", "01", "--owner", "agent"],
+            "tools/agents/claims.py": ["record", "report.md", "--passed"],
+            "tools/agents/acceptance.py": ["record", "effort", "01"],
+        }
+        for path, args in cases.items():
+            with self.subTest(path=path):
+                self.refusal([sys.executable, str(ROOT / path), *args])
 
-    def commit_file(self, repo: Path, name: str, text: str, message: str) -> str:
-        (repo / name).write_text(text)
-        run(repo, "add", name)
-        run(repo, "-c", "user.email=a@b", "-c", "user.name=a", "commit", "-qm", message)
-        return run(repo, "rev-parse", "HEAD").stdout.strip()
+    def test_old_benchmark_provider_command_and_scheduler_modes_refuse(self):
+        for args in (["task", "--agent", "traecli", "--authorize-model-spend"],
+                     ["task", "--agent=cmd:touch unauthorized"],
+                     ["task", "--condition", "controller:t1"],
+                     ["task", "--condition=fleet:2"]):
+            with self.subTest(args=args):
+                self.refusal([sys.executable, str(ROOT / "bench/harness/run.py"), *args])
 
-    def set_created(self, worktree: Path, created: str) -> None:
-        path = wt.metadata_path(worktree)
-        data = json.loads(path.read_text())
-        data["created"] = created
-        path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    def test_imported_library_authority_refuses_before_opening_or_launching(self):
+        code = '''import runpy,sys
+sys.path[:0]=[AGENTS,COLLAB]
+from worker import Checker,launch,supervise,create_private_worker_clone,import_candidate_to_shared_repo,refresh_integration_branch
+from core import Collab
+from state_store import StateStore
+for action in (lambda: launch(None),lambda: supervise(None),lambda: create_private_worker_clone(None,None,None,None),lambda: import_candidate_to_shared_repo(None,None),lambda: refresh_integration_branch(None),lambda: Collab('.'),lambda: StateStore(None,None),lambda: Checker({})):
+ try: action()
+ except Exception as error:
+  assert 'Retired' in str(error),repr(error)
+ else: raise AssertionError('old authority was callable')
+'''.replace("AGENTS", repr(str(ROOT / "tools/agents"))).replace("COLLAB", repr(str(ROOT / "tools/collab")))
+        before = self.snapshot()
+        result = subprocess.run([sys.executable, "-c", code], cwd=self.repo,
+                                env=self.environment, capture_output=True, text=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self.snapshot(), before)
 
-    def branch_exists(self, branch: str) -> bool:
-        return bool(run(self.repo, "rev-parse", "--verify", "-q", f"refs/heads/{branch}", check=False).stdout.strip())
-
-    def assert_one_line_refusal(self):
-        self.assertEqual(self.code, wt.REFUSED)
-        self.assertEqual(len(self.err.strip().splitlines()), 1)
-
-    def test_new_creates_branch_directory_and_metadata(self):
-        out = self.call(["new", "--agent", "worker", "--topic", "demo", "--repo", str(self.repo)])
-        self.assertEqual(self.code, wt.OK, self.err)
-        payload = json.loads(out)
-        created = Path(payload["path"])
-        self.assertEqual(payload["branch"], "worker/demo")
-        self.assertEqual(payload["base_sha"], self.initial)
-        self.assertTrue(created.is_dir())
-        self.assertEqual(run(created, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip(), "worker/demo")
-        metadata = json.loads(wt.metadata_path(created).read_text())
-        self.assertEqual(metadata["agent"], "worker")
-        self.assertEqual(metadata["topic"], "demo")
-        self.assertEqual(metadata["base_sha"], self.initial)
-        self.assertRegex(metadata["created"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
-
-    def test_new_refuses_existing_branch(self):
-        run(self.repo, "branch", "worker/taken")
-        self.call(["new", "--agent", "worker", "--topic", "taken", "--repo", str(self.repo)])
-        self.assert_one_line_refusal()
-        self.assertIn("already exists", self.err)
-
-    def test_new_refuses_existing_directory(self):
-        target = self.repo.parent / "proj-worker-taken"
-        target.mkdir()
-        self.call(["new", "--agent", "worker", "--topic", "taken", "--repo", str(self.repo)])
-        self.assert_one_line_refusal()
-        self.assertIn(str(target), self.err)
-
-    def test_status_reports_divergence_dirty_owner_age_and_json_shape(self):
-        worktree, branch = self.new_worktree("status")
-        self.commit_file(worktree, "feature.txt", "feature\n", "feature")
-        self.commit_file(self.repo, "main.txt", "main\n", "main")
-        (worktree / "dirty.txt").write_text("dirty\n")
-
-        manual = self.repo.parent / "proj-manual"
-        run(self.repo, "worktree", "add", "-q", "-b", "manual/topic", str(manual), "main")
-
-        rows = json.loads(self.call(["status", "--json", "--repo", str(self.repo)]))
-        self.assertEqual(self.code, wt.OK, self.err)
-        row = next(r for r in rows if r["branch"] == branch)
-        self.assertTrue({"path", "branch", "ahead", "behind", "dirty", "owner", "age", "created"} <= set(row))
-        self.assertEqual(row["ahead"], 1)
-        self.assertEqual(row["behind"], 1)
-        self.assertEqual(row["dirty"], 1)
-        self.assertEqual(row["owner"], "worker")
-        self.assertIsInstance(row["age"], int)
-        fallback = next(r for r in rows if r["branch"] == "manual/topic")
-        self.assertEqual(fallback["owner"], "manual")
-
-    def test_finish_removes_worktree_when_run_from_inside_it(self):
-        worktree, branch = self.new_worktree("done")
-        result = subprocess.run(
-            [sys.executable, str(Path(__file__).with_name("wt.py")), "finish", branch],
-            cwd=worktree,
-            capture_output=True,
-            text=True,
-        )
-        self.assertEqual(result.returncode, wt.OK, result.stderr)
-        self.assertFalse(worktree.exists())
-        self.assertFalse(self.branch_exists(branch))
-
-    def test_finish_refuses_unmerged_branch(self):
-        worktree, branch = self.new_worktree("unmerged")
-        self.commit_file(worktree, "feature.txt", "feature\n", "feature")
-        self.call(["finish", branch, "--repo", str(self.repo)])
-        self.assert_one_line_refusal()
-        self.assertIn("not merged", self.err)
-        self.assertTrue(worktree.exists())
-        self.assertTrue(self.branch_exists(branch))
-
-    def test_finish_refuses_dirty_worktree(self):
-        worktree, branch = self.new_worktree("dirty")
-        (worktree / "dirty.txt").write_text("dirty\n")
-        self.call(["finish", branch, "--repo", str(self.repo)])
-        self.assert_one_line_refusal()
-        self.assertIn("dirty", self.err)
-        self.assertTrue(worktree.exists())
-        self.assertTrue(self.branch_exists(branch))
-
-    def test_gc_is_dry_by_default_and_apply_removes_only_safe_trees(self):
-        merged, merged_branch = self.new_worktree("merged")
-        old, old_branch = self.new_worktree("old")
-        dirty, dirty_branch = self.new_worktree("dirty-gc")
-        ahead, ahead_branch = self.new_worktree("ahead")
-        self.set_created(old, "2000-01-01T00:00:00Z")
-        (dirty / "dirty.txt").write_text("dirty\n")
-        self.commit_file(ahead, "ahead.txt", "ahead\n", "ahead")
-
-        dry_rows = [json.loads(line) for line in self.call(["gc", "--repo", str(self.repo)]).splitlines()]
-        self.assertEqual(self.code, wt.OK, self.err)
-        dry_branches = {row["branch"] for row in dry_rows}
-        self.assertEqual(dry_branches, set())
-        self.assertTrue(all(row["removed"] is False for row in dry_rows))
-        self.assertTrue(merged.exists())
-        self.assertTrue(old.exists())
-
-        apply_rows = [json.loads(line) for line in self.call(["gc", "--apply", "--repo", str(self.repo)]).splitlines()]
-        self.assertEqual(self.code, wt.OK, self.err)
-        self.assertEqual({row["branch"] for row in apply_rows}, set())
-        self.assertTrue(all(row["removed"] is True for row in apply_rows))
-        self.assertTrue(merged.exists())
-        self.assertTrue(old.exists())
-        self.assertTrue(self.branch_exists(merged_branch))
-        self.assertTrue(self.branch_exists(old_branch))
-        self.assertTrue(dirty.exists())
-        self.assertTrue(ahead.exists())
-        self.assertTrue(self.branch_exists(dirty_branch))
-        self.assertTrue(self.branch_exists(ahead_branch))
-
-    def test_usage_errors_exit_64(self):
-        self.call(["new", "--agent", "worker", "--repo", str(self.repo)])
-        self.assertEqual(self.code, wt.USAGE)
-
-    def test_load_plugins_ignores_missing_land_module(self):
-        parser = argparse.ArgumentParser()
-        sub = parser.add_subparsers()
-        error = ModuleNotFoundError("No module named 'land'", name="land")
-        with mock.patch("wt.importlib.import_module", side_effect=error):
-            wt._load_plugins(sub)
-
-    def test_load_plugins_surfaces_broken_land_imports(self):
-        parser = argparse.ArgumentParser()
-        sub = parser.add_subparsers()
-        error = ModuleNotFoundError("No module named 'missing_dep'", name="missing_dep")
-        with mock.patch("wt.importlib.import_module", side_effect=error):
-            with self.assertRaises(ModuleNotFoundError):
-                wt._load_plugins(sub)
-
-    def test_load_plugins_registers_fake_land_subcommand(self):
-        parser = argparse.ArgumentParser()
-        sub = parser.add_subparsers(dest="cmd")
-
-        class FakeLand:
-            @staticmethod
-            def run(args):
-                return 17
-
-            @staticmethod
-            def add_parser(subparsers):
-                p = subparsers.add_parser("land")
-                p.set_defaults(func=FakeLand.run)
-
-        with mock.patch("wt.importlib.import_module", return_value=FakeLand):
-            wt._load_plugins(sub)
-        args = parser.parse_args(["land"])
-        self.assertEqual(args.func(args), 17)
+    def test_rust_explicit_targets_and_legacy_modes_refuse_without_effects(self):
+        cargo = shutil.which("cargo")
+        self.assertIsNotNone(cargo, "Rust retirement targets require the pinned Rust toolchain")
+        target = self.root / "rust-target"
+        subprocess.run([cargo, "build", "--locked", "--offline", "--bins", "--manifest-path",
+                        str(ROOT / "Cargo.toml"), "--target-dir", str(target)],
+                       cwd=ROOT, check=True, text=True, timeout=60)
+        for binary in ("corenius", "corenius-sqlite-controller", "corenius-attempt-supervisor", "corenius-attempt-gate"):
+            for args in (["legacy.sqlite3", "legacy.sock"], ["run", "--provider", "codex"],
+                         ["supervise", "--provider", "traecli"], ["eval", "--help"], ["--help"]):
+                with self.subTest(binary=binary,args=args):
+                    self.refusal([str(target / "debug" / binary), *args])
+        metadata = subprocess.check_output([cargo, "metadata", "--locked", "--offline", "--no-deps",
+                                            "--format-version", "1", "--manifest-path", str(ROOT / "Cargo.toml")],
+                                           cwd=ROOT, text=True, timeout=10)
+        self.assertEqual({tuple(target["kind"]) for package in json.loads(metadata)["packages"]
+                          for target in package["targets"]}, {("bin",)})
 
 
 if __name__ == "__main__":

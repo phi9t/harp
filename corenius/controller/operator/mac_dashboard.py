@@ -5,6 +5,7 @@ Run with --config PATH; --render prints all sections without using curses or tmu
 Only an explicit Enter on an agent view selects an existing tmux window.
 """
 import argparse
+import sys
 import curses
 import datetime as dt
 import hashlib
@@ -264,16 +265,7 @@ def render(snapshot):
 
 
 def jump_view(snapshot, index):
-    """Select an existing metadata-bound view. Never send native client input."""
-    views = bindings(snapshot)
-    if not 0 <= index < len(views):
-        return 'Native view unavailable'
-    try:
-        result = subprocess.run(['tmux', 'select-window', '-t', views[index]['window']],
-                                capture_output=True, text=True, timeout=3)
-        return 'Selected ' + views[index]['window'] if result.returncode == 0 else 'View unavailable: ' + safe(result.stderr)
-    except (OSError, subprocess.TimeoutExpired) as error:
-        return 'View unavailable: ' + safe(error)
+    raise RuntimeError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def dashboard(screen, config):
@@ -362,19 +354,8 @@ def dashboard(screen, config):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--config', required=True, type=pathlib.Path)
-    parser.add_argument('--render', action='store_true', help='Print all sections; no terminal or tmux changes')
-    args = parser.parse_args(argv)
-    try:
-        config = load_config(args.config)
-    except (OSError, ValueError, TypeError, RecursionError) as error:
-        parser.exit(2, 'Config unavailable: ' + safe(error) + '\n')
-    if args.render:
-        print('\n'.join(render(load_snapshot(config))))
-        return 0
-    curses.wrapper(dashboard, config)
-    return 0
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == '__main__':

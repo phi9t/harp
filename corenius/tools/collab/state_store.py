@@ -50,9 +50,7 @@ ATTEMPT_LIVENESS_COLUMNS = {
 
 class StateStore:
     def __init__(self, home: Path, db_path: Path):
-        self.home = home
-        self.db_path = db_path
-        self.fds: list[int] = []
+        raise RuntimeError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
     def load_config(self) -> dict | None:
         if not self.home.exists():

@@ -880,224 +880,35 @@ def next_ticket_id(directory: Path) -> str:
 
 
 def cmd_new(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    validate_slug(args.slug)
-    effort = effort_dir(root, args.effort)
-    if not effort.is_dir():
-        raise WorkerError(f"no effort {args.effort} at {effort}")
-    directory = effort / "tickets"
-    directory.mkdir(exist_ok=True)
-    _, tickets, problems = load_tickets(root, args.effort)
-    ensure_clean(problems)
-    by_id = tickets_by_id(tickets)
-    ticket_id = next_ticket_id(directory)
-    blockers = parse_blockers_arg(args.blocked_by)
-    for blocker in blockers:
-        if blocker == ticket_id:
-            raise WorkerError(f"ticket {ticket_id} cannot block itself")
-        if blocker not in by_id:
-            raise WorkerError(f"unknown blocker {blocker}")
-    path = directory / f"{ticket_id}-{args.slug}.md"
-    if path.exists():
-        raise WorkerError(f"{path} already exists")
-    blocked_by = ", ".join(blockers)
-    path.write_text(
-        f"# {ticket_id} {args.slug}: {args.title}\n\n"
-        f"Type: {args.type}\n"
-        "Status: open\n"
-        "Owner:\n"
-        f"Blocked by: {blocked_by}\n"
-        "Claimed:\n\n"
-        "Triage: needs-triage\n\n"
-        "## Acceptance\n"
-        "- [ ] _TODO_\n\n"
-        "## Comments\n"
-    )
-    print(str(path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_claim(args: argparse.Namespace) -> int:
-    if not args.owner.strip():
-        raise WorkerError("owner is required")
-    if args.ttl_hours <= 0:
-        raise WorkerError("--ttl-hours must be positive")
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    stamp = current_time()
-    expires = stamp + timedelta(hours=args.ttl_hours)
-    ticket, by_id = find_ticket(root, args.effort, args.ticket)
-    if ticket.implementation:
-        print(f"ticket {ticket.id} is {ticket.implementation}; owner must resume for repairs", file=sys.stderr)
-        return REFUSED
-    if ticket.status == "resolved":
-        print(f"ticket {ticket.id} is resolved", file=sys.stderr)
-        return REFUSED
-    if not blockers_resolved(root, args.effort, ticket, by_id):
-        print(f"ticket {ticket.id} is blocked", file=sys.stderr)
-        return REFUSED
-    if ticket.status == "claimed":
-        expiry = claimed_until(ticket)
-        if expiry is not None and stamp < expiry:
-            print(f"ticket {ticket.id} is already claimed by {ticket.owner}", file=sys.stderr)
-            return REFUSED
-    claim_text = f"{format_utc(stamp)} expires {format_utc(expires)}"
-    write_transition(
-        ticket,
-        {"Status": "claimed", "Owner": args.owner, "Claimed": claim_text},
-        args.owner,
-        f"claimed until {format_utc(expires)}",
-        stamp,
-    )
-    print(str(ticket.path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_handoff(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    ticket, _ = find_ticket(root, args.effort, args.ticket)
-    stamp = current_time()
-    expiry = claimed_until(ticket)
-    if ticket.status != "claimed" or ticket.owner != args.owner or expiry is None or stamp >= expiry:
-        print("handoff requires a live claim owned by --owner", file=sys.stderr)
-        return REFUSED
-    if ticket.implementation:
-        print("ticket already handed off; resume before submitting again", file=sys.stderr)
-        return REFUSED
-    evidence = []
-    for value in args.evidence:
-        path = Path(value).resolve()
-        if not path.is_file() or path == ticket.path.resolve():
-            print(f"handoff evidence must be an existing separate file: {path}", file=sys.stderr)
-            return REFUSED
-        evidence.append({"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
-    encoded = json.dumps(evidence, sort_keys=True)
-    write_transition(ticket, {"Implementation": AWAITING_ACCEPTANCE, "Handoff evidence": encoded},
-                     args.owner, f"{AWAITING_ACCEPTANCE}; evidence {encoded}", stamp)
-    print(str(ticket.path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_resume(args: argparse.Namespace) -> int:
-    if args.ttl_hours <= 0:
-        raise WorkerError("--ttl-hours must be positive")
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    ticket, _ = find_ticket(root, args.effort, args.ticket)
-    if ticket.status != "claimed" or ticket.owner != args.owner or not ticket.implementation:
-        print("resume requires the handed-off claim's owner", file=sys.stderr)
-        return REFUSED
-    stamp = current_time()
-    expires = stamp + timedelta(hours=args.ttl_hours)
-    write_transition(ticket, {"Implementation": "", "Handoff evidence": "",
-                             "Claimed": f"{format_utc(stamp)} expires {format_utc(expires)}"},
-                     args.owner, "resumed implementation for repairs; prior handoff withdrawn", stamp)
-    print(str(ticket.path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_release(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    ticket, _ = find_ticket(root, args.effort, args.ticket)
-    if ticket.implementation:
-        print("handed-off implementation must be resumed before releasing its claim", file=sys.stderr)
-        return REFUSED
-    if not re.fullmatch(r"a-[a-f0-9]{16}", args.attempt):
-        raise WorkerError("release requires an exact collab Attempt identity")
-    if not re.fullmatch(r"[a-f0-9]{64}", args.expected_sha256):
-        raise WorkerError("release requires the expected ticket SHA-256")
-    if ticket.path.is_symlink() or ticket.path.resolve() != ticket.path:
-        raise WorkerError("release refuses a symlinked ticket path")
-    before = hashlib.sha256(ticket.path.read_bytes()).hexdigest()
-    if ticket.status != "claimed" or ticket.owner != args.owner or before != args.expected_sha256:
-        print("claim changed or belongs to another owner; release refused", file=sys.stderr)
-        return REFUSED
-    stamp = parse_utc(args.at) if args.at else current_time()
-    result = transition_bytes(
-        ticket, {"Status": "open", "Owner": "", "Claimed": ""}, args.owner,
-        f"released claim for abandoned Attempt {args.attempt}", stamp,
-    )
-    plan = {"path": str(ticket.path.relative_to(root)), "before_sha256": before,
-            "after_sha256": hashlib.sha256(result).hexdigest(), "at": format_utc(stamp),
-            "owner": args.owner, "attempt_id": args.attempt, "effort": args.effort, "ticket_id": args.ticket}
-    if not args.dry_run:
-        ticket.path.write_bytes(result)
-    print(json.dumps(plan, sort_keys=True))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_resolve(args: argparse.Namespace) -> int:
-    if not args.owner.strip():
-        raise WorkerError("owner is required")
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    stamp = current_time()
-    ticket, _ = find_ticket(root, args.effort, args.ticket)
-    if ticket.status != "claimed":
-        print(f"ticket {ticket.id} is not claimed", file=sys.stderr)
-        return REFUSED
-    if ticket.owner != args.owner:
-        print(f"ticket {ticket.id} is claimed by {ticket.owner}", file=sys.stderr)
-        return REFUSED
-    missing_landed = not has_accepted_landed_candidate(root, args.effort, ticket)
-    unchecked_acceptance = not all_acceptance_checked(ticket)
-    if ticket.implementation and missing_landed:
-        print("handoff requires an accepted, landed Candidate before resolution", file=sys.stderr)
-        return REFUSED
-    if unchecked_acceptance and getattr(args, "mark_reviewed", False):
-        if missing_landed:
-            print("cannot mark acceptance without accepted, landed evidence", file=sys.stderr)
-            return REFUSED
-        lines = list(ticket.lines)
-        for line_number, _ in ticket.acceptance:
-            lines[line_number - 1] = re.sub(r"^- \[[ ]\]", "- [x]", lines[line_number - 1])
-        ticket.path.write_text("\n".join(lines) + "\n")
-        ticket, _ = find_ticket(root, args.effort, args.ticket)
-        unchecked_acceptance = not all_acceptance_checked(ticket)
-    if unchecked_acceptance and (not args.force or ticket.implementation):
-        print(f"ticket {ticket.id} has unchecked acceptance", file=sys.stderr)
-        return REFUSED
-    if missing_landed and not args.force:
-        print(f"ticket {ticket.id} has no accepted, landed Candidate", file=sys.stderr)
-        return REFUSED
-    text = "resolved"
-    forced_reasons = []
-    if unchecked_acceptance:
-        forced_reasons.append("unchecked acceptance")
-    if missing_landed:
-        forced_reasons.append("missing accepted, landed Candidate")
-    if forced_reasons:
-        text = f"resolved with --force despite {' and '.join(forced_reasons)}"
-    write_transition(ticket, {"Status": "resolved", "Claimed": "", "Implementation": "", "Handoff evidence": ""},
-                     args.owner, text, stamp)
-    print(str(ticket.path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_add_finding(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    text = " ".join(args.text.split())
-    if not text:
-        raise WorkerError("finding text is required")
-    ticket, by_id = find_ticket(root, args.effort, args.ticket)
-    if not ID_RE.match(args.target):
-        raise WorkerError(f"bad target ticket id {args.target!r}: expected NN")
-    if args.target == ticket.id:
-        raise WorkerError(f"ticket {ticket.id} cannot leave a finding to itself")
-    if args.target not in by_id:
-        raise WorkerError(f"unknown target ticket {args.target}")
-    append_later_finding(ticket, args.target, text)
-    print(str(ticket.path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_findings(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    rows = findings_addressed_to(root, args.effort, args.ticket)
-    if args.json:
-        print(json.dumps(rows, indent=2))
-        return OK
-    for row in rows:
-        sources = ", ".join(source["label"] for source in row["sources"])
-        print(f"{sources}: {row['text']}")
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def ticket_category(root: Path, effort: str, ticket: Ticket, by_id: dict[str, Ticket]) -> str:
@@ -1143,18 +954,7 @@ def frontier_rows(root: Path, effort: str) -> list[dict]:
 
 
 def cmd_list(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    rows = frontier_rows(root, args.effort)
-    if args.json:
-        print(json.dumps(rows, indent=2))
-        return OK
-    for row in rows:
-        owner = row["owner"] or "-"
-        blockers = ",".join(row["blocked_by"]) or "-"
-        triage = row["triage"] or "-"
-        implementation = f" implementation={row['implementation']}" if row["implementation"] else ""
-        print(f"{row['id']} {row['category']} owner={owner} triage={triage} blockers={blockers}{implementation} {row['slug']}: {row['title']}")
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def launchable_rows(root: Path, effort: str) -> list[dict]:
@@ -1170,28 +970,11 @@ def launchable_rows(root: Path, effort: str) -> list[dict]:
 
 
 def cmd_launchable(args: argparse.Namespace) -> int:
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    rows = launchable_rows(root, args.effort)
-    if args.json:
-        print(json.dumps(rows, indent=2))
-        return OK
-    for row in rows:
-        print(f"{row['id']} {row['triage']} {row['slug']}: {row['title']}")
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def cmd_question(args: argparse.Namespace) -> int:
-    if not args.owner.strip():
-        raise WorkerError("owner is required")
-    question = " ".join(args.question.split())
-    if not question:
-        raise WorkerError("question is required")
-    root = effort_record_root(repo_root(args.repo), args.effort)
-    stamp = current_time()
-    ticket, _ = find_ticket(root, args.effort, args.ticket)
-    write_triage_comment(ticket, "needs-info", args.owner, f"question: {question}", stamp)
-    print(str(ticket.path.relative_to(root)))
-    return OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def discover_efforts(root: Path) -> list[tuple[str, Path]]:
@@ -1217,23 +1000,7 @@ def discover_efforts(root: Path) -> list[tuple[str, Path]]:
 
 
 def cmd_lint(args: argparse.Namespace) -> int:
-    root = repo_root(args.repo)
-    efforts = (
-        [(effort, effort_record_root(root, effort)) for effort in args.efforts]
-        if args.efforts
-        else discover_efforts(root)
-    )
-    problems: list[Problem] = []
-    for effort, effort_root in efforts:
-        try:
-            _, _, effort_problems = load_later_findings(effort_root, effort)
-        except WorkerError as error:
-            print(f"error: {error}", file=sys.stderr)
-            return USAGE
-        problems.extend(effort_problems)
-    for problem in sorted(problems):
-        print(problem.format(root))
-    return REFUSED if problems else OK
+    raise WorkerError('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.')
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -1340,12 +1107,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
-    try:
-        return args.fn(args)
-    except WorkerError as error:
-        print(f"error: {error}", file=sys.stderr)
-        return USAGE
+    print('Retired imported controller entrypoint. Use harp durable --help for prepare/admit/start/status/cancel/resolve/approve/land. Intent belongs in .scratch/<feature>/spec.md and issues/*.md; legacy state is not migrated.', file=sys.stderr)
+    return 2
 
 
 if __name__ == "__main__":

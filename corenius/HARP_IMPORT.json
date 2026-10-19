@@ -1803,8 +1803,8 @@
   ],
   "adaptations": {
     "AGENTS.md": {
-      "reason": "Make current Harp policy ownership explicit while retaining inherited policy text.",
-      "sha256": "202c682709d70480187be6965a8c4647a3b7f88dfbc4ff705213b3fb6f6a5838"
+      "reason": "Make current Harp policy ownership explicit while retaining inherited policy text. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "1afa94a2c3993dcc1bab1a0b9c1d648f54ac86f61e1fa516f904748b80248c4a"
     },
     "docs/reference/ultron.md": {
       "reason": "Retain exact historical bytes in Git ancestry; keep legacy import-source names out of active payload.",
@@ -1815,8 +1815,8 @@
       "sha256": "669b7dfb2d7477df2500d958003204e3838e1a1f6efd6554ca0ec4b653db0edb"
     },
     "bench/README.md": {
-      "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
-      "sha256": "e2de5221cfbd5e910481c27cc7d673400aa4da873b81169c70e72a7fc82ddd1c"
+      "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "1654f9df1d6b0c7a63349f1e6bcdc77f9f7f8ae9a65a3d65ccc9f51e5d2eb75d"
     },
     "bench/harness/materialize_public_tasks.py": {
       "reason": "Use task-owned retained state and private scratch paths in generated benchmark copies; preserve pinned upstream sources and reject unsafe package input.",
@@ -1831,24 +1831,24 @@
       "sha256": "76761eeabfabdd38e53b0e1e6a40faea6f677e112a6b774c24573c911815c0a3"
     },
     "Cargo.lock": {
-      "reason": "Use Cargo 1.95.0 emitted lock after retiring the PostgreSQL/Temporal workspace member, preserving retained package versions/checksums while reducing feature-dependent edges.",
-      "sha256": "5f256da84fdc5d84ba3dd3086079164d697dfcb2a4e7239dfba179861bbd1539"
+      "reason": "Use Cargo 1.95.0 emitted lock after retiring the PostgreSQL/Temporal workspace member, preserving retained package versions/checksums while reducing feature-dependent edges. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "6da98164d070672b8869d48a847e12a821f2f82dda9dc5f8807ba93ff731d385"
     },
     "Cargo.toml": {
-      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
-      "sha256": "73446ce1d4eb6b564d7b5f05702d915d7096008bb87d0968ddb8a4a49b9f6b3a"
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "8445b6e31161b756432c23f4f4914d453f8d59bd0a321e4acf5a8ca5a85d6d4d"
     },
     "README.md": {
-      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
-      "sha256": "4e064970cc119b564e2171fd0daf7d137d21dda93a763b9c914facb024a75f9d"
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "7bb2fec5da3bd90a9b98d6ca6f3b62b067a7f11240f4ff27be8abc142516beec"
     },
     "tools/agents/checks.d/README.md": {
-      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
-      "sha256": "629154dad67209a0b2700ddecba13abe10d7aa568f44d47aca329f45cdd04f12"
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "dbf2fb518f6adf21f90d18c4d83f484738d196e2248f4db5171d3db026670794"
     },
     "tools/agents/test_check.py": {
-      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
-      "sha256": "1025439ed844a968e472466815d51c42ce0b1845e1b7910ca7cbb4448e9c2a44"
+      "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance. Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "798096f2306e9da19082e1f931aef522564493ea5a78c2a9365822f5abcb16e8"
     },
     "tools/test_temp_root.py": {
       "reason": "Remove PostgreSQL/Temporal from active dependency resolution and gates while retaining SQLite components and original source provenance.",
@@ -1877,6 +1877,158 @@
     "controller/durable/insula_test.py": {
       "reason": "Exercise real readonly selected-input projection, absence of authoritative state and other bundles, forged-input refusal before dispatch, and unchanged legacy execution contracts.",
       "sha256": "f871914197c0790135d4fc5e05c0635858f648fd9586b16bdf5a5fda24c481cd"
+    },
+    "bench/harness/controller_mode.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "813f08820e47c554a716edb103f119b41513a01c5c83455acfc92d644075e71c"
+    },
+    "bench/harness/fleet.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "264ccedc2d9199e816de01bc71d11544063608363638620c1650c4f9345ac017"
+    },
+    "bench/harness/lead_driven.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "da0d373c3464618770912158ea66a6ed306c52b36ab02d6a1ab98a79903a8258"
+    },
+    "bench/harness/run.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "6aa7d4080fb95b1b6fc67a9b1747e4fe0b3dcfee7d596d40892bd68481b87a3a"
+    },
+    "controller/Cargo.toml": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "0397c341917d5cd6f598bd5452c4d309df6ccf20453c623be3764a944fe147af"
+    },
+    "controller/README.md": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "cb2a97b3026769419a3fb708e556f0c910d72fa68b125639e831fcebbd97f330"
+    },
+    "controller/launch/sqlite_baseline.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "controller/launch/sqlite_responses_relay.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "controller/operator/mac_dashboard.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "6207e49aca1f88af2d5ecaea98dff1a81eb6e3746f0cea8b3c289f62a59086f8"
+    },
+    "controller/operator/mac_state_view.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "7254e5d852fc1a6faf05b06a504a2bc4cdd632837097630346e2292b16ff42d9"
+    },
+    "controller/operator/mac_tmux.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "controller/src/bin/corenius-attempt-gate.rs": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "5af82b0ad5d0766399190887bdcb913063e46f2f1d6559671a2bb2783f5713d6"
+    },
+    "controller/src/bin/corenius-attempt-supervisor.rs": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "5af82b0ad5d0766399190887bdcb913063e46f2f1d6559671a2bb2783f5713d6"
+    },
+    "controller/src/main.rs": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "5af82b0ad5d0766399190887bdcb913063e46f2f1d6559671a2bb2783f5713d6"
+    },
+    "controller/support/codex_insula.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "terminal_agent/Cargo.toml": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "11f03686a890bb89580fa1a776ac9bfbe209f06e39cf52973cce6217ee66a10d"
+    },
+    "terminal_agent/src/main.rs": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "5af82b0ad5d0766399190887bdcb913063e46f2f1d6559671a2bb2783f5713d6"
+    },
+    "tools/agents/acceptance.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "0384583ab54c8bc60e9228f895d420024b51a7939dea7e0eaf8b36b2116b7174"
+    },
+    "tools/agents/check.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "37b49c296316b0fb6e33ed7d5f3c65aa3186e825eedab288ccafa8d758f8e39e"
+    },
+    "tools/agents/checks.d/10-wt.sh": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "96d0523ee0cfb85afd0244ed4917fb7332e5633af0dfb1dab5d257920f290022"
+    },
+    "tools/agents/checks.d/85-state-consistency.sh": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "6c03b2383f021b9d14f5f4c0a8f6945db037e2673071c27e79c92847ea7185dc"
+    },
+    "tools/agents/claims.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "d81bc177e23006962275b4da7698cc3f6f78537abceeb0939ec151d0b94cc78c"
+    },
+    "tools/agents/effort.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "461257d359a66eeae13e052482ab84f55c6ecf889b25d1183163b7efe672f273"
+    },
+    "tools/agents/land.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/agents/lead_launch.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/agents/monitor_wake.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/agents/msg.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/agents/test_wt.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "842893424cb0e04fa68191c9950fccc8037f0b22ac723ff1bc650ef8b90e2c4e"
+    },
+    "tools/agents/tracker.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "8dd673390b13920cf6242f84ddd1104830dc51c616a92e14f0d5b9f1d51f2e16"
+    },
+    "tools/agents/worker.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "7834c8199eed523826709371352275fdfa09597143d0454ddc30c44639988d2a"
+    },
+    "tools/agents/wt.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/collab/README.md": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "ea6bcc9ecbd9d941f34cedeaa56e3cff6a3b405a9b09756d0532b026b7ae2be6"
+    },
+    "tools/collab/cli.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/collab/collab.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/collab/core.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "bbc2b0c2fb122bf321ebdad72f518552bdedf6e66bcf6b85d6cec9994d495174"
+    },
+    "tools/collab/legacy_landing.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
+    },
+    "tools/collab/state_store.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "ed4d31de72aa56e9847b15753c655d1be8ddc436dbd28c7913b1b3ee2ed5441f"
+    },
+    "tools/collab/worktree_compat.py": {
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
+      "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
     }
   },
   "retirements": {
@@ -2173,6 +2325,121 @@
       "source_blob": "544c105fb66b6aaba042460e79e3b179a7f1e74f",
       "source_mode": "100644",
       "source_sha256": "9a2ac333c7cccf64540b1cd7c3b0ac20d6ba95fb5fcfc4a6d079b7d1fb47e103"
+    },
+    "tools/agents/checks.d/15-worker.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "5db14f15e3350dd0962779216e753ff628560890",
+      "source_mode": "100755",
+      "source_sha256": "8344ff5a33074f469f31b928684b3075c821cb9619f3e0ddcb701b04187d33a9"
+    },
+    "tools/agents/checks.d/18-effort.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "62fd7d6a6f39780a0bae3e50200d8323d68a33f3",
+      "source_mode": "100755",
+      "source_sha256": "51cef71d6dcfffa252423c90720f71231d76c3955e4236336a23d66117530612"
+    },
+    "tools/agents/checks.d/20-land.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "784d53d4bc1e4afb33eb48cdbb74adad94905f50",
+      "source_mode": "100644",
+      "source_sha256": "d57ba07c574e45350a949c1f52299ce9e45f1b1f13f43ce925c2e76d0afc5f78"
+    },
+    "tools/agents/checks.d/25-acceptance.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "db778d0f39fc092bff769e9e740cd9c0651d5dbe",
+      "source_mode": "100755",
+      "source_sha256": "8f6c4ff14e00f6ee9b5e252ff727d97eb1290a8d9db33195810ceedb2e4fc7f8"
+    },
+    "tools/agents/checks.d/30-tracker.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "781173cd0e4b4d1b2e8541f1b8281d2da3ccb0e6",
+      "source_mode": "100644",
+      "source_sha256": "29093c35cd6e4ce916c5bce4e1c27d3f3da306cab4a6273d03c1d8a2ef45d687"
+    },
+    "tools/agents/checks.d/35-lead-launch.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "96460b06b60aff99ef7a00648a0d615b7a360e6a",
+      "source_mode": "100755",
+      "source_sha256": "cafceb28278783412f236f08decbbc4f9f4f91a41ff7302e4fbfecbe8262f940"
+    },
+    "tools/agents/checks.d/40-msg.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "431f05c34acb325ee75220efaca05eecc759b7a3",
+      "source_mode": "100644",
+      "source_sha256": "2034880b8bce23e8fdfb4630d9547a7654e530f671fbc7a5563117b98ccce66d"
+    },
+    "tools/agents/checks.d/45-lead-driven-harness.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "3c31d1d91897b45ec26a63817460f0b4256730ba",
+      "source_mode": "100755",
+      "source_sha256": "a5f5056e36ff01a9d61557270a97cce9f7ef3b7a6edb0e8e9ebdce106c7ebf49"
+    },
+    "tools/agents/checks.d/60-claims.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "2fbc1fc4315d0fbeef05b6be3fc06f0d352493d5",
+      "source_mode": "100644",
+      "source_sha256": "b63e163ddc6b8fdb1c74daba8aaa1647bb69333a4dd55124e6ec5c324d532453"
+    },
+    "tools/agents/checks.d/65-collab.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "dafd8f99b404400b68469597af2ef981b64a4de1",
+      "source_mode": "100755",
+      "source_sha256": "e536e72af0ee29da5a660a2db275fe372239417112395c2ce65498adbf64f5b8"
+    },
+    "tools/agents/checks.d/70-sqlite-controller.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "667acaca046d713d5f577ce0704cc6539954b9c7",
+      "source_mode": "100755",
+      "source_sha256": "533f3fb44de51838afd3c806efffdc9c1f65e6b3be5df61f110fc1c0114364d5"
+    },
+    "tools/agents/checks.d/75-controller-python.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "6d5a3a4cb19aac7c8e94a830118b7a0cc5a8d94b",
+      "source_mode": "100755",
+      "source_sha256": "9669ac76e0199dd6310c3fc2b3265ea8d35a2528add6d0ecc6e8ea73b0b22d69"
+    },
+    "tools/agents/checks.d/80-monitor-wake.sh": {
+      "reason": "Remove active gate for superseded imported lifecycle authority; replacement no-effect retirement checks are registered by 10-wt. Original tests and captured evidence remain recoverable in source ancestry.",
+      "source_blob": "ef2c9bbfced23db4f8dcf5e39687b092f1f20b7a",
+      "source_mode": "100644",
+      "source_sha256": "d5e94e391b7fbdf4d392e9f958c406bfc237180643eedb877bac1bfab59d4bf5"
+    }
+  },
+  "controller_retirement": {
+    "authority": "harp durable using controller/durable; no alternative controller or implicit state migration",
+    "rust": "Only corenius, corenius-sqlite-controller, corenius-attempt-supervisor and corenius-attempt-gate refusal binaries remain explicit Cargo targets. Historical libraries/examples/tests are unregistered.",
+    "python": "Baseline/relay/native/operator/Collab/worktree/landing/lead/worker/operational tracker CLI boundaries refuse before effects. Writable Collab/StateStore constructors and worker launch/supervise/candidate-import/verification boundaries refuse.",
+    "benchmarks": "Solo reference/noop replay and pure validation remain; direct cmd/Trae, fleet/controller and lead-driven execution authority refuse. Historical source/results remain reference material.",
+    "retained": "controller/durable/**, tools/insula/{capsule,durable}.py and tools/temp_root.py unchanged; evidence/license bytes, pure catalog/parser/provider protocol/check contracts and historical records retained.",
+    "checks": "10-wt validates command/library refusal with real Git/files and recording executables, all 4 compiled Rust bins; selected 72/73 durable tests remain, alongside temp/evidence/snapshot checks. Removed old policy synchronization/authority suites cannot be enabled by old flags.",
+    "verification": {
+      "base": "1ea0ad0e272b1aa5753e896c0b1f81be9ee78e7a",
+      "portable_gate": {
+        "command": "SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk PATH=$PWD/../.build/retirement-python/bin:$PATH PYTHONDONTWRITEBYTECODE=1 python3 tools/temp_root.py -- sh tools/agents/check.sh --suite 05-gate-dispatch --suite 10-wt --suite 50-evidence --suite 73-durable-qualification --suite 85-state-consistency --suite 89-no-host-tmp-tests --suite 90-no-host-tmp --timeout 120 --json .scratch/retirement-portable.json",
+        "cwd": "corenius",
+        "result": "All 7 selected suites passed; 44 unittest cases plus temporary-path scanner. Rust refusal tests compile all explicit binaries with locked offline Cargo and inspect target metadata; no old library targets remain."
+      },
+      "selected_inputs": {
+        "command": "PYTHONPATH=corenius:. PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.11 -m unittest controller.durable.runtime_test.InputBundleTests -v",
+        "result": "4 passed"
+      },
+      "selected_boundary": {
+        "command": "PYTHONPATH=corenius:. PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.11 -m harp_durable --help",
+        "result": "Current public lifecycle commands remain available; selected controller/durable, tools/insula and tools/temp_root.py bytes unchanged against base."
+      },
+      "import_gate": {
+        "command": "mise run verify -- --base 1ea0ad0e",
+        "result": "Changed-surface diff/import checks passed; 8149 source files, 62 retirement records, 29 branches, 13 worktrees verified."
+      },
+      "format": {
+        "command": "cargo fmt --all --check --manifest-path corenius/Cargo.toml",
+        "result": "passed"
+      },
+      "limits": [
+        "The unchanged Linux process/cgroup runtime suite cannot execute on macOS: it explicitly requires Linux /proc (and Insula native prerequisites); these failed attempts are not claimed as passes. Retained native qualification belongs to the byte-identical selected runtime qualified in milestone09.",
+        "The unchanged review-snapshot suite passed 14 cases but its raw invalid-UTF8 filename case cannot create its fixture on this macOS filesystem (errno92); no test or runtime boundary was weakened."
+      ],
+      "authority": "No remote source/runtime mutation, paid calls, persistent services, push or primary-checkout landing in this retirement slice."
     }
   }
 }

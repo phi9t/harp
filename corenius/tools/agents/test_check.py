@@ -72,80 +72,45 @@ raise SystemExit(1)
             return result, calls
 
     def test_selected_suite_runs_without_default_suites(self):
-        result, calls = self.dispatch('--suite', '15-worker')
+        result, calls = self.dispatch('--suite', '10-wt')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(calls, [['python3', 'tools/agents/test_worker.py']])
+        self.assertEqual(calls, [['python3', 'tools/agents/test_wt.py']])
 
-    def collab_suite_count(self, calls):
-        return sum(call[:6] == ["python3", "-m", "unittest", "discover", "-s", "tools/collab/tests"]
-                   for call in calls)
-
-    def test_each_existing_suite_runs_once(self):
+    def test_defaults_keep_selected_runtime_and_pure_evidence(self):
         result, calls = self.dispatch()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        for suite in ("tools/agents/test_worker.py", "tools/agents/test_effort.py"):
-            self.assertEqual(sum(suite in call for call in calls), 1, suite)
-        self.assertEqual(sum(any(Path(argument).name == "check_temp_paths.py"
-                                 for argument in call[1:]) for call in calls), 1)
+        self.assertIn(['python3', 'tools/agents/test_wt.py'], calls)
+        self.assertIn(['python3', 'tools/agents/test_evidence.py'], calls)
+        self.assertTrue(any('controller.durable.runtime_test' in call for call in calls))
+        self.assertTrue(any('controller.durable.qualify_test' in call for call in calls))
+        self.assertEqual(sum('tools/agents/test_wt.py' in call for call in calls), 1)
+        self.assertFalse(any('controller/Cargo.toml' in call for call in calls))
+        self.assertFalse(any('tools/agents/tracker.py' in call for call in calls))
 
-    def test_tracker_lint_runs_once(self):
-        result, calls = self.dispatch()
-        self.assertEqual(result.returncode, 0)
-        self.assertEqual(sum("tools/agents/tracker.py" in call and "lint" in call for call in calls), 1)
-
-    def test_default_retains_sqlite_without_retired_services(self):
-        result, calls = self.dispatch()
-        self.assertEqual(result.returncode, 0)
-        self.assertTrue(any("controller/Cargo.toml" in call for call in calls))
-        self.assertFalse(any("experiments/team_control_plane/tests/run-temporal.sh" in call for call in calls))
-
-    def test_controller_thread_budget_is_configurable_without_changing_root_cargo(self):
-        result, calls = self.dispatch(CHECK_CONTROLLER_THREADS="8", CHECK_CARGO="1")
+    def test_retired_flags_cannot_restore_old_authority(self):
+        result, calls = self.dispatch(CHECK_TEAM_CONTROL_PLANE='1', CHECK_BENCH='1',
+                                      CHECK_SYNC='1', CHECK_CARGO='1', CHECK_CONTROLLER_THREADS='8')
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        controller = next(call for call in calls if 'controller/Cargo.toml' in call)
-        self.assertIn('--test-threads=8', controller)
         self.assertIn(['cargo', 'test', '--offline', '--', '--test-threads=1'], calls)
-
-    def test_old_service_flag_does_not_restore_retired_integration(self):
-        result, calls = self.dispatch(CHECK_TEAM_CONTROL_PLANE="1", CHECK_BENCH="1",
-                                      CHECK_SYNC="1", CHECK_CARGO="1")
-        self.assertEqual(result.returncode, 0)
-        self.assertFalse(any("team_control_plane" in argument for call in calls for argument in call))
-        self.assertEqual(sum("bench/harness/test_lead_driven.py" in call for call in calls), 1)
-        self.assertIn(["cargo", "test", "--offline", "--", "--test-threads=1"], calls)
-        self.assertIn(["python3", "tools/sync_agentic_workflow.py", "--check"], calls)
-        self.assertIn(["python3", "tools/insula/test_capsule.py"], calls)
-
-    def test_retired_service_suite_is_not_dispatchable(self):
-        result, calls = self.dispatch("--suite", "70-team-control-plane", CHECK_TEAM_CONTROL_PLANE="1")
-        self.assertEqual(result.returncode, 2)
-        self.assertIn("unknown suite", result.stderr)
-        self.assertFalse(any("team_control_plane" in argument for call in calls for argument in call))
+        self.assertIn(['python3', 'tools/insula/test_capsule.py'], calls)
+        for retired in ('controller/Cargo.toml', 'tools/agents/test_worker.py', 'tools/agents/test_tracker.py',
+                        'bench/harness/test_lead_driven.py', 'tools/sync_agentic_workflow.py'):
+            self.assertFalse(any(retired in call for call in calls), retired)
+        for suite in ('15-worker','20-land','30-tracker','65-collab','70-sqlite-controller',
+                      '75-controller-python','80-monitor-wake','70-team-control-plane','sync','policy'):
+            with self.subTest(suite=suite):
+                result, calls = self.dispatch('--suite', suite, CHECK_SYNC='1', CHECK_TEAM_CONTROL_PLANE='1')
+                self.assertEqual(result.returncode, 2)
+                self.assertIn('unknown suite', result.stderr)
+                self.assertEqual(calls, [])
 
     def test_failure_is_reported_and_later_checks_still_run(self):
-        result, calls = self.dispatch(GATE_FAIL_MATCH="tools/agents/test_worker.py")
+        result, calls = self.dispatch(GATE_FAIL_MATCH='tools/agents/test_wt.py')
         self.assertEqual(result.returncode, 1)
-        self.assertIn("FAILED:", result.stdout)
-        self.assertIn("check: FAILED", result.stdout)
-        self.assertTrue(any("controller/Cargo.toml" in call for call in calls))
-
-    def test_collab_suite_skips_when_change_set_is_outside_toolset(self):
-        result, calls = self.dispatch(GATE_CHANGED_FILES="README.md")
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(self.collab_suite_count(calls), 0)
-        self.assertIn("SKIP: collab tests (no tools/collab/ changes)", result.stdout)
-
-    def test_collab_suite_runs_when_change_set_touches_toolset(self):
-        result, calls = self.dispatch(GATE_CHANGED_FILES="tools/collab/collab.py")
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(self.collab_suite_count(calls), 1)
-
-    def test_collab_suite_runs_when_change_set_is_undeterminable(self):
-        result, calls = self.dispatch(GATE_GIT_MODE="fail")
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(self.collab_suite_count(calls), 1)
-        self.assertIn("RUN: collab tests (change set undetermined)", result.stdout)
+        self.assertIn('FAILED:', result.stdout)
+        self.assertIn('check: FAILED', result.stdout)
+        self.assertTrue(any('controller.durable.runtime_test' in call for call in calls))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
