@@ -1,6 +1,6 @@
 # Harp repository architecture
 
-Status: implementation and final qualification in progress
+Status: implemented and verified
 Owner: project owner
 Branch: codex/repo-architecture
 Baseline: 5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3
@@ -17,7 +17,8 @@ lab/. Preserve math, novel Crouzeix proofs, SICP, education and PDF publication.
 The [target architecture](../../docs/workstream/repo-architecture/design.md) owns
 the tree, dependency graph, migration mapping, trust boundaries and workload
 contracts. It supersedes earlier recommendations to retain the imported directory.
-The integration candidate implements this ownership graph; completion requires the recorded composed-source checks and local landing.
+The integration candidate implements this ownership graph. Completed checks and
+exact source identities are recorded in the repository qualification below.
 
 ## Scope and authority
 
@@ -31,8 +32,8 @@ of this design. Preserve absorbed ancestry and source-specific licensing.
 
 The owner selected architecture and follow-up tickets for the new mixed Bazel,
 Triton compilation and transformer-training workloads. Their runnable
-implementations are deferred. Existing-code migration is required work with
-open tickets, not completed by this design record. Architecture work does not
+implementations are deferred. Existing-code migration is complete and verified.
+Tickets 08–10 and 14 retain the agreed follow-up work. Architecture work does not
 itself grant new publication, service or resource-allocation authority.
 
 ## First useful operation
@@ -152,4 +153,14 @@ Intent materialization into detailed specs and tickets follows the Matt Pocock
 style and Harp authoring skills. Colocate new/moved tests with source and preserve
 behavioral coverage and import provenance. These decisions supersede the earlier
 multi-provider acceptance and the separate tests/ folders shown in the expanded
-layout sketch; source migration remains pending.
+layout sketch. The source migration is now implemented and verified.
+
+## Completion evidence
+
+Existing-code tickets 01–07 and 11–13 are done. The [repository qualification](../../evidence/provenance/repository-qualification.json)
+records body commit, complete-candidate check results, native source identity and
+verification limits. Actual Codex runs qualified one, two and four workers; all
+eight exact approved qualification candidates landed with matching Git trees and
+authority journals. The retained Soma workload completed 139 cases through SSH
+and Insula with verified artifact retrieval. New workload implementations and
+richer service-owner capabilities remain follow-ups, not claimed deliveries.

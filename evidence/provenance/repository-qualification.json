@@ -1,0 +1,56 @@
+{
+  "kind": "repository-architecture-qualification-v1",
+  "status": "passed",
+  "body_commit": "c32c6f0f4a2de73e8067be0361121bb841ab4622",
+  "body_tree": "2f89c0417224a514de5f246bb54691261be0080c",
+  "baseline": "883132bd0249e26f1bf37453796d1dfae1c425f8",
+  "gate": {
+    "command": "mise run verify -- --base 883132bd",
+    "completion": "All 54 selected checks passed, with the bounded repairs and continuation below.",
+    "initial_attempt": "Checks 0 through 16 passed, including 857 proof cases (three existing conditional skips). Soma script launch then failed to import its preserved scripts package.",
+    "selector_repair": "Run preserved Soma scripts with PYTHONPATH=lab/soma. All Soma checks and 16 selector cases passed; independent review repeated the selector cases.",
+    "first_continuation": "Checks 17 through 39 passed. Textbook contract suite passed 294 of 295; the remaining check incorrectly scanned the 4.7 MB absorption manifest as executable source.",
+    "textbook_repair": "Exclude only evidence/provenance/absorption.json from the retired-caller scan. Nine focused checks passed, including rejection in neighboring JSON, bounded file sizes and raw Git index identities. Independent reviewer repeated all nine.",
+    "final_continuation": "Revalidated diff and repository receipt after both repairs, then passed all checks 41 through 53. Earlier successful checks had unchanged inputs and were retained; no full clean first invocation is claimed."
+  },
+  "checks": {
+    "harp_library_cases": 468,
+    "durable_cli_cases": 5,
+    "cli_cases": 13,
+    "textbook_contract_cases": 295,
+    "proof_cases": 857,
+    "proof_conditional_skips": 3,
+    "lean_benchmark_cases": 42,
+    "pdf_cases": 25,
+    "native_lifecycle_cases": 228,
+    "native_benchmark_cases": 84,
+    "supervisor_rust_cases": 54,
+    "supervisor_owner_cases": 9,
+    "additional_capsule_cases": 53,
+    "soma_live_cases": 139
+  },
+  "native_identity": {
+    "source_head": "c759e10e8288962a22f911c3a6a8c56fb68f940c",
+    "files": 910,
+    "map_sha256": "0730d5f77a31175e56b024322940ef215cf9cf54811901c68eefe029264f50bd",
+    "limits": "The final verification-only repairs are outside this runtime source map; mapped runtime inputs are unchanged. Earlier real Codex and SSH qualification stages retain their original identities in their own records."
+  },
+  "review": {
+    "blocking_findings": 0,
+    "scope": "Ownership, source preservation, privacy, current native receipts and both final gate repairs; reviewer did not repeat full provider/Lean/PDF runs."
+  },
+  "preservation": {
+    "baseline_paths": 8088,
+    "mapped_paths": 7880,
+    "explicit_retirements": 208,
+    "absorbed_tips": 30,
+    "benchmark_and_study_paths": 7741,
+    "benchmark_and_study_retirements": 0
+  },
+  "follow_ups": [
+    "08-mixed-bazel-workload",
+    "09-triton-compilation-workload",
+    "10-training-workload",
+    "14-extend-service-owner-capabilities"
+  ]
+}

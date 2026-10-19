@@ -1,6 +1,6 @@
 # 06: Put retained executable mathematics and SICP under lab
 
-Status: in-progress
+Status: done
 Owner: math migration agent (`codex/math-migration`)
 Parent: [Repository architecture](../spec.md)
 
@@ -51,3 +51,13 @@ ledgers and retained174 exact /174 solved /513 exported counts. The parent full
 Rust textbook target passed294 cases; its sole stale structural-check Python
 path was then repaired and that exact positive/negative route test passed.
 Final complete-candidate gate remains pending.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.

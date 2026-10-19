@@ -1,6 +1,6 @@
 # 11: Qualify the migrated architecture end to end
 
-Status: in-progress
+Status: done
 Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
@@ -10,13 +10,13 @@ Review and qualify the complete existing-code migration against the new source i
 
 ## Acceptance criteria
 
-- [ ] Required native lifecycle tests pass without required skips for the migrated runtime/bridge/backend identities.
-- [ ] Real Codex runs with one worker, two overlapping workers and four overlapping workers pass independent checks and reviewed serialized exact landings.
-- [ ] The two audit reproducers fail safely and ordinary correct candidates succeed.
-- [ ] An SSH-dispatched retained workload completes under Insula with reconnect/cancellation evidence and host-neutral public artifacts.
-- [ ] Benchmark inventory completeness passes, including acquired dirty-source snapshots and the Emacs gym/AI-LSP suites; historical-only evidence is labeled and no benchmark is silently retired.
-- [ ] Relevant math/SICP/PDF consumers and complete-candidate changed-surface gate pass; primary changes are preserved.
-- [ ] No imported wrapper directory, harp_durable package, competing controller, Temporal/PostgreSQL execution dependency or committed real host inventory remains.
+- [x] Required native lifecycle tests pass without required skips for the migrated runtime/bridge/backend identities.
+- [x] Real Codex runs with one worker, two overlapping workers and four overlapping workers pass independent checks and reviewed serialized exact landings.
+- [x] The two audit reproducers fail safely and ordinary correct candidates succeed.
+- [x] An SSH-dispatched retained workload completes under Insula with reconnect/cancellation evidence and host-neutral public artifacts.
+- [x] Benchmark inventory completeness passes, including acquired dirty-source snapshots and the Emacs gym/AI-LSP suites; historical-only evidence is labeled and no benchmark is silently retired.
+- [x] Relevant math/SICP/PDF consumers and complete-candidate changed-surface gate pass; primary changes are preserved.
+- [x] No imported wrapper directory, harp_durable package, competing controller, Temporal/PostgreSQL execution dependency or committed real host inventory remains.
 
 ## Blocked by
 
@@ -37,6 +37,8 @@ See the implementation progress below.
 
 ## Implementation progress
 
+Historical checkpoints below are superseded by the completion record at the end.
+
 Migration review found and repaired guardian launch shadowing, frozen-oracle mount isolation, Git replacement-ref identity, missing frozen prompt context, proof-checker execution from inspected repositories, and primary-cache/source coupling. Native runtime matrix: 201/202 initially passed; the exact oracle failure was repaired and all three oracle regressions passed. Native owner: nine passed. Codex one and two workers passed on retained sealed sources; four-way coding overlap is proved, with independent verification rerun after a full-filesystem failure. No failed or old execution has been rebound or relabeled. Final composed source receipts, current candidate review, and local landing remain pending.
 
 Final Codex qualification proved one, two and four actual concurrent workers on
@@ -48,3 +50,13 @@ and all destinations are clean. Neutral evidence is in
 `evidence/provenance/codex-qualification.json`. Native benchmark84 and supervisor
 54Rust+9owner cases pass on the frozen910-file composed source identity. The
 full integrated lifecycle receipt and complete-candidate gate remain pending.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.

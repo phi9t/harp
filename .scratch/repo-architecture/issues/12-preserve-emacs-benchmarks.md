@@ -1,6 +1,6 @@
 # 12: Bring Soma and its Emacs workloads into lab/soma
 
-Status: in-progress
+Status: done
 Owner: soma-import agent (codex/soma-migration)
 Parent: [Repository architecture](../spec.md)
 Inventory: [benchmark coverage](../../../docs/workstream/repo-architecture/benchmark-inventory.md)
@@ -21,14 +21,14 @@ old evidence and uncommitted work without altering either source checkout.
 
 ## Acceptance criteria
 
-- [ ] All six tracked gym scenario families, checked bridge, support dependencies and benchmark traces/reports have a lab entry and source/disposition mapping.
-- [ ] Inspect the changed/untracked bridge/API/export work, preserve exact snapshot provenance, and distinguish implemented scenarios from plan-only tickets.
-- [ ] Preserve the AI/LSP verifier, adapters, independent expected values, fixtures and required portable configuration. Label offline and live/authenticated checks separately.
-- [ ] Required Emacs daemon, kernel, process and language-server execution occurs inside the admitted Insula closure. A namespace-only or host-wrapper run is not labeled rootfs-owned.
-- [ ] Port execution and cancellation to the selected durable/Insula/runner boundaries. No sibling checkout dependency or second controller remains.
-- [ ] Preserve captured evidence and licensing records. Sanitize public paths/logs and examples without silently rewriting original evidence. Actual credentials and private host/Doom configuration are excluded.
-- [ ] A completeness check rejects an omitted scenario, grader, fixture, supporting module or unreviewed benchmark retirement.
-- [ ] Run meaningful bridge/scenario and actual supported LSP/Jupyter/process checks; absent capabilities and unimplemented API/export work remain explicitly unqualified.
+- [x] All six tracked gym scenario families, checked bridge, support dependencies and benchmark traces/reports have a lab entry and source/disposition mapping.
+- [x] Inspect the changed/untracked bridge/API/export work, preserve exact snapshot provenance, and distinguish implemented scenarios from plan-only tickets.
+- [x] Preserve the AI/LSP verifier, adapters, independent expected values, fixtures and required portable configuration. Label offline and live/authenticated checks separately.
+- [x] Required Emacs daemon, kernel, process and language-server execution occurs inside the admitted Insula closure. A namespace-only or host-wrapper run is not labeled rootfs-owned.
+- [x] Port execution and cancellation to the selected durable/Insula/runner boundaries. No sibling checkout dependency or second controller remains.
+- [x] Preserve captured evidence and licensing records. Sanitize public paths/logs and examples without silently rewriting original evidence. Actual credentials and private host/Doom configuration are excluded.
+- [x] A completeness check rejects an omitted scenario, grader, fixture, supporting module or unreviewed benchmark retirement.
+- [x] Run meaningful bridge/scenario and actual supported LSP/Jupyter/process checks; absent capabilities and unimplemented API/export work remain explicitly unqualified.
 
 ## Blocked by
 
@@ -146,3 +146,13 @@ passed. `mise run verify` and `--plan` refuse the copied shared
 `durable/__init__.py` because this isolated base lacks the coordinator's new
 verification mapping. No selected check was skipped; repository landing remains
 blocked until that mapping and the composed candidate gate pass.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.

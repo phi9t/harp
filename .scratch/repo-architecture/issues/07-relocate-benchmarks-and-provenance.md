@@ -1,6 +1,6 @@
 # 07: Relocate benchmarks and finish imported-tree removal
 
-Status: in-progress
+Status: done
 Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
@@ -17,12 +17,12 @@ without retiring its benchmark payload. Emacs source acquisition is covered by
 
 ## Acceptance criteria
 
-- [ ] All absorbed source tips and worktree captures remain ancestors of the delivery candidate; original blob/mode/license identities remain auditable.
-- [ ] Every previously tracked imported path has an explicit new destination or reasoned retirement, with adapted retained bytes checked.
-- [ ] Source-to-destination completeness covers all 42 current task directories, 18 readiness scenarios and additional benchmark assets outside bench/, including dirty worktree captures; unexplained benchmark omissions fail.
-- [ ] Retained benchmark materialization and independent grading work; hidden solutions/oracles remain separate from agent workspaces.
-- [ ] No legacy agent/controller launch returns as a benchmark fallback. Historical docs do not claim current execution ownership.
-- [ ] The old imported directory and old package import paths are absent without compatibility archives. Captured evidence is never silently rewritten.
+- [x] All absorbed source tips and worktree captures remain ancestors of the delivery candidate; original blob/mode/license identities remain auditable.
+- [x] Every previously tracked imported path has an explicit new destination or reasoned retirement, with adapted retained bytes checked.
+- [x] Source-to-destination completeness covers all 42 current task directories, 18 readiness scenarios and additional benchmark assets outside bench/, including dirty worktree captures; unexplained benchmark omissions fail.
+- [x] Retained benchmark materialization and independent grading work; hidden solutions/oracles remain separate from agent workspaces.
+- [x] No legacy agent/controller launch returns as a benchmark fallback. Historical docs do not claim current execution ownership.
+- [x] The old imported directory and old package import paths are absent without compatibility archives. Captured evidence is never silently rewritten.
 
 ## Blocked by
 
@@ -37,4 +37,16 @@ See the implementation progress below.
 
 ## Implementation progress
 
+Historical checkpoints below are superseded by the completion record at the end.
+
 All 42 task fixtures and all 18 study trees are relocated under lab/benchmarks/. The executable absorption record verifies 8,088 original paths and 30 retained branch/worktree tips; benchmark/study retirement is prohibited. All 6,960 study files and four archived results remain byte-identical. Linux materialization (54), grader validation (20), and three red/green/repeated real-capsule reference tasks passed. Final source-bound benchmark receipt remains pending.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.

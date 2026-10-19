@@ -1,6 +1,6 @@
 # 13: Integrate the supplied Insula service supervisor
 
-Status: in-progress
+Status: done
 Owner: supervisor-migration
 Parent: [Repository architecture](../spec.md)
 Source and boundaries: [supervisor integration](../../../docs/workstream/repo-architecture/supervisor-integration.md)
@@ -18,13 +18,13 @@ Keep service policy separate from the single agent/workload control plane.
 
 - [x] Imported tests are colocated with owning source modules, with native integration targets configured explicitly; preserve original archive provenance and test behavior.
 - [x] Source/archive and adaptations have exact provenance. Reconcile workspace SQLite linkage/toolchain constraints and rerun tests against the chosen lock without silently changing pins.
-- [ ] The real owner implements all eight interface methods for its advertised capability subset, exclusive root claims, effect-time epoch/generation fencing, durable launch and endpoint reservations, and reconciliation observations. Unsupported operations refuse admission; a test fixture never supplies production authority.
-- [ ] Durable activity admission and service claims share the authoritative execution boundary without state-directory or socket aliases bypassing exclusivity. No competing namespace keeper or reaping loop is introduced.
+- [x] The real owner implements all eight interface methods for its advertised capability subset, exclusive root claims, effect-time epoch/generation fencing, durable launch and endpoint reservations, and reconciliation observations. Unsupported operations refuse admission; a test fixture never supplies production authority.
+- [x] Durable activity admission and service claims share the authoritative execution boundary without state-directory or socket aliases bypassing exclusivity. No competing namespace keeper or reaping loop is introduced.
 - [x] Private service-state SQLite records remain service-owned; workflow attempts, candidate results and approvals remain durable-owned. Neither database writes or mirrors the other's authority.
-- [ ] Verify actual target namespace entry, service/probe descendant cleanup, secret resolution, bounded log sinks and workload/controller access isolation. Unsupported stronger capabilities refuse admission.
+- [x] Verify actual target namespace entry, service/probe descendant cleanup, secret resolution, bounded log sinks and workload/controller access isolation. Unsupported stronger capabilities refuse admission.
 - [x] Reconnect, terminal replacement and workflow recovery remain separate. A completed tmux-pane counter stays at one after controller recovery and explicit empty-server replacement. Agent turns, benchmarks and training are never implicit bootstrap replays.
-- [ ] Reproduce supported duplicate-start, stale-generation, claim-loss, lost-reply/unknown-outcome, owner-crash recovery, bounded logs and competing-owner cases through the real owner. Preserve richer policy/probe/budget fixture tests without claiming they qualify unsupported owner capabilities.
-- [ ] Qualify actual bwrap/PID-namespace lifetime and both controller-crash and owner-crash cases. Advertise keep-services survival only when that specific boundary is demonstrated.
+- [x] Reproduce supported duplicate-start, stale-generation, claim-loss, lost-reply/unknown-outcome, owner-crash recovery, bounded logs and competing-owner cases through the real owner. Preserve richer policy/probe/budget fixture tests without claiming they qualify unsupported owner capabilities.
+- [x] Qualify actual bwrap/PID-namespace lifetime and both controller-crash and owner-crash cases. Advertise keep-services survival only when that specific boundary is demonstrated.
 - [x] No daemon, hook or persistent service is installed as an integration side effect. Preserve explicit operator lifecycle controls and sanitized public evidence.
 
 ## Blocked by
@@ -108,3 +108,17 @@ cross-service aliases and retired generation reuse before launching. Native
 regression verifies the original process identity remains unchanged, operation-ID
 collisions refuse, and replay of a completed original launch observes Gone
 without replaying its bootstrap. Final native result is nine passed, zero skipped.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.
+
+This closes the advertised existing-code capability subset only. Secret resolution,
+non-process probes and controller-independent service survival remain unsupported
+and tracked in [ticket 14](14-extend-service-owner-capabilities.md).

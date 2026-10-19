@@ -1,6 +1,6 @@
 # 05: Run admitted workloads over SSH under Insula
 
-Status: in-progress
+Status: done
 Owner: soma-import / codex/workload-runner
 Parent: [Repository architecture](../spec.md)
 
@@ -10,11 +10,11 @@ Implement top-level runner/ as transport/preflight for the selected remote execu
 
 ## Acceptance criteria
 
-- [ ] A declared lab workload executes under the admitted remote Insula profile and returns source/profile/oracle-bound evidence.
-- [ ] A dropped SSH connection causes status reconciliation by run identity; reconnect never silently repeats an ambiguous effect.
-- [ ] Cancellation and capacity reuse require actual remote cleanup evidence, not transport termination.
-- [ ] Commit a schema and fictional example only. The actual inventory is ignored and a check rejects forced staging, private hostnames, addresses, credentials and host paths in new public runner artifacts.
-- [ ] Wrong source/profile, missing delegation, unsupported capabilities and unavailable host refuse before workload launch. Host-key checking remains enabled.
+- [x] A declared lab workload executes under the admitted remote Insula profile and returns source/profile/oracle-bound evidence.
+- [x] A dropped SSH connection causes status reconciliation by run identity; reconnect never silently repeats an ambiguous effect.
+- [x] Cancellation and capacity reuse require actual remote cleanup evidence, not transport termination.
+- [x] Commit a schema and fictional example only. The actual inventory is ignored and a check rejects forced staging, private hostnames, addresses, credentials and host paths in new public runner artifacts.
+- [x] Wrong source/profile, missing delegation, unsupported capabilities and unavailable host refuse before workload launch. Host-key checking remains enabled.
 
 ## Blocked by
 
@@ -79,3 +79,13 @@ profile also passed the native phase probe and all139 Soma scenarios across eigh
 suites, with nine declared artifacts. Summary and compressed daemon results were
 retrieved over the real SSH artifact API and their hashes/sizes verified. The
 existing16MiB file bound was retained. Full composed-source gate remains pending.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.

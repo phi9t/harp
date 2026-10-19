@@ -1,12 +1,12 @@
 # Harp ownership and repository layout
 
-Status: implemented in the integration candidate; final qualification and landing pending.
+Status: implemented and verified; see the repository qualification record.
 Baseline: `5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3`.
 Intent and delivery slices: [local specification](../../../.scratch/repo-architecture/spec.md).
 
 ## Decisions
 
-Harp will have one durable execution control plane for agents. The selected
+Harp has one durable execution control plane for agents. The selected
 Python replay runtime, SQLite operational store, guardian protocol and coding
 workflow become first-party Harp code. The imported product directory and
 `harp_durable/` disappear after their callers migrate. Temporal, PostgreSQL and
@@ -350,3 +350,10 @@ proof/publication behavior, a working SSH-to-Insula runner, checked provenance,
 and no committed private host configuration. New workload tickets remain open
 until their implementations have their own evidence. TLA+ can later target the
 stable guardian/recovery protocol; it is not a prerequisite for these repairs.
+
+## Verified delivery
+
+The existing-code migration is complete. The [qualification record](../../../evidence/provenance/repository-qualification.json)
+identifies the verified body commit, source-bound native checks and complete
+changed-surface gate. Tickets 08–10 and 14 remain explicit follow-ups for new
+workloads and stronger service-owner capabilities.

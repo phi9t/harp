@@ -1,6 +1,6 @@
 # 04: Make Insula a first-party isolation package
 
-Status: in-progress
+Status: done
 Owner: Codex on codex/repo-architecture
 Parent: [Repository architecture](../spec.md)
 
@@ -15,10 +15,10 @@ per-activity guardian must not be mislabeled a complete long-lived service owner
 
 ## Acceptance criteria
 
-- [ ] Insula rootfs/capsule construction and execution work without importing durable, runner or a workload package.
-- [ ] Durable attempt admission, guardian ownership and receipt acceptance stay outside Insula.
-- [ ] Projected inputs remain immutable; controller state, owner credentials/capabilities and authoritative receipts stay outside worker namespaces. A provider activity receives only its explicitly admitted provider credential; independent verifiers receive none.
-- [ ] Missing cgroup delegation refuses execution without fallback. Namespace, network and descendant-cleanup tests pass on the moved code.
+- [x] Insula rootfs/capsule construction and execution work without importing durable, runner or a workload package.
+- [x] Durable attempt admission, guardian ownership and receipt acceptance stay outside Insula.
+- [x] Projected inputs remain immutable; controller state, owner credentials/capabilities and authoritative receipts stay outside worker namespaces. A provider activity receives only its explicitly admitted provider credential; independent verifiers receive none.
+- [x] Missing cgroup delegation refuses execution without fallback. Namespace, network and descendant-cleanup tests pass on the moved code.
 
 ## Blocked by
 
@@ -32,4 +32,16 @@ See the implementation progress below.
 
 ## Implementation progress
 
+Historical checkpoints below are superseded by the completion record at the end.
+
 Capsule/rootfs/cgroup/storage mechanisms now live under insula/. Durable binds fresh sealed source snapshots and owns attempt receipts; both guardian and service owner use insula.owner.process.launch. Current native owner matrix passes nine tests with no skips. Missing cgroup delegation still refuses; non-GPU execution uses private sysfs. Final composed runtime qualification remains pending.
+
+## Completion
+
+Implemented and verified in body commit `c32c6f0f4a2de73e8067be0361121bb841ab4622`. The complete-candidate
+changed-surface plan passes, including the bounded verification repairs recorded in
+[the repository qualification](../../../evidence/provenance/repository-qualification.json).
+Native runtime, benchmark and supervisor receipts bind the composed runtime bytes;
+real Codex one/two/four-worker runs and all eight explicitly approved landings are
+recorded separately in [Codex qualification](../../../evidence/provenance/codex-qualification.json).
+Retained workloads and proof/PDF consumers passed their relevant checks.
