@@ -8,8 +8,9 @@ Baseline: 5342c2e3b08e8671e3ef46aca83bcbbc79b7f5a3
 ## Outcome
 
 Make the selected durable runtime first-party Harp code with one execution control
-plane, one SQLite operational owner and explicit Git workflow rules. Remove the
-imported product directory and harp_durable package after migrating callers.
+plane, one SQLite operational owner and internal Git-managed intent, collaboration
+and Git workflow modules. Remove the imported product directory and
+harp_durable package after migrating callers.
 Expose top-level Insula and SSH runner packages and put executable workloads in
 lab/. Preserve math, novel Crouzeix proofs, SICP, education and PDF publication.
 
@@ -123,3 +124,18 @@ thirteen-ticket acyclic dependency graph, required supervisor blockers, changed
 local links and host-token scan. `mise run verify -- --base ae894136` passed its
 selected documentation checks. No supplied Rust tests or real-owner integration
 tests were run in this inspection.
+
+## Git workflow belongs inside durable
+
+The owner folded the proposed top-level Git-workflow package into durable. The
+framework includes durable/intent/ for the existing Git-managed spec/issue/ticket
+contract, durable/collaboration/ for bounded multi-agent policy, and durable/git/
+for source/candidate/verification/landing rules. Authored intent remains in Git;
+SQLite records execution state and immutable input references. Keep .scratch/
+and the existing tracker format. Ticket 01 includes these responsibilities in
+the single-runtime migration; this does not add a separate tracker or scheduler.
+
+
+This clarification passed `mise run verify -- --base 967df339`, selecting diff
+whitespace and changed-document local-link checks. Runtime source remains
+unmoved; these checks validate the revised design and ticket contracts only.

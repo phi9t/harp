@@ -15,7 +15,7 @@ per-activity guardian must not be mislabeled a complete long-lived service owner
 
 ## Acceptance criteria
 
-- [ ] Insula rootfs/capsule construction and execution work without importing durable, git_workflow, runner or a workload package.
+- [ ] Insula rootfs/capsule construction and execution work without importing durable, runner or a workload package.
 - [ ] Durable attempt admission, guardian ownership and receipt acceptance stay outside Insula.
 - [ ] Projected inputs remain immutable; state, credentials, capability files and authoritative receipts stay outside worker namespaces.
 - [ ] Missing cgroup delegation refuses execution without fallback. Namespace, network and descendant-cleanup tests pass on the moved code.

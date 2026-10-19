@@ -30,9 +30,11 @@ durable/                    one Python execution control plane
   runtime/                  replay, activities, guardian, receipt acceptance
   state/                    SQLite schema, transactions, operational records
   agents/                   admission, Codex/Trae adapters, coding activities
+  intent/                   Git-managed specs, issues, dependencies and acceptance
+  collaboration/            bounded assignments, worktree ownership, integration policy
+  git/                      source/candidate/verification/landing domain
   workflows/                coding, verification and workload orchestration
   execution.py              bind runtime identity to an Insula execution
-git_workflow/               source/candidate/verification/landing domain
 insula/                     capsule, rootfs, projection and isolation mechanisms
   supervisor/               supplied Rust service lifecycle library and owner client
 runner/                     SSH transport, preflight, request/result transfer
@@ -71,17 +73,20 @@ The root Cargo workspace remains the product build. Bazel initially belongs to
 | `durable/runtime` | Dispatch, replay, attempts, capacity, cancellation, cleanup gating and receipt acceptance | Git intent, proof truth, host discovery |
 | `durable/state` | One project workflow SQLite database and its transactions, including approval and landing records | A second scheduler, editable task intent |
 | `durable/agents` and `durable/workflows` | Freeze inputs; orchestrate provider, verification and workload activities | Provider-specific approval or recovery policy |
-| `git_workflow` | Exact Git subjects, change-policy validation, verifier inputs, approval binding and physical landing rules | Dispatch loops, a database of its own, alternate acceptance authority |
+| `durable/intent` | Parse and validate Git-managed specs/issues/tickets, dependencies and acceptance inputs | A second editable backlog in SQLite, implicit intent changes to admitted work |
+| `durable/collaboration` | Bounded assignments, isolated worktree ownership and integration policy | Another dispatch/recovery loop, widened worker authority |
+| `durable/git` | Exact Git subjects, change-policy validation, verifier inputs, approval binding and physical landing rules | A separate scheduler, database or acceptance authority |
 | `insula` | Rootfs/layer identity, mounts, namespaces, network policy and confinement mechanisms | Workflow replay, task status, approval, provider scheduling |
 | `insula/supervisor` | Declared service lifecycle, health/readiness, generations and bounded service recovery | Agent jobs, workflow retries, approval, direct service launching/reaping |
 | `runner` | Resolve a local host alias; transport pinned requests and artifacts; invoke/query remote execution | Retry an ambiguous effect, infer cleanup from SSH loss, approve or land code |
 | `lab` | Workload source, inputs, expected outputs and independent oracles | Credentials, host configuration, controller state or duplicate orchestration |
 
 The Rust CLI invokes the one Python control plane. Durable workflows call
-`git_workflow` domain operations and Insula mechanisms. Runner submits to that
-same control plane on the selected host and reconnects by admitted run identity.
-Neither `git_workflow` nor `insula` imports `durable`. Workloads cannot import
-controller internals to create or alter accepted state.
+`durable/intent`, `durable/collaboration`, `durable/git` and Insula mechanisms.
+Runner submits to that same control plane on the selected host and reconnects by admitted run identity.
+Insula does not import durable. Internal Git and intent rules do not call back
+into workflow dispatch; workflows compose them through the one runtime/store.
+Workloads cannot import controller internals to create or alter accepted state.
 
 Workflow SQLite state stays inside `durable/state/`. Extract the existing store and schema with
 their transaction boundaries, rather than introducing a generic database service.
@@ -96,10 +101,41 @@ an attempt owns capacity and when proven cleanup permits reuse. The execution
 binding is `durable/execution.py`; Insula has no durable registry or second CLI
 that can submit agent work independently.
 
-The shared `git_workflow` boundary represents domain rules and Git operations.
+The internal `durable/git` boundary represents domain rules and Git operations.
 Durable orchestration owns when they run and records their outcome. Verification
 remains an independent activity. A passing workload or provider command is not
 an approval, and the destination only changes through the owner-approved path.
+
+## Durable agentic engineering framework
+
+Durable includes the Git-managed engineering workflow as well as execution.
+`durable/intent/` supports the existing local-Markdown contract: specs, issues,
+tickets, acceptance criteria and dependency links authored in the Matt Pocock
+skill style. Those records remain under `.scratch/<feature>/`, outside the code
+package. Reuse the [tracker contract](../../agents/issue-tracker.md); do not
+invent another tracker format or require a service to use it.
+
+Git owns authored intent and issue state. Admission freezes their exact revisions
+and bytes, declared change scope and acceptance inputs for a run. Editing a
+spec/ticket afterwards does not mutate that admitted run. SQLite owns execution
+attempts, observations and accepted operational results. It may retain immutable
+input snapshots and source references; it is not a second editable backlog.
+Updating a ticket is a deliberate Git change bound to its evidence, rather than
+an implicit consequence of provider exit or a database status update.
+
+`durable/collaboration/` composes bounded assignments, issue dependencies,
+non-overlapping worktree ownership, handoff and integration decisions using the
+same intent records and runtime. It computes policy and submits admitted work;
+`durable/runtime/` alone dispatches, accounts capacity, cancels and recovers it.
+Conflicting changes require a fresh integration candidate and verification;
+collaboration never grants workers approval or landing authority. Keep the
+existing one/two/four-worker scope and explicit reconciliation rules.
+
+`durable/git/` supplies source snapshots, worktree and candidate identities,
+change-policy enforcement, independent verification and exact approved landing.
+Intent, collaboration, Git operations and execution are internal parts of one
+framework with distinct responsibilities. There is no top-level Git-workflow
+product or compatibility package to maintain.
 
 ## Supplied service supervisor
 
@@ -127,7 +163,7 @@ Ticket 13 covers acquisition, dependency reconciliation and actual owner tests.
 | Imported guardian and receipt helpers | `durable/runtime/`, with the existing launch/cleanup protocol |
 | Imported durable Insula binding | `durable/execution.py` |
 | `harp_durable/` admission, activities, providers and public CLI | `durable/agents/`, `durable/workflows/`, `durable/__main__.py` |
-| Candidate, verifier and landing domain code | `git_workflow/`, orchestrated by durable workflows |
+| Candidate, verifier and landing domain code | `durable/git/`, orchestrated by durable workflows |
 | Imported capsule/rootfs/temp-root mechanisms | `insula/`, with all callers and sealed-code manifests migrated |
 | Imported benchmark tasks and useful pure validators | `lab/benchmarks/`, using the selected execution path |
 | `formalization/` and proof companion programs in `labs/` | `lab/math/`, preserving Lean module names and proof authorities |
