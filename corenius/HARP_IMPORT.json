@@ -1987,16 +1987,16 @@
       "sha256": "a02bf2bd1c3554509f7e3d22b0304a20eadbdbf9ce57c858b91cc7c98cd60fb0"
     },
     "tools/agents/test_wt.py": {
-      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
-      "sha256": "842893424cb0e04fa68191c9950fccc8037f0b22ac723ff1bc650ef8b90e2c4e"
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry. Close direct recovery, terminal messaging/launch, lock/state-writing helper bypasses before argument inspection; preserve pure descriptions and scanners.",
+      "sha256": "b375a53397c8b95486ee960261c2b3f991a71e368779741a09ff8da4a8739c6e"
     },
     "tools/agents/tracker.py": {
       "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
       "sha256": "8dd673390b13920cf6242f84ddd1104830dc51c616a92e14f0d5b9f1d51f2e16"
     },
     "tools/agents/worker.py": {
-      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
-      "sha256": "7834c8199eed523826709371352275fdfa09597143d0454ddc30c44639988d2a"
+      "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry. Close direct recovery, terminal messaging/launch, lock/state-writing helper bypasses before argument inspection; preserve pure descriptions and scanners.",
+      "sha256": "f1384941a72c4bdd8189ce865164d2205eafa6a4938a6b232e14815ced972632"
     },
     "tools/agents/wt.py": {
       "reason": "Retire superseded imported execution/control/tracker authority; preserve selected Python SQLite runtime, useful pure mechanisms, captured evidence and recoverable source ancestry.",
@@ -2408,7 +2408,7 @@
   "controller_retirement": {
     "authority": "harp durable using controller/durable; no alternative controller or implicit state migration",
     "rust": "Only corenius, corenius-sqlite-controller, corenius-attempt-supervisor and corenius-attempt-gate refusal binaries remain explicit Cargo targets. Historical libraries/examples/tests are unregistered.",
-    "python": "Baseline/relay/native/operator/Collab/worktree/landing/lead/worker/operational tracker CLI boundaries refuse before effects. Writable Collab/StateStore constructors and worker launch/supervise/candidate-import/verification boundaries refuse.",
+    "python": "Baseline/relay/native/operator/Collab/worktree/landing/lead/worker/operational tracker CLI boundaries refuse before effects. Writable Collab/StateStore constructors and worker launch/supervise/candidate-import/verification boundaries refuse. Direct worker resume/deliver-findings and terminal send/launch, temp/state/lock/rework writer helpers refuse before effects, including persist-enabled diagnostics.",
     "benchmarks": "Solo reference/noop replay and pure validation remain; direct cmd/Trae, fleet/controller and lead-driven execution authority refuse. Historical source/results remain reference material.",
     "retained": "controller/durable/**, tools/insula/{capsule,durable}.py and tools/temp_root.py unchanged; evidence/license bytes, pure catalog/parser/provider protocol/check contracts and historical records retained.",
     "checks": "10-wt validates command/library refusal with real Git/files and recording executables, all 4 compiled Rust bins; selected 72/73 durable tests remain, alongside temp/evidence/snapshot checks. Removed old policy synchronization/authority suites cannot be enabled by old flags.",
@@ -2439,7 +2439,11 @@
         "The unchanged Linux process/cgroup runtime suite cannot execute on macOS: it explicitly requires Linux /proc (and Insula native prerequisites); these failed attempts are not claimed as passes. Retained native qualification belongs to the byte-identical selected runtime qualified in milestone09.",
         "The unchanged review-snapshot suite passed 14 cases but its raw invalid-UTF8 filename case cannot create its fixture on this macOS filesystem (errno92); no test or runtime boundary was weakened."
       ],
-      "authority": "No remote source/runtime mutation, paid calls, persistent services, push or primary-checkout landing in this retirement slice."
+      "authority": "No remote source/runtime mutation, paid calls, persistent services, push or primary-checkout landing in this retirement slice.",
+      "recovery_boundary_repair": {
+        "command": "SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.11 corenius/tools/temp_root.py -- /opt/homebrew/bin/python3.11 corenius/tools/agents/test_wt.py -v",
+        "result": "4 tests passed. Expanded existing-state sentinel cases cover direct worker resume, delivery, terminal process/message, lock, state/temp/bind, candidate/rework and persist-enabled diagnostic authority before any effect. Pure parser/argv data behavior remains available. Retained evidence consumers: python3 tools/agents/test_evidence.py passed all15 tests. Changed-surface/import gate against ed91a3bc passed; selected runtime/Insula/temp bytes remain unchanged."
+      }
     }
   }
 }

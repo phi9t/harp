@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
-"""Launch a worker agent in its own private git workspace and supervise it deterministically.
+"""Retired worker entrypoints and retained read-only reference helpers.
 
-The lead/supervisor/worker form factor (docs/practice/lead-supervisor-worker.md):
-
-* ``launch``    create a private git workspace and branch, write the prompt file with the
-                standard rules, start ``traecli exec`` detached, record a run.
-* ``supervise`` block until the worker exits (or ``--max-wait`` elapses), check
-                the boundary every cycle, and write ``verdict.json``.
-                Exit 0 CLEAN, 1 DEGRADED, 2 VIOLATED, 3 still RUNNING.
-* ``status``    one-shot check of a run without changing anything.
-
-The checks read process and git state, never artifacts, so a supervisor cannot
-mistake a finished output file for a finished process. Standard library only.
-Set CORENIUS_TRAECLI or CORENIUS_CODEX to override the worker binary and
-CORENIUS_RUNS to move the run directory root.
+Pure event/transcript parsers, scanners and argv descriptions remain available.
+Recovery, state writes, terminal delivery and worker process launch refuse.
+Use harp durable for the admitted coding lifecycle.
 """
 
 from __future__ import annotations
@@ -406,6 +396,8 @@ def event_stream_file_change_paths(events: list[dict], runtime: str, worktree: P
 
 
 def update_session_id_from_events(run: dict, *, persist: bool = True) -> str | None:
+    if persist:
+        raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
     if run.get("session_id"):
         update_runtime_transcript(run, run["session_id"])
         if persist:
@@ -667,44 +659,19 @@ def runs_root() -> Path:
 
 
 def temp_parent() -> Path:
-    override = os.environ.get("TMPDIR")
-    policy = Path(__file__).resolve().parents[1] / "temp_root.py"
-    import runpy
-    return runpy.run_path(str(policy))["temporary_root"](
-        override or str(runs_root() / "tmp")
-    )
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def temporary_directory(prefix: str):
-    return tempfile.TemporaryDirectory(prefix=prefix, dir=str(temp_parent()))
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def new_run_temp(run_dir: Path, *, keep: bool = False) -> dict:
-    root = run_dir / "tmp"
-    tmux = root / "tmux"
-    root.mkdir(parents=True, exist_ok=True)
-    tmux.mkdir(parents=True, exist_ok=True)
-    return {
-        "tmpdir": str(root),
-        "tmux_tmpdir": str(tmux),
-        "tmpprefix": str(root / "zsh"),
-        "keep": keep,
-        "cleanup": "remove-when-stopped" if not keep else "keep",
-    }
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def ensure_run_temp(run: dict) -> dict:
-    temp = dict(run.get("temp") or new_run_temp(Path(run["run_dir"])))
-    root = Path(temp["tmpdir"])
-    tmux = Path(temp.get("tmux_tmpdir") or root / "tmux")
-    root.mkdir(parents=True, exist_ok=True)
-    tmux.mkdir(parents=True, exist_ok=True)
-    temp["tmpdir"] = str(root)
-    temp["tmux_tmpdir"] = str(tmux)
-    temp["tmpprefix"] = str(temp.get("tmpprefix") or root / "zsh")
-    temp.pop("removed_at", None)
-    run["temp"] = temp
-    return temp
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def runtime_temp_env(temp: dict) -> dict[str, str]:
@@ -722,21 +689,7 @@ def run_environment(temp: dict, *, env: dict[str, str] | None = None) -> dict[st
 
 
 def cleanup_run_temp(run: dict) -> str | None:
-    temp = run.get("temp") or {}
-    if temp.get("keep"):
-        return None
-    raw = temp.get("tmpdir")
-    if not raw:
-        return None
-    root = Path(os.path.abspath(raw))
-    run_dir = Path(os.path.abspath(run["run_dir"]))
-    if root != run_dir and path_inside(root, run_dir) and root.exists():
-        shutil.rmtree(root, ignore_errors=True)
-        temp["removed_at"] = now()
-        run["temp"] = temp
-        save_run(run)
-        return str(root)
-    return None
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def pid_alive(pid: int) -> bool:
@@ -821,45 +774,11 @@ TASK
 
 
 def sandbox_binds(worktree: Path, allowed: list[str]) -> tuple[list[tuple[Path, str]], list[Path]]:
-    """Writable binds for `--sandbox insula`: the worktree is mounted read-only and only the allowed paths are
-    bound writable. bwrap can bind only what exists, so a missing allowed path is created first: a directory when
-    the entry ends with '/', otherwise an empty file (with its missing parents). Returns (binds, created); the
-    created paths are removed again after the run if the worker left them untouched."""
-    binds: list[tuple[Path, str]] = []
-    created: list[Path] = []
-    validate_allowed_paths(allowed)
-    for entry in allowed:
-        relative = entry.rstrip("/")
-        host = worktree / relative
-        if not host.exists():
-            for parent in reversed(host.parents):
-                if worktree in parent.parents or parent == worktree:
-                    if not parent.exists():
-                        parent.mkdir()
-                        created.append(parent)
-            if entry.endswith("/"):
-                host.mkdir()
-            else:
-                host.touch()
-            created.append(host)
-        binds.append((host, f"/workspace/{relative}"))
-    return binds, created
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def remove_untouched(created: list[str | Path]) -> list[str]:
-    """Remove pre-created empty files and empty directories (deepest first); returns what was removed."""
-    removed = []
-    for path in sorted((Path(p) for p in created), key=lambda p: len(p.parts), reverse=True):
-        try:
-            if path.is_file() and path.stat().st_size == 0:
-                path.unlink()
-                removed.append(str(path))
-            elif path.is_dir() and not any(path.iterdir()):
-                path.rmdir()
-                removed.append(str(path))
-        except OSError:
-            continue
-    return removed
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def cross_device_clone_error(result: subprocess.CompletedProcess) -> bool:
@@ -1061,45 +980,7 @@ def interactive_argv(runtime: str, args: argparse.Namespace, worktree: Path, pro
 
 
 def resume_command(runtime: str, run: dict, session_id: str, prefix: Path) -> tuple[list[str], Path]:
-    run_dir = Path(run["run_dir"])
-    host_last_message = Path(str(prefix) + "-last-message.md")
-    temp = ensure_run_temp(run)
-    capsule_ref = run.get("capsule")
-    if capsule_ref:
-        inner_prefix = Path("/home/bench/run") / prefix.name
-        inner_last_message = Path(str(inner_prefix) + "-last-message.md")
-        inner = resume_argv(
-            runtime,
-            run,
-            session_id,
-            inner_last_message,
-            worktree=Path("/workspace"),
-            sandbox_mode="danger-full-access",
-        )
-        capsule_tool = Path(__file__).resolve().parents[1] / "insula" / "capsule.py"
-        command = [
-            sys.executable, str(capsule_tool), "run", str(capsule_ref), "--workspace", run["worktree"],
-            "--net", "host" if access_profile(run)["network"] == "on" else "none",
-            "--rw", f"{run_dir}:/home/bench/run", "--env", "TRAE_HOME=/home/bench/.trae",
-            "--env", "TRAECLI_HOME=/home/bench/.trae/cli",
-            "--env", "TMUX_TMPDIR=/run/corenius-tmp",
-            "--env", "TMPPREFIX=/run/corenius-tmp/zsh",
-            "--record", str(Path(str(prefix) + "-capsule-run.json")),
-        ]
-        if run_sandbox_mode(run) == "insula":
-            command.append("--ro-workspace")
-            binds, _ = sandbox_binds(Path(run["worktree"]), list(run.get("allowed", [])))
-            binds.append((Path(run["worktree"]) / ".git", "/workspace/.git"))
-            for host, dest in binds:
-                command += ["--rw", f"{host}:{dest}"]
-        return command + ["--", *inner], host_last_message
-
-    writable = [Path(run["git_dir"])] if run.get("git_dir_layout") == "separate" else []
-    writable.append(Path(temp["tmpdir"]))
-    return (
-        resume_argv(runtime, run, session_id, host_last_message, worktree=Path(run["worktree"]), writable_roots=writable),
-        host_last_message,
-    )
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def path_inside(path: Path, root: Path) -> bool:
@@ -1216,26 +1097,7 @@ def timed_external_snapshot(paths: list[Path], *, hash_files: bool, digest_limit
 
 
 def write_external_baseline(paths: list[Path], run_dir: Path, digest_limit: int) -> dict | None:
-    if not paths:
-        return None
-    entries, scan = timed_external_snapshot(paths, hash_files=True, digest_limit=digest_limit)
-    baseline = {
-        "recorded": now(),
-        "recorded_epoch": time.time(),
-        "digest_limit_bytes": digest_limit,
-        "protected_paths": [str(p) for p in paths],
-        "entries": entries,
-    }
-    baseline_file = run_dir / "external-state-baseline.json"
-    baseline_file.write_text(json.dumps(baseline, indent=2) + "\n")
-    return {
-        "protected_paths": [str(p) for p in paths],
-        "baseline_file": str(baseline_file),
-        "baseline_file_timestamp_epoch": baseline_file.stat().st_mtime,
-        "digest_limit_bytes": digest_limit,
-        "baseline_entry_count": scan["entry_count"],
-        "baseline_scan_seconds": scan["scan_seconds"],
-    }
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def in_any_path(path: str, roots: list[str]) -> bool:
@@ -1348,23 +1210,16 @@ def load_run(run_dir: str | Path) -> dict:
 
 @contextlib.contextmanager
 def run_record_lock(run_dir: str | Path):
-    path = Path(run_dir) / "run.lock"
-    with path.open("a+") as handle:
-        fcntl.flock(handle, fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(handle, fcntl.LOCK_UN)
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 @contextlib.contextmanager
 def locked_run(run_dir: str | Path):
-    with run_record_lock(run_dir):
-        yield load_run(run_dir)
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def save_run(run: dict) -> None:
-    (Path(run["run_dir"]) / "run.json").write_text(json.dumps(run, indent=2) + "\n")
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def active_events_file(run: dict) -> Path:
@@ -1677,26 +1532,7 @@ def next_rework_round(run: dict, kind: str, actor: str) -> int:
 
 
 def record_shared_rework(run: dict, delivery: dict, actor: str) -> dict | None:
-    context = shared_rework_context(run)
-    if context is None:
-        return None
-    acceptance, root, effort, ticket = context
-    record, path = acceptance.record_rework_round(
-        root,
-        effort,
-        ticket,
-        candidate=delivery["candidate"],
-        kind=delivery["kind"],
-        findings=Path(delivery["findings_file"]),
-        actor=actor,
-        extra={
-            "delivery_id": delivery["id"],
-            "run_dir": delivery["run_dir"],
-            "receipt": delivery.get("receipt"),
-        },
-    )
-    delivery["effort_rework_record"] = {"path": str(path), "round": record["round"]}
-    return record
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def delivery_acknowledged(delivery: dict) -> bool:
@@ -1851,60 +1687,7 @@ def wait_for_delivery_acknowledgement(
 
 
 def terminal_delivery_receipt(run: dict, target: str | None, input_file: str | None, message: str, findings: Path, wait_seconds: float) -> dict:
-    events = active_events_file(run)
-    events_offset = events.stat().st_size if events.exists() else 0
-    head_before = git(run["worktree"], "rev-parse", "HEAD", check=False).strip()
-    pane_before = tmux_pane_text(target) if target else None
-    digest = digest_file(findings)
-    if input_file:
-        path = Path(input_file)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a") as handle:
-            handle.write(message + "\n")
-        target_label = str(path)
-    elif not target:
-        raise WorkerError("terminal delivery needs --terminal-target or --terminal-input-file")
-    else:
-        first = subprocess.run(["tmux", "send-keys", "-t", target, "-l", message], capture_output=True, text=True)
-        if first.returncode != 0:
-            raise WorkerError(first.stderr.strip() or first.stdout.strip() or "tmux send-keys failed")
-        second = subprocess.run(["tmux", "send-keys", "-t", target, "Enter"], capture_output=True, text=True)
-        if second.returncode != 0:
-            raise WorkerError(second.stderr.strip() or second.stdout.strip() or "tmux send-keys Enter failed")
-        target_label = target
-    sent_epoch = time.time()
-    receipt = {
-        "transport": "terminal",
-        "target": target_label,
-        "terminal_target": target,
-        "pane_before": pane_before,
-        "sent": True,
-        "sent_at": now(),
-        "sent_epoch": sent_epoch,
-        "events_file": str(events),
-        "events_offset": events_offset,
-        "head_before": head_before,
-        "ack_wait_seconds": wait_seconds,
-        "acknowledged": False,
-    }
-    acknowledgement = wait_for_delivery_acknowledgement(
-        run,
-        events_offset=events_offset,
-        head_before=head_before,
-        terminal_target=target,
-        pane_before=pane_before,
-        findings=findings,
-        findings_digest=digest,
-        events_file=str(events),
-        wait_seconds=wait_seconds,
-    )
-    if acknowledgement:
-        receipt["acknowledged"] = True
-        receipt["acknowledged_at"] = now()
-        receipt["acknowledgement"] = acknowledgement
-    else:
-        receipt["reason"] = f"no worker acknowledgement observed within {wait_seconds:g}s"
-    return receipt
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def attach_delivery_review(run: dict, delivery: dict) -> None:
@@ -1921,46 +1704,11 @@ def attach_delivery_review(run: dict, delivery: dict) -> None:
 
 
 def acknowledge_delivery(run: dict, delivery: dict, acknowledgement: dict) -> bool:
-    receipt = delivery.setdefault("receipt", {})
-    if receipt.get("acknowledged") is True:
-        return False
-    receipt["acknowledged"] = True
-    receipt["acknowledged_at"] = now()
-    receipt["acknowledgement"] = acknowledgement
-    if delivery.get("kind") == "review" and not delivery.get("counts_toward_cap"):
-        delivery["round"] = review_round_count(run) + 1
-        delivery["counts_toward_cap"] = True
-    attach_delivery_review(run, delivery)
-    with (Path(run["run_dir"]) / "rework.jsonl").open("a") as handle:
-        handle.write(json.dumps({
-            "schema": "corenius.rework_acknowledgement.v1",
-            "delivery_id": delivery["id"],
-            "acknowledged_at": receipt["acknowledged_at"],
-            "acknowledgement": acknowledgement,
-        }, sort_keys=True) + "\n")
-    return True
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def acknowledge_pending_rework_deliveries(run: dict) -> None:
-    changed = False
-    for delivery in run.get("rework_deliveries", []):
-        receipt = delivery.get("receipt") or {}
-        if receipt.get("acknowledged") is True:
-            continue
-        acknowledgement = observe_delivery_acknowledgement(
-            run,
-            events_offset=int(receipt.get("events_offset") or 0),
-            head_before=receipt.get("head_before"),
-            terminal_target=receipt.get("terminal_target"),
-            pane_before=receipt.get("pane_before"),
-            findings=Path(delivery["findings_file"]),
-            findings_digest=delivery.get("findings_sha256"),
-            events_file=receipt.get("events_file"),
-        )
-        if acknowledgement:
-            changed = acknowledge_delivery(run, delivery, acknowledgement) or changed
-    if changed:
-        save_run(run)
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def handoff_findings(run: dict) -> list[dict]:
@@ -1978,6 +1726,8 @@ def handoff_findings(run: dict) -> list[dict]:
 
 
 def handoff_state(run: dict, exit_code: int | None, findings: list[dict], persist: bool = False) -> dict:
+    if persist:
+        raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
     worktree = run["worktree"]
     status = git(worktree, "status", "--porcelain", "--untracked-files=all", check=False)
     head = git(worktree, "rev-parse", "HEAD", check=False).strip()
@@ -2098,10 +1848,7 @@ def running_notices(run: dict, alive: bool, elapsed: int, exit_code: int | None 
 
 
 def run_tmux(*args: str) -> tuple[subprocess.CompletedProcess | None, str]:
-    try:
-        return subprocess.run(["tmux", *args], capture_output=True, text=True), ""
-    except OSError as exc:
-        return None, str(exc)
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def tmux_environment_options(extra: dict[str, str] | None = None) -> list[str]:
@@ -2118,46 +1865,7 @@ def tmux_environment_options(extra: dict[str, str] | None = None) -> list[str]:
 
 
 def tmux_interactive_window(session: str, window_name: str, cwd: Path, command: str, env: dict[str, str] | None = None) -> dict:
-    base = {"available": False, "session": session, "window": window_name, "command": command}
-    has, error = run_tmux("has-session", "-t", session)
-    if has is None:
-        raise WorkerError(f"interactive launch requires tmux: {error}")
-    if has.returncode != 0:
-        created, error = run_tmux(
-            "new-session", "-d", "-s", session, "-n", "overview", "-c", str(cwd), "while :; do sleep 3600; done"
-        )
-        if created is None:
-            raise WorkerError(f"interactive launch requires tmux: {error}")
-        if created.returncode != 0:
-            detail = (created.stderr or created.stdout or has.stderr or has.stdout).strip()
-            raise WorkerError(f"interactive launch requires tmux: {detail}")
-    new, error = run_tmux(
-        "new-window",
-        "-d",
-        "-P",
-        "-F",
-        "#{window_id} #{pane_id}",
-        *tmux_environment_options(env),
-        "-t",
-        f"{session}:",
-        "-n",
-        window_name,
-        "-c",
-        str(cwd),
-        command,
-    )
-    if new is None:
-        raise WorkerError(f"interactive launch requires tmux: {error}")
-    if new.returncode != 0:
-        detail = (new.stderr or new.stdout).strip()
-        raise WorkerError(f"interactive launch requires tmux: {detail}")
-    fields = new.stdout.strip().split()
-    record = {**base, "available": True, "target": f"{session}:{window_name}"}
-    if fields:
-        record["window_id"] = fields[0]
-    if len(fields) > 1:
-        record["pane_id"] = fields[1]
-    return record
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def read_pid_file(path: Path, timeout: float = 2.0) -> int | None:
@@ -2181,17 +1889,12 @@ def supervise(args: argparse.Namespace) -> int:
 
 
 def status(args: argparse.Namespace) -> int:
-    if args.update_run_record:
-        with locked_run(args.run_dir) as run:
-            result = status_verdict(run, persist=True)
-    else:
-        run = load_run(args.run_dir)
-        result = status_verdict(run, persist=False)
-    print(json.dumps(result))
-    return 0
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def status_verdict(run: dict, *, persist: bool) -> dict:
+    if persist:
+        raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
     alive, exit_code = process_state(run)
     session_id = update_session_id_from_events(run, persist=persist)
     checker = Checker(run, persist=persist)
@@ -2217,172 +1920,19 @@ def status_verdict(run: dict, *, persist: bool) -> dict:
 
 
 def resume(args: argparse.Namespace) -> int:
-    with locked_run(args.run_dir) as run:
-        return resume_locked(args, run)
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def resume_locked(args: argparse.Namespace, run: dict) -> int:
-    runtime = run.get("runtime", "traecli")
-    if runtime not in RUNTIMES:
-        raise WorkerError(f"runtime {runtime!r} cannot resume: unknown runtime")
-    session_id = update_session_id_from_events(run)
-    if not session_id:
-        raise WorkerError(f"runtime {runtime} cannot resume: no session id observed in events.jsonl")
-    message = args.message
-    if args.message_file:
-        message = Path(args.message_file).read_text()
-    if message is None:
-        message = sys.stdin.read()
-    if not message:
-        raise WorkerError("resume message is empty")
-
-    refreshed_integration = refresh_integration_branch(run)
-    run_dir = Path(run["run_dir"])
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    prefix = run_dir / f"resume-{stamp}"
-    events_file = Path(str(prefix) + "-events.jsonl")
-    stderr_file = Path(str(prefix) + "-stderr.log")
-    command, last_message = resume_command(runtime, run, session_id, prefix)
-    timeout = args.timeout if args.timeout is not None else float(run.get("cap_seconds", 120))
-    if args.detach:
-        message_file = Path(str(prefix) + "-message.txt")
-        message_file.write_text(message)
-        script = (
-            f"timeout --foreground {int(timeout)} {shlex.join(command)} "
-            f"< {shlex.quote(str(message_file))} "
-            f"> {shlex.quote(str(events_file))} "
-            f"2> {shlex.quote(str(stderr_file))}; "
-            f"echo $? > {shlex.quote(str(run_dir / 'exit_code'))}"
-        )
-        events_file.touch()
-        stderr_file.touch()
-        exit_file = run_dir / "exit_code"
-        if exit_file.exists():
-            exit_file.unlink()
-        process = subprocess.Popen(
-            ["sh", "-c", script],
-            cwd=run["worktree"],
-            start_new_session=True,
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            env=run_environment(ensure_run_temp(run)),
-        )
-        receipt = {
-            "runtime": runtime,
-            "session_id": session_id,
-            "command": command,
-            "events_file": str(events_file),
-            "stderr_file": str(stderr_file),
-            "last_message": str(last_message),
-            "message_file": str(message_file),
-            "message_sha256": hashlib.sha256(message.encode()).hexdigest(),
-            "timeout_seconds": timeout,
-            "stall_seconds": int(run.get("stall_seconds", 300)),
-            "transport": "resume",
-            "acknowledged": False,
-            "reason": "resume process started; no worker-side acknowledgement observed yet",
-            "detached": True,
-            "refreshed_integration": refreshed_integration,
-            **process_identity(process),
-            "started": now(),
-            "started_epoch": time.time(),
-        }
-        run["pid"] = process.pid
-        run["process_group_id"] = receipt.get("process_group_id")
-        run["process_session_id"] = receipt.get("process_session_id")
-        run["started"] = receipt["started"]
-        run["started_epoch"] = receipt["started_epoch"]
-        run["active_events_file"] = str(events_file)
-        run.setdefault("resumes", []).append(receipt)
-        save_run(run)
-        print(json.dumps(receipt))
-        return RUNNING
-    timed_out = False
-    error = None
-    try:
-        result = subprocess.run(
-            command,
-            input=message,
-            capture_output=True,
-            text=True,
-            cwd=run["worktree"],
-            timeout=timeout,
-            env=run_environment(ensure_run_temp(run)),
-        )
-        stdout, stderr, return_code = result.stdout, result.stderr, result.returncode
-    except subprocess.TimeoutExpired as exc:
-        timed_out = True
-        error = f"resume timed out after {timeout:g}s"
-        stdout, stderr, return_code = output_text(exc.stdout), output_text(exc.stderr), None
-    events_file.write_text(output_text(stdout))
-    stderr_file.write_text(output_text(stderr))
-    receipt = {
-        "runtime": runtime,
-        "session_id": session_id,
-        "command": command,
-        "events_file": str(events_file),
-        "stderr_file": str(stderr_file),
-        "last_message": str(last_message),
-        "message_sha256": hashlib.sha256(message.encode()).hexdigest(),
-        "timeout_seconds": timeout,
-        "transport": "resume",
-        "acknowledged": return_code == 0 and not timed_out,
-        "reason": "runtime exited 0" if return_code == 0 and not timed_out else (
-            error if error else f"runtime exited {return_code}"
-        ),
-        "detached": False,
-        "refreshed_integration": refreshed_integration,
-        "timed_out": timed_out,
-        "return_code": return_code,
-        "error": error,
-        "resumed": now(),
-    }
-    run.setdefault("resumes", []).append(receipt)
-    save_run(run)
-    print(json.dumps(receipt))
-    return 0 if return_code == 0 else DEGRADED
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def deliver_findings(args: argparse.Namespace) -> int:
-    with locked_run(args.run_dir) as run:
-        return deliver_findings_locked(args, run)
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def deliver_findings_locked(args: argparse.Namespace, run: dict) -> int:
-    findings = Path(args.findings_file)
-    if not findings.is_file():
-        raise WorkerError(f"findings file {findings} not found")
-    current = current_candidate_entry(run)
-    if current is None:
-        raise WorkerError("cannot deliver findings before a Candidate is pinned")
-
-    digest = digest_file(findings)
-    round_number = next_rework_round(run, args.kind, "lead")
-    message = args.message or findings_message(run, findings, digest, args.kind)
-    receipt = terminal_delivery_receipt(run, args.terminal_target, args.terminal_input_file, message, findings, args.ack_timeout)
-    acknowledged = receipt.get("acknowledged") is True
-    delivery = {
-        "id": f"{args.kind}-{len(run.get('rework_deliveries', [])) + 1}",
-        "kind": args.kind,
-        "round": round_number,
-        "counts_toward_cap": args.kind == "review",
-        "run_dir": str(Path(run["run_dir"])),
-        "candidate": current["candidate"]["commit"],
-        "findings_file": str(findings.resolve()),
-        "findings_sha256": digest,
-        "delivered_at": receipt["sent_at"],
-        "receipt": receipt,
-    }
-    record_shared_rework(run, delivery, "lead")
-    run.setdefault("rework_deliveries", []).append(delivery)
-    if acknowledged:
-        attach_delivery_review(run, delivery)
-    with (Path(run["run_dir"]) / "rework.jsonl").open("a") as handle:
-        handle.write(json.dumps(delivery, sort_keys=True) + "\n")
-    save_run(run)
-    print(json.dumps(delivery, sort_keys=True))
-    return CLEAN if acknowledged else DEGRADED
+    raise WorkerError('Retired worker recovery, state-writing and terminal execution authority; use harp durable --help.')
 
 
 def main(argv: list[str] | None = None) -> int:

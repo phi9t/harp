@@ -88,17 +88,46 @@ class RetiredLaunchers(unittest.TestCase):
                 self.refusal([sys.executable, str(ROOT / "bench/harness/run.py"), *args])
 
     def test_imported_library_authority_refuses_before_opening_or_launching(self):
-        code = '''import runpy,sys
+        code = """import json,sys
+from types import SimpleNamespace
 sys.path[:0]=[AGENTS,COLLAB]
-from worker import Checker,launch,supervise,create_private_worker_clone,import_candidate_to_shared_repo,refresh_integration_branch
+import worker
 from core import Collab
 from state_store import StateStore
-for action in (lambda: launch(None),lambda: supervise(None),lambda: create_private_worker_clone(None,None,None,None),lambda: import_candidate_to_shared_repo(None,None),lambda: refresh_integration_branch(None),lambda: Collab('.'),lambda: StateStore(None,None),lambda: Checker({})):
- try: action()
+sentinel = SimpleNamespace(run_dir='.', findings_file='run.json')
+actions = [
+ ('launch',(None,),{}),('supervise',(None,),{}),
+ ('create_private_worker_clone',(None,None,None,None),{}),
+ ('import_candidate_to_shared_repo',(None,None),{}),('refresh_integration_branch',(None,),{}),
+ ('resume',(sentinel,),{}),('resume_locked',(sentinel,None),{}),
+ ('deliver_findings',(sentinel,),{}),('deliver_findings_locked',(sentinel,None),{}),
+ ('tmux_interactive_window',(None,None,None,None),{}),('run_tmux',('new-session',),{}),
+ ('terminal_delivery_receipt',(None,None,None,None,None,None),{}),
+ ('resume_command',(None,None,None,None),{}),
+ ('run_record_lock',('.',),{}),('locked_run',('.',),{}),('save_run',(None,),{}),
+ ('new_run_temp',(None,),{}),('ensure_run_temp',(None,),{}),('cleanup_run_temp',(None,),{}),
+ ('temp_parent',(),{}),('temporary_directory',(None,),{}),
+ ('sandbox_binds',(None,None),{}),('remove_untouched',(None,),{}),
+ ('write_external_baseline',(None,None,None),{}),('record_shared_rework',(None,None,None),{}),
+ ('acknowledge_delivery',(None,None,None),{}),('acknowledge_pending_rework_deliveries',(None,),{}),
+ ('status',(sentinel,),{}),('status_verdict',(None,),{'persist':True}),
+ ('handoff_state',(None,None,None),{'persist':True}),('update_session_id_from_events',(None,),{}),
+ ('Checker',({},),{}),
+]
+for name,args,kwargs in actions:
+ try: getattr(worker,name)(*args,**kwargs)
  except Exception as error:
-  assert 'Retired' in str(error),repr(error)
- else: raise AssertionError('old authority was callable')
-'''.replace("AGENTS", repr(str(ROOT / "tools/agents"))).replace("COLLAB", repr(str(ROOT / "tools/collab")))
+  assert 'Retired' in str(error),(name,repr(error))
+ else: raise AssertionError('old authority was callable: '+name)
+for action in (lambda: Collab('.'),lambda: StateStore(None,None)):
+ try: action()
+ except RuntimeError as error: assert 'Retired' in str(error),repr(error)
+ else: raise AssertionError('old store authority was callable')
+# Retained descriptions and parsers must not start tools or create worker state.
+assert json.loads(worker.toml_array(['one','two'])) == ['one','two']
+assert worker.runtime_temp_env({'tmpdir':'owned','tmux_tmpdir':'terminal','tmpprefix':'prefix'}) == {'TMPDIR':'owned','TMUX_TMPDIR':'terminal','TMPPREFIX':'prefix'}
+assert worker.porcelain_paths(' M answer.txt') == ['answer.txt']
+""".replace("AGENTS", repr(str(ROOT / "tools/agents"))).replace("COLLAB", repr(str(ROOT / "tools/collab")))
         before = self.snapshot()
         result = subprocess.run([sys.executable, "-c", code], cwd=self.repo,
                                 env=self.environment, capture_output=True, text=True, timeout=10)
