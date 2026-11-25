@@ -53,6 +53,24 @@ class VerificationTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual({j["surface"] for j in self.selected()["checks"]}, {"diff", "docs"})
 
+    def test_shared_lean_contract_selects_local_consumer_without_compiler(self):
+        self.write("lab/math/shared/linear.json", "{}\n")
+        jobs = self.selected()["checks"]
+        self.assertEqual({job["surface"] for job in jobs}, {"diff", "shared-lean-contract"})
+        self.assertIn(["python3", "scripts/check_shared_lean_contract.py"],
+                      [job["command"] for job in jobs])
+
+    def test_shared_source_change_checks_contract_and_existing_proof_route(self):
+        self.write("lab/math/lean/MathematicalFoundations/Linear.lean", "-- changed source\n")
+        commands = [job["command"] for job in self.selected()["checks"]]
+        self.assertIn(["python3", "scripts/check_shared_lean_contract.py"], commands)
+        self.assertIn(["mise", "run", "lean-foundations"], commands)
+
+    def test_new_proof_beneath_shared_directory_keeps_proof_gate(self):
+        self.write("lab/math/shared/New.lean", "theorem exampleProof : True := by trivial\n")
+        commands = [job["command"] for job in self.selected()["checks"]]
+        self.assertIn(["mise", "run", "lean-all"], commands)
+
     def test_soma_script_can_import_its_preserved_package(self):
         self.write("lab/soma/scripts/insula/__init__.py", "ANSWER = 42\n")
         self.write("lab/soma/scripts/insula/test_fixture.py",

@@ -6,6 +6,12 @@ Harp combines agent execution and engineering tools with a library of SICP,
 mathematics and proof work. Run restartable agent tasks with recorded results,
 or read the maintained explanations and their source evidence.
 
+The [shared proof infrastructure boundary](docs/shared-proof-infrastructure.md)
+keeps knowledge and education in Harp, places new mathematical research in
+domain repositories, and delegates qualified proof execution to shared tools.
+The first [declarative Lean consumer](lab/math/shared/README.md) preserves the
+existing source and standalone commands.
+
 [Get started](docs/getting-started.md) ·
 [Agent workflows](docs/agent-workflows.md) ·
 [Documentation](docs/README.md) ·

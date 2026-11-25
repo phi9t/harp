@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "name": "harp_shared_linear",
+  "toolchain": {
+    "path": "lean-toolchain",
+    "sha256": "8e3538e0ab5f81a3ee04927d8838c8c674e0e112838b4b3ce87ec218143276af",
+    "value": "leanprover/lean4:v4.32.1"
+  },
+  "sources": [
+    {
+      "path": "MathematicalFoundations/Linear.lean",
+      "sha256": "446a53b763443e3cf5356405a2fe87d9908119ba132333ab24eb32e2e1344d96"
+    }
+  ],
+  "libraries": [
+    {
+      "name": "MathematicalFoundations",
+      "roots": [
+        "MathematicalFoundations.Linear"
+      ]
+    }
+  ],
+  "targets": [
+    "MathematicalFoundations"
+  ],
+  "audit": {
+    "imports": [
+      "MathematicalFoundations.Linear"
+    ],
+    "declarations": [
+      {
+        "name": "MathematicalFoundations.Linear.linear_finite_coordinate_reconstruction",
+        "type": "∀ {n : Nat} {x y : Fin n → Real}, (∀ i : Fin n, x i = y i) → x = y"
+      }
+    ]
+  },
+  "dependencies": [
+    "mathlib"
+  ]
+}

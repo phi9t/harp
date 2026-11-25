@@ -105,7 +105,18 @@ def plan(root, paths):
                 path = new + path[len(old):]
                 break
         parts = Path(path).parts
-        if path.startswith("assets/") and not (root / path).exists():
+        shared_contract = path in (
+            "lab/math/shared/README.md", "lab/math/shared/linear.json", "lab/math/shared/provenance.json",
+            "scripts/check_shared_lean_contract.py", "scripts/test_check_shared_lean_contract.py")
+        if shared_contract or path in (
+            "lab/math/lean/MathematicalFoundations/Linear.lean", "lab/math/lean/lean-toolchain"):
+            add("shared-lean-contract", "python3", "scripts/check_shared_lean_contract.py")
+            add("shared-lean-contract", "python3", "-m", "unittest", "discover", "-s", "scripts",
+                "-p", "test_check_shared_lean_contract.py")
+        if shared_contract:
+            if path.endswith(".md"):
+                docs.append(path)
+        elif path.startswith("assets/") and not (root / path).exists():
             add("repository", "mise", "run", "verify-repository")
         elif path.startswith(("reference/", "labs/meta_harness_trae/")) or path == "scripts/build_weng_course.py":
             # Article-only projections and reproduction tooling were retired.

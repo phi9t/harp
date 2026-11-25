@@ -1,7 +1,9 @@
 # Harp contributor guide
 
-Harp is a standalone agent engineering product with a mathematics and education library. Do not add runtime, build, test, source, or
-documentation dependencies on another local checkout.
+Harp is a standalone agent engineering product with a mathematics and education library.
+Shared infrastructure integrations use explicit installed interfaces and pinned
+artifacts. Do not depend on another local checkout or infer sibling repository
+paths. The standalone workflow remains usable without an Argonaut deployment.
 
 ## Canonical ownership
 
@@ -12,6 +14,16 @@ documentation dependencies on another local checkout.
   bindings, independent verification and landing. `insula/` owns containment and
   service supervision; `runner/` is SSH transport. Do not add a competing
   controller or dispatcher.
+- For explicitly selected Argonaut integrations, `argonaut-control-plane` owns
+  job lifecycle and transport, `insula` owns Linux isolation, and `insula-lean`
+  owns generic Lean profiles, builds, reuse and type/axiom auditing. Harp owns
+  its task intent, educational proof policies and presentation. Existing local
+  runtime paths remain supported until their named replacements pass native
+  parity checks; source integration alone does not retire a controller.
+- Independent ML probability and optimization research lives in
+  `phi9t/lean-ml-foundations`. Its provenance-preserving seed leaves historical
+  Harp proofs and teaching material here. New research acceptance belongs to
+  that repository; Cauchy-Schwarz teaching policies remain Harp-owned.
 - Actual SSH inventories and credentials are private, ignored inputs. Public
   examples use fictional hosts and paths.
 - `.scratch/` owns Git-managed specs and issues; `lab/` holds workloads and their

@@ -1,3 +1,6 @@
+[task_config]
+shell = "bash -o errexit -c"
+
 [settings.task]
 run_auto_install = false
 

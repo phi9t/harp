@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "source_repository": "https://github.com/phi9t/harp",
+  "source_commit": "c50a2478e64d25fe8924dba33116f0f7f344bcde",
+  "source_root": "lab/math/lean",
+  "contract": "lab/math/shared/linear.json",
+  "contract_sha256": "ee5b97a659bde974023bd1de0f9fcc03cc0c61a1a1044a6969e0bcff70a63ecd",
+  "source_files": [
+    {
+      "repository_path": "lab/math/lean/lean-toolchain",
+      "projection_path": "lean-toolchain",
+      "git_blob": "2b61957be5f4986fcc464cb4f62322f2d6ca3dfc",
+      "sha256": "8e3538e0ab5f81a3ee04927d8838c8c674e0e112838b4b3ce87ec218143276af",
+      "mode": "100644"
+    },
+    {
+      "repository_path": "lab/math/lean/MathematicalFoundations/Linear.lean",
+      "projection_path": "MathematicalFoundations/Linear.lean",
+      "git_blob": "1b44bedbf50b1b95a4169cdc75a63c6061d1dbe9",
+      "sha256": "446a53b763443e3cf5356405a2fe87d9908119ba132333ab24eb32e2e1344d96",
+      "mode": "100644"
+    }
+  ],
+  "qualification": "Contract and source identity only; native runner evidence is recorded separately."
+}
