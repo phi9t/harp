@@ -23,10 +23,10 @@ from the repository and shared-infrastructure guides. Repair the observed Linux 
 
 ## Blocked by
 
-Source implementation and local verification are complete. Public publication
-requires the explicit push instruction in `AGENTS.md`. Managed Lean profile
-preparation and native build/replay qualification remain pending; live durable
-dispatch is unavailable through the protected connector's service context.
+Source implementation, local verification and publication approved by the owner
+are complete. Managed Lean profile preparation and native build/type/axiom audit
+and replay qualification remain pending. Existing runtime paths remain supported
+until their native retirement gates pass.
 
 ## Verification
 
@@ -41,3 +41,7 @@ gate. Shared-project source-only preparation passed using the original Linear
 bytes. No managed proof, native runtime parity, live dispatch or full release
 qualification is claimed. Teaching packet contents remain unchanged; wayfinding
 lives in the repository and shared-infrastructure guides.
+
+The owner explicitly approved publication, and public `main` was read back at
+`edc6d8a0efe657b15bb10a2dce60a008ab0babcb`. Source publication is complete;
+the native qualification limitations above remain.

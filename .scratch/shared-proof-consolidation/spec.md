@@ -44,5 +44,8 @@ not repeated by this task. Its journal and active research owners are preserved.
 
 ## Verification
 
-The complete changed-surface gate passed on Argonaut. Native input preparation
-and public publication remain separate gates; see the implementation ticket.
+The complete changed-surface gate passed on Argonaut. The owner approved public
+publication, and the reviewed source change is published at
+`edc6d8a0efe657b15bb10a2dce60a008ab0babcb`. Native profile preparation,
+managed build/type/axiom audit and replay remain pending; see the implementation
+ticket.
